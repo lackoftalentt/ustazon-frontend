@@ -1,0 +1,78 @@
+@use '@/shared/styles/variables' as *;
+
+.button {
+    border-radius: $radius-md;
+    font-size: $font-size-base;
+    font-weight: $font-weight-normal;
+    cursor: pointer;
+    border: none;
+    transition: background $transition-fast, transform $transition-fast;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:active:not(:disabled) {
+        transform: scale(0.98);
+    }
+}
+
+// ============= Variants
+.primary {
+    background: $color-green-lightest;
+    color: $color-white;
+
+    &:hover:not(:disabled) {
+        background: $color-green-active;
+    }
+}
+
+.secondary {
+    background: $color-gray-light;
+    color: $color-gray-dark;
+
+    &:hover:not(:disabled) {
+        background: $color-gray-medium;
+        color: $color-white;
+    }
+}
+
+.outline {
+    background: transparent;
+    color: $color-green-primary;
+    border: 2px solid $color-green-primary;
+
+    &:hover:not(:disabled) {
+        background: $color-green-primary;
+        color: $color-white;
+    }
+}
+
+// ============= Sizes
+.sm {
+    padding: $spacing-xs $spacing-md;
+    font-size: $font-size-sm;
+    line-height: 16px;
+}
+
+.md {
+    padding: 10px $spacing-lg;
+    line-height: $button-line-height;
+}
+
+.lg {
+    padding: $spacing-md $spacing-xl;
+    font-size: $font-size-lg;
+    line-height: 24px;
+}
+
+// ============= States
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.fullWidth {
+    width: 100%;
+}

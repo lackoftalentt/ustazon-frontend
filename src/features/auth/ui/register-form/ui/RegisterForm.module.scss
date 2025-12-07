@@ -1,0 +1,65 @@
+@use '@/shared/styles/variables' as *;
+
+.form {
+    border: 2px solid $color-gray-border;
+    border-radius: $radius-lg;
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-2xl;
+    width: 600px;
+}
+
+.title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 0;
+    margin-bottom: $spacing-sm;
+}
+
+.subtitle {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin-bottom: $spacing-2xl;
+}
+
+.submitButton {
+    margin-top: $spacing-sm;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: $spacing-lg;
+    gap: $spacing-sm;
+    font-size: $font-size-base;
+
+    p {
+        color: $color-gray-medium;
+        margin: 0;
+    }
+}
+
+.loginLink {
+    position: relative;
+    font-weight: $font-weight-medium;
+    color: $color-green-active;
+    text-decoration: none;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 1px;
+        background: $color-green-active;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform $transition-normal;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+}

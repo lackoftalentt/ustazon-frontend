@@ -1,0 +1,57 @@
+@use '@/shared/styles/variables' as *;
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xl;
+}
+
+.fieldHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-size: $font-size-base;
+    font-weight: $font-weight-normal;
+    color: $color-gray-dark;
+    transition: color $transition-fast;
+}
+
+.field:focus-within .label {
+    color: $color-green-dark;
+}
+
+.input {
+    border: 1px solid $color-gray-medium;
+    border-radius: $radius-md;
+    padding: $spacing-md;
+    width: 100%;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+    &:focus {
+        border-color: $color-green-dark;
+        box-shadow: $shadow-focus;
+        outline: none;
+    }
+}
+
+.errorInput {
+    border-color: $color-red-error;
+
+    &:focus {
+        border-color: $color-red-error;
+        box-shadow: $shadow-error-focus;
+        outline: none;
+    }
+}
+
+.errorLabel {
+    color: $color-red-error;
+}
+
+.field:focus-within .errorLabel {
+    color: $color-red-error;
+}
