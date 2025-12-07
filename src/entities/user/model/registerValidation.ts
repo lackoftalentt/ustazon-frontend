@@ -1,13 +1,5 @@
 import { z } from 'zod';
 
-export const loginSchema = z.object({
-    iin: z
-        .string()
-        .length(12, 'ИИН должен содержать 12 цифр')
-        .regex(/^\d{12}$/, 'ИИН содержит только цифры'),
-    password: z.string().min(8, 'Пароль должен содержать минимум 8 символов')
-});
-
 export const registerSchema = z
     .object({
         iin: z
@@ -45,16 +37,4 @@ export const registerSchema = z
         path: ['passwordConfirm']
     });
 
-export const resetPasswordSchema = z.object({
-    phoneNumber: z
-        .string()
-        .min(1, 'Введите номер телефона')
-        .regex(
-            /^\+?7\d{10}$/,
-            'Введите корректный номер телефона +7 (7XX) XXX-XX-XX'
-        )
-});
-
-export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
-export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;

@@ -1,8 +1,9 @@
+export { loginSchema, type LoginFormData } from './model/loginValidation';
 export {
-    loginSchema,
-    resetPasswordSchema,
     registerSchema,
-    type LoginFormData,
-    type ResetPasswordFormData,
     type RegisterFormData
-} from './model/validation';
+} from './model/registerValidation';
+export {
+    resetPasswordSchema,
+    type ResetPasswordFormData
+} from './model/resetPasswordValidation';
