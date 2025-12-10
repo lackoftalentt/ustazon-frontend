@@ -1,82 +1,158 @@
 @use '@/shared/styles/variables' as *;
 
 .form {
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-lg;
+    background: white;
+    border: 1px solid rgba($color-gray-border, 0.5);
+    border-radius: $radius-xl;
     display: flex;
     flex-direction: column;
-    padding: $spacing-2xl;
-    width: 600px;
+    padding: 40px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+    }
 }
 
 .title {
-    font-size: $font-size-xl;
+    font-size: 32px;
     font-weight: $font-weight-semibold;
-    margin-bottom: $spacing-sm;
+    margin-bottom: $spacing-xs;
+    color: $color-green-dark;
+    background: linear-gradient(
+        135deg,
+        $color-green-dark,
+        $color-green-primary
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .subtitle {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
-    margin-bottom: $spacing-2xl;
+    font-size: $font-size-base;
+    color: rgba($color-green-dark, 0.6);
+    margin-bottom: $spacing-3xl;
+    font-weight: $font-weight-normal;
 }
 
-.forgotPasswordLink {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
-    text-decoration: none;
-    position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -2px;
-        width: 100%;
-        height: 1px;
-        background: $color-gray-medium;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform $transition-normal;
-    }
-
-    &:hover::after {
-        transform: scaleX(1);
-    }
+.rememberAndForgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-xl;
 }
 
 .rememberRow {
     display: flex;
     align-items: center;
     gap: $spacing-sm;
-    margin-top: $spacing-xs;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
 }
 
 .checkbox {
-    accent-color: $color-green-primary;
+    width: 18px;
+    height: 18px;
+    accent-color: $color-green-active;
     cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    &:checked {
+        animation: checkboxPop 0.3s ease;
+    }
 }
 
 .rememberText {
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
+    color: $color-green-dark;
+}
+
+.forgotPasswordLink {
+    font-size: $font-size-sm;
+    color: $color-green-primary;
+    text-decoration: none;
+    position: relative;
+    font-weight: $font-weight-medium;
+    transition: color 0.2s ease;
+    padding: 4px 0;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 2px;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            $color-green-active,
+            $color-green-primary
+        );
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
+        border-radius: 2px;
+    }
+
+    &:hover {
+        color: $color-green-active;
+
+        &::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    }
 }
 
 .submitBtn {
-    margin-bottom: $spacing-sm;
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-md;
+    padding: 14px;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    box-shadow: 0 4px 16px rgba($color-green-active, 0.25);
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba($color-green-active, 0.35);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
 }
 
 .register {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: $spacing-lg;
+    margin-top: $spacing-xl;
     gap: $spacing-sm;
     font-size: $font-size-base;
+    padding-top: $spacing-lg;
+    border-top: 1px solid rgba($color-gray-border, 0.3);
 
     p {
-        color: $color-gray-medium;
+        color: rgba($color-green-dark, 0.6);
         margin: 0;
+        font-weight: $font-weight-normal;
     }
 }
 
@@ -84,28 +160,79 @@
     position: relative;
     color: $color-green-active;
     text-decoration: none;
-    font-weight: $font-weight-medium;
+    font-weight: $font-weight-semibold;
+    transition: color 0.2s ease;
+    padding: 4px 0;
 
     &::after {
         content: '';
         position: absolute;
         left: 0;
-        bottom: -2px;
+        bottom: 2px;
         width: 100%;
-        height: 1px;
-        background: $color-green-active;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            $color-green-active,
+            $color-green-primary
+        );
         transform: scaleX(0);
-        transform-origin: left;
-        transition: transform $transition-normal;
+        transform-origin: right;
+        transition: transform 0.3s ease;
+        border-radius: 2px;
     }
 
-    &:hover::after {
-        transform: scaleX(1);
+    &:hover {
+        color: darken($color-green-active, 10%);
+
+        &::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
     }
 }
 
-.rememberAndForgot {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: $spacing-sm;
+@keyframes checkboxPop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .form {
+        padding: 32px 24px;
+        max-width: 100%;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: $font-size-sm;
+        margin-bottom: $spacing-2xl;
+    }
+
+    .rememberAndForgot {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $spacing-md;
+    }
+
+    .submitBtn {
+        padding: 12px;
+        font-size: $font-size-base;
+    }
+
+    .register {
+        flex-direction: column;
+        gap: $spacing-xs;
+    }
 }

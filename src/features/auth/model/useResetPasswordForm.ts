@@ -11,8 +11,8 @@ export const useResetPasswordForm = (
 ) => {
     const form = useForm<ResetPasswordFormData>({
         resolver: zodResolver(resetPasswordSchema),
-        mode: 'onSubmit',
-        reValidateMode: 'onChange'
+        mode: 'onChange',
+        reValidateMode: 'onSubmit'
     });
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {

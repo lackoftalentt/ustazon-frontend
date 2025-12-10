@@ -1,17 +1,46 @@
-import { Link } from 'react-router';
-import { Button, Input, PasswordInput } from '@/shared/ui';
+import { Link, useNavigate } from 'react-router';
+import { Button } from '@/shared/ui/Button';
+import { PasswordInput } from '@/shared/ui/PasswordInput';
+import { Input } from '@/shared/ui/Input';
 import { useRegisterForm } from '../../../model/useRegisterForm';
 import s from './RegisterForm.module.scss';
+import toast from 'react-hot-toast';
 
 export const RegisterForm = () => {
+    const navigate = useNavigate();
+
     const {
         register,
         handleIinChange,
         handlePhoneChange,
         onSubmit,
         formState: { errors, isSubmitting }
-    } = useRegisterForm(data => {
-        console.log('Valid data:', data);
+    } = useRegisterForm(async data => {
+        try {
+            // await registerUser(data);
+            console.log('Valid data:', data);
+            toast.success('Регистрация прошла успешно!');
+            navigate('/login');
+        } catch (error) {
+            console.error('Registration error:', error);
+
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else if (
+                typeof error === 'object' &&
+                error !== null &&
+                'response' in error
+            ) {
+                const apiError = error as {
+                    response?: { data?: { message?: string } };
+                };
+                toast.error(
+                    apiError.response?.data?.message || 'Ошибка при регистрации'
+                );
+            } else {
+                toast.error('Произошла неизвестная ошибка');
+            }
+        }
     });
 
     return (
@@ -53,10 +82,10 @@ export const RegisterForm = () => {
                 />
 
                 <Input
-                    {...register('passwordConfirm')}
+                    {...register('confirmPassword')}
                     id="passwordConfirm"
                     label="Подтвердите пароль"
-                    error={errors.passwordConfirm?.message}
+                    error={errors.confirmPassword?.message}
                     placeholder="Подтвердите пароль"
                     type="password"
                 />

@@ -1,17 +1,47 @@
-import { Link } from 'react-router';
-import { Button, Input, PasswordInput } from '@/shared/ui';
+import { Link, useNavigate } from 'react-router';
+import { Button } from '@/shared/ui/Button';
+import { PasswordInput } from '@/shared/ui/PasswordInput';
+import { Input } from '@/shared/ui/Input';
 import { useLoginForm } from '../../../model/useLoginForm';
 import type { LoginFormData } from '@/entities/user';
 import s from './LoginForm.module.scss';
+import toast from 'react-hot-toast';
 
 export const LoginForm = () => {
+    const navigate = useNavigate();
+
     const {
         register,
         handleIinChange,
         onSubmit,
         formState: { errors, isSubmitting }
-    } = useLoginForm((data: LoginFormData) => {
-        console.log('Valid data:', data);
+    } = useLoginForm(async (data: LoginFormData) => {
+        try {
+            // await loginUser(data);
+            console.log('Valid data:', data);
+            toast.success('Вход выполнен успешно!');
+            navigate('/');
+        } catch (error) {
+            console.error('Login error:', error);
+
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else if (
+                typeof error === 'object' &&
+                error !== null &&
+                'response' in error
+            ) {
+                const apiError = error as {
+                    response?: { data?: { message?: string } };
+                };
+                toast.error(
+                    apiError.response?.data?.message ||
+                        'Неверный ИИН или пароль'
+                );
+            } else {
+                toast.error('Произошла ошибка при входе');
+            }
+        }
     });
 
     return (

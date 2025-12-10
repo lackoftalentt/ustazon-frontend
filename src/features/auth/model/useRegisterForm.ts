@@ -7,7 +7,7 @@ export const useRegisterForm = (onSubmit: (data: RegisterFormData) => void) => {
     const form = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
         mode: 'onSubmit',
-        reValidateMode: 'onChange'
+        reValidateMode: 'onSubmit'
     });
 
     const handleIinChange = (e: React.ChangeEvent<HTMLInputElement>) => {

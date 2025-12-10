@@ -1,0 +1,157 @@
+@use '@/shared/styles/variables' as *;
+
+.orientationItem {
+    max-width: 650px;
+    background: white;
+    padding: 32px;
+    border-radius: $radius-xl;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+            90deg,
+            $color-green-active,
+            $color-green-primary
+        );
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+        &::before {
+            transform: scaleX(1);
+        }
+
+        .iconWrapper {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba($color-green-active, 0.35);
+
+            .iconBg {
+                transform: scale(1.3);
+                opacity: 0.3;
+            }
+
+            .icon {
+                animation: iconPulse 0.6s ease;
+            }
+        }
+    }
+}
+
+.header {
+    display: flex;
+    gap: $spacing-lg;
+    align-items: center;
+}
+
+.iconWrapper {
+    background: linear-gradient(
+        135deg,
+        $color-green-active,
+        $color-green-primary
+    );
+    min-width: 64px;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: $radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 4px 16px rgba($color-green-active, 0.25);
+    transition: all 0.3s ease;
+    overflow: hidden;
+
+    .iconBg {
+        position: absolute;
+        inset: -50%;
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.3),
+            transparent 70%
+        );
+        transition: all 0.4s ease;
+    }
+
+    .icon {
+        width: 36px;
+        height: 36px;
+        filter: brightness(0) invert(1);
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease;
+    }
+}
+
+.title {
+    font-size: 24px;
+    font-weight: $font-weight-semibold;
+    line-height: 1.4;
+    color: $color-green-dark;
+    flex: 1;
+}
+
+.description {
+    font-size: $font-size-base;
+    font-weight: $font-weight-normal;
+    line-height: 1.7;
+    color: rgba($color-green-dark, 0.8);
+    padding-left: 80px;
+}
+
+@keyframes iconPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+@media (max-width: 768px) {
+    .orientationItem {
+        padding: 24px;
+    }
+
+    .header {
+        gap: $spacing-md;
+    }
+
+    .iconWrapper {
+        min-width: 56px;
+        width: 56px;
+        height: 56px;
+
+        .icon {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    .title {
+        font-size: $font-size-xl;
+    }
+
+    .description {
+        font-size: $font-size-sm;
+        padding-left: 0;
+    }
+}

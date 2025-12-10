@@ -6,7 +6,7 @@
     font-weight: $font-weight-normal;
     cursor: pointer;
     border: none;
-    transition: background $transition-fast, transform $transition-fast;
+    transition: background $transition-normal, transform $transition-normal;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -21,20 +21,19 @@
 // ============= Variants
 .primary {
     background: $color-green-lightest;
-    color: $color-white;
+    color: white;
 
     &:hover:not(:disabled) {
         background: $color-green-active;
     }
 }
 
-.secondary {
-    background: $color-gray-light;
-    color: $color-gray-dark;
+.dark {
+    background: $color-green-dark;
+    color: white;
 
     &:hover:not(:disabled) {
-        background: $color-gray-medium;
-        color: $color-white;
+        background: $color-green-active;
     }
 }
 
@@ -44,8 +43,9 @@
     border: 2px solid $color-green-primary;
 
     &:hover:not(:disabled) {
-        background: $color-green-primary;
-        color: $color-white;
+        background: $color-green-active;
+        color: white;
+        border-color: $color-green-active;
     }
 }
 

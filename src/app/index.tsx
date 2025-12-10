@@ -7,6 +7,7 @@ export const App = () => {
     return (
         <StrictMode>
             <RouterProvider>
+                {' '}
                 <AppRouter />
                 <ToastProvider />
             </RouterProvider>

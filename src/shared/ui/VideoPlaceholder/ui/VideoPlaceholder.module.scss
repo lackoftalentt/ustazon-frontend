@@ -1,0 +1,19 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+    background: white;
+    padding: $spacing-2xl;
+    border-radius: $radius-lg;
+}
+.videoPlaceholder {
+    max-width: 600px;
+    height: 250px;
+    background: $color-green-dark;
+    border-radius: $radius-xl;
+    position: relative;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
