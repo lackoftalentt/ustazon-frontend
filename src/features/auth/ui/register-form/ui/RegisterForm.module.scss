@@ -104,7 +104,7 @@
     }
 
     &:hover {
-        color: darken($color-green-active, 10%);
+        color: $color-green-active;
 
         &::after {
             transform: scaleX(1);

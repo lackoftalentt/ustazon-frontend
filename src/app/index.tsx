@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { RouterProvider, ToastProvider } from './providers';
+import { QueryProvider, RouterProvider, ToastProvider } from './providers';
 import { AppRouter } from './routes';
 import '@/shared/styles/global.scss';
 
@@ -8,7 +8,9 @@ export const App = () => {
         <StrictMode>
             <RouterProvider>
                 {' '}
-                <AppRouter />
+                <QueryProvider>
+                    <AppRouter />
+                </QueryProvider>
                 <ToastProvider />
             </RouterProvider>
         </StrictMode>

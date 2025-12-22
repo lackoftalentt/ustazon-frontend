@@ -4,9 +4,18 @@ import s from './Header.module.scss';
 import { Button } from '@/shared/ui/Button';
 import { Link, useNavigate } from 'react-router';
 import { Container } from '@/shared/ui/Container';
+import { useAuthStore } from '@/entities/user';
+import defaultAvatar from '@/shared/assets/images/profile-image.jpg';
 
 export const Header = () => {
     const navigate = useNavigate();
+    const { user, isAuthenticated, logout } = useAuthStore();
+    const isAuth = isAuthenticated();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     return (
         <header className={s.header}>
@@ -21,7 +30,7 @@ export const Header = () => {
 
                     <nav className={s.nav}>
                         <Link
-                            to="/courses"
+                            to="/courses-catalog"
                             className={s.navLink}>
                             <span className={s.navLinkText}>
                                 Каталог курсов
@@ -36,18 +45,31 @@ export const Header = () => {
                 </div>
                 <div className={s.rightSide}>
                     <button className={s.langSwitcher}>
-                        <Typography
-                            onClick={() => navigate('/')}
-                            className={s.langIcon}
-                        />
+                        <Typography className={s.langIcon} />
                         <span>Русский</span>
                     </button>
-                    <Button
-                        onClick={() => navigate('/login')}
-                        variant="outline"
-                        className={s.loginBtn}>
-                        Войти
-                    </Button>
+
+                    {isAuth ? (
+                        <div className={s.userSection}>
+                            <span className={s.userName}>{user?.name}</span>
+                            <button
+                                className={s.avatarButton}
+                                onClick={() => navigate('/profile')}>
+                                <img
+                                    src={defaultAvatar}
+                                    alt="avatar"
+                                    className={s.avatar}
+                                />
+                            </button>
+                        </div>
+                    ) : (
+                        <Button
+                            onClick={() => navigate('/login')}
+                            variant="outline"
+                            className={s.loginBtn}>
+                            Войти
+                        </Button>
+                    )}
                 </div>
             </Container>
         </header>

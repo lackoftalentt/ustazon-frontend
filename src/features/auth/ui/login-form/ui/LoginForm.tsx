@@ -6,9 +6,14 @@ import { useLoginForm } from '../../../model/useLoginForm';
 import type { LoginFormData } from '@/entities/user';
 import s from './LoginForm.module.scss';
 import toast from 'react-hot-toast';
+import { loginUser } from '@/features/auth/api/loginApi';
+import { useAuthStore } from '@/entities/user/model/store/useAuthStore';
+import axios from 'axios';
+import { getCurrentUser } from '@/entities/user/api/userApi';
 
 export const LoginForm = () => {
     const navigate = useNavigate();
+    const { setTokens, setUser } = useAuthStore();
 
     const {
         register,
@@ -17,27 +22,32 @@ export const LoginForm = () => {
         formState: { errors, isSubmitting }
     } = useLoginForm(async (data: LoginFormData) => {
         try {
-            // await loginUser(data);
-            console.log('Valid data:', data);
+            const response = await loginUser(data);
+
+            setTokens(response.access_token, response.refresh_token);
+
+            const userData = await getCurrentUser();
+
+            setUser({
+                iin: userData.iin,
+                name: userData.name,
+                phoneNumber: userData.phone
+            });
+
+            console.log('Login successful:', userData);
             toast.success('Вход выполнен успешно!');
             navigate('/');
         } catch (error) {
             console.error('Login error:', error);
 
-            if (error instanceof Error) {
+            if (axios.isAxiosError(error)) {
+                const message =
+                    error.response?.data?.detail ||
+                    error.response?.data?.message ||
+                    'Неверный ИИН или пароль';
+                toast.error(message);
+            } else if (error instanceof Error) {
                 toast.error(error.message);
-            } else if (
-                typeof error === 'object' &&
-                error !== null &&
-                'response' in error
-            ) {
-                const apiError = error as {
-                    response?: { data?: { message?: string } };
-                };
-                toast.error(
-                    apiError.response?.data?.message ||
-                        'Неверный ИИН или пароль'
-                );
             } else {
                 toast.error('Произошла ошибка при входе');
             }

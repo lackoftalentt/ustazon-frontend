@@ -117,7 +117,7 @@
 
     .rightSide {
         display: flex;
-        gap: $spacing-md;
+        gap: $spacing-xl;
         align-items: center;
 
         .langSwitcher {
@@ -153,6 +153,71 @@
 
             &:active {
                 transform: translateY(0);
+            }
+        }
+        .userSection {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .userName {
+            font-size: $font-size-base;
+            font-weight: $font-weight-medium;
+            color: $color-green-dark;
+            transition: color 0.2s ease;
+        }
+
+        .avatarButton {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.05);
+
+                .avatar {
+                    box-shadow: 0 4px 12px rgba($color-green-primary, 0.25);
+                }
+            }
+
+            &:active {
+                transform: scale(0.98);
+            }
+
+            &:focus-visible {
+                outline: 2px solid $color-green-active;
+                outline-offset: 3px;
+                border-radius: 50%;
+            }
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid $color-green-lightest;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            .userSection {
+                gap: 8px;
+            }
+
+            .userName {
+                font-size: $font-size-sm;
+                display: none; // Скрыть имя на мобильных
+            }
+
+            .avatar {
+                width: 36px;
+                height: 36px;
             }
         }
 

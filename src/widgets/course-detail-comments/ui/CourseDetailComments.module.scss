@@ -1,0 +1,74 @@
+@use '@/shared/styles/variables' as *;
+
+.root {
+    margin-top: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-normal;
+    color: $color-gray-medium;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.input {
+    border-radius: $radius-md;
+    border: 1px solid $color-gray-border;
+    padding: $spacing-sm $spacing-lg;
+    background: $color-gray-light;
+    font-size: $font-size-sm;
+    outline: none;
+    transition: border-color $transition-fast, box-shadow $transition-fast,
+        background $transition-fast;
+
+    &:focus {
+        background: #ffffff;
+        border-color: $color-green-active;
+        box-shadow: $shadow-focus;
+    }
+}
+
+.comment {
+    border-radius: $radius-lg;
+    padding: $spacing-sm $spacing-md;
+    background: rgba($color-gray-dark, 0.02);
+    border: 1px solid rgba($color-gray-medium, 0.4);
+    display: flex;
+    gap: $spacing-md;
+    align-items: center;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-full;
+    background: linear-gradient(
+        135deg,
+        $color-green-primary,
+        $color-green-dark
+    );
+    color: #f9fafb;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.name {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-tight;
+}
+
+.text {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    line-height: $line-height-normal;
+}

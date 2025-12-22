@@ -3,24 +3,6 @@
 .orientationSection {
     margin: 120px 0;
     position: relative;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 600px;
-        background: linear-gradient(
-            135deg,
-            rgba($color-green-lightest, 0.3) 0%,
-            transparent 50%,
-            rgba($color-green-lightest, 0.2) 100%
-        );
-        transform: translateY(-50%);
-        z-index: -1;
-        pointer-events: none;
-    }
 }
 
 .title {

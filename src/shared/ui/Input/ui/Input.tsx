@@ -6,10 +6,11 @@ export interface InputProps
     extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     error?: string;
+    leftIcon?: React.ReactNode;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ label, error, className, id, ...props }, ref) => {
+    ({ label, error, className, id, leftIcon, ...props }, ref) => {
         return (
             <div className={s.field}>
                 {label && (
@@ -19,12 +20,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                         {error || label}
                     </label>
                 )}
-                <input
-                    {...props}
-                    ref={ref}
-                    id={id}
-                    className={clsx(s.input, error && s.errorInput, className)}
-                />
+
+                <div className={s.inputWrapper}>
+                    {leftIcon && (
+                        <span className={s.iconWrapper}>{leftIcon}</span>
+                    )}
+                    <input
+                        {...props}
+                        ref={ref}
+                        id={id}
+                        className={clsx(
+                            s.input,
+                            error && s.errorInput,
+                            leftIcon && s.inputWithIcon,
+                            className
+                        )}
+                    />
+                </div>
             </div>
         );
     }

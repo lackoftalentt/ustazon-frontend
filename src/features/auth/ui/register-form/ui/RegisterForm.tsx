@@ -5,6 +5,7 @@ import { Input } from '@/shared/ui/Input';
 import { useRegisterForm } from '../../../model/useRegisterForm';
 import s from './RegisterForm.module.scss';
 import toast from 'react-hot-toast';
+import { registerUser } from '@/features/auth/api/registerApi';
 
 export const RegisterForm = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ export const RegisterForm = () => {
         formState: { errors, isSubmitting }
     } = useRegisterForm(async data => {
         try {
-            // await registerUser(data);
+            await registerUser(data);
             console.log('Valid data:', data);
             toast.success('Регистрация прошла успешно!');
             navigate('/login');

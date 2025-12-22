@@ -5,12 +5,18 @@ import { useResetPasswordForm } from '../../../model/useResetPasswordForm';
 import s from './ResetPasswordForm.module.scss';
 import type { ResetPasswordFormData } from '@/entities/user';
 import { Link, useNavigate } from 'react-router';
-import arrowLeft from '@/shared/assets/icons/arrowLeft.svg';
+import ArrowLeft from '@/shared/assets/icons/arrowLeft.svg?react';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import clsx from 'clsx';
+import {
+    resetPassword,
+    sendResetCode,
+    verifyResetCode
+} from '@/features/auth/api/resetPasswordApi';
+import axios from 'axios';
 
-type Step = 'phone' | 'code' | 'password';
+type Step = 'phone' | 'code' | 'newPassword';
 
 export const ResetPasswordForm = () => {
     const [step, setStep] = useState<Step>('phone');
@@ -25,7 +31,8 @@ export const ResetPasswordForm = () => {
     } = useResetPasswordForm(async (data: ResetPasswordFormData) => {
         try {
             if (step === 'phone') {
-                // await sendCodeToPhone(data.phoneNumber);
+                console.log('Phone from form:', data.phoneNumber);
+                await sendResetCode({ phone: data.phoneNumber });
                 toast.success('Код отправлен на ваш номер');
                 setStep('code');
             } else if (step === 'code') {
@@ -33,31 +40,59 @@ export const ResetPasswordForm = () => {
                     toast.error('Введите код');
                     return;
                 }
-                // await verifyCode(data.phoneNumber, data.code);
+                // await verifyResetCode({
+                //     phone: data.phoneNumber,
+                //     code: data.code
+                // });
                 toast.success('Код подтвержден!');
-                setStep('password');
-            } else if (step === 'password') {
-                const isValid = await trigger(['password', 'confirmPassword']);
+                setStep('newPassword');
+            } else if (step === 'newPassword') {
+                const isValid = await trigger([
+                    'newPassword',
+                    'confirmPassword'
+                ]);
 
                 if (!isValid) {
                     toast.error('Пожалуйста, исправьте ошибки в форме');
                     return;
                 }
 
-                if (!data.password || !data.confirmPassword) {
+                if (!data.newPassword || !data.confirmPassword) {
                     toast.error('Заполните все поля');
                     return;
                 }
 
-                // await resetPassword(data.phoneNumber, data.password);
+                const resetData = {
+                    phone: data.phoneNumber,
+                    code: data.code || '',
+                    new_password: data.newPassword,
+                    confirm_password: data.confirmPassword
+                };
+
+                console.log('=== FINAL RESET DATA ===');
+                console.log('Phone:', resetData.phone);
+                console.log('Code:', resetData.code);
+                console.log('Password:', resetData.new_password);
+                console.log('Confirm:', resetData.confirm_password);
+
+                await resetPassword(resetData);
                 navigate('/login');
                 toast.success('Пароль успешно изменен!');
             }
         } catch (error) {
+            console.error('Reset newPassword error:', error);
+            if (axios.isAxiosError(error)) {
+                console.log(
+                    'Error response:',
+                    JSON.stringify(error.response?.data, null, 2)
+                );
+                console.log('Error status:', error.response?.status);
+            }
+
             const errorMessages = {
                 phone: 'Не удалось отправить код',
                 code: 'Неверный код',
-                password: 'Не удалось изменить пароль'
+                newPassword: 'Не удалось изменить пароль'
             };
             toast.error(errorMessages[step]);
         }
@@ -69,7 +104,7 @@ export const ResetPasswordForm = () => {
                 return 'Восстановить пароль';
             case 'code':
                 return 'Восстановить пароль';
-            case 'password':
+            case 'newPassword':
                 return 'Новый пароль';
         }
     };
@@ -80,7 +115,7 @@ export const ResetPasswordForm = () => {
                 return 'Заполните данные для восстановления пароля';
             case 'code':
                 return 'Введите код из СМС';
-            case 'password':
+            case 'newPassword':
                 return 'Придумайте новый пароль';
         }
     };
@@ -128,13 +163,13 @@ export const ResetPasswordForm = () => {
                     </div>
                 )}
 
-                {step === 'password' && (
+                {step === 'newPassword' && (
                     <>
                         <PasswordInput
-                            {...register('password')}
-                            id="password"
+                            {...register('newPassword')}
+                            id="newPassword"
                             label="Новый пароль"
-                            error={errors.password?.message}
+                            error={errors.newPassword?.message}
                             placeholder="Введите новый пароль"
                             autoFocus
                         />
@@ -143,7 +178,7 @@ export const ResetPasswordForm = () => {
                             id="confirmPassword"
                             label="Подтвердите пароль"
                             error={errors.confirmPassword?.message}
-                            type="password"
+                            type="newPassword"
                             placeholder="Повторите пароль"
                         />
                     </>
@@ -155,7 +190,7 @@ export const ResetPasswordForm = () => {
                     disabled={isSubmitting}
                     type="submit"
                     className={s.thenBtn}>
-                    {step === 'password'
+                    {step === 'newPassword'
                         ? 'Сохранить'
                         : step === 'code'
                         ? 'Подтвердить'
@@ -164,11 +199,8 @@ export const ResetPasswordForm = () => {
             </form>
 
             <div className={s.back}>
-                <img
-                    className={s.arrowLeft}
-                    src={arrowLeft}
-                    alt=""
-                />
+                <ArrowLeft className={s.arrowLeft} />
+
                 <Link
                     className={s.backLink}
                     to={'/login'}>

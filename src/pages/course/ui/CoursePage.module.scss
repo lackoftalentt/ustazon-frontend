@@ -1,0 +1,58 @@
+@use '@/shared/styles/variables' as *;
+
+.coursePage {
+    padding-top: $spacing-md;
+}
+
+.searchInput {
+    position: relative;
+    z-index: 1;
+}
+
+.searchIcon {
+    filter: brightness(0);
+    transition: filter 0.3s ease;
+}
+
+input:focus + .searchIcon {
+    filter: invert(37%) sepia(26%) saturate(1244%) hue-rotate(88deg)
+        brightness(94%) contrast(89%);
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-3xl;
+    margin-bottom: $spacing-3xl;
+}
+
+.loadMoreBtn {
+    width: 300px;
+    grid-column: 1 / -1;
+    justify-self: center;
+    gap: $spacing-md;
+
+    &:hover .iconInBtn {
+        transform: rotate(180deg);
+        filter: brightness(0) invert(1);
+    }
+}
+
+.iconInBtn {
+    filter: invert(34%) sepia(9%) saturate(3120%) hue-rotate(81deg)
+        brightness(106%) contrast(78%);
+    transition: all $transition-normal;
+}
+.searchInput {
+    position: relative;
+    z-index: 2;
+}
+
+.searchInput,
+.searchInput * {
+    pointer-events: auto;
+}
+.field {
+    position: relative;
+    z-index: 2;
+}

@@ -3,12 +3,14 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { MainLayout } from '@/app/layouts/MainLayout';
+import { CoursePage } from '@/pages/course';
+import { CourseDetailPage } from '@/pages/course-detail';
 
 const LoginPage = lazy(() => import('@/pages/login'));
 const RegisterPage = lazy(() => import('@/pages/register'));
 const ResetPasswordPage = lazy(() => import('@/pages/reset-password'));
 const HomePage = lazy(() => import('@/pages/home'));
-// const DashboardPage = lazy(() => import('@/pages/dashboard'));
+const CoursesCatalogPage = lazy(() => import('@/pages/courses-catalog'));
 
 export const AppRouter = () => {
     return (
@@ -34,10 +36,18 @@ export const AppRouter = () => {
                         path="/"
                         element={<HomePage />}
                     />
-                    {/* <Route
-                        path="/dashboard"
-                        element={<DashboardPage />}
-                    /> */}
+                    <Route
+                        path="/courses-catalog"
+                        element={<CoursesCatalogPage />}
+                    />
+                    <Route
+                        path="/course"
+                        element={<CoursePage />}
+                    />
+                    <Route
+                        path="course-detail"
+                        element={<CourseDetailPage />}
+                    />
                 </Route>
             </Routes>
         </Suspense>

@@ -1,0 +1,80 @@
+@use '@/shared/styles/variables' as *;
+
+.player {
+    border-radius: $radius-xl;
+    padding: 1px;
+    background: linear-gradient(
+        135deg,
+        $color-green-primary,
+        $color-green-active,
+        $color-green-dark
+    );
+    box-shadow: 0 18px 40px rgba($color-gray-dark, 0.18),
+        0 0 0 1px rgba($color-gray-dark, 0.04);
+}
+
+.video {
+    background: radial-gradient(
+        circle at top left,
+        $color-green-primary 0,
+        $color-green-dark 40%,
+        #020617 100%
+    );
+    border-radius: calc(#{$radius-xl} - 1px);
+    padding: $spacing-3xl $spacing-3xl $spacing-2xl;
+    position: relative;
+    overflow: hidden;
+}
+
+.playBtn {
+    width: 104px;
+    height: 104px;
+    border-radius: $radius-full;
+    border: none;
+    background: rgba($color-gray-dark, 0.35);
+    backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 72px auto;
+    cursor: pointer;
+    transition: transform $transition-fast, background $transition-fast;
+
+    &:hover {
+        transform: translateY(-2px) scale(1.02);
+        background: rgba($color-green-active, 0.55);
+    }
+}
+
+.playIcon {
+    width: 0;
+    height: 0;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 26px solid #f9fafb;
+    margin-left: 4px;
+}
+
+.controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+}
+
+.iconBtn {
+    // 32px
+    width: $icon-size-md + 8px;
+    height: $icon-size-md + 8px;
+    border-radius: $radius-full;
+    border: 1px solid rgba($color-gray-medium, 0.4);
+    background: rgba($color-gray-dark, 0.6);
+    cursor: pointer;
+    transition: background $transition-fast, transform $transition-fast,
+        border-color $transition-fast;
+
+    &:hover {
+        background: rgba($color-green-active, 0.8);
+        border-color: transparent;
+        transform: translateY(-1px);
+    }
+}

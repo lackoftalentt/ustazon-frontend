@@ -1,9 +1,13 @@
-export { loginSchema, type LoginFormData } from './model/loginValidation';
+export {
+    loginSchema,
+    type LoginFormData
+} from './model/validation/loginValidation';
 export {
     registerSchema,
     type RegisterFormData
-} from './model/registerValidation';
+} from './model/validation/registerValidation';
 export {
     resetPasswordSchema,
     type ResetPasswordFormData
-} from './model/resetPasswordValidation';
+} from './model/validation/resetPasswordValidation';
+export { useAuthStore } from './model/store/useAuthStore';

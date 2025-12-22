@@ -7,12 +7,6 @@
     margin-bottom: $spacing-xl;
 }
 
-.fieldHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .label {
     font-size: $font-size-base;
     font-weight: $font-weight-normal;
@@ -24,18 +18,51 @@
     color: $color-green-dark;
 }
 
+.inputWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.iconWrapper {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+
+    color: $color-gray-dark;
+    transition: color $transition-fast;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 .input {
     border: 1px solid $color-gray-medium;
     border-radius: $radius-md;
     padding: $spacing-md;
     width: 100%;
     transition: border-color $transition-fast, box-shadow $transition-fast;
+    background: white;
 
     &:focus {
         border-color: $color-green-dark;
         box-shadow: $shadow-focus;
         outline: none;
     }
+}
+
+.inputWithIcon {
+    padding-left: 44px;
+}
+
+.inputWrapper:focus-within .iconWrapper {
+    color: $color-green-dark;
 }
 
 .errorInput {
@@ -53,5 +80,9 @@
 }
 
 .field:focus-within .errorLabel {
+    color: $color-red-error;
+}
+
+.field:has(.errorInput) .iconWrapper {
     color: $color-red-error;
 }

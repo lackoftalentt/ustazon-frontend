@@ -16,45 +16,45 @@ export const resetPasswordSchema = z
                 'Введите корректный номер телефона +7 (7XX) XXX-XX-XX'
             ),
         code: z.string().optional(),
-        password: z.string().optional(),
+        newPassword: z.string().optional(),
         confirmPassword: z.string().optional()
     })
     .superRefine((data, ctx) => {
-        if (data.password) {
-            if (data.password.length < 8) {
+        if (data.newPassword) {
+            if (data.newPassword.length < 8) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message: 'Пароль должен содержать минимум 8 символов',
-                    path: ['password']
+                    path: ['newPassword']
                 });
             }
-            if (!passwordRegex.uppercase.test(data.password)) {
+            if (!passwordRegex.uppercase.test(data.newPassword)) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message:
                         'Пароль должен содержать хотя бы одну заглавную букву',
-                    path: ['password']
+                    path: ['newPassword']
                 });
             }
-            if (!passwordRegex.lowercase.test(data.password)) {
+            if (!passwordRegex.lowercase.test(data.newPassword)) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message:
                         'Пароль должен содержать хотя бы одну строчную букву',
-                    path: ['password']
+                    path: ['newPassword']
                 });
             }
-            if (!passwordRegex.number.test(data.password)) {
+            if (!passwordRegex.number.test(data.newPassword)) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message: 'Пароль должен содержать хотя бы одну цифру',
-                    path: ['password']
+                    path: ['newPassword']
                 });
             }
         }
 
-        if (data.password && data.confirmPassword) {
-            if (data.password !== data.confirmPassword) {
+        if (data.newPassword && data.confirmPassword) {
+            if (data.newPassword !== data.confirmPassword) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message: 'Пароли не совпадают',
@@ -63,7 +63,7 @@ export const resetPasswordSchema = z
             }
         }
 
-        if (data.password && !data.confirmPassword) {
+        if (data.newPassword && !data.confirmPassword) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 message: 'Подтвердите пароль',

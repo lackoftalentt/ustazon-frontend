@@ -1,4 +1,4 @@
-import { Header } from '@/widgets/Header/ui/Header';
+import { Header } from '@/widgets/header';
 import s from './MainLayout.module.scss';
 import { Outlet } from 'react-router';
 
