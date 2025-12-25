@@ -3,14 +3,20 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { MainLayout } from '@/app/layouts/MainLayout';
-import { CoursePage } from '@/pages/course';
-import { CourseDetailPage } from '@/pages/course-detail';
 
 const LoginPage = lazy(() => import('@/pages/login'));
 const RegisterPage = lazy(() => import('@/pages/register'));
 const ResetPasswordPage = lazy(() => import('@/pages/reset-password'));
 const HomePage = lazy(() => import('@/pages/home'));
 const CoursesCatalogPage = lazy(() => import('@/pages/courses-catalog'));
+const CoursePage = lazy(() => import('@/pages/course'));
+const CourseDetailPage = lazy(() => import('@/pages/course-detail'));
+const AIChatPage = lazy(() => import('@/pages/ai-chat'));
+const CourseWorkSheetsPage = lazy(() => import('@/pages/course-work-sheets'));
+const CourseKmzhPage = lazy(() => import('@/pages/course-kmzh'));
+const CoursePresentationsPage = lazy(
+    () => import('@/pages/course-presentations')
+);
 
 export const AppRouter = () => {
     return (
@@ -47,6 +53,22 @@ export const AppRouter = () => {
                     <Route
                         path="course-detail"
                         element={<CourseDetailPage />}
+                    />
+                    <Route
+                        path="ai-chat"
+                        element={<AIChatPage />}
+                    />
+                    <Route
+                        path="course/kmzh"
+                        element={<CourseKmzhPage />}
+                    />
+                    <Route
+                        path="course/work-sheets"
+                        element={<CourseWorkSheetsPage />}
+                    />
+                    <Route
+                        path="course/presentations"
+                        element={<CoursePresentationsPage />}
                     />
                 </Route>
             </Routes>

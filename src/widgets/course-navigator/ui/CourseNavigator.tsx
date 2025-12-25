@@ -37,7 +37,7 @@ export const CourseNavigator = () => {
         if (!root) return { nodes, links };
 
         const rootX = 0;
-        const rootY = 120;
+        const rootY = 0;
 
         root.x = rootX;
         root.y = rootY;
@@ -119,33 +119,28 @@ export const CourseNavigator = () => {
                     cooldownTime={0}
                     enableZoomInteraction={false}
                     enablePanInteraction={true}
+                    enableNodeDrag={false}
                     linkWidth={3}
                     linkColor={() => '#9aa0a6'}
                     onNodeHover={(node: any) => setHoveredId(node?.id ?? null)}
-                    showPointerCursor={(obj: any) =>
-                        !!obj && !!obj.id && obj.type !== 'root'
-                    }
                     onNodeClick={(node: any) => {
                         if (!node || node.type === 'root') return;
                         const route = getNodeRoute(node.id);
                         if (route) navigate(route);
                     }}
+                    nodeCanvasObjectMode={() => 'replace'}
                     nodePointerAreaPaint={(
                         node: any,
                         color: string,
                         ctx: CanvasRenderingContext2D
                     ) => {
                         const r = (node.val as number) / 5;
-                        const hitR = r + 35; // большой радиус
+                        const hitR = r + 80;
 
                         ctx.fillStyle = color;
                         ctx.beginPath();
-                        ctx.arc(node.x, node.y, hitR, 0, 2 * Math.PI);
+                        ctx.arc(node.x ?? 0, node.y ?? 0, hitR, 0, 2 * Math.PI);
                         ctx.fill();
-
-                        const w = Math.max(140, hitR * 2);
-                        const h = 40;
-                        ctx.fillRect(node.x - w / 2, node.y + r + 6, w, h);
                     }}
                     nodeCanvasObject={(
                         node: any,

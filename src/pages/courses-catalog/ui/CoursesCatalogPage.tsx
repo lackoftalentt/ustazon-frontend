@@ -4,6 +4,7 @@ import { Container } from '@/shared/ui/Container';
 import { Input } from '@/shared/ui/Input';
 import SearchIcon from '@/shared/assets/icons/search.svg?react';
 import { CourseCard } from '@/entities/course/ui';
+import { mockCourses } from '@/entities/course/model/mockCourses';
 
 export const CoursesCatalogPage = () => {
     return (
@@ -23,10 +24,14 @@ export const CoursesCatalogPage = () => {
                 </form>
 
                 <div className={s.cardsContainer}>
-                    <CourseCard
-                        id={1}
-                        title="ssuudbas"
-                    />
+                    {mockCourses.map(course => (
+                        <CourseCard
+                            key={course.id}
+                            id={course.id}
+                            title={course.title}
+                            description={course.description}
+                        />
+                    ))}
                 </div>
             </Container>
         </main>

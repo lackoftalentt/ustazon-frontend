@@ -1,0 +1,108 @@
+@use '@shared/styles/variables' as *;
+
+.row {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.rowRight {
+    justify-content: flex-end;
+}
+
+.aiMessage {
+    max-width: min(720px, 92%);
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+
+    color: $color-gray-dark;
+}
+
+.aiIcon {
+    flex-shrink: 0;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+
+    display: grid;
+    place-items: center;
+
+    background: transparent;
+    border: 0;
+
+    svg {
+        width: $icon-size-md;
+        height: $icon-size-md;
+        color: $color-green-primary;
+        opacity: 0.9;
+    }
+}
+
+.aiText {
+    position: relative;
+    padding-left: $spacing-md;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 2px;
+        bottom: 2px;
+        width: 2px;
+        border-radius: 999px;
+        background: rgba($color-green-primary, 0.25);
+    }
+}
+
+.aiTitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-normal;
+    color: $color-gray-dark;
+}
+
+.aiSubtitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-relaxed;
+    color: $color-gray-dark;
+    opacity: 1;
+}
+
+.userMessage {
+    max-width: min(560px, 82%);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.userMessageContent {
+    padding: $spacing-md $spacing-lg;
+    border-radius: 18px;
+
+    color: $color-gray-dark;
+    background: $color-gray-light;
+
+    border: 1px solid $color-gray-border;
+    box-shadow: none;
+
+    transition: background $transition-fast, border-color $transition-fast;
+}
+
+@media (max-width: 768px) {
+    .aiMessage,
+    .userMessage {
+        max-width: 92%;
+    }
+
+    .aiIcon {
+        width: 26px;
+        height: 26px;
+    }
+}

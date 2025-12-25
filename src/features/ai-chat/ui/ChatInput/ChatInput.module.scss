@@ -1,0 +1,154 @@
+@use '@shared/styles/variables' as *;
+
+.inputWrapper {
+    position: relative;
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    padding: 10px 12px;
+    border-radius: 18px;
+
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02), 0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+.inputContainer:focus-within {
+    border-color: rgba(48, 122, 64, 0.45);
+    box-shadow: 0 0 0 4px rgba(48, 122, 64, 0.15),
+        0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+.attachButton {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+
+    border: 0;
+    background: $color-green-dark;
+    color: #fff;
+
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform $transition-fast, background $transition-fast;
+
+    &:hover {
+        background: $color-green-primary;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(48, 122, 64, 0.25);
+    }
+}
+
+.plus {
+    font-size: 22px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.input {
+    flex: 1;
+    border: 0;
+    outline: none;
+    background: transparent;
+
+    font-size: $font-size-base;
+    color: $color-gray-dark;
+
+    &::placeholder {
+        color: $color-gray-medium;
+    }
+}
+
+.sendButton {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+
+    border: 0;
+    background: rgba(48, 122, 64, 0.12);
+    color: $color-green-primary;
+
+    display: grid;
+    place-items: center;
+
+    cursor: pointer;
+    transition: transform $transition-fast, background $transition-fast,
+        color $transition-fast;
+
+    &:hover:not(:disabled) {
+        background: $color-green-primary;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(48, 122, 64, 0.25);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .inputWrapper * {
+        transition-duration: 0.01ms !important;
+    }
+}
+.attachments {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.attachment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.attachmentPreview {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.attachmentName {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attachmentRemove {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}

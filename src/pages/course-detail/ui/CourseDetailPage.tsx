@@ -27,3 +27,4 @@ export const CourseDetailPage = () => {
         </main>
     );
 };
+export default CourseDetailPage

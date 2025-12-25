@@ -7,13 +7,13 @@ import type { ComponentType } from 'react';
 interface NavigationCardProps {
     icon: ComponentType<{ className?: string }>;
     title: string;
-    to: string;
+    path: string;
 }
 
 export const NavigationCard = ({
     icon: StartIcon,
     title,
-    to
+    path
 }: NavigationCardProps) => {
     return (
         <div className={s.navigationCard}>
@@ -21,7 +21,7 @@ export const NavigationCard = ({
             <h3 className={s.title}>{title}</h3>
             <Link
                 className={s.link}
-                to={to}>
+                to={path}>
                 Перейти
                 <ArrowIcon className={s.arrow} />
             </Link>

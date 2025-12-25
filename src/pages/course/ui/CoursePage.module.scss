@@ -26,16 +26,57 @@ input:focus + .searchIcon {
     margin-bottom: $spacing-3xl;
 }
 
-.loadMoreBtn {
-    width: 300px;
-    grid-column: 1 / -1;
-    justify-self: center;
-    gap: $spacing-md;
+.showMoreLink {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
 
-    &:hover .iconInBtn {
-        transform: rotate(180deg);
-        filter: brightness(0) invert(1);
-    }
+    color: $color-green-primary;
+    text-decoration: none;
+    position: relative;
+
+    width: fit-content;
+
+    transition: color $transition-normal;
+
+    grid-column: 3 / -1;
+    justify-self: end;
+}
+
+.arrowIcon {
+    width: 18px;
+    height: 18px;
+
+    // окраска SVG (чаще всего работает, если в svg stroke="currentColor")
+    stroke: $color-green-primary;
+    fill: none;
+
+    transform: rotate(180deg);
+    transition: transform $transition-normal;
+}
+
+/* underline-анимация */
+.showMoreLink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    height: 2px;
+    width: 100%;
+
+    background: $color-green-primary;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform $transition-normal;
+}
+
+.showMoreLink:hover::after {
+    transform: scaleX(1);
+}
+
+.showMoreLink:hover .arrowIcon {
+    transform: rotate(180deg) translateX(3px);
 }
 
 .iconInBtn {

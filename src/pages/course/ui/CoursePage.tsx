@@ -6,12 +6,14 @@ import SearchIcon from '@/shared/assets/icons/search.svg?react';
 import { CourseNavigator } from '@/widgets/course-navigator';
 import { NavigationCard } from '@/shared/ui/NavigationCard';
 import NoteIcon from '@/shared/assets/icons/note.svg?react';
-import { Button } from '@/shared/ui/Button';
+import { courseSectionsMock } from '../model/courseSections.mock';
 
-import Up from '@/shared/assets/icons/up.svg?react';
+import ArrowIcon from '@/shared/assets/icons/arrowLeft.svg?react';
 import { CourseCard } from '@/entities/course/ui';
+import { Link } from 'react-router';
 
 export const CoursePage = () => {
+    const { presentations, workSheets } = courseSectionsMock;
     return (
         <main className={s.coursePage}>
             <Container>
@@ -23,100 +25,89 @@ export const CoursePage = () => {
                     leftIcon={<SearchIcon className={s.searchIcon} />}
                 />
                 <CourseNavigator />
+                <SectionTitle title="КМЖ" />{' '}
                 <div className={s.container}>
-                    {' '}
                     <NavigationCard
                         icon={NoteIcon}
                         title="КМЖ"
-                        to="/"
-                    />
-                    <NavigationCard
-                        icon={NoteIcon}
-                        title="КМЖ"
-                        to="/"
+                        path="/kmzh"
                     />
                     <NavigationCard
                         icon={NoteIcon}
                         title="КМЖ"
-                        to="/"
-                    />
-                    <Button
-                        className={s.loadMoreBtn}
-                        variant="outline">
-                        Показать больше
-                        <Up className={s.iconInBtn} />
-                    </Button>
-                </div>
-                <div className={s.container}>
-                    {' '}
-                    <NavigationCard
-                        icon={NoteIcon}
-                        title="Название страницы"
-                        to="/"
+                        path="/kmzh"
                     />
                     <NavigationCard
                         icon={NoteIcon}
+                        title="КМЖ"
+                        path="/kmzh"
+                    />
+                    <Link
+                        to={'kmzh'}
+                        className={s.showMoreLink}>
+                        Показать больше
+                        <ArrowIcon className={s.arrowIcon} />
+                    </Link>
+                </div>
+                {/* <SectionTitle title="Название страницы" />{' '}
+                <div className={s.container}>
+                    <NavigationCard
+                        icon={NoteIcon}
                         title="Название страницы"
-                        to="/"
+                        path="/kmzh"
                     />
                     <NavigationCard
                         icon={NoteIcon}
                         title="Название страницы"
-                        to="/"
+                        path="/kmzh"
                     />
-                    <Button
-                        className={s.loadMoreBtn}
-                        variant="outline">
+                    <NavigationCard
+                        icon={NoteIcon}
+                        title="Название страницы"
+                        path="/kmzh"
+                    />
+                    <Link
+                        to={'kmzh'}
+                        className={s.showMoreLink}>
                         Показать больше
-                        <Up className={s.iconInBtn} />
-                    </Button>
-                </div>
+                    </Link>
+                </div> */}
+                <SectionTitle title="Презентации" />
                 <div className={s.container}>
-                    {' '}
-                    <CourseCard title="Презентация 1" />
-                    <CourseCard title="Презентация 2" />
-                    <CourseCard title="Презентация 3" />
-                    <Button
-                        className={s.loadMoreBtn}
-                        variant="outline">
+                    {presentations.map(item => (
+                        <CourseCard
+                            key={item.id}
+                            title={item.title}
+                            path={`/course-detail`}
+                        />
+                    ))}
+
+                    <Link
+                        to={'presentations'}
+                        className={s.showMoreLink}>
                         Показать больше
-                        <Up className={s.iconInBtn} />
-                    </Button>
+                        <ArrowIcon className={s.arrowIcon} />
+                    </Link>
                 </div>
+                <SectionTitle title="Рабочие листы" />
                 <div className={s.container}>
-                    {' '}
-                    <CourseCard title="Рабочий лист 1" />
-                    <CourseCard title="Рабочий лист 2" />
-                    <CourseCard title="Рабочий лист 3" />
-                    <Button
-                        className={s.loadMoreBtn}
-                        variant="outline">
+                    {workSheets.map(item => (
+                        <CourseCard
+                            key={item.id}
+                            title={item.title}
+                            path={'/course-detail'}
+                        />
+                    ))}
+
+                    <Link
+                        to={'work-sheets'}
+                        className={s.showMoreLink}>
                         Показать больше
-                        <Up className={s.iconInBtn} />
-                    </Button>
-                </div>
-                <div className={s.container}>
-                    {' '}
-                    <CourseCard
-                        title="Название курса"
-                        description="Краткое описание курса. В несколько предложений"
-                    />
-                    <CourseCard
-                        title="Название курса"
-                        description="Краткое описание курса. В несколько предложений"
-                    />
-                    <CourseCard
-                        title="Название курса"
-                        description="Краткое описание курса. В несколько предложений"
-                    />
-                    <Button
-                        className={s.loadMoreBtn}
-                        variant="outline">
-                        Показать больше
-                        <Up className={s.iconInBtn} />
-                    </Button>
+                        <ArrowIcon className={s.arrowIcon} />
+                    </Link>
                 </div>
             </Container>
         </main>
     );
 };
+export default CoursePage;

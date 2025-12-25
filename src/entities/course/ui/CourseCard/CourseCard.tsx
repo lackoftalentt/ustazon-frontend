@@ -1,7 +1,7 @@
 import { Button } from '@/shared/ui/Button';
 import s from './CourseCard.module.scss';
 import Arrow from '@/shared/assets/icons/arrowLeft.svg?react';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 interface CourseCardProps {
     id?: string | number;
@@ -9,21 +9,17 @@ interface CourseCardProps {
     description?: string;
     thumbnail?: string;
     thumbnailAlt?: string;
+    path?: string;
 }
 
 export const CourseCard = ({
-    id,
+    // id,
     title,
     description,
     thumbnail,
-    thumbnailAlt = 'Course thumbnail'
+    thumbnailAlt = 'Course thumbnail',
+    path = '/course'
 }: CourseCardProps) => {
-    const navigate = useNavigate();
-
-    const handleClick = () => {
-        navigate(`/course`);
-    };
-
     return (
         <article className={s.card}>
             <div className={s.thumbnail}>
@@ -38,12 +34,14 @@ export const CourseCard = ({
             <div className={s.container}>
                 <h3 className={s.title}>{title}</h3>
                 <p className={s.description}>{description}</p>
-                <Button
-                    onClick={handleClick}
-                    className={s.button}>
-                    Перейти
-                    <Arrow className={s.arrowIcon} />
-                </Button>
+                <Link
+                    to={path}
+                    className={s.link}>
+                    <Button className={s.button}>
+                        Перейти
+                        <Arrow className={s.arrowIcon} />
+                    </Button>
+                </Link>
             </div>
         </article>
     );

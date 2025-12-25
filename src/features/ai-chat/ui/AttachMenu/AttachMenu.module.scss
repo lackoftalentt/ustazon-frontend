@@ -1,0 +1,113 @@
+@use '@shared/styles/variables' as *;
+
+.attachMenu {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 10px);
+
+    width: 280px;
+    padding: $spacing-md;
+
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02), 0 18px 40px rgba(0, 0, 0, 0.14);
+
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    transform-origin: bottom left;
+
+    will-change: transform, opacity;
+
+    animation: pop 180ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.isClosing {
+    backdrop-filter: none;
+
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02), 0 10px 20px rgba(0, 0, 0, 0.1);
+
+    animation: popOut 160ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+@keyframes pop {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes popOut {
+    from {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0) scale(0.98);
+    }
+}
+
+.attachItem {
+    width: 100%;
+    border: 0;
+    background: $color-gray-light;
+    color: $color-gray-dark;
+
+    padding: 8px 12px;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    cursor: pointer;
+    transition: background $transition-fast, transform $transition-fast;
+
+    &:hover {
+        background: rgba(48, 122, 64, 0.1);
+    }
+
+    &:active {
+        transform: scale(0.99);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(48, 122, 64, 0.25);
+    }
+}
+
+.attachIcon {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    filter: brightness(0) saturate(100%) invert(22%) sepia(23%) saturate(1220%)
+        hue-rotate(101deg) brightness(93%) contrast(94%);
+}
+
+@media (max-width: 768px) {
+    .attachMenu {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .attachMenu {
+        animation: none;
+    }
+    .isClosing {
+        animation: none;
+    }
+}
