@@ -4,10 +4,28 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+@import '@xyflow/react/dist/style.css';
+
 * {
     font-family: 'Inter', sans-serif;
 }
 
 body {
     background: $color-blue-lightest;
+}
+
+// .react-flow__edges svg {
+//     overflow: visible !important;
+// }
+.react-flow__edge-path {
+    stroke: rgba(17, 17, 17, 0.77) !important;
+    stroke-width: 1.25px !important;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* чуть выделять при ховере */
+.react-flow__edge:hover .react-flow__edge-path {
+    stroke: rgba(17, 17, 17, 0.88) !important;
+    stroke-width: 1.5px !important;
 }
