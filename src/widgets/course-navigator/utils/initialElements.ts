@@ -6,7 +6,7 @@ import {
     type Edge
 } from '@xyflow/react';
 import type { CourseNodeData } from '../model/types';
-import type { CSSProperties } from 'react';
+// import type { CSSProperties } from 'react';
 
 export type EdgeParams = {
     sx: number;

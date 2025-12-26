@@ -1,7 +1,7 @@
 import { Container } from '@/shared/ui/Container';
 import { VideoPlaceholder } from '@/shared/ui/VideoPlaceholder';
 import s from './AboutSection.module.scss';
-import { Button } from '@/shared/ui/Button';
+// import { Button } from '@/shared/ui/Button';
 
 export const AboutSection = () => {
     return (
@@ -19,7 +19,7 @@ export const AboutSection = () => {
                             как и для кого-то другого
                         </p>
                     </div>
-                    <div className={s.buttons}>
+                    {/* <div className={s.buttons}>
                         <Button
                             variant="dark"
                             className={s.primaryBtn}>
@@ -30,7 +30,7 @@ export const AboutSection = () => {
                             className={s.secondaryBtn}>
                             Дополнительная информация
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
                 <div className={s.mediaWrapper}>
                     <VideoPlaceholder className={s.videoPlaceholder} />

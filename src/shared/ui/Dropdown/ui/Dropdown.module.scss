@@ -1,0 +1,151 @@
+@use '@/shared/styles/variables' as *;
+
+.dropdown {
+    position: relative;
+    display: inline-flex;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-sm;
+
+    min-width: 180px;
+    padding: $spacing-sm $spacing-lg;
+
+    background: #fff;
+    color: $color-green-dark;
+
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    line-height: $line-height-normal;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition: background-color $transition-fast, box-shadow $transition-fast,
+        border-color $transition-fast, transform $transition-fast;
+
+    &:hover {
+        background: $color-blue-lightest;
+        border-color: $color-green-primary;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: $shadow-focus;
+        border-color: $color-green-primary;
+    }
+}
+
+.buttonOpen {
+    border-color: $color-green-active;
+    box-shadow: $shadow-focus;
+    background: $color-blue-lightest;
+}
+
+.buttonText {
+    display: inline-flex;
+    align-items: center;
+}
+
+.chevron {
+    width: $icon-size-sm;
+    height: $icon-size-sm;
+    flex: 0 0 auto;
+    filter: invert(33%) sepia(65%) saturate(430%) hue-rotate(98deg)
+        brightness(92%) contrast(92%);
+
+    transition: transform $transition-fast;
+    transform: rotate(180deg);
+}
+
+.chevronOpen {
+    transform: rotate(0deg);
+}
+
+.content {
+    position: absolute;
+    top: calc(100% + #{$spacing-xs});
+    left: 0;
+
+    width: 100%;
+    min-width: 240px;
+    max-height: 280px;
+
+    overflow: auto;
+
+    background: #fff;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+
+    z-index: $z-index-dropdown;
+
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+
+    padding: $spacing-xs;
+}
+
+.item {
+    width: 100%;
+    text-align: left;
+
+    display: flex;
+    align-items: center;
+
+    padding: $spacing-sm $spacing-md;
+
+    background: transparent;
+    color: $color-gray-dark;
+    border: 0;
+    border-radius: $radius-sm;
+
+    font-size: $font-size-base;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-normal;
+
+    cursor: pointer;
+    transition: background-color $transition-fast, color $transition-fast;
+
+    &:hover {
+        background: $color-gray-light;
+    }
+
+    &:active {
+        background: $color-green-light;
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: inset 0 0 0 1px $color-green-active;
+    }
+}
+
+.itemActive {
+    background: $color-green-lightest;
+    color: $color-green-dark;
+}
+
+.item + .item {
+    border-top: 1px solid $color-gray-border;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: $color-gray-border;
+    border-radius: $radius-xl;
+    border: 2px solid #fff;
+}

@@ -17,6 +17,7 @@ const CourseKmzhPage = lazy(() => import('@/pages/course-kmzh'));
 const CoursePresentationsPage = lazy(
     () => import('@/pages/course-presentations')
 );
+const KmzhPage = lazy(() => import('@/pages/kmzh'));
 
 export const AppRouter = () => {
     return (
@@ -69,6 +70,10 @@ export const AppRouter = () => {
                     <Route
                         path="course/presentations"
                         element={<CoursePresentationsPage />}
+                    />
+                    <Route
+                        path="kmzh"
+                        element={<KmzhPage />}
                     />
                 </Route>
             </Routes>
