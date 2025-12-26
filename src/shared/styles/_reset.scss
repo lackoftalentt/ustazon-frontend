@@ -89,6 +89,11 @@ input[type='submit'] {
     cursor: pointer;
 }
 
+button {
+    font: inherit;
+    line-height: 1.2;
+}
+
 input:focus,
 input:active,
 button:focus,

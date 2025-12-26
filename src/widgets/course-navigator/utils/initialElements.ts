@@ -18,6 +18,13 @@ export type EdgeParams = {
 };
 
 type XY = { x: number; y: number };
+
+function movePointTowards(p: XY, towards: XY, distance: number): XY {
+    const dx = towards.x - p.x;
+    const dy = towards.y - p.y;
+    const len = Math.hypot(dx, dy) || 1;
+    return { x: p.x + (dx / len) * distance, y: p.y + (dy / len) * distance };
+}
 type AnyInternalNode = InternalNode<Node>;
 
 function getNodeIntersection(
@@ -82,34 +89,32 @@ export function getEdgeParams(
     source: AnyInternalNode,
     target: AnyInternalNode
 ): EdgeParams {
-    const sourceIntersectionPoint = getNodeIntersection(source, target);
-    const targetIntersectionPoint = getNodeIntersection(target, source);
+    const sourceIP = getNodeIntersection(source, target);
+    const targetIP = getNodeIntersection(target, source);
+
+    const PAD = 8;
+
+    const sxsy = movePointTowards(sourceIP, targetIP, PAD);
+    const txty = movePointTowards(targetIP, sourceIP, PAD);
 
     return {
-        sx: sourceIntersectionPoint.x,
-        sy: sourceIntersectionPoint.y,
-        tx: targetIntersectionPoint.x,
-        ty: targetIntersectionPoint.y,
-        sourcePos: getEdgePosition(source, sourceIntersectionPoint),
-        targetPos: getEdgePosition(target, targetIntersectionPoint)
+        sx: sxsy.x,
+        sy: sxsy.y,
+        tx: txty.x,
+        ty: txty.y,
+        sourcePos: getEdgePosition(source, sourceIP),
+        targetPos: getEdgePosition(target, targetIP)
     };
 }
 
-const clamp = (v: number, min: number, max: number) =>
-    Math.min(Math.max(v, min), max);
-
-export function sizeFromTopicsCount(topicCount: number) {
-    const minSize = 96;
-    const maxSize = 128;
-
-    const t = clamp(topicCount / 12, 0, 1);
-    return Math.round(minSize + t * (maxSize - minSize));
-}
+const rootSize = 56;
+const leafSize = 36;
+const leafHoverScale = rootSize / leafSize;
 
 export function initialElements() {
     const center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-    const SIZE = sizeFromTopicsCount(4);
+    // const SIZE = 64;
     const r = 250;
 
     const nodes: Node<CourseNodeData>[] = [
@@ -117,37 +122,57 @@ export function initialElements() {
             id: 'target',
             data: { label: 'Математика', path: '/course' },
             position: center,
+            type: 'courseNode',
             className: 'course-node',
-            style: circleStyle(SIZE, 'primary')
+            style: {
+                ['--s' as any]: `${rootSize}px`,
+                ['--hoverScale' as any]: 1
+            } as any
         },
 
         {
             id: 'n-0',
-            data: { label: '1', path: '/course/q1' },
+            data: { label: '1 четверть', path: '/course/q1' },
             position: { x: center.x + r, y: center.y },
+            type: 'courseNode',
             className: 'course-node',
-            style: circleStyle(SIZE, 'secondary')
+            style: {
+                ['--s' as any]: `${leafSize}px`,
+                ['--hoverScale' as any]: leafHoverScale
+            } as any
         },
         {
             id: 'n-1',
-            data: { label: '2', path: '/course/q2' },
+            data: { label: '2 четверть', path: '/course/q2' },
             position: { x: center.x, y: center.y + r },
+            type: 'courseNode',
             className: 'course-node',
-            style: circleStyle(SIZE, 'secondary')
+            style: {
+                ['--s' as any]: `${leafSize}px`,
+                ['--hoverScale' as any]: leafHoverScale
+            } as any
         },
         {
             id: 'n-2',
-            data: { label: '3', path: '/course/q3' },
+            data: { label: '3 четверть', path: '/course/q3' },
             position: { x: center.x - r, y: center.y },
+            type: 'courseNode',
             className: 'course-node',
-            style: circleStyle(SIZE, 'secondary')
+            style: {
+                ['--s' as any]: `${leafSize}px`,
+                ['--hoverScale' as any]: leafHoverScale
+            } as any
         },
         {
             id: 'n-3',
-            data: { label: '4', path: '/course/q4' },
+            data: { label: '4 четверть', path: '/course/q4' },
             position: { x: center.x, y: center.y - r },
+            type: 'courseNode',
             className: 'course-node',
-            style: circleStyle(SIZE, 'secondary')
+            style: {
+                ['--s' as any]: `${leafSize}px`,
+                ['--hoverScale' as any]: leafHoverScale
+            } as any
         }
     ];
 
@@ -189,30 +214,30 @@ export function initialElements() {
     return { nodes, edges };
 }
 
-function circleStyle(
-    size: number,
-    variant: 'primary' | 'secondary'
-): CSSProperties {
-    const border = variant === 'primary' ? '#16a34a' : '#52d399';
+// function circleStyle(
+//     size: number,
+//     variant: 'primary' | 'secondary'
+// ): CSSProperties {
+//     const border = variant === 'primary' ? '#16a34a' : '#52d399';
+//     const bg =
+//         variant === 'primary'
+//             ? 'rgba(22, 163, 74, 0.08)'
+//             : 'rgba(82, 211, 153, 0.10)';
 
-    return {
-        width: size,
-        height: size,
-        borderRadius: 9999,
-        background: '#fff',
-        color: '#111',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: 18,
-        fontWeight: variant === 'primary' ? 500 : 600,
-        border: `3px solid ${border}`,
-        boxShadow: '0 6px 18px rgba(0,0,0,.06)',
-        cursor: 'pointer',
-        userSelect: 'none',
-        stroke: 'rgba(17,17,17,0.35)',
-        strokeWidth: 1.25,
-        strokeLinecap: 'round',
-        strokeLinejoin: 'round'
-    };
-}
+//     return {
+//         width: size,
+//         height: size,
+//         borderRadius: 9999,
+//         background: bg,
+//         color: '#0f172a',
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         fontSize: 18,
+//         fontWeight: variant === 'primary' ? 600 : 600,
+//         border: `2px solid ${border}`,
+//         boxShadow: '0 6px 18px rgba(15, 23, 42, .06)',
+//         cursor: 'pointer',
+//         userSelect: 'none'
+//     };
+// }

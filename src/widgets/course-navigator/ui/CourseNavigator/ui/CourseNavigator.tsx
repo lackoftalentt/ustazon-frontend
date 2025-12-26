@@ -9,6 +9,7 @@ import { FloatingEdge } from '../../FloatingEdge/ui/FloatingEdge';
 import FloatingConnectionLine from '../../FloatingConnectionLine/ui/FloatingConnectionLine';
 import { initialElements } from '../../../utils/initialElements';
 import { useNavigate } from 'react-router';
+import { CourseNode } from '../../CourseNode/ui/CourseNode';
 
 const { nodes: initialNodes, edges: initialEdges } = initialElements();
 
@@ -20,6 +21,8 @@ export const CourseNavigator = () => {
     const [nodes] = useNodesState(initialNodes);
     const [edges] = useEdgesState(initialEdges);
     const navigate = useNavigate();
+
+    const nodeTypes = { courseNode: CourseNode };
 
     const onNodeClick: NodeMouseHandler = (_, node) => {
         const path = (node.data as any)?.path as string | undefined;
@@ -34,6 +37,7 @@ export const CourseNavigator = () => {
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
+                nodeTypes={nodeTypes}
                 edgeTypes={edgeTypes}
                 connectionLineComponent={FloatingConnectionLine}
                 fitView

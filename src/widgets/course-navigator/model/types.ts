@@ -8,6 +8,7 @@ export type CourseNodeData = {
     kind?: CourseNodeKind;
     color?: string;
     style?: string;
+    size?: number;
 };
 
 export type CourseFlowNode = Node<CourseNodeData, 'courseNode'>;
