@@ -22,6 +22,7 @@ const KmzhPage = lazy(() => import('@/pages/kmzh'));
 const SubjectPresentationDetailPage = lazy(
     () => import('@/pages/subject-presentation-detail')
 );
+const ProfilePage = lazy(() => import('@/pages/profile'));
 
 export const AppRouter = () => {
     return (
@@ -55,11 +56,11 @@ export const AppRouter = () => {
                         element={<SubjectsMaterialPage />}
                     />
                     <Route
-                        path="subject"
+                        path="/subject/:subjectCode"
                         element={<SubjectPage />}
                     />
                     <Route
-                        path="subject-detail"
+                        path="/subject/:subjectCode/detail/:cardId"
                         element={<SubjectDetailPage />}
                     />
                     <Route
@@ -85,6 +86,10 @@ export const AppRouter = () => {
                     <Route
                         path="subject-presentation-detail"
                         element={<SubjectPresentationDetailPage />}
+                    />
+                    <Route
+                        path="profile"
+                        element={<ProfilePage />}
                     />
 
                     <Route path="lesson-plan">

@@ -13,3 +13,15 @@ export const getCurrentUser = async (): Promise<UserResponse> => {
     const response = await apiClient.get<UserResponse>('/users/me');
     return response.data;
 };
+
+interface UpdateUserData {
+    name?: string;
+    phone?: string;
+}
+
+export const updateUserProfile = async (
+    data: UpdateUserData
+): Promise<UserResponse> => {
+    const response = await apiClient.put<UserResponse>('/users/me', data);
+    return response.data;
+};

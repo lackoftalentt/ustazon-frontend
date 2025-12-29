@@ -1,7 +1,7 @@
-import { useState } from 'react'; // Добавлен импорт
+import { useState } from 'react';
 import { Container } from '@/shared/ui/container';
 import { SectionTitle } from '@/shared/ui/section-title';
-import { SearchInput } from '@/shared/ui/search-input'; // Изменен импорт
+import { SearchInput } from '@/shared/ui/search-input';
 import { SubjectCard } from '@/entities/subject/ui';
 import s from './SubjectWorkSheetsPage.module.scss';
 import { workSheetsMock } from '../model/mock';
@@ -31,14 +31,14 @@ export const SubjectWorkSheetsPage = () => {
                     onSubmit={handleSearch}
                 />
 
-                <SubjectNavigator />
+                <SubjectNavigator subjectCode="math" />
                 <SectionTitle title={`Рабочие листы`} />
                 <div className={s.grid}>
                     {filteredWorkSheets.map(item => (
                         <SubjectCard
                             key={item.id}
                             title={item.title}
-                            path={`/subject-detail`}
+                            path={`/subject-presentation-detail`}
                         />
                     ))}
 

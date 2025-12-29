@@ -9,13 +9,8 @@ import defaultAvatar from '@/shared/assets/images/profile-image.jpg';
 
 export const Header = () => {
     const navigate = useNavigate();
-    const { user, isAuthenticated, logout } = useAuthStore();
+    const { user, isAuthenticated } = useAuthStore();
     const isAuth = isAuthenticated();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-    };
 
     return (
         <header className={s.header}>
@@ -44,10 +39,10 @@ export const Header = () => {
                     </nav>
                 </div>
                 <div className={s.rightSide}>
-                    {/* <button className={s.langSwitcher}>
+                    <button className={s.langSwitcher}>
                         <Typography className={s.langIcon} />
                         <span>Русский</span>
-                    </button> */}
+                    </button>
 
                     {isAuth ? (
                         <div className={s.userSection}>

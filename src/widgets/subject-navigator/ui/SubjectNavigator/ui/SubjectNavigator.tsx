@@ -2,38 +2,55 @@ import {
     ReactFlow,
     useNodesState,
     useEdgesState,
-    type NodeMouseHandler
+    type NodeMouseHandler,
+    Background,
+    BackgroundVariant
 } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
-import { FloatingEdge } from '../../FloatingEdge/ui/FloatingEdge';
-import FloatingConnectionLine from '../../FloatingConnectionLine/ui/FloatingConnectionLine';
-import { initialElements } from '../../../utils/initialElements';
 import { useNavigate } from 'react-router-dom';
-import { SubjectNode } from '../../SubjectNode/ui/SubjectNode';
-
-const { nodes: initialNodes, edges: initialEdges } = initialElements();
+import { FloatingEdge } from '../../FloatingEdge';
+import { FloatingConnectionLine } from '../../FloatingConnectionLine';
+import { SubjectNode } from '../../SubjectNode';
+import { initialElements } from '../../../utils/initialElements';
+import type { TopicItem } from '../../../model/types';
+import './SubjectNavigator.scss';
 
 const edgeTypes = {
     floating: FloatingEdge
 };
 
-export const SubjectNavigator = () => {
+const nodeTypes = {
+    subjectNode: SubjectNode
+};
+
+interface SubjectNavigatorProps {
+    subjectCode: string;
+    topics?: TopicItem[];
+}
+
+export const SubjectNavigator = ({
+    subjectCode,
+    topics = []
+}: SubjectNavigatorProps) => {
+    const { nodes: initialNodes, edges: initialEdges } = initialElements(
+        subjectCode,
+        topics
+    );
+
     const [nodes] = useNodesState(initialNodes);
     const [edges] = useEdgesState(initialEdges);
     const navigate = useNavigate();
 
-    const nodeTypes = { subjectNode: SubjectNode };
-
     const onNodeClick: NodeMouseHandler = (_, node) => {
-        const path = (node.data as any)?.path as string | undefined;
-        if (path) navigate(path);
+        const path = (node.data as Record<string, unknown>)?.path as
+            | string
+            | undefined;
+        if (path && path !== '#') navigate(path);
     };
 
-    console.log(edges);
     return (
-        <div
-            className="floating-edges"
-            style={{ height: 420, width: '100%' }}>
+        <div className="subject-navigator">
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -42,7 +59,7 @@ export const SubjectNavigator = () => {
                 connectionLineComponent={FloatingConnectionLine}
                 fitView
                 onNodeClick={onNodeClick}
-                nodesDraggable={true}
+                nodesDraggable={false}
                 nodesConnectable={false}
                 elementsSelectable={false}
                 panOnDrag={false}
@@ -50,8 +67,14 @@ export const SubjectNavigator = () => {
                 zoomOnScroll={false}
                 zoomOnPinch={false}
                 zoomOnDoubleClick={false}
-                preventScrolling={false}>
-                {/* <Background /> */}
+                preventScrolling={false}
+                proOptions={{ hideAttribution: true }}>
+                <Background
+                    variant={BackgroundVariant.Dots}
+                    gap={20}
+                    size={1}
+                    color="#e0e7ff"
+                />
             </ReactFlow>
         </div>
     );

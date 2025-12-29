@@ -11,8 +11,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import {
     resetPassword,
-    sendResetCode,
-    verifyResetCode
+    sendResetCode
 } from '@/features/auth/api/resetPasswordApi';
 import axios from 'axios';
 

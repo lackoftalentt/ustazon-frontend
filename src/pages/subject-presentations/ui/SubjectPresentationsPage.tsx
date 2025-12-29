@@ -33,7 +33,7 @@ export const SubjectPresentationsPage = () => {
                     onSubmit={handleSearch}
                 />
 
-                <SubjectNavigator />
+                <SubjectNavigator subjectCode="math" />
                 <SectionTitle title="Презентации" />
                 <div className={s.grid}>
                     {filteredPresentations.map(item => (
@@ -41,11 +41,10 @@ export const SubjectPresentationsPage = () => {
                             key={item.id}
                             title={item.title}
                             description={item.description}
-                            path={`/subject-detail`}
+                            path={`/subject-presentation-detail`}
                         />
                     ))}
 
-                    {/* Сообщение, если ничего не найдено */}
                     {filteredPresentations.length === 0 && searchQuery && (
                         <div className={s.noResults}>
                             По запросу "{searchQuery}" ничего не найдено

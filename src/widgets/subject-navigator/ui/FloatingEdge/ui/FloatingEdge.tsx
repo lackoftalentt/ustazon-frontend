@@ -2,13 +2,10 @@ import {
     BaseEdge,
     getBezierPath,
     useInternalNode,
-    type EdgeProps,
-    type Edge
+    type EdgeProps
 } from '@xyflow/react';
-import type { SubjectFlowNode } from '../../../model/types';
+import type { SubjectFlowNode, FloatingEdgeType } from '../../../model/types';
 import { getEdgeParams } from '../../../utils/initialElements';
-
-type FloatingEdgeType = Edge<Record<string, never>, 'floating'>;
 
 export function FloatingEdge(props: EdgeProps<FloatingEdgeType>) {
     const {
@@ -41,13 +38,19 @@ export function FloatingEdge(props: EdgeProps<FloatingEdgeType>) {
     });
 
     return (
-        <BaseEdge
-            id={id}
-            path={path}
-            style={style}
-            markerEnd={markerEnd}
-            markerStart={markerStart}
-            interactionWidth={interactionWidth}
-        />
+        <>
+            <BaseEdge
+                id={id}
+                path={path}
+                style={{
+                    ...style,
+                    strokeWidth: 2.5,
+                    filter: 'drop-shadow(0 2px 4px rgba(167, 139, 250, 0.3))'
+                }}
+                markerEnd={markerEnd}
+                markerStart={markerStart}
+                interactionWidth={interactionWidth}
+            />
+        </>
     );
 }

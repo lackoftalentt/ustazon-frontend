@@ -20,7 +20,7 @@ export const SubjectKmzhPage = () => {
                     leftIcon={<SearchIcon className={s.searchIcon} />}
                 />
 
-                <SubjectNavigator />
+                <SubjectNavigator subjectCode="math" />
 
                 <SectionTitle title="КМЖ" />
 

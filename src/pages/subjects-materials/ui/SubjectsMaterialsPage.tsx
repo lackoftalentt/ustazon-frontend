@@ -41,6 +41,7 @@ export const SubjectsMaterialPage = () => {
                             id={subject.id}
                             title={subject.title}
                             description={subject.description}
+                            path={`/subject/${subject.id}`}
                         />
                     ))}
                 </div>
