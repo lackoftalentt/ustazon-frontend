@@ -4,6 +4,161 @@
     position: relative;
 }
 
+.attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    margin: $spacing-sm 0 $spacing-md;
+}
+
+.attachment {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    position: relative;
+}
+
+.previewWrap {
+    position: relative;
+    width: 144px;
+    height: 144px;
+    flex: 0 0 auto;
+}
+
+.attachmentPreview {
+    width: 144px;
+    height: 144px;
+    display: block;
+
+    object-fit: cover;
+    border-radius: $radius-lg;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: $color-gray-light;
+}
+
+.previewRemove {
+    position: absolute;
+    top: $spacing-sm;
+    right: $spacing-sm;
+
+    width: 30px;
+    height: 30px;
+    border-radius: $radius-full;
+
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+
+    display: grid;
+    place-items: center;
+
+    cursor: pointer;
+    transition: transform $transition-fast, background $transition-fast,
+        box-shadow $transition-fast;
+
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.previewRemove:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+}
+
+.previewRemove:active {
+    transform: translateY(0);
+}
+
+.previewRemove:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), $shadow-focus;
+}
+
+.documentWrap {
+    position: relative;
+    width: 144px;
+    height: 144px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+
+    padding: $spacing-md;
+    border-radius: $radius-lg;
+
+    background: $color-gray-light;
+    border: 1px solid $color-gray-border;
+}
+
+.documentIcon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    color: $color-green-primary;
+}
+
+.documentName {
+    width: 100%;
+    text-align: center;
+
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
+    line-height: $line-height-tight;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+}
+
+.documentRemove {
+    position: absolute;
+    top: $spacing-sm;
+    right: $spacing-sm;
+
+    width: 26px;
+    height: 26px;
+    border-radius: $radius-full;
+
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+    color: $color-gray-medium;
+
+    display: grid;
+    place-items: center;
+
+    cursor: pointer;
+    transition: transform $transition-fast, background $transition-fast,
+        color $transition-fast, box-shadow $transition-fast;
+
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 700;
+}
+
+.documentRemove:hover {
+    background: #fff;
+    color: $color-gray-dark;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.documentRemove:active {
+    transform: translateY(0);
+}
+
+.documentRemove:focus-visible {
+    outline: none;
+    box-shadow: $shadow-focus;
+    border-color: $color-green-primary;
+}
+
 .inputContainer {
     display: flex;
     align-items: center;
@@ -110,45 +265,26 @@
     }
 }
 
+@media (max-width: 520px) {
+    .previewWrap,
+    .attachmentPreview,
+    .documentWrap {
+        width: 120px;
+    }
+
+    .previewWrap,
+    .attachmentPreview {
+        height: 120px;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .inputWrapper * {
         transition-duration: 0.01ms !important;
     }
-}
-.attachments {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-}
 
-.attachment {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 8px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.04);
-}
-
-.attachmentPreview {
-    width: 44px;
-    height: 44px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.attachmentName {
-    max-width: 220px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.attachmentRemove {
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
+    .previewRemove,
+    .documentRemove {
+        transition: none;
+    }
 }

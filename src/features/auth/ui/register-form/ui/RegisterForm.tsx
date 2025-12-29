@@ -1,7 +1,7 @@
-import { Link, useNavigate } from 'react-router';
-import { Button } from '@/shared/ui/Button';
-import { PasswordInput } from '@/shared/ui/PasswordInput';
-import { Input } from '@/shared/ui/Input';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/shared/ui/button';
+import { PasswordInput } from '@/shared/ui/password-input';
+import { Input } from '@/shared/ui/input';
 import { useRegisterForm } from '../../../model/useRegisterForm';
 import s from './RegisterForm.module.scss';
 import toast from 'react-hot-toast';

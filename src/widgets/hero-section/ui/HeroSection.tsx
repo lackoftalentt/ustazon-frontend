@@ -1,4 +1,4 @@
-import { Container } from '@/shared/ui/Container/ui/Container';
+import { Container } from '@/shared/ui/container/ui/Container';
 import s from './HeroSection.module.scss';
 import hero from '@/shared/assets/images/home-illustration.png';
 

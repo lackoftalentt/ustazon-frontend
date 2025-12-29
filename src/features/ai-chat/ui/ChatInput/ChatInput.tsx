@@ -7,6 +7,7 @@ import {
 } from 'react';
 import s from './ChatInput.module.scss';
 import { AttachMenu } from '../AttachMenu/AttachMenu';
+import DocumentIcon from '@/shared/assets/icons/document2.svg?react';
 
 type AttachmentKind = 'image' | 'document';
 
@@ -44,7 +45,7 @@ export const ChatInput = ({
     const addFiles = (files: FileList, kind: AttachmentKind) => {
         const next: Attachment[] = Array.from(files).map(file => {
             const att: Attachment = { id: uid(), kind, file };
-            if (kind === 'image') att.previewUrl = URL.createObjectURL(file); // превью [web:158]
+            if (kind === 'image') att.previewUrl = URL.createObjectURL(file);
             return att;
         });
 
@@ -53,20 +54,20 @@ export const ChatInput = ({
 
     const onPickImages: React.ChangeEventHandler<HTMLInputElement> = e => {
         if (e.target.files?.length) addFiles(e.target.files, 'image');
-        e.target.value = ''; // чтобы выбрать тот же файл повторно [web:159]
+        e.target.value = '';
         setIsMenuOpen(false);
     };
 
     const onPickDocs: React.ChangeEventHandler<HTMLInputElement> = e => {
         if (e.target.files?.length) addFiles(e.target.files, 'document');
-        e.target.value = ''; // [web:159]
+        e.target.value = '';
         setIsMenuOpen(false);
     };
 
     const removeAttachment = (id: string) => {
         setAttachments(prev => {
             const found = prev.find(x => x.id === id);
-            if (found?.previewUrl) URL.revokeObjectURL(found.previewUrl); // освобождаем память [web:158]
+            if (found?.previewUrl) URL.revokeObjectURL(found.previewUrl);
             return prev.filter(x => x.id !== id);
         });
     };
@@ -77,13 +78,12 @@ export const ChatInput = ({
 
         onSend({ message, attachments: filesToSend });
 
-        // очистка
         setValue('');
         setIsMenuOpen(false);
         setAttachments(prev => {
             prev.forEach(
                 a => a.previewUrl && URL.revokeObjectURL(a.previewUrl)
-            ); // [web:158]
+            );
             return [];
         });
     };
@@ -107,7 +107,6 @@ export const ChatInput = ({
         return () => document.removeEventListener('mousedown', onDocMouseDown);
     }, []);
 
-    // на размонтирование компонента — тоже чистим objectURL
     useEffect(() => {
         return () => {
             attachments.forEach(
@@ -120,13 +119,6 @@ export const ChatInput = ({
         <div
             ref={wrapperRef}
             className={s.inputWrapper}>
-            <AttachMenu
-                open={isMenuOpen}
-                onPickImage={() => imageInputRef.current?.click()} // открыть file dialog [web:142]
-                onPickDocument={() => docInputRef.current?.click()} // открыть file dialog [web:142]
-            />
-
-            {/* скрытые input'ы */}
             <input
                 ref={imageInputRef}
                 type="file"
@@ -135,7 +127,6 @@ export const ChatInput = ({
                 hidden
                 onChange={onPickImages}
             />
-            {/* accept + multiple [web:142][web:145] */}
 
             <input
                 ref={docInputRef}
@@ -145,9 +136,7 @@ export const ChatInput = ({
                 hidden
                 onChange={onPickDocs}
             />
-            {/* accept [web:145] */}
 
-            {/* превью/список прикреплений */}
             {attachments.length > 0 && (
                 <div className={s.attachments}>
                     {attachments.map(a => (
@@ -155,42 +144,60 @@ export const ChatInput = ({
                             key={a.id}
                             className={s.attachment}>
                             {a.kind === 'image' && a.previewUrl ? (
-                                <img
-                                    className={s.attachmentPreview}
-                                    src={a.previewUrl}
-                                    alt={a.file.name}
-                                />
+                                <div className={s.previewWrap}>
+                                    <img
+                                        className={s.attachmentPreview}
+                                        src={a.previewUrl}
+                                        alt={a.file.name}
+                                    />
+                                    <button
+                                        type="button"
+                                        className={s.previewRemove}
+                                        onClick={() => removeAttachment(a.id)}
+                                        aria-label="Удалить вложение">
+                                        ×
+                                    </button>
+                                </div>
                             ) : (
-                                <span className={s.attachmentName}>
-                                    {a.file.name}
-                                </span>
+                                <div className={s.documentWrap}>
+                                    <DocumentIcon className={s.documentIcon} />
+                                    <div className={s.documentName}>
+                                        {a.file.name}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className={s.documentRemove}
+                                        onClick={() => removeAttachment(a.id)}
+                                        aria-label="Удалить вложение">
+                                        ×
+                                    </button>
+                                </div>
                             )}
-
-                            <button
-                                type="button"
-                                className={s.attachmentRemove}
-                                onClick={() => removeAttachment(a.id)}
-                                aria-label="Удалить вложение">
-                                ×
-                            </button>
                         </div>
                     ))}
                 </div>
             )}
 
             <div className={s.inputContainer}>
-                <button
-                    type="button"
-                    className={s.attachButton}
-                    onClick={() => setIsMenuOpen(v => !v)}
-                    aria-label="Добавить вложение"
-                    aria-expanded={isMenuOpen}>
-                    <span
-                        className={s.plus}
-                        aria-hidden>
-                        +
-                    </span>
-                </button>
+                <div className={s.attachButtonWrapper}>
+                    <button
+                        type="button"
+                        className={s.attachButton}
+                        onClick={() => setIsMenuOpen(v => !v)}
+                        aria-label="Добавить вложение"
+                        aria-expanded={isMenuOpen}>
+                        <span
+                            className={s.plus}
+                            aria-hidden>
+                            +
+                        </span>
+                    </button>
+                    <AttachMenu
+                        open={isMenuOpen}
+                        onPickImage={() => imageInputRef.current?.click()}
+                        onPickDocument={() => docInputRef.current?.click()}
+                    />
+                </div>
 
                 <input
                     type="text"

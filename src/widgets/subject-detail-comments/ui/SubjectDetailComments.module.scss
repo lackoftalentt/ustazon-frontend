@@ -1,0 +1,251 @@
+@use '@/shared/styles/variables' as *;
+
+.root {
+    margin-top: $spacing-xl;
+    background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+    border-radius: 28px;
+    padding: $spacing-2xl;
+    border: 1px solid $color-gray-border;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02),
+        0 12px 30px rgba($color-gray-dark, 0.06);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-xl;
+}
+
+.title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+}
+
+.count {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-medium;
+    background: $color-gray-light;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-xl;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xl;
+}
+
+.label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-medium;
+}
+
+.inputGroup {
+    display: flex;
+    gap: $spacing-md;
+    align-items: stretch;
+}
+
+.input {
+    flex: 1;
+    border-radius: 16px;
+    border: 1px solid $color-gray-border;
+    padding: $spacing-lg $spacing-xl;
+    background: $color-gray-light;
+    font-size: $font-size-base;
+    outline: none;
+    transition: border-color $transition-fast, box-shadow $transition-fast,
+        background $transition-fast;
+
+    &::placeholder {
+        color: rgba($color-gray-medium, 0.6);
+    }
+
+    &:focus {
+        background: #ffffff;
+        border-color: $color-green-active;
+        box-shadow: 0 0 0 4px rgba($color-green-primary, 0.1);
+    }
+}
+
+.sendBtn {
+    padding: $spacing-lg $spacing-xl;
+    border-radius: 16px;
+    border: none;
+    background: linear-gradient(
+        135deg,
+        $color-green-primary 0%,
+        $color-green-dark 100%
+    );
+    color: #fff;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    transition: transform $transition-fast, box-shadow $transition-fast,
+        filter $transition-fast, opacity $transition-fast;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        filter: brightness(1.08);
+        box-shadow: 0 10px 24px rgba($color-green-primary, 0.3);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.commentsList {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.comment {
+    border-radius: $radius-xl;
+    padding: $spacing-lg $spacing-xl;
+    background: $color-gray-light;
+    border: 1px solid transparent;
+    display: flex;
+    gap: $spacing-lg;
+    align-items: flex-start;
+    transition: background $transition-fast, border-color $transition-fast,
+        box-shadow $transition-fast;
+
+    &:hover {
+        background: #fff;
+        border-color: rgba($color-green-primary, 0.15);
+        box-shadow: 0 8px 20px rgba($color-gray-dark, 0.06);
+    }
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: $radius-full;
+    background: linear-gradient(
+        135deg,
+        $color-green-primary,
+        $color-green-dark
+    );
+    color: #fff;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba($color-green-primary, 0.25);
+}
+
+.commentContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.commentHeader {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+}
+
+.name {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+}
+
+.date {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+}
+
+.text {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    line-height: $line-height-relaxed;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    margin-top: $spacing-sm;
+}
+
+.actionBtn {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-gray-medium;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    transition: color $transition-fast;
+
+    &:hover {
+        color: $color-green-primary;
+    }
+}
+
+.emptyState {
+    text-align: center;
+    padding: $spacing-3xl $spacing-xl;
+    color: $color-gray-medium;
+    font-size: $font-size-sm;
+    background: $color-gray-light;
+    border-radius: $radius-xl;
+}
+
+@media (max-width: 768px) {
+    .root {
+        border-radius: $radius-xl;
+        padding: $spacing-xl;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $spacing-sm;
+    }
+
+    .inputGroup {
+        flex-direction: column;
+    }
+
+    .sendBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .comment {
+        padding: $spacing-md;
+        gap: $spacing-md;
+    }
+
+    .avatar {
+        width: 36px;
+        height: 36px;
+        font-size: $font-size-sm;
+    }
+}

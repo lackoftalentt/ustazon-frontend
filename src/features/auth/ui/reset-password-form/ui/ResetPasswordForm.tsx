@@ -1,10 +1,10 @@
-import { Button } from '@/shared/ui/Button';
-import { PasswordInput } from '@/shared/ui/PasswordInput';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/shared/ui/button';
+import { PasswordInput } from '@/shared/ui/password-input';
+import { Input } from '@/shared/ui/input';
 import { useResetPasswordForm } from '../../../model/useResetPasswordForm';
 import s from './ResetPasswordForm.module.scss';
 import type { ResetPasswordFormData } from '@/entities/user';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import ArrowLeft from '@/shared/assets/icons/arrowLeft.svg?react';
 import toast from 'react-hot-toast';
 import { useState } from 'react';

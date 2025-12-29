@@ -1,0 +1,291 @@
+@use '@/shared/styles/variables' as *;
+
+$ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+
+.presentationViewer {
+    position: relative;
+    width: 100%;
+    height: 700px;
+    border-radius: $radius-xl;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s $ease-out-smooth;
+
+    :global {
+        #react-doc-viewer {
+            height: 100%;
+            background: #fafbfc;
+        }
+
+        #header-bar {
+            background: white;
+            border-bottom: 2px solid rgba($color-green-primary, 0.1);
+            padding: $spacing-md $spacing-xl;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        #file-name {
+            font-size: $font-size-base;
+            font-weight: $font-weight-semibold;
+            color: $color-green-dark;
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+
+            &::before {
+                content: '📄';
+                font-size: $font-size-lg;
+            }
+        }
+
+        #proxy-renderer {
+            height: calc(100% - 56px);
+            overflow: auto;
+            background: #f8f9fa;
+
+            &::-webkit-scrollbar {
+                width: 10px;
+                height: 10px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: rgba($color-green-primary, 0.05);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: rgba($color-green-primary, 0.3);
+                border-radius: 5px;
+
+                &:hover {
+                    background: rgba($color-green-primary, 0.5);
+                }
+            }
+        }
+
+        #pdf-controls {
+            background: white;
+            border-top: 2px solid rgba($color-green-primary, 0.1);
+            padding: $spacing-md $spacing-xl;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        #pdf-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: $spacing-md;
+        }
+
+        #pdf-pagination-info {
+            font-size: $font-size-base;
+            font-weight: $font-weight-medium;
+            color: $color-green-dark;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        #pdf-pagination-prev,
+        #pdf-pagination-next {
+            background: $color-green-primary;
+            color: white;
+            border: none;
+            padding: $spacing-sm $spacing-lg;
+            border-radius: $radius-md;
+            cursor: pointer;
+            font-weight: $font-weight-semibold;
+            transition: all 0.2s ease;
+
+            &:hover:not(:disabled) {
+                background: $color-green-dark;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
+            }
+
+            &:disabled {
+                background: rgba($color-green-primary, 0.3);
+                cursor: not-allowed;
+                transform: none;
+            }
+        }
+
+        #pdf-toggle-pagination {
+            display: none;
+        }
+    }
+}
+
+// Fullscreen режим
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh !important;
+    width: 100vw !important;
+    border-radius: 0;
+    z-index: 9999;
+    max-width: 100vw;
+    background: #f8f9fa;
+
+    :global {
+        #react-doc-viewer {
+            height: 100vh !important;
+            width: 100vw !important;
+            background: #f8f9fa;
+        }
+
+        #header-bar {
+            display: none !important;
+        }
+
+        #proxy-renderer {
+            height: calc(100vh - 60px) !important;
+            background: #f8f9fa;
+            overflow: auto;
+        }
+
+        #pdf-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-top: 2px solid rgba($color-green-primary, 0.1);
+            padding: $spacing-md $spacing-xl;
+            z-index: 10;
+        }
+    }
+
+    .fullscreenButton {
+        display: none;
+    }
+}
+
+.fullscreenButton {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    z-index: 1000;
+    top: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+
+    width: auto;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 $spacing-md;
+
+    background: white;
+    border: 2px solid rgba($color-green-primary, 0.2);
+    border-radius: $radius-lg;
+    cursor: pointer;
+
+    color: $color-green-primary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+
+    transition: all 0.3s $ease-out-smooth;
+
+    animation: slideInRight 0.4s $ease-out-smooth;
+
+    svg {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        transition: transform 0.3s $ease-out-smooth;
+    }
+
+    &:hover {
+        background: $color-green-primary;
+        color: white;
+        border-color: $color-green-primary;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba($color-green-primary, 0.25),
+            0 2px 4px rgba(0, 0, 0, 0.08);
+
+        svg {
+            transform: scale(1.1);
+        }
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba($color-green-primary, 0.2),
+            0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+
+    @media (max-width: 768px) {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 $spacing-sm;
+
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fullscreenButtonText {
+    display: none;
+
+    @media (min-width: 768px) {
+        display: inline;
+        margin-left: $spacing-xs;
+    }
+}
+
+@media (max-width: 768px) {
+    .presentationViewer {
+        height: 500px;
+        border-radius: $radius-lg;
+
+        :global {
+            #header-bar {
+                padding: $spacing-sm $spacing-md;
+                min-height: 48px;
+            }
+
+            #file-name {
+                font-size: $font-size-sm;
+            }
+
+            #proxy-renderer {
+                height: calc(100% - 48px);
+            }
+        }
+    }
+
+    .fullscreen {
+        :global {
+            #proxy-renderer {
+                height: calc(100vh - 56px) !important;
+            }
+
+            #pdf-controls {
+                height: 56px;
+            }
+        }
+    }
+}

@@ -4,12 +4,10 @@ interface ChatMessageProps {
     text: string;
     sender: 'ai' | 'user';
     timestamp: Date;
+    images?: string[];
 }
 
-export const ChatMessage = ({
-    text,
-    sender /* timestamp */
-}: ChatMessageProps) => {
+export const ChatMessage = ({ text, sender, images }: ChatMessageProps) => {
     if (sender === 'ai') {
         const lines = text.split('\n');
 
@@ -25,6 +23,18 @@ export const ChatMessage = ({
                             </div>
                         ))}
                     </div>
+                    {images && images.length > 0 && (
+                        <div className={s.imageGallery}>
+                            {images.map((img, idx) => (
+                                <img
+                                    key={idx}
+                                    src={img}
+                                    alt={`AI response ${idx + 1}`}
+                                    className={s.messageImage}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -33,7 +43,19 @@ export const ChatMessage = ({
     return (
         <div className={`${s.row} ${s.rowRight}`}>
             <div className={s.userMessage}>
-                <div className={s.userMessageContent}>{text}</div>
+                {images && images.length > 0 && (
+                    <div className={s.imageGallery}>
+                        {images.map((img, idx) => (
+                            <img
+                                key={idx}
+                                src={img}
+                                alt={`Attachment ${idx + 1}`}
+                                className={s.messageImage}
+                            />
+                        ))}
+                    </div>
+                )}
+                {text && <div className={s.userMessageContent}>{text}</div>}
             </div>
         </div>
     );

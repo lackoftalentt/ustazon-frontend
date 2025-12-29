@@ -1,23 +1,27 @@
-import { Loader } from '@/shared/ui/Loader/ui/Loader';
+import { Loader } from '@/shared/ui/loader/ui/Loader';
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthLayout } from '@/app/layouts/AuthLayout';
 import { MainLayout } from '@/app/layouts/MainLayout';
+import LessonPlanQuarterPage from '@/pages/lesson-plan';
 
 const LoginPage = lazy(() => import('@/pages/login'));
 const RegisterPage = lazy(() => import('@/pages/register'));
 const ResetPasswordPage = lazy(() => import('@/pages/reset-password'));
 const HomePage = lazy(() => import('@/pages/home'));
-const CoursesCatalogPage = lazy(() => import('@/pages/courses-catalog'));
-const CoursePage = lazy(() => import('@/pages/course'));
-const CourseDetailPage = lazy(() => import('@/pages/course-detail'));
+const SubjectsMaterialPage = lazy(() => import('@/pages/subjects-materials'));
+const SubjectPage = lazy(() => import('@/pages/subject'));
+const SubjectDetailPage = lazy(() => import('@/pages/subject-detail'));
 const AIChatPage = lazy(() => import('@/pages/ai-chat'));
-const CourseWorkSheetsPage = lazy(() => import('@/pages/course-work-sheets'));
-const CourseKmzhPage = lazy(() => import('@/pages/course-kmzh'));
-const CoursePresentationsPage = lazy(
-    () => import('@/pages/course-presentations')
+const SubjectWorkSheetsPage = lazy(() => import('@/pages/subject-work-sheets'));
+const SubjectKmzhPage = lazy(() => import('@/pages/subject-kmzh'));
+const SubjectPresentationsPage = lazy(
+    () => import('@/pages/subject-presentations')
 );
 const KmzhPage = lazy(() => import('@/pages/kmzh'));
+const SubjectPresentationDetailPage = lazy(
+    () => import('@/pages/subject-presentation-detail')
+);
 
 export const AppRouter = () => {
     return (
@@ -25,56 +29,79 @@ export const AppRouter = () => {
             <Routes>
                 <Route element={<AuthLayout />}>
                     <Route
-                        path="/login"
+                        path="login"
                         element={<LoginPage />}
                     />
                     <Route
-                        path="/register"
+                        path="register"
                         element={<RegisterPage />}
                     />
                     <Route
-                        path="/reset-password"
+                        path="reset-password"
                         element={<ResetPasswordPage />}
                     />
                 </Route>
 
-                <Route element={<MainLayout />}>
+                <Route
+                    path="/"
+                    element={<MainLayout />}>
                     <Route
-                        path="/"
+                        index
                         element={<HomePage />}
                     />
+
                     <Route
-                        path="/courses-catalog"
-                        element={<CoursesCatalogPage />}
+                        path="subjects-material"
+                        element={<SubjectsMaterialPage />}
                     />
                     <Route
-                        path="/course"
-                        element={<CoursePage />}
+                        path="subject"
+                        element={<SubjectPage />}
                     />
                     <Route
-                        path="course-detail"
-                        element={<CourseDetailPage />}
+                        path="subject-detail"
+                        element={<SubjectDetailPage />}
                     />
                     <Route
                         path="ai-chat"
                         element={<AIChatPage />}
                     />
                     <Route
-                        path="course/kmzh"
-                        element={<CourseKmzhPage />}
+                        path="subject/kmzh"
+                        element={<SubjectKmzhPage />}
                     />
                     <Route
-                        path="course/work-sheets"
-                        element={<CourseWorkSheetsPage />}
+                        path="subject/work-sheets"
+                        element={<SubjectWorkSheetsPage />}
                     />
                     <Route
-                        path="course/presentations"
-                        element={<CoursePresentationsPage />}
+                        path="subject/presentations"
+                        element={<SubjectPresentationsPage />}
                     />
                     <Route
                         path="kmzh"
                         element={<KmzhPage />}
                     />
+                    <Route
+                        path="subject-presentation-detail"
+                        element={<SubjectPresentationDetailPage />}
+                    />
+
+                    <Route path="lesson-plan">
+                        <Route
+                            index
+                            element={
+                                <Navigate
+                                    to="5/q1"
+                                    replace
+                                />
+                            }
+                        />
+                        <Route
+                            path=":grade/:quarter"
+                            element={<LessonPlanQuarterPage />}
+                        />
+                    </Route>
                 </Route>
             </Routes>
         </Suspense>

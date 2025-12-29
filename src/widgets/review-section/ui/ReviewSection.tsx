@@ -1,7 +1,7 @@
-import { Container } from '@/shared/ui/Container';
+import { Container } from '@/shared/ui/container';
 import s from './ReviewSection.module.scss';
-import { SectionTitle } from '@/shared/ui/SectionTitle';
-import { ReviewItem } from '@/shared/ui/ReviewItem';
+import { SectionTitle } from '@/shared/ui/section-title';
+import { ReviewItem } from '@/shared/ui/review-item';
 import avatar from '@/shared/assets/images/profile-image.jpg';
 
 const REVIEWS_DATA = [

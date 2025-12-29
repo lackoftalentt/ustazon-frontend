@@ -1,5 +1,5 @@
-import { Container } from '@/shared/ui/Container';
-import { SectionTitle } from '@/shared/ui/SectionTitle';
+import { Container } from '@/shared/ui/container';
+import { SectionTitle } from '@/shared/ui/section-title';
 import s from './AIChatPage.module.scss';
 import { AIChat } from '@/features/ai-chat';
 

@@ -77,6 +77,8 @@
 }
 
 .userMessage {
+    display: flex;
+    flex-direction: column;
     max-width: min(560px, 82%);
     display: flex;
     justify-content: flex-end;
@@ -93,6 +95,46 @@
     box-shadow: none;
 
     transition: background $transition-fast, border-color $transition-fast;
+}
+
+.imageGallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-top: $spacing-sm;
+}
+
+.messageImage {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: $radius-md;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform $transition-fast;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.aiMessage .imageGallery {
+    .messageImage {
+        border: 2px solid rgba($color-green-primary, 0.2);
+    }
+}
+
+.userMessage .imageGallery {
+    .messageImage {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+}
+
+@media (max-width: 768px) {
+    .messageImage {
+        max-width: 150px;
+        max-height: 150px;
+    }
 }
 
 @media (max-width: 768px) {

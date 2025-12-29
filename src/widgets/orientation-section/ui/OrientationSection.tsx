@@ -1,9 +1,16 @@
-import { SectionTitle } from '@/shared/ui/SectionTitle';
+import { SectionTitle } from '@/shared/ui/section-title';
 import s from './OrientationSection.module.scss';
-import { Container } from '@/shared/ui/Container';
-import { OrientationItem } from '@/shared/ui/OrientationItem';
-import { VideoPlaceholder } from '@/shared/ui/VideoPlaceholder';
+import { Container } from '@/shared/ui/container';
+import { OrientationItem } from '@/shared/ui/orientation-item';
+import { VideoPlaceholder } from '@/shared/ui/video-placeholder';
 import { ORIENTATIONS_DATA } from '@/shared/config/orientations';
+
+// Демо видео для каждого направления
+const VIDEO_URLS = [
+    'https://www.youtube.com/watch?v=EngW7tLk6R8',
+    'https://www.youtube.com/watch?v=K4TOrB7at0Y',
+    'https://www.youtube.com/watch?v=wDchsz8nmbo'
+];
 
 export const OrientationSection = () => {
     return (
@@ -27,6 +34,9 @@ export const OrientationSection = () => {
                             <div className={s.videoWrapper}>
                                 <VideoPlaceholder
                                     className={s.videoPlaceholder}
+                                    videoUrl={
+                                        VIDEO_URLS[index] || VIDEO_URLS[0]
+                                    }
                                 />
                             </div>
                         </div>

@@ -3,7 +3,7 @@
 .attachMenu {
     position: absolute;
     left: 0;
-    bottom: calc(100% + 10px);
+    top: calc(100% + 10px);
 
     width: 280px;
     padding: $spacing-md;
@@ -19,11 +19,13 @@
     flex-direction: column;
     gap: $spacing-sm;
 
-    transform-origin: bottom left;
+    transform-origin: top left;
 
     will-change: transform, opacity;
 
     animation: pop 180ms cubic-bezier(0.2, 0.9, 0.2, 1);
+
+    z-index: 10;
 }
 
 .isClosing {
@@ -37,7 +39,7 @@
 @keyframes pop {
     from {
         opacity: 0;
-        transform: translate3d(0, 10px, 0) scale(0.98);
+        transform: translate3d(0, -10px, 0) scale(0.98);
     }
     to {
         opacity: 1;
@@ -52,7 +54,7 @@
     }
     to {
         opacity: 0;
-        transform: translate3d(0, 10px, 0) scale(0.98);
+        transform: translate3d(0, -10px, 0) scale(0.98);
     }
 }
 

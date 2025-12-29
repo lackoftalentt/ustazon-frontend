@@ -1,10 +1,11 @@
-import { Container } from '@/shared/ui/Container';
+import { Container } from '@/shared/ui/container';
 import s from './Kmzhpage.module.scss';
-import { SectionTitle } from '@/shared/ui/SectionTitle';
-import { Dropdown } from '@/shared/ui/Dropdown';
+import { SectionTitle } from '@/shared/ui/section-title';
+import { Dropdown } from '@/shared/ui/dropdown';
 import { useState } from 'react';
-import { StatCounter } from '@/shared/ui/StatCounter';
-import { PlanCard } from '@/shared/ui/PlanCard/ui/PlanCard';
+import { StatCounter } from '@/shared/ui/stat-counter';
+import { PlanCard } from '@/shared/ui/plan-card/ui/PlanCard';
+import { useNavigate } from 'react-router-dom';
 
 export const KmzhPage = () => {
     const topics = ['Тема 1', 'Тема 2', 'Тема 3'];
@@ -17,6 +18,8 @@ export const KmzhPage = () => {
         '10 Класс',
         '11 Класс'
     ];
+
+    const navigate = useNavigate();
 
     const [topic, setTopic] = useState<string>();
     const [schoolClass, setSchoolClass] = useState<string>();
@@ -76,7 +79,7 @@ export const KmzhPage = () => {
                                 title={p.title}
                                 kmzhCount={p.kmzhCount}
                                 lessonsCount={p.lessonsCount}
-                                onDetails={() => console.log('details', p.id)}
+                                onDetails={() => navigate('/lesson-plan')}
                             />
                         ))}
                     </div>

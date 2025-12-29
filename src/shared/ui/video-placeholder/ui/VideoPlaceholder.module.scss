@@ -1,0 +1,125 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+    background: white;
+    padding: $spacing-2xl;
+    border-radius: $radius-lg;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
+        transform: translateY(-2px);
+    }
+}
+
+.videoPlaceholder {
+    width: 100%;
+    height: 250px;
+    background: $color-green-dark;
+    border-radius: $radius-xl;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reactPlayer {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    border-radius: $radius-xl;
+    overflow: hidden;
+
+    > div {
+        border-radius: $radius-xl;
+    }
+
+    img {
+        border-radius: $radius-xl;
+        object-fit: cover;
+    }
+}
+
+.playIconWrapper {
+    width: 100px;
+    height: 100px;
+    border-radius: $radius-full;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(24px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    transition: transform $transition-fast, background $transition-fast,
+        box-shadow $transition-fast, border-color $transition-fast;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border-radius: $radius-full;
+        background: linear-gradient(
+            135deg,
+            rgba($color-green-active, 0.3),
+            transparent
+        );
+        opacity: 0;
+        transition: opacity $transition-fast;
+    }
+
+    &:hover {
+        transform: scale(1.08);
+        background: rgba($color-green-active, 0.35);
+        border-color: rgba($color-green-active, 0.5);
+        box-shadow: 0 0 80px rgba($color-green-active, 0.5),
+            0 0 40px rgba($color-green-primary, 0.3);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.playIcon {
+    width: 0;
+    height: 0;
+    border-top: 18px solid transparent;
+    border-bottom: 18px solid transparent;
+    border-left: 30px solid #fff;
+    margin-left: 6px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: $spacing-lg;
+    }
+
+    .videoPlaceholder {
+        height: 200px;
+    }
+
+    .playIconWrapper {
+        width: 70px;
+        height: 70px;
+    }
+
+    .playIcon {
+        border-top-width: 14px;
+        border-bottom-width: 14px;
+        border-left-width: 22px;
+        margin-left: 4px;
+    }
+}

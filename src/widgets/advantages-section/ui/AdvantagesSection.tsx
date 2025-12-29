@@ -1,8 +1,8 @@
-import { Container } from '@/shared/ui/Container';
+import { Container } from '@/shared/ui/container';
 import s from './AdvantagesSection.module.scss';
-import { SectionTitle } from '@/shared/ui/SectionTitle';
+import { SectionTitle } from '@/shared/ui/section-title';
 import { ADVANTAGES_DATA } from '@/shared/config/advantages';
-import { AdvantageItem } from '@/shared/ui/AdvantageItem';
+import { AdvantageItem } from '@/shared/ui/advantage-item';
 
 export const AdvantagesSection = () => {
     return (

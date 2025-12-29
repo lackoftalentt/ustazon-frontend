@@ -1,9 +1,9 @@
 import logo from '@/shared/assets/images/logo.png';
 import Typography from '@/shared/assets/icons/typography.svg?react';
 import s from './Header.module.scss';
-import { Button } from '@/shared/ui/Button';
-import { Link, useNavigate } from 'react-router';
-import { Container } from '@/shared/ui/Container';
+import { Button } from '@/shared/ui/button';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container } from '@/shared/ui/container';
 import { useAuthStore } from '@/entities/user';
 import defaultAvatar from '@/shared/assets/images/profile-image.jpg';
 
@@ -30,7 +30,7 @@ export const Header = () => {
 
                     <nav className={s.nav}>
                         <Link
-                            to="/courses-catalog"
+                            to="/subjects-material"
                             className={s.navLink}>
                             <span className={s.navLinkText}>
                                 Каталог курсов
@@ -44,10 +44,10 @@ export const Header = () => {
                     </nav>
                 </div>
                 <div className={s.rightSide}>
-                    <button className={s.langSwitcher}>
+                    {/* <button className={s.langSwitcher}>
                         <Typography className={s.langIcon} />
                         <span>Русский</span>
-                    </button>
+                    </button> */}
 
                     {isAuth ? (
                         <div className={s.userSection}>

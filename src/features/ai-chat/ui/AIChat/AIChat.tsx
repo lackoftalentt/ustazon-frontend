@@ -9,30 +9,28 @@ interface Message {
     text: string;
     sender: 'ai' | 'user';
     timestamp: Date;
+    images?: string[];
 }
 
 export const AIChat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
-
     const messagesEndRef = useRef<HTMLDivElement>(null);
-
-    // const scrollToBottom = () => {
-    //     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    // };
-
-    // useEffect(() => {
-    //     scrollToBottom();
-    // }, [messages]);
 
     const handleSendMessage = (payload: {
         message: string;
         attachments: File[];
     }) => {
+        // Преобразуем файлы в URLs для превью
+        const imageUrls = payload.attachments.map(file =>
+            URL.createObjectURL(file)
+        );
+
         const newMessage: Message = {
             id: Date.now().toString(),
             text: payload.message,
             sender: 'user',
-            timestamp: new Date()
+            timestamp: new Date(),
+            images: imageUrls.length > 0 ? imageUrls : undefined
         };
 
         setMessages(prev => [...prev, newMessage]);
@@ -40,15 +38,12 @@ export const AIChat = () => {
         setTimeout(() => {
             const aiResponse: Message = {
                 id: (Date.now() + 1).toString(),
-                text: 'Спасибо за ваше сообщение! Я обрабатываю ваш запрос...',
+                text: 'Спасибо за ваше сообщение!\nЯ обрабатываю ваш запрос...',
                 sender: 'ai',
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, aiResponse]);
         }, 1000);
-
-        // пока вложения просто есть в payload.attachments
-        // позже можешь отрендерить их отдельно или отправлять на сервер
     };
 
     return (
@@ -64,21 +59,6 @@ export const AIChat = () => {
                             </p>
                         </div>
                     </div>
-
-                    {/* <div className={s.placeholderCards}>
-                        <div className={s.placeholderCard}>
-                            <div className={s.placeholderLabel}>Label</div>
-                            <div className={s.placeholderText}>Text</div>
-                        </div>
-                        <div className={s.placeholderCard}>
-                            <div className={s.placeholderLabel}>Label</div>
-                            <div className={s.placeholderText}>Text</div>
-                        </div>
-                        <div className={s.placeholderCard}>
-                            <div className={s.placeholderLabel}>Label</div>
-                            <div className={s.placeholderText}>Text</div>
-                        </div>
-                    </div> */}
                 </div>
 
                 <div className={s.chatMessages}>
@@ -88,6 +68,7 @@ export const AIChat = () => {
                             text={m.text}
                             sender={m.sender}
                             timestamp={m.timestamp}
+                            images={m.images}
                         />
                     ))}
                     <div ref={messagesEndRef} />

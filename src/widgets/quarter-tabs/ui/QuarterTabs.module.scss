@@ -1,0 +1,105 @@
+@use '@/shared/styles/variables' as *;
+
+.root {
+    display: inline-flex;
+    gap: $spacing-xs;
+    padding: $spacing-xs;
+    border-radius: $radius-lg;
+    background: white;
+    border: 1px solid $color-green-lightest;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.tab {
+    position: relative;
+    z-index: 2;
+    padding: $spacing-md $spacing-lg;
+    border-radius: $radius-md;
+    text-decoration: none;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    transition: all $transition-fast;
+    text-align: center;
+    min-width: 100px;
+    white-space: nowrap;
+
+    &:hover:not(.active) {
+        background: rgba($color-green-primary, 0.08);
+        color: $color-green-dark;
+    }
+}
+
+// Анимированный фон активного таба
+.backgroundSlider {
+    position: absolute;
+    top: $spacing-xs;
+    bottom: $spacing-xs;
+    border-radius: $radius-md;
+    background: $color-green-primary;
+    z-index: 1;
+    transition: all $transition-normal cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba($color-green-dark, 0.2);
+}
+
+.active {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-weight: $font-weight-semibold;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: $color-green-primary;
+        border-radius: $radius-md;
+        z-index: -1;
+        animation: fadeIn $transition-fast;
+    }
+}
+
+// Анимация текста
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.active.slideLeft {
+    animation: slideInLeft $transition-normal;
+}
+
+.active.slideRight {
+    animation: slideInRight $transition-normal;
+}

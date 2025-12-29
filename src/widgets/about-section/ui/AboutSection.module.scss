@@ -38,7 +38,6 @@
         display: flex;
         flex-direction: column;
         gap: $spacing-lg;
-        margin-bottom: $spacing-3xl;
 
         .title {
             font-size: 32px;
@@ -72,35 +71,6 @@
             padding-left: $spacing-lg;
         }
     }
-
-    .buttons {
-        display: flex;
-        gap: $spacing-lg;
-
-        .primaryBtn,
-        .secondaryBtn {
-            padding: 14px 28px;
-            font-weight: $font-weight-semibold;
-            transition: all 0.3s ease;
-        }
-
-        .primaryBtn {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-            }
-        }
-
-        .secondaryBtn {
-            &:hover {
-                background: $color-green-active;
-                border-color: $color-green-active;
-                transform: translateY(-2px);
-            }
-        }
-    }
 }
 
 .mediaWrapper {
@@ -110,25 +80,7 @@
     .videoPlaceholder {
         width: 100%;
         max-width: 570px;
-        border-radius: $radius-xl;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        transition: all 0.4s ease;
-        position: relative;
-
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: $radius-xl;
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-            pointer-events: none;
-        }
-
-        &:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
-        }
+        // Убраны все переопределяющие стили - используем стили из VideoPlaceholder
     }
 }
 
@@ -201,7 +153,6 @@
 
         .textBlock {
             gap: $spacing-md;
-            margin-bottom: $spacing-2xl;
 
             .title {
                 font-size: 24px;
@@ -215,16 +166,6 @@
             .subTitle {
                 font-size: $font-size-base;
                 padding-left: $spacing-md;
-            }
-        }
-
-        .buttons {
-            flex-direction: column;
-            gap: $spacing-sm;
-
-            .primaryBtn,
-            .secondaryBtn {
-                width: 100%;
             }
         }
     }

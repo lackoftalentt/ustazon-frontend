@@ -1,0 +1,14 @@
+@use '@/shared/styles/variables' as *;
+
+.list {
+    display: grid;
+    gap: $spacing-md;
+}
+
+.empty {
+    padding: $spacing-lg;
+    border-radius: $radius-lg;
+    background: $color-gray-light;
+    color: $color-gray-medium;
+    font-size: $font-size-sm;
+}

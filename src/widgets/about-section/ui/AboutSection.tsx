@@ -1,7 +1,6 @@
-import { Container } from '@/shared/ui/Container';
-import { VideoPlaceholder } from '@/shared/ui/VideoPlaceholder';
+import { Container } from '@/shared/ui/container';
+import { VideoPlaceholder } from '@/shared/ui/video-placeholder';
 import s from './AboutSection.module.scss';
-// import { Button } from '@/shared/ui/Button';
 
 export const AboutSection = () => {
     return (
@@ -19,21 +18,12 @@ export const AboutSection = () => {
                             как и для кого-то другого
                         </p>
                     </div>
-                    {/* <div className={s.buttons}>
-                        <Button
-                            variant="dark"
-                            className={s.primaryBtn}>
-                            Перейти на главную страницу
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className={s.secondaryBtn}>
-                            Дополнительная информация
-                        </Button>
-                    </div> */}
                 </div>
                 <div className={s.mediaWrapper}>
-                    <VideoPlaceholder className={s.videoPlaceholder} />
+                    <VideoPlaceholder
+                        className={s.videoPlaceholder}
+                        videoUrl="https://www.youtube.com/watch?v=EngW7tLk6R8"
+                    />
                 </div>
             </Container>
         </section>

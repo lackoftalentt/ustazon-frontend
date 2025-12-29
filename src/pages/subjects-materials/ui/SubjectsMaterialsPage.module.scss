@@ -1,0 +1,64 @@
+.subjectMaterialPage {
+    display: flex;
+    padding: $spacing-xl 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xl;
+    width: 100%;
+    margin-bottom: $spacing-3xl;
+}
+
+.title {
+    margin: 0;
+}
+
+.searchInput {
+    width: 100%;
+    margin: 0;
+}
+
+.cardsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 50px;
+    width: 100%;
+}
+.page {
+    padding: $spacing-xl 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 24px;
+}
+
+.searchInput {
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.noResults {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: $color-gray-medium;
+    font-size: $font-size-lg;
+    background-color: $color-gray-light;
+    border-radius: $radius-md;
+    margin-top: 20px;
+}

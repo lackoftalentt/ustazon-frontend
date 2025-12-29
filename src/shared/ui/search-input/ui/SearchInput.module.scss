@@ -1,0 +1,124 @@
+@use '@/shared/styles/variables' as *;
+
+.searchBox {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.searchIcon {
+    position: absolute;
+    left: $spacing-lg;
+    top: 50%;
+    transform: translateY(-50%) scale(1);
+    width: $icon-size-md;
+    height: $icon-size-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform $transition-normal ease-out;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        filter: brightness(0) saturate(100%) invert(27%) sepia(17%)
+            saturate(1318%) hue-rotate(103deg) brightness(94%) contrast(90%);
+        transition: filter $transition-normal, transform $transition-normal;
+    }
+}
+
+.searchInput {
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-sm;
+    border: 1px solid $color-gray-border;
+    background: white;
+    padding: 0 $spacing-3xl 0 ($spacing-3xl + $icon-size-md + $spacing-sm);
+    font-size: $font-size-base;
+    color: $color-gray-dark;
+    outline: none;
+    transition: all $transition-normal cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+
+    &::placeholder {
+        color: $color-gray-medium;
+        transition: color $transition-normal;
+    }
+
+    &:focus {
+        border-color: $color-green-primary;
+        box-shadow: 0 0 0 3px rgba($color-green-primary, 0.15);
+
+        & ~ .searchIcon {
+            transform: translateY(-50%) scale(1.1);
+
+            svg {
+                filter: brightness(0) saturate(100%) invert(22%) sepia(44%)
+                    saturate(654%) hue-rotate(103deg) brightness(94%)
+                    contrast(96%);
+                animation: pulse 1.5s infinite;
+            }
+        }
+
+        &::placeholder {
+            color: lighten($color-gray-medium, 15%);
+        }
+    }
+
+    &:hover:not(:focus) {
+        border-color: $color-green-primary;
+        box-shadow: 0 0 0 1px rgba($color-green-primary, 0.1);
+
+        & ~ .searchIcon {
+            transform: translateY(-50%) scale(1.05);
+
+            svg {
+                filter: brightness(0) saturate(100%) invert(22%) sepia(44%)
+                    saturate(654%) hue-rotate(103deg) brightness(94%)
+                    contrast(96%);
+            }
+        }
+    }
+
+    &:active:not(:focus) {
+        transform: translateY(0);
+        transition-duration: 0.1s;
+    }
+}
+
+// Анимация пульсации для иконки
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// Анимация появления инпута при загрузке
+.searchBox {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

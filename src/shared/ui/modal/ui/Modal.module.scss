@@ -1,0 +1,143 @@
+@use '@/shared/styles/variables' as *;
+
+@keyframes overlayIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes dialogIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    padding: $spacing-2xl;
+    background: rgba(0, 0, 0, 0.45);
+
+    z-index: $z-index-modal;
+
+    animation: overlayIn $transition-normal;
+}
+
+.dialog {
+    width: min(760px, 100%);
+    max-height: min(82vh, 760px);
+
+    overflow: auto;
+
+    background: #fff;
+    border-radius: $radius-xl;
+    border: 1px solid $color-gray-border;
+
+    box-shadow: 0 24px 72px rgba(0, 0, 0, 0.22);
+
+    animation: dialogIn $transition-normal;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-md;
+
+    padding: $spacing-lg $spacing-2xl;
+
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-tight;
+    color: $color-gray-dark;
+
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.close {
+    width: 38px;
+    height: 38px;
+    border-radius: $radius-md;
+
+    border: 1px solid $color-gray-border;
+    background: #fff;
+    color: $color-gray-medium;
+
+    display: grid;
+    place-items: center;
+
+    cursor: pointer;
+    transition: background $transition-fast, border-color $transition-fast,
+        transform $transition-fast, box-shadow $transition-fast,
+        color $transition-fast;
+}
+
+.close:hover {
+    background: $color-gray-light;
+    border-color: rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+    color: $color-gray-dark;
+}
+
+.close:active {
+    transform: translateY(0);
+}
+
+.close:focus-visible {
+    outline: none;
+    box-shadow: $shadow-focus;
+    border-color: $color-green-primary;
+}
+
+.body {
+    padding: $spacing-2xl;
+}
+
+@media (max-width: 520px) {
+    .overlay {
+        padding: $spacing-lg;
+    }
+
+    .header {
+        padding: $spacing-md $spacing-lg;
+    }
+
+    .body {
+        padding: $spacing-lg;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .overlay,
+    .dialog {
+        animation: none;
+    }
+
+    .close {
+        transition: none;
+    }
+}
