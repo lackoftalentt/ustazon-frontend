@@ -1,0 +1,123 @@
+.course-navigator {
+    width: 100%;
+    height: 500px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 20px;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    position: relative;
+    margin: 32px 0;
+
+    // Decorative gradients
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+            circle at 30% 30%,
+            rgba(99, 102, 241, 0.1) 0%,
+            transparent 50%
+        );
+        pointer-events: none;
+        animation: rotate 30s linear infinite;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+            circle at 70% 70%,
+            rgba(168, 85, 247, 0.08) 0%,
+            transparent 50%
+        );
+        pointer-events: none;
+        animation: rotate 40s linear infinite reverse;
+    }
+
+    // ReactFlow custom styles
+    :global {
+        .react-flow {
+            background: transparent !important;
+        }
+
+        .react-flow__background {
+            opacity: 0.5;
+        }
+
+        .react-flow__edge {
+            &-path {
+                stroke-width: 2.5;
+                filter: drop-shadow(0 2px 4px rgba(167, 139, 250, 0.3));
+            }
+        }
+
+        .react-flow__edge.animated path {
+            stroke-dasharray: 5;
+            animation: dashdraw 0.5s linear infinite;
+        }
+
+        // Custom edge animations
+        @keyframes dashdraw {
+            to {
+                stroke-dashoffset: -10;
+            }
+        }
+
+        // Hide default controls
+        .react-flow__panel {
+            display: none;
+        }
+
+        // Node selection styles
+        .react-flow__node {
+            &.selected {
+                .courseNode__circle {
+                    box-shadow:
+                        0 0 0 3px rgba(99, 102, 241, 0.3),
+                        0 8px 24px rgba(99, 102, 241, 0.4);
+                }
+            }
+        }
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 1024px) {
+    .course-navigator {
+        height: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .course-navigator {
+        height: 400px;
+        border-radius: 16px;
+        margin: 24px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .course-navigator {
+        height: 350px;
+        border-radius: 12px;
+        margin: 20px 0;
+    }
+}
