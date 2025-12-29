@@ -111,16 +111,35 @@ const rootSize = 56;
 const leafSize = 36;
 const leafHoverScale = rootSize / leafSize;
 
-export function initialElements() {
+export function initialElements(subjectCode: string = 'math', topics: Array<{id: number, topic: string}> = []) {
     const center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-    // const SIZE = 64;
-    const r = 250;
+    const r = 280;
+
+    // Use provided topics or default demo topics
+    const displayTopics = topics.length > 0 ? topics.map(t => ({
+        id: `topic-${t.id}`,
+        label: t.topic,
+        topicId: t.id
+    })) : [
+        { id: 'topic-1', label: 'Тема 1', topicId: 1 },
+        { id: 'topic-2', label: 'Тема 2', topicId: 2 },
+        { id: 'topic-3', label: 'Тема 3', topicId: 3 },
+        { id: 'topic-4', label: 'Тема 4', topicId: 4 },
+        { id: 'topic-5', label: 'Тема 5', topicId: 5 },
+        { id: 'topic-add', label: '+ Қосу', topicId: null },
+    ];
 
     const nodes: Node<CourseNodeData>[] = [
+        // Center node - Subject
         {
             id: 'target',
-            data: { label: 'Математика', path: '/course' },
+            data: {
+                label: 'Темалар',
+                path: `/course/${subjectCode}`,
+                isCenter: true,
+                isAddButton: false
+            },
             position: center,
             type: 'courseNode',
             className: 'course-node',
@@ -128,88 +147,58 @@ export function initialElements() {
                 ['--s' as any]: `${rootSize}px`,
                 ['--hoverScale' as any]: 1
             } as any
-        },
-
-        {
-            id: 'n-0',
-            data: { label: '1 четверть', path: '/course/q1' },
-            position: { x: center.x + r, y: center.y },
-            type: 'courseNode',
-            className: 'course-node',
-            style: {
-                ['--s' as any]: `${leafSize}px`,
-                ['--hoverScale' as any]: leafHoverScale
-            } as any
-        },
-        {
-            id: 'n-1',
-            data: { label: '2 четверть', path: '/course/q2' },
-            position: { x: center.x, y: center.y + r },
-            type: 'courseNode',
-            className: 'course-node',
-            style: {
-                ['--s' as any]: `${leafSize}px`,
-                ['--hoverScale' as any]: leafHoverScale
-            } as any
-        },
-        {
-            id: 'n-2',
-            data: { label: '3 четверть', path: '/course/q3' },
-            position: { x: center.x - r, y: center.y },
-            type: 'courseNode',
-            className: 'course-node',
-            style: {
-                ['--s' as any]: `${leafSize}px`,
-                ['--hoverScale' as any]: leafHoverScale
-            } as any
-        },
-        {
-            id: 'n-3',
-            data: { label: '4 четверть', path: '/course/q4' },
-            position: { x: center.x, y: center.y - r },
-            type: 'courseNode',
-            className: 'course-node',
-            style: {
-                ['--s' as any]: `${leafSize}px`,
-                ['--hoverScale' as any]: leafHoverScale
-            } as any
         }
     ];
 
-    const edges: Edge[] = [
-        {
-            id: 'e-0',
-            source: 'n-0',
-            target: 'target',
-            type: 'floating',
-            markerEnd: MarkerType.Arrow,
-            style: { stroke: '#111', strokeWidth: 2 }
+    // Create nodes in a circle around the center
+    const angleStep = (2 * Math.PI) / displayTopics.length;
+
+    displayTopics.forEach((topic, index) => {
+        const angle = angleStep * index - Math.PI / 2; // Start from top
+        const x = center.x + r * Math.cos(angle);
+        const y = center.y + r * Math.sin(angle);
+
+        const isAddButton = topic.topicId === null;
+
+        nodes.push({
+            id: topic.id,
+            data: {
+                label: topic.label,
+                path: isAddButton
+                    ? '#'
+                    : `/course/${subjectCode}?topic=${topic.topicId}`,
+                isCenter: false,
+                isAddButton: isAddButton
+            },
+            position: { x, y },
+            type: 'courseNode',
+            className: 'course-node',
+            style: {
+                ['--s' as any]: `${leafSize}px`,
+                ['--hoverScale' as any]: leafHoverScale
+            } as any
+        });
+    });
+
+    const edges: Edge[] = displayTopics.map((topic, index) => ({
+        id: `e-${index}`,
+        source: topic.id,
+        target: 'target',
+        type: 'floating',
+        markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: '#a78bfa',
+            width: 20,
+            height: 20
         },
-        {
-            id: 'e-1',
-            source: 'n-1',
-            target: 'target',
-            type: 'floating',
-            markerEnd: MarkerType.Arrow,
-            style: { stroke: '#111', strokeWidth: 2 }
+        style: {
+            stroke: '#c4b5fd',
+            strokeWidth: 2.5,
+            strokeDasharray: '5,5',
+            animation: 'dashdraw 20s linear infinite'
         },
-        {
-            id: 'e-2',
-            source: 'n-2',
-            target: 'target',
-            type: 'floating',
-            markerEnd: MarkerType.Arrow,
-            style: { stroke: '#111', strokeWidth: 2 }
-        },
-        {
-            id: 'e-3',
-            source: 'n-3',
-            target: 'target',
-            type: 'floating',
-            markerEnd: MarkerType.Arrow,
-            style: { stroke: '#111', strokeWidth: 2 }
-        }
-    ];
+        animated: true
+    }));
 
     return { nodes, edges };
 }

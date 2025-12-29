@@ -10,7 +10,7 @@ export const CoursePresentationsPage = () => {
         <main className={s.page}>
             <Container>
                 <SectionTitle title="Математика" />
-                <CourseNavigator />
+                <CourseNavigator subjectCode="math" />
                 <SectionTitle title="Презентации" />
                 <div className={s.grid}>
                     {presentationsMock.map(item => (

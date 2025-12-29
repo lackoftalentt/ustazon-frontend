@@ -10,7 +10,7 @@ export const CourseWorkSheetsPage = () => {
         <main className={s.page}>
             <Container>
                 <SectionTitle title="Математика" />
-                <CourseNavigator />
+                <CourseNavigator subjectCode="math" />
                 <SectionTitle title="Рабочие листы" />
 
                 <div className={s.grid}>

@@ -8,6 +8,7 @@ const LoginPage = lazy(() => import('@/pages/login'));
 const RegisterPage = lazy(() => import('@/pages/register'));
 const ResetPasswordPage = lazy(() => import('@/pages/reset-password'));
 const HomePage = lazy(() => import('@/pages/home'));
+const ProfilePage = lazy(() => import('@/pages/profile'));
 const CoursesCatalogPage = lazy(() => import('@/pages/courses-catalog'));
 const CoursePage = lazy(() => import('@/pages/course'));
 const CourseDetailPage = lazy(() => import('@/pages/course-detail'));
@@ -44,15 +45,19 @@ export const AppRouter = () => {
                         element={<HomePage />}
                     />
                     <Route
+                        path="/profile"
+                        element={<ProfilePage />}
+                    />
+                    <Route
                         path="/courses-catalog"
                         element={<CoursesCatalogPage />}
                     />
                     <Route
-                        path="/course"
+                        path="/course/:subjectCode"
                         element={<CoursePage />}
                     />
                     <Route
-                        path="course-detail"
+                        path="/course/:subjectCode/detail/:cardId"
                         element={<CourseDetailPage />}
                     />
                     <Route

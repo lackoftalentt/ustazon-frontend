@@ -12,7 +12,6 @@ import clsx from 'clsx';
 import {
     resetPassword,
     sendResetCode,
-    verifyResetCode
 } from '@/features/auth/api/resetPasswordApi';
 import axios from 'axios';
 

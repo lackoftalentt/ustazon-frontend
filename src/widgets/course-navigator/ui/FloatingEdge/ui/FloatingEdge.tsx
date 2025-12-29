@@ -41,13 +41,19 @@ export function FloatingEdge(props: EdgeProps<FloatingEdgeType>) {
     });
 
     return (
-        <BaseEdge
-            id={id}
-            path={path}
-            style={style}
-            markerEnd={markerEnd}
-            markerStart={markerStart}
-            interactionWidth={interactionWidth}
-        />
+        <>
+            <BaseEdge
+                id={id}
+                path={path}
+                style={{
+                    ...style,
+                    strokeWidth: 2.5,
+                    filter: 'drop-shadow(0 2px 4px rgba(167, 139, 250, 0.3))'
+                }}
+                markerEnd={markerEnd}
+                markerStart={markerStart}
+                interactionWidth={interactionWidth}
+            />
+        </>
     );
 }

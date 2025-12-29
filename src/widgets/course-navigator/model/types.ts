@@ -1,6 +1,6 @@
 import type { Node, Edge } from '@xyflow/react';
 
-export type CourseNodeKind = 'root' | 'quarter' | 'category';
+export type CourseNodeKind = 'root' | 'quarter' | 'category' | 'topic';
 
 export type CourseNodeData = {
     label: string;
@@ -9,6 +9,8 @@ export type CourseNodeData = {
     color?: string;
     style?: string;
     size?: number;
+    isCenter?: boolean;
+    isAddButton?: boolean;
 };
 
 export type CourseFlowNode = Node<CourseNodeData, 'courseNode'>;

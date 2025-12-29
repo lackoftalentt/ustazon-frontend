@@ -2,22 +2,32 @@ import {
     ReactFlow,
     useNodesState,
     useEdgesState,
-    type NodeMouseHandler
+    type NodeMouseHandler,
+    Background,
+    BackgroundVariant
 } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
 import { FloatingEdge } from '../../FloatingEdge/ui/FloatingEdge';
 import FloatingConnectionLine from '../../FloatingConnectionLine/ui/FloatingConnectionLine';
 import { initialElements } from '../../../utils/initialElements';
 import { useNavigate } from 'react-router';
 import { CourseNode } from '../../CourseNode/ui/CourseNode';
-
-const { nodes: initialNodes, edges: initialEdges } = initialElements();
+import './CourseNavigator.scss';
 
 const edgeTypes = {
     floating: FloatingEdge
 };
 
-export const CourseNavigator = () => {
+interface CourseNavigatorProps {
+    subjectCode: string;
+    topics?: Array<{id: number, topic: string}>;
+}
+
+export const CourseNavigator = ({ subjectCode, topics = [] }: CourseNavigatorProps) => {
+    // Generate nodes and edges with subject code and topics
+    const { nodes: initialNodes, edges: initialEdges } = initialElements(subjectCode, topics);
+
     const [nodes] = useNodesState(initialNodes);
     const [edges] = useEdgesState(initialEdges);
     const navigate = useNavigate();
@@ -29,11 +39,8 @@ export const CourseNavigator = () => {
         if (path) navigate(path);
     };
 
-    console.log(edges);
     return (
-        <div
-            className="floating-edges"
-            style={{ height: 420, width: '100%' }}>
+        <div className="course-navigator">
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -50,8 +57,14 @@ export const CourseNavigator = () => {
                 zoomOnScroll={false}
                 zoomOnPinch={false}
                 zoomOnDoubleClick={false}
-                preventScrolling={false}>
-                {/* <Background /> */}
+                preventScrolling={false}
+                proOptions={{ hideAttribution: true }}>
+                <Background
+                    variant={BackgroundVariant.Dots}
+                    gap={20}
+                    size={1}
+                    color="#e0e7ff"
+                />
             </ReactFlow>
         </div>
     );

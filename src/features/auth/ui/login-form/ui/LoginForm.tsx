@@ -69,7 +69,7 @@ export const LoginForm = () => {
                     id="iin"
                     label="ИИН"
                     error={errors.iin?.message}
-                    inputMode="numeric"
+                    inputMode="text"
                     maxLength={12}
                     placeholder="Введите ИИН"
                     autoFocus
