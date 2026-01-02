@@ -40,9 +40,16 @@ interface CardTopic {
 interface TopicGraphProps {
     subjectCode: string;
     topics?: CardTopic[];
+    onTopicSelect?: (topicId: number | null) => void;
+    selectedTopicId?: number | null;
 }
 
-export const TopicGraph = ({ subjectCode, topics = [] }: TopicGraphProps) => {
+export const TopicGraph = ({
+    subjectCode,
+    topics = [],
+    onTopicSelect,
+    selectedTopicId
+}: TopicGraphProps) => {
     const svgRef = useRef<SVGSVGElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const [expandedNodes, setExpandedNodes] = useState<Set<string>>(
@@ -357,7 +364,16 @@ export const TopicGraph = ({ subjectCode, topics = [] }: TopicGraphProps) => {
                 return next;
             });
         }
-        // Note: Removed navigation for leaf nodes - you can add it back if needed
+
+        // Call onTopicSelect when clicking on a topic node
+        if (onTopicSelect) {
+            if (node.id === 'center') {
+                onTopicSelect(null); // Reset filter
+            } else if (node.id.startsWith('topic-')) {
+                const topicId = parseInt(node.id.replace('topic-', ''));
+                onTopicSelect(topicId);
+            }
+        }
     };
 
     const handleNodeRightClick = (node: GraphNode) => {

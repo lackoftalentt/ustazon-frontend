@@ -1,0 +1,42 @@
+.badge {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topic {
+    background: #f0f9ff;
+
+    .label {
+        color: #0284c7;
+    }
+
+    .resetLink {
+        color: #0284c7;
+    }
+}
+
+.window {
+    background: #f0fdf4;
+    border: 1px solid #2f8450;
+
+    .label {
+        color: #2f8450;
+    }
+
+    .resetLink {
+        color: #2f8450;
+    }
+}
+
+.label {
+    font-weight: 500;
+}
+
+.resetLink {
+    text-decoration: underline;
+    font-size: 14px;
+}

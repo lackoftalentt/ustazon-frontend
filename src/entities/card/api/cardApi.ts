@@ -131,12 +131,7 @@ export interface CardTopicUpdate {
     parent_topic_id?: number | null;
 }
 
-// API functions
 export const cardApi = {
-    // Card endpoints
-    /**
-     * Get cards with optional filters
-     */
     async getCards(filters?: CardFilters): Promise<CardListItem[]> {
         const response = await apiClient.get<CardListItem[]>('/cards/', {
             params: filters
@@ -144,9 +139,6 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Get card by ID with full details
-     */
     async getCardById(id: number): Promise<CardDetailResponse> {
         const response = await apiClient.get<CardDetailResponse>(
             `/cards/${id}`
@@ -154,9 +146,6 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Create new card
-     */
     async createCard(data: CardCreate): Promise<CardDetailResponse> {
         const response = await apiClient.post<CardDetailResponse>(
             '/cards/',
@@ -165,9 +154,6 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Update card
-     */
     async updateCard(
         id: number,
         data: CardUpdate
@@ -179,16 +165,10 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Delete card
-     */
     async deleteCard(id: number): Promise<void> {
         await apiClient.delete(`/cards/${id}`);
     },
 
-    /**
-     * Toggle favorite status
-     */
     async toggleFavorite(id: number): Promise<CardDetailResponse> {
         const response = await apiClient.post<CardDetailResponse>(
             `/cards/${id}/favorite`
@@ -196,9 +176,6 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Get user's favorite cards
-     */
     async getMyFavorites(params?: {
         skip?: number;
         limit?: number;
@@ -210,10 +187,6 @@ export const cardApi = {
         return response.data;
     },
 
-    // Topic endpoints
-    /**
-     * Get all card topics
-     */
     async getCardTopics(params?: {
         skip?: number;
         limit?: number;
@@ -224,17 +197,11 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Get card topic by ID
-     */
     async getCardTopicById(id: number): Promise<CardTopic> {
         const response = await apiClient.get<CardTopic>(`/cards/topics/${id}`);
         return response.data;
     },
 
-    /**
-     * Create new card topic
-     */
     async createCardTopic(data: CardTopicCreate): Promise<CardTopic> {
         const response = await apiClient.post<CardTopic>(
             '/cards/topics/',
@@ -243,9 +210,6 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Update card topic
-     */
     async updateCardTopic(
         id: number,
         data: CardTopicUpdate
@@ -257,9 +221,6 @@ export const cardApi = {
         return response.data;
     },
 
-    /**
-     * Delete card topic
-     */
     async deleteCardTopic(id: number): Promise<void> {
         await apiClient.delete(`/cards/topics/${id}`);
     }

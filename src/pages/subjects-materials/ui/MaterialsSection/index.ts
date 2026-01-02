@@ -1,0 +1,1 @@
+export { MaterialsSection } from './MaterialsSection';

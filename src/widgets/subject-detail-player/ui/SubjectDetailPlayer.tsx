@@ -10,7 +10,7 @@ export const SubjectDetailPlayer = () => {
             <div className={s.video}>
                 <div className={s.playerWrapper}>
                     <ReactPlayer
-                        src="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                         playing={playing}
                         volume={0.8}
                         width="100%"
