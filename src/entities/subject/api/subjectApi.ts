@@ -1,6 +1,5 @@
 import { apiClient } from '@shared/api/apiClient';
 
-// Types
 export interface InstitutionType {
     id: number;
     name: string;
@@ -47,11 +46,7 @@ export interface SubjectUpdate {
     institution_type_ids?: number[];
 }
 
-// API functions
 export const subjectApi = {
-    /**
-     * Get all subjects
-     */
     async getSubjects(params?: {
         skip?: number;
         limit?: number;
@@ -62,48 +57,32 @@ export const subjectApi = {
         return response.data;
     },
 
-    /**
-     * Get subject by ID
-     */
     async getSubjectById(id: number): Promise<Subject> {
         const response = await apiClient.get<Subject>(`/subjects/${id}`);
         return response.data;
     },
 
-    /**
-     * Get subject by code
-     */
     async getSubjectByCode(code: string): Promise<Subject> {
-        const response = await apiClient.get<Subject>(`/subjects/code/${code}`);
+        const response = await apiClient.get<Subject>(
+            `/subjects/code/${encodeURIComponent(code)}`
+        );
         return response.data;
     },
 
-    /**
-     * Create new subject
-     */
     async createSubject(data: SubjectCreate): Promise<Subject> {
         const response = await apiClient.post<Subject>('/subjects', data);
         return response.data;
     },
 
-    /**
-     * Update subject
-     */
     async updateSubject(id: number, data: SubjectUpdate): Promise<Subject> {
         const response = await apiClient.put<Subject>(`/subjects/${id}`, data);
         return response.data;
     },
 
-    /**
-     * Delete subject
-     */
     async deleteSubject(id: number): Promise<void> {
         await apiClient.delete(`/subjects/${id}`);
     },
 
-    /**
-     * Get all institution types
-     */
     async getInstitutionTypes(params?: {
         skip?: number;
         limit?: number;
@@ -115,13 +94,25 @@ export const subjectApi = {
         return response.data;
     },
 
-    /**
-     * Get institution type by ID
-     */
     async getInstitutionTypeById(id: number): Promise<InstitutionType> {
         const response = await apiClient.get<InstitutionType>(
             `/subjects/institution-types/${id}`
         );
+        return response.data;
+    },
+
+    async getWindows(params?: {
+        skip?: number;
+        limit?: number;
+    }): Promise<Window[]> {
+        const response = await apiClient.get<Window[]>('/subjects/windows/', {
+            params
+        });
+        return response.data;
+    },
+
+    async getWindowById(id: number): Promise<Window> {
+        const response = await apiClient.get<Window>(`/subjects/windows/${id}`);
         return response.data;
     }
 };

@@ -25,7 +25,7 @@ export const Header = () => {
 
                     <nav className={s.nav}>
                         <Link
-                            to="/subjects-material"
+                            to="/subjects"
                             className={s.navLink}>
                             <span className={s.navLinkText}>
                                 Каталог курсов
@@ -39,10 +39,10 @@ export const Header = () => {
                     </nav>
                 </div>
                 <div className={s.rightSide}>
-                    <button className={s.langSwitcher}>
+                    {/* <button className={s.langSwitcher}>
                         <Typography className={s.langIcon} />
                         <span>Русский</span>
-                    </button>
+                    </button> */}
 
                     {isAuth ? (
                         <div className={s.userSection}>

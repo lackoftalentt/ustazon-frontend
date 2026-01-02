@@ -13,7 +13,7 @@ interface SubjectCardProps {
 }
 
 export const SubjectCard = ({
-    // id,
+    id,
     title,
     description,
     thumbnail,

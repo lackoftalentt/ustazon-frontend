@@ -1,64 +1,86 @@
-.subjectMaterialPage {
-    display: flex;
-    padding: $spacing-xl 0;
+@use '@/shared/styles/variables' as *;
+
+.subjectPage {
+    padding-top: $spacing-md;
+}
+
+.searchInput {
+    margin-bottom: $spacing-xl;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-}
-
-.header {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-2xl;
-    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-3xl;
     margin-bottom: $spacing-3xl;
 }
 
-.title {
-    margin: 0;
+.showMoreLink {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    color: $color-green-primary;
+    text-decoration: none;
+    position: relative;
+
+    width: fit-content;
+
+    transition: color $transition-normal;
+
+    grid-column: 3 / -1;
+    justify-self: end;
 }
 
+.arrowIcon {
+    width: 18px;
+    height: 18px;
+
+    stroke: $color-green-primary;
+    fill: none;
+
+    transform: rotate(180deg);
+    transition: transform $transition-normal;
+}
+
+.showMoreLink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    height: 2px;
+    width: 100%;
+
+    background: $color-green-primary;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform $transition-normal;
+}
+
+.showMoreLink:hover::after {
+    transform: scaleX(1);
+}
+
+.showMoreLink:hover .arrowIcon {
+    transform: rotate(180deg) translateX(3px);
+}
+
+.iconInBtn {
+    filter: invert(34%) sepia(9%) saturate(3120%) hue-rotate(81deg)
+        brightness(106%) contrast(78%);
+    transition: all $transition-normal;
+}
 .searchInput {
-    width: 100%;
-    margin: 0;
+    position: relative;
+    z-index: 2;
 }
 
-.cardsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 50px;
-    width: 100%;
+.searchInput,
+.searchInput * {
+    pointer-events: auto;
 }
-.page {
-    padding: $spacing-xl 0;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 32px;
-    margin-top: 24px;
-}
-
-.searchInput {
-    margin-bottom: 24px;
-    width: 100%;
-}
-
-.noResults {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px;
-    color: $color-gray-medium;
-    font-size: $font-size-lg;
-    background-color: $color-gray-light;
-    border-radius: $radius-md;
-    margin-top: 20px;
+.field {
+    position: relative;
+    z-index: 2;
 }

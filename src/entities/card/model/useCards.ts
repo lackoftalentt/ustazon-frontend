@@ -8,7 +8,6 @@ import type {
     CardTopicUpdate
 } from '../api/cardApi';
 
-// Query keys
 export const cardKeys = {
     all: ['cards'] as const,
     lists: () => [...cardKeys.all, 'list'] as const,
@@ -80,9 +79,6 @@ export const useUpdateCard = () => {
     });
 };
 
-/**
- * Hook to delete card
- */
 export const useDeleteCard = () => {
     const queryClient = useQueryClient();
 
@@ -94,9 +90,6 @@ export const useDeleteCard = () => {
     });
 };
 
-/**
- * Hook to toggle favorite
- */
 export const useToggleFavorite = () => {
     const queryClient = useQueryClient();
 
@@ -110,9 +103,6 @@ export const useToggleFavorite = () => {
     });
 };
 
-/**
- * Hook to get user's favorites
- */
 export const useMyFavorites = (params?: { skip?: number; limit?: number }) => {
     return useQuery({
         queryKey: [...cardKeys.favorites(), params] as const,
@@ -121,9 +111,6 @@ export const useMyFavorites = (params?: { skip?: number; limit?: number }) => {
     });
 };
 
-/**
- * Hook to get all card topics
- */
 export const useCardTopics = (params?: { skip?: number; limit?: number }) => {
     return useQuery({
         queryKey: cardKeys.topics.list(params),
@@ -132,9 +119,6 @@ export const useCardTopics = (params?: { skip?: number; limit?: number }) => {
     });
 };
 
-/**
- * Hook to get card topic by ID
- */
 export const useCardTopic = (id: number, enabled = true) => {
     return useQuery({
         queryKey: cardKeys.topics.detail(id),
@@ -144,9 +128,6 @@ export const useCardTopic = (id: number, enabled = true) => {
     });
 };
 
-/**
- * Hook to create card topic
- */
 export const useCreateCardTopic = () => {
     const queryClient = useQueryClient();
 
@@ -160,9 +141,6 @@ export const useCreateCardTopic = () => {
     });
 };
 
-/**
- * Hook to update card topic
- */
 export const useUpdateCardTopic = () => {
     const queryClient = useQueryClient();
 
@@ -180,9 +158,6 @@ export const useUpdateCardTopic = () => {
     });
 };
 
-/**
- * Hook to delete card topic
- */
 export const useDeleteCardTopic = () => {
     const queryClient = useQueryClient();
 

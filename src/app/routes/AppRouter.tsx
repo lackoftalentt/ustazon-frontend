@@ -9,15 +9,10 @@ const LoginPage = lazy(() => import('@/pages/login'));
 const RegisterPage = lazy(() => import('@/pages/register'));
 const ResetPasswordPage = lazy(() => import('@/pages/reset-password'));
 const HomePage = lazy(() => import('@/pages/home'));
-const SubjectsMaterialPage = lazy(() => import('@/pages/subjects-materials'));
-const SubjectPage = lazy(() => import('@/pages/subject'));
+const SubjectsMaterialsPage = lazy(() => import('@/pages/subjects-materials'));
+const SubjectsPage = lazy(() => import('@/pages/subjects'));
 const SubjectDetailPage = lazy(() => import('@/pages/subject-detail'));
 const AIChatPage = lazy(() => import('@/pages/ai-chat'));
-const SubjectWorkSheetsPage = lazy(() => import('@/pages/subject-work-sheets'));
-const SubjectKmzhPage = lazy(() => import('@/pages/subject-kmzh'));
-const SubjectPresentationsPage = lazy(
-    () => import('@/pages/subject-presentations')
-);
 const KmzhPage = lazy(() => import('@/pages/kmzh'));
 const SubjectPresentationDetailPage = lazy(
     () => import('@/pages/subject-presentation-detail')
@@ -50,34 +45,21 @@ export const AppRouter = () => {
                         index
                         element={<HomePage />}
                     />
-
                     <Route
-                        path="subjects-material"
-                        element={<SubjectsMaterialPage />}
+                        path="/subjects"
+                        element={<SubjectsPage />}
                     />
                     <Route
-                        path="/subject/:subjectCode"
-                        element={<SubjectPage />}
+                        path="subjects-materials/:subjectCode"
+                        element={<SubjectsMaterialsPage />}
                     />
                     <Route
-                        path="/subject/:subjectCode/detail/:cardId"
+                        path="/subjects-materials/:subjectCode/detail/:cardId"
                         element={<SubjectDetailPage />}
                     />
                     <Route
                         path="ai-chat"
                         element={<AIChatPage />}
-                    />
-                    <Route
-                        path="subject/kmzh"
-                        element={<SubjectKmzhPage />}
-                    />
-                    <Route
-                        path="subject/work-sheets"
-                        element={<SubjectWorkSheetsPage />}
-                    />
-                    <Route
-                        path="subject/presentations"
-                        element={<SubjectPresentationsPage />}
                     />
                     <Route
                         path="kmzh"

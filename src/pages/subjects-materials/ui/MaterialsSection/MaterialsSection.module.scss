@@ -1,0 +1,66 @@
+@use '@/shared/styles/variables' as *;
+
+.section {
+    margin-bottom: $spacing-3xl;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-3xl;
+    margin-top: $spacing-lg;
+}
+
+.showMoreWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: $spacing-md;
+}
+
+.showMoreLink {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    color: $color-green-primary;
+    text-decoration: none;
+    position: relative;
+
+    width: fit-content;
+
+    transition: color $transition-normal;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+
+        height: 2px;
+        width: 100%;
+
+        background: $color-green-primary;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform $transition-normal;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+    }
+
+    &:hover .arrowIcon {
+        transform: rotate(180deg) translateX(3px);
+    }
+}
+
+.arrowIcon {
+    width: 18px;
+    height: 18px;
+
+    stroke: $color-green-primary;
+    fill: none;
+
+    transform: rotate(180deg);
+    transition: transform $transition-normal;
+}

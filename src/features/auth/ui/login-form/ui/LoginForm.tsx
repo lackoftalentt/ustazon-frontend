@@ -34,9 +34,8 @@ export const LoginForm = () => {
                 phoneNumber: userData.phone
             });
 
-            console.log('Login successful:', userData);
-            toast.success('Вход выполнен успешно!');
             navigate('/');
+            toast.success('Вход выполнен успешно!');
         } catch (error) {
             console.error('Login error:', error);
 
