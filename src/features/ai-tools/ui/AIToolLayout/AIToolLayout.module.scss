@@ -1,0 +1,146 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #1e293b;
+  overflow: hidden;
+
+  &.dark {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #f8fafc;
+  }
+}
+
+.sidebar {
+  width: 72px;
+  background: #ffffff;
+  border-right: 1px solid $color-gray-border;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 50;
+  padding-top: $spacing-xl;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  align-items: center;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    transform: translateX(-100%);
+    align-items: stretch;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}
+
+.nav {
+  flex: 1;
+  padding: $spacing-md 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  overflow-y: auto;
+  width: 100%;
+  align-items: center;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-md;
+  color: $color-gray-medium;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  position: relative;
+
+  &:hover {
+    background-color: $color-green-lightest;
+    color: $color-green-dark;
+  }
+
+  &.active {
+    background-color: $color-green-lightest;
+    color: $color-green-primary;
+    border-color: rgba($color-green-primary, 0.1);
+    box-shadow: 0 2px 4px rgba($color-green-primary, 0.1);
+  }
+
+  span {
+    display: none; // Hide text labels in Rail mode
+  }
+
+  // Mobile specific: Show full sidebar
+  @media (max-width: 768px) {
+    width: auto;
+    height: auto;
+    padding: $spacing-md $spacing-lg;
+    justify-content: flex-start;
+    border-radius: $radius-md;
+    margin: 0 $spacing-md;
+
+    span {
+      display: inline;
+    }
+  }
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.topBar {
+  position: absolute;
+  top: $spacing-lg;
+  right: $spacing-lg;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  // For mobile toggle positioning
+  @media (max-width: 768px) {
+    left: $spacing-md;
+    right: auto;
+  }
+}
+
+.mobileToggle {
+  display: none;
+  padding: $spacing-sm;
+  background: white;
+  border: 1px solid $color-gray-border;
+  border-radius: $radius-md;
+  cursor: pointer;
+  color: $color-gray-medium;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-2xl;
+  background-color: #f8fafc;
+}

@@ -1,12 +1,10 @@
-import { AIChat } from '@/features/ai-chat';
 import { AIToolLayout } from '@/features/ai-tools/ui/AIToolLayout/AIToolLayout';
+import { TestGenerator } from '@/features/ai-tools/ui/TestGenerator/TestGenerator';
 
-export const AIChatPage = () => {
+export const AITestPage = () => {
     return (
         <AIToolLayout>
-            <AIChat />
+            <TestGenerator />
         </AIToolLayout>
     );
 };
-
-export default AIChatPage;

@@ -21,13 +21,15 @@ type Attachment = {
 interface ChatInputProps {
     onSend: (payload: { message: string; attachments: File[] }) => void;
     placeholder?: string;
+    disabled?: boolean;
 }
 
 const uid = () => crypto.randomUUID?.() ?? String(Date.now() + Math.random());
 
 export const ChatInput = ({
     onSend,
-    placeholder = 'Введите текст'
+    placeholder = 'Введите текст',
+    disabled = false
 }: ChatInputProps) => {
     const [value, setValue] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,6 +75,8 @@ export const ChatInput = ({
     };
 
     const handleSend = () => {
+        if (disabled) return;
+
         const message = value.trim();
         if (!message && filesToSend.length === 0) return;
 
@@ -206,12 +210,13 @@ export const ChatInput = ({
                     value={value}
                     onChange={e => setValue(e.target.value)}
                     onKeyDown={handleKeyDown}
+                    disabled={disabled}
                 />
 
                 <button
                     className={s.sendButton}
                     onClick={handleSend}
-                    disabled={!value.trim() && attachments.length === 0}
+                    disabled={disabled || (!value.trim() && attachments.length === 0)}
                     aria-label="Отправить сообщение"
                     type="button">
                     <svg

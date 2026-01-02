@@ -1,0 +1,156 @@
+@use '@shared/styles/variables' as *;
+
+.quickCommands {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: $spacing-2xl;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xl;
+}
+
+.welcome {
+    text-align: center;
+    margin-bottom: $spacing-lg;
+}
+
+.welcomeTitle {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-gray-dark;
+    line-height: $line-height-tight;
+}
+
+.welcomeSubtitle {
+    margin: 0;
+    font-size: $font-size-base;
+    color: $color-gray-medium;
+    line-height: $line-height-relaxed;
+}
+
+.actionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: $spacing-md;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.actionCard {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+    background: white;
+    border: 1.5px solid $color-gray-border;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+
+    &:hover {
+        border-color: $color-green-primary;
+        box-shadow: 0 4px 12px rgba($color-green-primary, 0.15);
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.actionIcon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba($color-green-primary, 0.1) 0%, rgba($color-green-primary, 0.05) 100%);
+    border-radius: 12px;
+}
+
+.actionContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.actionTitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    line-height: $line-height-tight;
+}
+
+.actionDescription {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    line-height: $line-height-relaxed;
+}
+
+.examples {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $color-gray-border;
+}
+
+.examplesTitle {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-medium;
+}
+
+.examplesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+}
+
+.exampleChip {
+    padding: $spacing-sm $spacing-md;
+    background: $color-gray-light;
+    border: 1px solid $color-gray-border;
+    border-radius: 999px;
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: white;
+        border-color: $color-green-primary;
+        color: $color-green-dark;
+    }
+}
+
+@media (max-width: 768px) {
+    .quickCommands {
+        padding: $spacing-lg;
+    }
+
+    .welcomeTitle {
+        font-size: $font-size-xl;
+    }
+
+    .welcomeSubtitle {
+        font-size: $font-size-sm;
+    }
+
+    .actionCard {
+        padding: $spacing-md;
+    }
+
+    .actionIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,55 @@
+@use '@/shared/styles/variables' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    width: 100%;
+}
+
+.label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-green-dark;
+}
+
+.selectWrapper {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        width: 10px;
+        height: 6px;
+        background: $color-gray-medium;
+        clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+}
+
+.select {
+    width: 100%;
+    padding: $spacing-md $spacing-lg;
+    padding-right: 2.5rem;
+    font-size: $font-size-base;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    background: white;
+    color: $color-gray-dark;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.4);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $color-green-primary;
+        box-shadow: 0 0 0 3px rgba($color-green-primary, 0.1);
+    }
+}

@@ -1,0 +1,185 @@
+@use '@/shared/styles/variables' as *;
+
+.sidebar {
+    height: 100%;
+    background: #f8fafc;
+    border-right: 1px solid $color-gray-border;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &.open {
+        width: 280px;
+        min-width: 280px;
+    }
+
+    &.closed {
+        width: 0;
+        min-width: 0;
+        border-right: none;
+
+        .content {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .toggleBtn {
+            right: -24px;
+            background: white;
+            border: 1px solid $color-gray-border;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+.toggleBtn {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%) translateX(50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid $color-gray-border;
+    color: $color-gray-medium;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: $color-green-primary;
+        border-color: $color-green-primary;
+    }
+}
+
+.content {
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    height: 100%;
+    width: 280px; // Fixed width for content to prevent layout shifts
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+.newChatBtn {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-md;
+    background: white;
+    border: 1px solid $color-green-primary;
+    border-radius: $radius-md;
+    color: $color-green-primary;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+
+    &:hover {
+        background: $color-green-lightest;
+    }
+}
+
+.list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-gray-border;
+        border-radius: 2px;
+    }
+}
+
+.item {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-sm;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    group: relative;
+
+    &:hover {
+        background: white;
+        border-color: rgba($color-gray-border, 0.5);
+
+        .deleteBtn {
+            opacity: 1;
+        }
+    }
+
+    &.active {
+        background: white;
+        border-color: $color-green-primary;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+
+        .icon {
+            color: $color-green-primary;
+        }
+
+        .title {
+            color: $color-green-dark;
+            font-weight: $font-weight-medium;
+        }
+    }
+}
+
+.icon {
+    color: $color-gray-medium;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.title {
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.date {
+    font-size: $font-size-xs;
+    color: $color-gray-light;
+}
+
+.deleteBtn {
+    opacity: 0;
+    color: $color-gray-medium;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: #ef4444;
+        background: #fee2e2;
+    }
+}

@@ -1,0 +1,15 @@
+@use '@/shared/styles/variables' as *;
+
+.card {
+    background: white;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-lg;
+    padding: $spacing-xl;
+    transition: all 0.2s ease;
+
+    &.hoverable:hover {
+        transform: translateY(-2px);
+        border-color: rgba($color-green-primary, 0.3);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+}

@@ -1,0 +1,52 @@
+@use '@/shared/styles/variables' as *;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    width: 100%;
+}
+
+.label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-green-dark;
+}
+
+.inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    width: 100%;
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size-base;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    background: white;
+    color: $color-gray-dark;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+        color: $color-gray-medium;
+    }
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.4);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $color-green-primary;
+        box-shadow: 0 0 0 3px rgba($color-green-primary, 0.1);
+    }
+}
+
+.icon {
+    position: absolute;
+    color: #64748b;
+    pointer-events: none;
+    display: flex;
+}

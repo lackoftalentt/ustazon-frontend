@@ -1,192 +1,328 @@
-@use '@shared/styles/variables' as *;
+@use '@/shared/styles/variables' as *;
 
-.aiChat {
-    width: 100%;
-    margin: 0 auto;
-}
-
-.chatContainer {
-    height: 700px;
+.container {
     display: flex;
-    flex-direction: column;
-
-    border-radius: 28px;
-    background: linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #fbfbfb 100%);
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border-radius: $radius-lg;
     border: 1px solid $color-gray-border;
-
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02), 0 12px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-.top {
-    flex-shrink: 0;
-    padding: $spacing-2xl;
-    padding-bottom: $spacing-lg;
-
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 28px 28px 0 0;
-
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-lg;
-}
-
-.aiBadge {
-    display: flex;
-    align-items: center;
-    gap: $spacing-lg;
-
-    padding: $spacing-lg $spacing-2xl;
-    border-radius: 22px;
-
-    background: linear-gradient(
-        135deg,
-        $color-green-dark 0%,
-        $color-green-primary 70%
-    );
-    color: #fff;
-}
-
-.aiIcon {
-    width: 32px;
-    height: 32px;
-    display: grid;
-    place-items: center;
-}
-
-.aiTexts {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.aiTitle {
-    margin: 0;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    line-height: $line-height-tight;
-}
-
-.aiSubtitle {
-    margin: 0;
-    font-size: $font-size-sm;
-    opacity: 0.9;
-    line-height: $line-height-tight;
-}
-
-.placeholderCards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: $spacing-md;
-}
-
-.placeholderCard {
-    border: 1px solid $color-gray-border;
-    border-radius: 999px;
-    padding: 10px 14px;
-
-    background: #fff;
-    cursor: pointer;
-
-    transition: transform $transition-fast, border-color $transition-fast,
-        box-shadow $transition-fast;
-
-    &:hover {
-        border-color: rgba(48, 122, 64, 0.35);
-        box-shadow: 0 8px 18px rgba(13, 83, 55, 0.1);
-        transform: translateY(-1px);
-    }
-
-    &:active {
-        transform: translateY(0);
-    }
-}
-
-.placeholderLabel {
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-medium;
-    line-height: $line-height-tight;
-}
-
-.placeholderText {
-    font-size: $font-size-sm;
-    color: $color-gray-dark;
-    line-height: $line-height-tight;
-}
-
-.chatMessages {
+.mainContent {
     flex: 1;
-    overflow-y: auto;
-    padding: $spacing-2xl;
     display: flex;
     flex-direction: column;
-    gap: $spacing-md;
+    overflow: hidden;
+    height: 100%;
+}
 
-    background: radial-gradient(
-            900px 220px at 50% 0%,
-            rgba(48, 122, 64, 0.06) 0%,
-            rgba(255, 255, 255, 0) 55%
-        ),
-        #fff;
+.messagesContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: $spacing-xl;
+    gap: $spacing-lg;
+    scroll-behavior: smooth;
 
     &::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
     }
-    &::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.15);
-        border-radius: 999px;
 
-        &:hover {
-            background: rgba(0, 0, 0, 0.25);
+    &::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.4);
+        border-radius: 3px;
+    }
+}
+
+.message {
+    display: flex;
+    gap: $spacing-md;
+    max-width: 85%;
+    animation: fadeIn 0.3s ease-out;
+
+    &.user {
+        align-self: flex-end;
+        flex-direction: row-reverse;
+
+        .bubble {
+            background-color: $color-green-primary;
+            color: white;
+            border-radius: 20px 20px 4px 20px;
+            box-shadow: 0 4px 12px rgba($color-green-primary, 0.2);
+        }
+    }
+
+    &.ai {
+        align-self: flex-start;
+
+        .bubble {
+            background: white;
+            color: $color-green-dark;
+            border-radius: 20px 20px 20px 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid $color-gray-border;
         }
     }
 }
 
-.chatFooter {
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
     flex-shrink: 0;
-    padding: $spacing-lg $spacing-2xl;
-    padding-bottom: $spacing-2xl;
 
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(8px);
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 0 0 28px 28px;
-
-    overflow: visible;
-}
-
-@media (max-width: 768px) {
-    .chatContainer {
-        height: calc(100vh - 110px);
-        border-radius: $radius-xl;
+    &.userAvatar {
+        background: #e2e8f0;
+        color: $color-green-dark;
     }
 
-    .top {
-        padding: $spacing-lg;
-    }
-
-    .chatMessages {
-        padding: $spacing-lg;
-    }
-
-    .chatFooter {
-        padding: $spacing-md $spacing-lg;
-    }
-
-    .placeholderCards {
-        grid-template-columns: 1fr;
+    &.aiAvatar {
+        background-color: $color-green-lightest;
+        color: $color-green-primary;
+        box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .chatContainer * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+.bubble {
+    padding: $spacing-md $spacing-lg;
+    line-height: $line-height-normal;
+    font-size: 0.95rem;
+    position: relative;
+    word-break: break-word;
+
+    p {
+        margin: 0;
+
+        &:not(:last-child) {
+            margin-bottom: $spacing-sm;
+        }
+    }
+}
+
+.footer {
+    padding: $spacing-xl;
+    background: white;
+    border-top: 1px solid $color-gray-border;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.filesPreview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-bottom: -$spacing-xs; // Slightly pull closer to input
+}
+
+.fileBadge {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    background: #f1f5f9;
+    padding: 6px 10px;
+    border-radius: $radius-md;
+    font-size: $font-size-xs;
+    color: $color-green-dark;
+    border: 1px solid $color-gray-border;
+}
+
+.fileName {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.removeFileBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e2e8f0;
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    color: $color-gray-medium;
+    padding: 0;
+
+    &:hover {
+        background: #cbd5e1;
+        color: #ef4444;
+    }
+}
+
+.inputWrapper {
+    display: flex;
+    gap: $spacing-sm;
+    align-items: flex-end;
+    background: white;
+    padding: $spacing-sm;
+    border-radius: $radius-lg;
+    border: 1px solid $color-gray-border;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+
+    &:focus-within {
+        border-color: $color-green-primary;
+        box-shadow: 0 0 0 3px rgba($color-green-primary, 0.1);
+    }
+}
+
+.textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: $spacing-xs $spacing-sm;
+    max-height: 120px;
+    min-height: 24px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: $color-green-dark;
+    background: transparent;
+
+    &::placeholder {
+        color: $color-gray-medium;
+    }
+}
+
+.attachBtn,
+.sendBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-sm;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.attachBtn {
+    background: #f1f5f9;
+    color: $color-gray-medium;
+
+    &:hover {
+        background: #e2e8f0;
+        color: $color-green-dark;
+    }
+}
+
+.sendBtn {
+    background-color: $color-green-primary;
+    color: white;
+
+    &:hover:not(:disabled) {
+        background-color: $color-green-dark;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: default;
+        background: $color-gray-border;
+    }
+}
+
+.typingIndicator {
+    display: flex;
+    gap: 4px;
+    padding: 0.5rem;
+
+    span {
+        width: 6px;
+        height: 6px;
+        background: $color-gray-medium;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out;
+
+        &:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        &:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modelSelectContainer {
+    margin-bottom: $spacing-sm;
+    align-self: flex-start;
+    background: #f1f5f9;
+    padding: 0 12px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.3);
+        background: #e2e8f0;
+    }
+}
+
+.modelIcon {
+    color: $color-green-primary;
+    pointer-events: none;
+}
+
+.modelSelect {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+    background: transparent;
+    border: none;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    padding: 6px 0;
+    font-weight: $font-weight-medium;
+    color: $color-green-dark;
+    min-width: 140px;
+
+    option {
+        color: $color-gray-dark;
+        background: white;
+        padding: 5px;
     }
 }

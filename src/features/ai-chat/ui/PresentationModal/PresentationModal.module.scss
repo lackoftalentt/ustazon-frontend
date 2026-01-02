@@ -1,0 +1,202 @@
+@use '@shared/styles/variables' as *;
+
+.modalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    background: white;
+    border-radius: $radius-lg;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-lg $spacing-xl;
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    margin: 0;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: $color-gray-medium;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-sm;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: $color-gray-light;
+        color: $color-gray-dark;
+    }
+}
+
+.form {
+    padding: $spacing-xl;
+}
+
+.field {
+    margin-bottom: $spacing-lg;
+}
+
+.label {
+    display: block;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
+    margin-bottom: $spacing-xs;
+}
+
+.input,
+.select {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    font-size: $font-size-base;
+    color: $color-gray-dark;
+    transition: all $transition-fast;
+    background: white;
+
+    &:focus {
+        outline: none;
+        border-color: $color-green-primary;
+        box-shadow: 0 0 0 3px rgba($color-green-primary, 0.1);
+    }
+
+    &::placeholder {
+        color: $color-gray-medium;
+    }
+}
+
+.select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.hint {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin-top: $spacing-xs;
+}
+
+.actions {
+    display: flex;
+    gap: $spacing-md;
+    justify-content: flex-end;
+    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $color-gray-border;
+}
+
+.cancelBtn {
+    padding: $spacing-sm $spacing-lg;
+    border-radius: $radius-md;
+    background: white;
+    color: $color-gray-dark;
+    border: 1px solid $color-gray-border;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: $color-gray-light;
+    }
+}
+
+.submitBtn {
+    padding: $spacing-sm $spacing-xl;
+    border-radius: $radius-md;
+    background: linear-gradient(135deg, $color-green-primary, darken($color-green-primary, 10%));
+    color: white;
+    border: none;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: all $transition-fast;
+    box-shadow: 0 2px 8px rgba($color-green-primary, 0.3);
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($color-green-primary, 0.4);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .header,
+    .form {
+        padding: $spacing-md $spacing-lg;
+    }
+
+    .title {
+        font-size: $font-size-base;
+    }
+
+    .actions {
+        flex-direction: column-reverse;
+
+        button {
+            width: 100%;
+        }
+    }
+}

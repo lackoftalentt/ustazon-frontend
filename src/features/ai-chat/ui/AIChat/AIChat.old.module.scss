@@ -1,0 +1,277 @@
+@use '@shared/styles/variables' as *;
+
+.aiChat {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.chatContainer {
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 28px;
+    background: linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #fbfbfb 100%);
+    border: 1px solid $color-gray-border;
+
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02), 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.top {
+    flex-shrink: 0;
+    padding: $spacing-2xl;
+    padding-bottom: $spacing-lg;
+
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 28px 28px 0 0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-lg;
+}
+
+.topControls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+}
+
+.modelSelector {
+    padding: $spacing-sm $spacing-lg;
+    padding-right: $spacing-2xl;
+    border: 1px solid $color-gray-border;
+    border-radius: 999px;
+    background: white;
+    color: $color-gray-dark;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    &:hover:not(:disabled) {
+        border-color: $color-green-primary;
+        box-shadow: 0 4px 12px rgba($color-green-primary, 0.15);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $color-green-primary;
+        box-shadow: 0 0 0 3px rgba($color-green-primary, 0.1);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.settingsBtn {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid $color-gray-border;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-fast;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+        background: $color-gray-light;
+        border-color: $color-green-primary;
+        box-shadow: 0 4px 12px rgba($color-green-primary, 0.2);
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.aiBadge {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+
+    padding: $spacing-lg $spacing-2xl;
+    border-radius: 22px;
+
+    background: linear-gradient(
+        135deg,
+        $color-green-dark 0%,
+        $color-green-primary 70%
+    );
+    color: #fff;
+}
+
+.aiIcon {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+}
+
+.aiTexts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.aiTitle {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-tight;
+}
+
+.aiSubtitle {
+    margin: 0;
+    font-size: $font-size-sm;
+    opacity: 0.9;
+    line-height: $line-height-tight;
+}
+
+.placeholderCards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $spacing-md;
+}
+
+.placeholderCard {
+    border: 1px solid $color-gray-border;
+    border-radius: 999px;
+    padding: 10px 14px;
+
+    background: #fff;
+    cursor: pointer;
+
+    transition: transform $transition-fast, border-color $transition-fast,
+        box-shadow $transition-fast;
+
+    &:hover {
+        border-color: rgba(48, 122, 64, 0.35);
+        box-shadow: 0 8px 18px rgba(13, 83, 55, 0.1);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.placeholderLabel {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-medium;
+    line-height: $line-height-tight;
+}
+
+.placeholderText {
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    line-height: $line-height-tight;
+}
+
+.chatMessages {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-2xl;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    background: radial-gradient(
+            900px 220px at 50% 0%,
+            rgba(48, 122, 64, 0.06) 0%,
+            rgba(255, 255, 255, 0) 55%
+        ),
+        #fff;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 999px;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.25);
+        }
+    }
+}
+
+.chatFooter {
+    flex-shrink: 0;
+    padding: $spacing-lg $spacing-2xl;
+    padding-bottom: $spacing-2xl;
+
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 0 0 28px 28px;
+
+    overflow: visible;
+}
+
+@media (max-width: 768px) {
+    .chatContainer {
+        height: calc(100vh - 110px);
+        border-radius: $radius-xl;
+    }
+
+    .top {
+        padding: $spacing-lg;
+    }
+
+    .chatMessages {
+        padding: $spacing-lg;
+    }
+
+    .chatFooter {
+        padding: $spacing-md $spacing-lg;
+    }
+
+    .placeholderCards {
+        grid-template-columns: 1fr;
+    }
+
+    .topControls {
+        gap: $spacing-xs;
+    }
+
+    .modelSelector {
+        font-size: $font-size-xs;
+        padding: $spacing-xs $spacing-md;
+        padding-right: $spacing-xl;
+    }
+
+    .settingsBtn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chatContainer * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

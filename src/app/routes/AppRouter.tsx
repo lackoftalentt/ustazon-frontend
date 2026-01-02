@@ -13,6 +13,9 @@ const SubjectsMaterialPage = lazy(() => import('@/pages/subjects-materials'));
 const SubjectPage = lazy(() => import('@/pages/subject'));
 const SubjectDetailPage = lazy(() => import('@/pages/subject-detail'));
 const AIChatPage = lazy(() => import('@/pages/ai-chat'));
+const AIPrezaPage = lazy(() => import('@/pages/ai-preza'));
+const AITestPage = lazy(() => import('@/pages/ai-test'));
+const AIManimPage = lazy(() => import('@/pages/ai-manim'));
 const SubjectWorkSheetsPage = lazy(() => import('@/pages/subject-work-sheets'));
 const SubjectKmzhPage = lazy(() => import('@/pages/subject-kmzh'));
 const SubjectPresentationsPage = lazy(
@@ -66,6 +69,18 @@ export const AppRouter = () => {
                     <Route
                         path="ai-chat"
                         element={<AIChatPage />}
+                    />
+                    <Route
+                        path="ai-preza"
+                        element={<AIPrezaPage />}
+                    />
+                    <Route
+                        path="ai-test"
+                        element={<AITestPage />}
+                    />
+                    <Route
+                        path="ai-manim"
+                        element={<AIManimPage />}
                     />
                     <Route
                         path="subject/kmzh"

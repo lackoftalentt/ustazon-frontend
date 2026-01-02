@@ -1,0 +1,107 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-2xl;
+    height: 100%;
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 420px 1fr;
+        align-items: start;
+    }
+}
+
+.formSection {
+    background: white;
+    border-radius: $radius-lg;
+    padding: $spacing-xl;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    height: auto;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    border: 1px solid $color-gray-border;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-gray-border;
+        border-radius: 3px;
+    }
+}
+
+.header {
+    border-bottom: 1px solid $color-gray-border;
+    padding-bottom: $spacing-lg;
+    margin-bottom: $spacing-sm;
+}
+
+.title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-green-dark;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+}
+
+.description {
+    margin: $spacing-sm 0 0;
+    color: $color-gray-medium;
+    font-size: 0.95rem;
+}
+
+.previewSection {
+    background: white;
+    border-radius: $radius-lg;
+    border: 1px dashed $color-gray-border;
+    padding: $spacing-2xl;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.3s ease;
+
+    &.hasContent {
+        background: white;
+        border-style: solid;
+        border-color: $color-gray-border;
+        align-items: stretch;
+        justify-content: flex-start;
+        text-align: left;
+    }
+}
+
+.emptyState {
+    color: $color-gray-medium;
+    max-width: 400px;
+}
+
+.emptyIcon {
+    font-size: 4rem;
+    margin-bottom: $spacing-lg;
+    color: $color-gray-border;
+}
+
+.emptyTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-green-dark;
+    margin-bottom: $spacing-md;
+}

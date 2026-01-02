@@ -1,0 +1,131 @@
+.quickCommands {
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 8px 0;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.categories {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+
+    &::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 2px;
+    }
+}
+
+.categoryBtn {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+
+    &:hover {
+        border-color: #007bff;
+        color: #007bff;
+    }
+
+    &.active {
+        background: #007bff;
+        border-color: #007bff;
+        color: #fff;
+    }
+}
+
+.promptsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.promptCard {
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        border-color: #007bff;
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+        transform: translateY(-2px);
+    }
+}
+
+.presentationCard {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+
+    &:hover {
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+        transform: translateY(-3px);
+    }
+
+    .promptName,
+    .promptPreview {
+        color: white;
+    }
+
+    .promptName {
+        font-size: 18px;
+    }
+}
+
+.promptName {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.promptPreview {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.loading,
+.error,
+.empty {
+    padding: 40px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.error {
+    color: #dc3545;
+}

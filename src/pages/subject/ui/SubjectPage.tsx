@@ -14,7 +14,7 @@ import { Loader } from '@/shared/ui/loader';
 
 export const SubjectPage = () => {
     const { subjectCode } = useParams<{ subjectCode: string }>();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState('');
 
     const selectedTopicId = searchParams.get('topic');
@@ -37,7 +37,7 @@ export const SubjectPage = () => {
             : undefined
     );
 
-    const { data: allTopics, isLoading: isLoadingTopics } = useCardTopics({
+    const { isLoading: isLoadingTopics } = useCardTopics({
         limit: 1000
     });
 
