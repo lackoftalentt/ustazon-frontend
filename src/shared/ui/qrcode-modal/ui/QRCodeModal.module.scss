@@ -1,0 +1,55 @@
+.qrModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(white, 0.4);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn $transition-fast;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+.qrContent {
+    background: white;
+    padding: $spacing-2xl;
+    border-radius: $radius-md;
+    box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-gray-dark, 0.15);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+
+    h4 {
+        margin: 0 0 $spacing-lg 0;
+        color: $color-gray-dark;
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+    }
+}
+
+.qrCodePlaceholder {
+    padding: $spacing-xl;
+    background: $color-gray-light;
+    border-radius: $radius-sm;
+    margin-bottom: $spacing-lg;
+}
+
+.qrMock {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 240px;
+    background: white;
+    border-radius: $radius-sm;
+    color: $color-green-primary;
+}

@@ -18,6 +18,9 @@ const SubjectPresentationDetailPage = lazy(
     () => import('@/pages/subject-presentation-detail')
 );
 const ProfilePage = lazy(() => import('@/pages/profile'));
+const ProfileSettingsPage = lazy(() => import('@/pages/profile-settings'));
+const TestsPage = lazy(() => import('@/pages/tests'));
+const TakeTestPage = lazy(() => import('@/pages/take-test'));
 
 export const AppRouter = () => {
     return (
@@ -72,6 +75,18 @@ export const AppRouter = () => {
                     <Route
                         path="profile"
                         element={<ProfilePage />}
+                    />
+                    <Route
+                        path="profile-settings"
+                        element={<ProfileSettingsPage />}
+                    />
+                    <Route
+                        path="tests"
+                        element={<TestsPage />}
+                    />
+                    <Route
+                        path="take-test"
+                        element={<TakeTestPage />}
                     />
 
                     <Route path="lesson-plan">

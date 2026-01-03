@@ -1,0 +1,146 @@
+@use '@/shared/styles/variables' as *;
+
+.progressWrapper {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    width: 100%;
+}
+
+.progressTrack {
+    flex: 1;
+    background: $color-gray-border;
+    border-radius: $radius-md;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    border-radius: $radius-md;
+    transition: width $transition-slow ease-out;
+
+    &.animated {
+        background-size: 30px 30px;
+        animation: progressStripes 1s linear infinite;
+    }
+}
+
+// Sizes
+.sm {
+    .progressTrack {
+        height: 6px;
+    }
+
+    .progressLabel {
+        font-size: $font-size-xs;
+    }
+}
+
+.md {
+    .progressTrack {
+        height: 10px;
+    }
+
+    .progressLabel {
+        font-size: $font-size-sm;
+    }
+}
+
+.lg {
+    .progressTrack {
+        height: 14px;
+    }
+
+    .progressLabel {
+        font-size: $font-size-base;
+    }
+}
+
+// Variants
+.default {
+    background: linear-gradient(90deg, $color-green-primary, $color-green-dark);
+
+    &.animated {
+        background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent
+            ),
+            linear-gradient(90deg, $color-green-primary, $color-green-dark);
+    }
+}
+
+.success {
+    background: linear-gradient(90deg, #10b981, #059669);
+
+    &.animated {
+        background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent
+            ),
+            linear-gradient(90deg, #10b981, #059669);
+    }
+}
+
+.warning {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+
+    &.animated {
+        background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent
+            ),
+            linear-gradient(90deg, #f59e0b, #d97706);
+    }
+}
+
+.danger {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+
+    &.animated {
+        background-image: linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.15) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.15) 75%,
+                transparent 75%,
+                transparent
+            ),
+            linear-gradient(90deg, #ef4444, #dc2626);
+    }
+}
+
+.progressLabel {
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    min-width: 40px;
+    text-align: right;
+}
+
+@keyframes progressStripes {
+    0% {
+        background-position: 30px 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { AlertTriangle, Search } from 'lucide-react';
 
 import { SectionTitle } from '@/shared/ui/section-title';
 import { Container } from '@/shared/ui/container';
@@ -12,57 +13,22 @@ import s from './SubjectsPage.module.scss';
 
 const PAGE_SIZE = 9;
 
-const institutionTypes = [
-    {
-        name: 'Мектеп',
-        code: null,
-        id: 1,
-        created_at: '2025-12-30T18:40:39.719645',
-        updated_at: '2025-12-30T18:40:39.719651'
-    },
-    {
-        name: 'Университет',
-        code: null,
-        id: 2,
-        created_at: '2025-12-30T18:40:39.721469',
-        updated_at: '2025-12-30T18:40:39.721471'
-    },
-    {
-        name: 'Колледж',
-        code: null,
-        id: 3,
-        created_at: '2025-12-30T18:40:39.722375',
-        updated_at: '2025-12-30T18:40:39.722377'
-    },
-    {
-        name: 'Балабақша',
-        code: null,
-        id: 4,
-        created_at: '2025-12-30T18:40:39.723240',
-        updated_at: '2025-12-30T18:40:39.723243'
-    },
-    {
-        name: 'Python тілін үйрену',
-        code: null,
-        id: 5,
-        created_at: '2025-12-30T18:40:39.724044',
-        updated_at: '2025-12-30T18:40:39.724046'
-    }
-];
-
 export const SubjectsPage = () => {
     const [search, setSearch] = useState('');
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-    const { data: subjects = [], isLoading, isError } = useSubjects();
-    console.log(subjects);
+    const [activeFilter, setActiveFilter] = useState<string | null>(null);
+    const { data: subjects = [], isLoading, isError, refetch } = useSubjects();
 
-    const filteredSubjects = useMemo(
-        () =>
-            subjects.filter(subject =>
-                subject.name.toLowerCase().includes(search.toLowerCase())
-            ),
-        [subjects, search]
-    );
+    const filteredSubjects = useMemo(() => {
+        let filtered = subjects.filter(
+            subject => subject.name.toLowerCase().includes(search.toLowerCase())
+            // (subject.description?.toLowerCase() || '').includes(
+            //     search.toLowerCase()
+            // )
+        );
+
+        return filtered;
+    }, [subjects, search, activeFilter]);
 
     const visibleSubjects = filteredSubjects.slice(0, visibleCount);
     const hasMore = visibleCount < filteredSubjects.length;
@@ -76,6 +42,16 @@ export const SubjectsPage = () => {
         setVisibleCount(PAGE_SIZE);
     };
 
+    const handleRetry = () => {
+        refetch();
+    };
+
+    const handleClearSearch = () => {
+        setSearch('');
+        setActiveFilter(null);
+        setVisibleCount(PAGE_SIZE);
+    };
+
     return (
         <main className={s.subjectMaterialPage}>
             <Container className={s.container}>
@@ -85,34 +61,141 @@ export const SubjectsPage = () => {
                         title="Каталог курсов"
                     />
 
-                    <SearchInput
-                        className={s.searchInput}
-                        placeholder="Поиск по названию курса, категории или теме..."
-                        value={search}
-                        onChange={e => handleSearch(e.target.value)}
-                        onSubmit={() => {}}
-                    />
-                </div>
-
-                {isLoading && <p>Загрузка...</p>}
-                {isError && <p>Ошибка загрузки данных</p>}
-
-                <div className={s.cardsContainer}>
-                    {visibleSubjects.map(subject => (
-                        <SubjectCard
-                            key={subject.id}
-                            id={subject.id}
-                            title={subject.name}
-                            thumbnail={subject.image_url ?? undefined}
-                            path={`/subjects-materials/${subject.code}`}
+                    <div className={s.searchContainer}>
+                        <SearchInput
+                            className={s.searchInput}
+                            placeholder="Поиск по названию курса, категории или теме..."
+                            value={search}
+                            onChange={e => handleSearch(e.target.value)}
+                            onSubmit={() => {}}
                         />
-                    ))}
+                    </div>
+
+                    <div className={s.filters}>
+                        <button
+                            className={`${s.filterChip} ${
+                                !activeFilter ? s.active : ''
+                            }`}
+                            onClick={() => setActiveFilter(null)}>
+                            Все курсы
+                        </button>
+                        <button
+                            className={`${s.filterChip} ${
+                                activeFilter === 'school' ? s.active : ''
+                            }`}
+                            onClick={() => setActiveFilter('school')}>
+                            Для школы
+                        </button>
+                        <button
+                            className={`${s.filterChip} ${
+                                activeFilter === 'university' ? s.active : ''
+                            }`}
+                            onClick={() => setActiveFilter('university')}>
+                            Для университета
+                        </button>
+                        <button
+                            className={`${s.filterChip} ${
+                                activeFilter === 'programming' ? s.active : ''
+                            }`}
+                            onClick={() => setActiveFilter('programming')}>
+                            Программирование
+                        </button>
+                    </div>
                 </div>
 
-                {hasMore && (
-                    <div className={s.loadMoreContainer}>
-                        <Button onClick={handleLoadMore}>Загрузить ещё</Button>
+                <SubjectCard title="sadsa" />
+
+                {isLoading && (
+                    <div className={s.loadingState}>
+                        <div className={s.spinnerContainer}>
+                            <div className={s.spinner}></div>
+                            <div className={s.spinnerRing}></div>
+                        </div>
+                        <p className={s.loadingText}>Курстар жүктелуде...</p>
+                        <p className={s.loadingSubtext}>Біраз уақыт күтіңіз</p>
                     </div>
+                )}
+
+                {isError && (
+                    <div className={s.errorState}>
+                        <div className={s.errorIcon}>
+                            <AlertTriangle />
+                        </div>
+                        <h3 className={s.errorTitle}>Жүктеу сәтсіз аяқталды</h3>
+                        <p className={s.errorDescription}>
+                            Курстарды жүктеу кезінде қате пайда болды. Өтінеміз,
+                            қайта байқап көріңіз.
+                        </p>
+                        <button
+                            className={s.retryButton}
+                            onClick={handleRetry}>
+                            Қайта жүктеу
+                        </button>
+                    </div>
+                )}
+
+                {!isLoading && !isError && (
+                    <>
+                        {visibleSubjects.length > 0 ? (
+                            <>
+                                <div className={s.cardsContainer}>
+                                    {visibleSubjects.map(subject => (
+                                        <SubjectCard
+                                            key={subject.id}
+                                            id={subject.id}
+                                            title={subject.name}
+                                            // description={subject.description}
+                                            thumbnail={
+                                                subject.image_url ?? undefined
+                                            }
+                                            path={`/subjects-materials/${
+                                                subject.code || subject.id
+                                            }`}
+                                            // delay={index * 50} // Добавляем задержку для анимации
+                                        />
+                                    ))}
+                                </div>
+
+                                {hasMore && (
+                                    <div className={s.loadMoreContainer}>
+                                        <Button
+                                            className={s.loadMoreButton}
+                                            onClick={handleLoadMore}>
+                                            Көбірек көрсету
+                                        </Button>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className={s.emptyState}>
+                                <div className={s.emptyIcon}>
+                                    <Search />
+                                </div>
+                                <h3 className={s.emptyTitle}>
+                                    Курстар табылмады
+                                </h3>
+                                <p className={s.emptyDescription}>
+                                    {search ? (
+                                        <>
+                                            &quot;{search}&quot; сөзі бойынша
+                                            сәйкес келетін курстар жоқ. Басқа
+                                            сөздермен іздеп көріңіз немесе
+                                            барлық курстарды көріңіз.
+                                        </>
+                                    ) : (
+                                        'Әзірше ешбір курс қолжетімді емес'
+                                    )}
+                                </p>
+                                {search && (
+                                    <button
+                                        className={s.clearSearchButton}
+                                        onClick={handleClearSearch}>
+                                        Барлық курстарды көрсету
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </>
                 )}
             </Container>
         </main>

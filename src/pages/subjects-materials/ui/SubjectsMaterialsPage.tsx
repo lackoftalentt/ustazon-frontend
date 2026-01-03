@@ -587,13 +587,13 @@ export const SubjectsMaterialsPage = () => {
         return (
             <main className={s.subjectPage}>
                 <Container>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            padding: '80px 0'
-                        }}>
-                        <Loader />
+                    <div className={s.loadingState}>
+                        <div className={s.spinnerContainer}>
+                            <div className={s.spinner}></div>
+                            <div className={s.spinnerRing}></div>
+                        </div>
+                        <p className={s.loadingText}>Тесттер жүктелуде...</p>
+                        <p className={s.loadingSubtext}>Біраз уақыт күтіңіз</p>
                     </div>
                 </Container>
             </main>

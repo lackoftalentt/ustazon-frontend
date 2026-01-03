@@ -1,0 +1,248 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    min-height: calc(100vh - 80px);
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.025em;
+}
+
+.subtitle {
+    color: #6b7280;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+}
+
+.avatarSection {
+    flex-shrink: 0;
+}
+
+.avatarCircle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    padding-bottom: 0.5rem;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cancelButton {
+    background: #f3f4f6;
+    color: #374151;
+
+    &:hover {
+        background: #e5e7eb;
+    }
+}
+
+.infoSection {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.infoTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 1.25rem;
+}
+
+.infoGrid {
+    display: grid;
+    gap: 1rem;
+}
+
+.infoItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(to right, #f9fafb, #ffffff);
+    border-radius: 10px;
+    border: 1px solid #f3f4f6;
+    transition: all 0.2s;
+
+    &:hover {
+        border-color: #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.infoLabel {
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 0.9375rem;
+}
+
+.infoValue {
+    color: #111827;
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.verifiedBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.unverifiedBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    background: #fee2e2;
+    color: #991b1b;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.dangerZone {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #fee2e2;
+}
+
+.dangerTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #991b1b;
+    margin-bottom: 1.25rem;
+}
+
+.dangerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(to right, #fef2f2, #ffffff);
+    border-radius: 10px;
+    border: 1px solid #fee2e2;
+    gap: 1.5rem;
+}
+
+.dangerText {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.25rem;
+    font-size: 0.9375rem;
+}
+
+.dangerDescription {
+    color: #6b7280;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.logoutButton {
+    flex-shrink: 0;
+    border-color: #dc2626;
+    color: #dc2626;
+    font-weight: 600;
+    padding: 0.625rem 1.5rem;
+
+    &:hover {
+        background: #dc2626;
+        color: white;
+        border-color: #dc2626;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
+
+    .headerContent {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .avatarCircle {
+        width: 64px;
+        height: 64px;
+        font-size: 1.5rem;
+    }
+
+    .title {
+        font-size: 1.75rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+    }
+
+    .dangerContent {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logoutButton {
+        width: 100%;
+    }
+}

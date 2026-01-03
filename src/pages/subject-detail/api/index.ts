@@ -1,6 +1,3 @@
-// Реэкспорт API для страницы subject-detail
-// Используйте эти хуки в компонентах страницы
-
 export {
     useLessonQuery,
     useLessonProgressQuery,

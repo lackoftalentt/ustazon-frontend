@@ -3,19 +3,13 @@
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 0.5em;
 
     background: linear-gradient(
         110deg,
         rgba(22, 163, 74, 1) 0%,
-        // светлее
         rgba(34, 197, 94, 1) 45%,
-        // светлее
         rgba(134, 239, 172, 1) 50%,
-        // светлее акцент
-        rgba(34, 197, 94, 1) 55%,
-        // светлее
-        rgba(22, 163, 74, 1) 100% // светлее
+        rgba(22, 163, 74, 1) 100%
     );
     background-size: 200% 100%;
     background-clip: text;

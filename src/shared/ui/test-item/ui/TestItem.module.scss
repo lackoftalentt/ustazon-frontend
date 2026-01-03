@@ -1,0 +1,313 @@
+@use '@/shared/styles/variables' as *;
+
+.testCard {
+    background: white;
+    border-radius: $radius-sm;
+    padding: $spacing-2xl;
+    box-shadow: 0 $spacing-xs $spacing-2xl rgba($color-gray-dark, 0.08);
+    border: 1px solid $color-gray-border;
+    position: relative;
+    cursor: pointer;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    transform: translateY(0);
+
+    &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba($color-gray-dark, 0.12),
+            0 30px 60px rgba($color-green-primary, 0.15);
+    }
+}
+.cardHeader {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+}
+
+.categoryBadge {
+    display: inline-block;
+    padding: $spacing-xs $spacing-md;
+    background: $color-green-light;
+    color: $color-green-dark;
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    align-self: flex-start;
+}
+
+.headerActions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actionButtons {
+    display: flex;
+    gap: $spacing-xs;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: $color-gray-light;
+    border-radius: $radius-sm;
+    color: $color-gray-medium;
+    cursor: pointer;
+    transition: all $transition-normal;
+
+    &:hover {
+        background: $color-green-lightest;
+        color: $color-green-primary;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.difficultyBadge {
+    padding: $spacing-xs $spacing-md;
+    border-radius: $radius-xl;
+    color: white;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    min-width: 70px;
+    text-align: center;
+
+    &.easy {
+        background: $color-green-primary;
+    }
+
+    &.medium {
+        background: #ed8936;
+    }
+
+    &.hard {
+        background: $color-red-error;
+    }
+}
+
+.title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    margin: 0 0 $spacing-md 0;
+    line-height: $line-height-tight;
+}
+
+.description {
+    color: $color-gray-medium;
+    line-height: $line-height-normal;
+    margin-bottom: $spacing-xl;
+    font-size: $font-size-sm;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+    padding: $spacing-lg 0;
+    border-top: 1px solid $color-gray-border;
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: $spacing-xs;
+
+    .statValue {
+        font-weight: $font-weight-bold;
+        color: $color-gray-dark;
+        font-size: $font-size-base;
+    }
+
+    .statLabel {
+        color: $color-gray-medium;
+        font-size: $font-size-xs;
+    }
+
+    svg {
+        color: $color-green-primary;
+        width: $icon-size-sm;
+        height: $icon-size-sm;
+    }
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-md;
+}
+
+.startButton {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-lg;
+    background: $color-gray-light;
+    border: none;
+    border-radius: $radius-sm;
+    color: $color-gray-dark;
+    font-weight: $font-weight-semibold;
+    font-size: $font-size-base;
+    cursor: pointer;
+    transition: all $transition-normal;
+
+    &:hover {
+        background: $color-green-primary;
+        color: white;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: $shadow-focus;
+    }
+
+    .arrow {
+        font-size: $font-size-lg;
+        transition: transform $transition-normal;
+        color: inherit;
+    }
+}
+
+.testLink {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+    word-break: break-all;
+    margin: $spacing-md 0;
+    padding: $spacing-md;
+    background: $color-gray-light;
+    border-radius: $radius-sm;
+}
+
+.copyButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+    width: 100%;
+    padding: $spacing-md;
+    background: $color-green-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-sm;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: $transition-normal;
+    margin-bottom: $spacing-md;
+
+    &:hover {
+        background: $color-green-dark;
+    }
+}
+
+.closeButton {
+    width: 100%;
+    padding: $spacing-md;
+    background: $color-gray-light;
+    color: $color-gray-dark;
+    border: none;
+    border-radius: $radius-sm;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: $transition-normal;
+
+    &:hover {
+        background: $color-gray-border;
+    }
+}
+
+.shareDropdown {
+    position: absolute;
+    top: 100px;
+    left: 30px;
+    background: white;
+    border-radius: $radius-sm;
+    box-shadow: 0 $spacing-md $spacing-2xl rgba($color-gray-dark, 0.15);
+    border: 1px solid $color-gray-border;
+    z-index: 2;
+    animation: slideDown $transition-fast;
+    overflow: hidden;
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+.shareOption {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    width: 100%;
+    padding: $spacing-lg $spacing-xl;
+    border: none;
+    background: transparent;
+    color: $color-gray-dark;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    transition: $transition-fast;
+    text-align: left;
+
+    &:hover {
+        background: $color-gray-light;
+    }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid $color-gray-border;
+    }
+
+    svg {
+        width: $icon-size-sm;
+        height: $icon-size-sm;
+        color: $color-green-primary;
+    }
+}
+
+@media (max-width: 768px) {
+    .testCard {
+        padding: $spacing-xl;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        gap: $spacing-lg;
+    }
+
+    .statItem {
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left;
+        gap: $spacing-md;
+    }
+
+    .qrContent {
+        padding: $spacing-xl;
+        margin: $spacing-xl;
+    }
+
+    .shareDropdown {
+        right: 10px;
+        left: 10px;
+    }
+}
