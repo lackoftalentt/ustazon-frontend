@@ -39,7 +39,7 @@ export const useAuthStore = create<AuthState>()(
             }
         }),
         {
-            name: 'auth-storage' // ключ в localStorage
+            name: 'auth-storage'
         }
     )
 );

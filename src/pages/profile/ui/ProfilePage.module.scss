@@ -1,0 +1,371 @@
+@use '@/shared/styles/variables' as *;
+
+.profilePage {
+    padding: $spacing-2xl 0;
+    min-height: calc(100vh - 80px);
+    background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-2xl;
+    background: white;
+    border-radius: $radius-lg;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: $spacing-2xl;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+}
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: $radius-full;
+    background: linear-gradient(
+        135deg,
+        $color-green-primary,
+        $color-green-dark
+    );
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.userName {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-gray-dark;
+    margin: 0;
+}
+
+.userPhone {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin: 0;
+}
+
+.settingsButton {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-lg;
+
+    svg {
+        transition: transform $transition-normal;
+    }
+
+    &:hover svg {
+        transform: rotate(90deg);
+    }
+}
+
+// Stats Section
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-lg;
+    margin-bottom: $spacing-3xl;
+}
+
+.statCard {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding: $spacing-xl;
+    background: white;
+    border-radius: $radius-md;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all $transition-normal;
+    animation: slideUp 0.4s ease-out backwards;
+
+    &:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    &:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    &:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+        .statIcon {
+            transform: scale(1.1);
+        }
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.statIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-md;
+    background: linear-gradient(
+        135deg,
+        rgba($color-green-primary, 0.1),
+        rgba($color-green-lightest, 0.3)
+    );
+    color: $color-green-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform $transition-fast;
+}
+
+.statInfo {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.statValue {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-gray-dark;
+}
+
+.statLabel {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+}
+
+// Materials Section
+.materialsSection {
+    background: white;
+    border-radius: $radius-lg;
+    padding: $spacing-2xl;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.5s ease-out 0.3s backwards;
+}
+
+.sectionTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-gray-dark;
+    margin: 0 0 $spacing-xl;
+}
+
+.controls {
+    display: flex;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-2xl;
+    flex-wrap: wrap;
+}
+
+.searchInput {
+    flex: 1;
+    min-width: 250px;
+}
+
+.filters {
+    display: flex;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+}
+
+.filterButton {
+    padding: $spacing-sm $spacing-lg;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-sm;
+    background: white;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        border-color: $color-green-primary;
+        color: $color-green-primary;
+    }
+
+    &.active {
+        background: $color-green-primary;
+        border-color: $color-green-primary;
+        color: white;
+    }
+}
+
+.materialsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-lg;
+    margin-bottom: $spacing-2xl;
+}
+
+// Pagination
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+}
+
+.paginationButton {
+    width: 40px;
+    height: 40px;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-sm;
+    background: white;
+    color: $color-gray-medium;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $transition-fast;
+
+    &:hover:not(:disabled) {
+        border-color: $color-green-primary;
+        color: $color-green-primary;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.paginationNumbers {
+    display: flex;
+    gap: $spacing-xs;
+}
+
+.pageNumber {
+    width: 40px;
+    height: 40px;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-sm;
+    background: white;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-medium;
+    cursor: pointer;
+    transition: all $transition-fast;
+
+    &:hover {
+        border-color: $color-green-primary;
+        color: $color-green-primary;
+    }
+
+    &.active {
+        background: $color-green-primary;
+        border-color: $color-green-primary;
+        color: white;
+    }
+}
+
+// Empty State
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-3xl * 2;
+    color: $color-gray-medium;
+    gap: $spacing-lg;
+
+    svg {
+        opacity: 0.5;
+    }
+
+    p {
+        font-size: $font-size-base;
+        margin: 0;
+    }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+    .materialsGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: $spacing-lg;
+        text-align: center;
+    }
+
+    .userInfo {
+        flex-direction: column;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .materialsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .searchInput {
+        width: 100%;
+    }
+
+    .filters {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .materialsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .profilePage {
+        padding: $spacing-lg 0;
+    }
+
+    .header,
+    .materialsSection {
+        padding: $spacing-lg;
+    }
+}

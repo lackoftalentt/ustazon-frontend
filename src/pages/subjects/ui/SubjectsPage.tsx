@@ -71,7 +71,7 @@ export const SubjectsPage = () => {
                         />
                     </div>
 
-                    <div className={s.filters}>
+                    {/* <div className={s.filters}>
                         <button
                             className={`${s.filterChip} ${
                                 !activeFilter ? s.active : ''
@@ -100,7 +100,7 @@ export const SubjectsPage = () => {
                             onClick={() => setActiveFilter('programming')}>
                             Программирование
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <SubjectCard title="sadsa" />
