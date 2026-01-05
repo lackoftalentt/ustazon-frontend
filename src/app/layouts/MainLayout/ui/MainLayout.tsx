@@ -2,6 +2,7 @@ import { Header } from '@/widgets/header';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import s from './MainLayout.module.scss';
 import { Outlet } from 'react-router-dom';
+import { CreateMaterialModal } from '@/features/create-material';
 
 export const MainLayout = () => {
     return (
@@ -11,6 +12,7 @@ export const MainLayout = () => {
                 <Breadcrumb />
                 <Outlet />
             </main>
+            <CreateMaterialModal />
         </>
     );
 };

@@ -34,6 +34,8 @@ export const Dropdown = ({
     };
 
     useEffect(() => {
+        if (!isOpen) return;
+
         const handleClickOutside = (event: MouseEvent) => {
             if (
                 dropdownRef.current &&
@@ -43,10 +45,16 @@ export const Dropdown = ({
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
-        return () =>
+        // Add listener on next tick to avoid immediate close
+        const timeoutId = setTimeout(() => {
+            document.addEventListener('mousedown', handleClickOutside);
+        }, 0);
+
+        return () => {
+            clearTimeout(timeoutId);
             document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+        };
+    }, [isOpen]);
 
     return (
         <div

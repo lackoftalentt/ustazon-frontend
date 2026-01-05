@@ -41,6 +41,12 @@
     font-weight: $font-weight-normal;
 }
 
+.inputsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+}
+
 .rememberAndForgot {
     display: flex;
     justify-content: space-between;

@@ -48,6 +48,58 @@
     box-shadow: 0 24px 72px rgba(0, 0, 0, 0.22);
 
     animation: dialogIn $transition-normal;
+
+    // Custom scrollbar
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+
+    &:hover {
+        scrollbar-color: rgba($color-gray-medium, 0.3) transparent;
+    }
+}
+
+.dialog::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dialog::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+    margin: $radius-xl 0;
+}
+
+.dialog::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.dialog:hover::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        180deg,
+        rgba($color-gray-medium, 0.2) 0%,
+        rgba($color-gray-medium, 0.35) 100%
+    );
+    background-clip: padding-box;
+}
+
+.dialog::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        180deg,
+        rgba($color-green-primary, 0.25) 0%,
+        rgba($color-green-primary, 0.45) 100%
+    );
+    background-clip: padding-box;
+}
+
+.dialog::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(
+        180deg,
+        rgba($color-green-primary, 0.35) 0%,
+        rgba($color-green-primary, 0.55) 100%
+    );
+    background-clip: padding-box;
 }
 
 .header {

@@ -54,53 +54,55 @@ export const RegisterForm = () => {
                     Заполните данные для регистрации учетной записи
                 </p>
 
-                <Input
-                    {...register('iin')}
-                    id="iin"
-                    label="ИИН"
-                    error={errors.iin?.message}
-                    inputMode="numeric"
-                    maxLength={12}
-                    placeholder="Введите ИИН"
-                    onChange={handleIinChange}
-                />
+                <div className={s.inputsWrapper}>
+                    <Input
+                        {...register('iin')}
+                        id="iin"
+                        label="ИИН"
+                        error={errors.iin?.message}
+                        inputMode="numeric"
+                        maxLength={12}
+                        placeholder="Введите ИИН"
+                        onChange={handleIinChange}
+                    />
 
-                <Input
-                    {...register('name')}
-                    id="name"
-                    label="Имя"
-                    error={errors.name?.message}
-                    type="text"
-                    placeholder="Введите ваше имя"
-                />
+                    <Input
+                        {...register('name')}
+                        id="name"
+                        label="Имя"
+                        error={errors.name?.message}
+                        type="text"
+                        placeholder="Введите ваше имя"
+                    />
 
-                <PasswordInput
-                    {...register('password')}
-                    id="password"
-                    label="Пароль"
-                    error={errors.password?.message}
-                    placeholder="Введите пароль"
-                />
+                    <PasswordInput
+                        {...register('password')}
+                        id="password"
+                        label="Пароль"
+                        error={errors.password?.message}
+                        placeholder="Введите пароль"
+                    />
 
-                <Input
-                    {...register('confirmPassword')}
-                    id="passwordConfirm"
-                    label="Подтвердите пароль"
-                    error={errors.confirmPassword?.message}
-                    placeholder="Подтвердите пароль"
-                    type="password"
-                />
+                    <Input
+                        {...register('confirmPassword')}
+                        id="passwordConfirm"
+                        label="Подтвердите пароль"
+                        error={errors.confirmPassword?.message}
+                        placeholder="Подтвердите пароль"
+                        type="password"
+                    />
 
-                <Input
-                    {...register('phoneNumber')}
-                    id="phoneNumber"
-                    label="Номер телефона"
-                    error={errors.phoneNumber?.message}
-                    type="tel"
-                    inputMode="tel"
-                    placeholder="+7 (7XX) XXX-XX-XX"
-                    onChange={handlePhoneChange}
-                />
+                    <Input
+                        {...register('phoneNumber')}
+                        id="phoneNumber"
+                        label="Номер телефона"
+                        error={errors.phoneNumber?.message}
+                        type="tel"
+                        inputMode="tel"
+                        placeholder="+7 (7XX) XXX-XX-XX"
+                        onChange={handlePhoneChange}
+                    />
+                </div>
 
                 <Button
                     type="submit"

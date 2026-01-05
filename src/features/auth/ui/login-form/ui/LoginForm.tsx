@@ -63,25 +63,27 @@ export const LoginForm = () => {
                     Заполните данные для входа в учетную запись
                 </p>
 
-                <Input
-                    {...register('iin')}
-                    id="iin"
-                    label="ИИН"
-                    error={errors.iin?.message}
-                    inputMode="text"
-                    maxLength={12}
-                    placeholder="Введите ИИН"
-                    autoFocus
-                    onChange={handleIinChange}
-                />
+                <div className={s.inputsWrapper}>
+                    <Input
+                        {...register('iin')}
+                        id="iin"
+                        label="ИИН"
+                        error={errors.iin?.message}
+                        inputMode="text"
+                        maxLength={12}
+                        placeholder="Введите ИИН"
+                        autoFocus
+                        onChange={handleIinChange}
+                    />
 
-                <PasswordInput
-                    {...register('password')}
-                    id="password"
-                    label="Пароль"
-                    error={errors.password?.message}
-                    placeholder="Введите пароль"
-                />
+                    <PasswordInput
+                        {...register('password')}
+                        id="password"
+                        label="Пароль"
+                        error={errors.password?.message}
+                        placeholder="Введите пароль"
+                    />
+                </div>
 
                 <div className={s.rememberAndForgot}>
                     <label className={s.rememberRow}>

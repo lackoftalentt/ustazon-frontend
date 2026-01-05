@@ -31,7 +31,7 @@ export const ResetPasswordForm = () => {
         try {
             if (step === 'phone') {
                 console.log('Phone from form:', data.phoneNumber);
-                await sendResetCode({ phone: data.phoneNumber });
+                // await sendResetCode({ phone: data.phoneNumber });
                 toast.success('Код отправлен на ваш номер');
                 setStep('code');
             } else if (step === 'code') {
@@ -144,6 +144,7 @@ export const ResetPasswordForm = () => {
                         placeholder="+7 (7XX) XXX-XX-XX"
                         onChange={handlePhoneChange}
                         disabled={step === 'code'}
+                        className={s.input}
                     />
                 )}
 

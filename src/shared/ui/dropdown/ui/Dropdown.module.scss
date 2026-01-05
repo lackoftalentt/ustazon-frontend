@@ -64,12 +64,35 @@
     filter: invert(33%) sepia(65%) saturate(430%) hue-rotate(98deg)
         brightness(92%) contrast(92%);
 
-    transition: transform $transition-fast;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform: rotate(180deg);
 }
 
 .chevronOpen {
     transform: rotate(0deg);
+}
+
+// ===== Dropdown Content Animation =====
+@keyframes dropdownSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes itemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .content {
@@ -89,9 +112,15 @@
 
     z-index: $z-index-dropdown;
 
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.05),
+        0 10px 24px rgba(0, 0, 0, 0.1);
 
     padding: $spacing-xs;
+
+    // Dropdown появление
+    animation: dropdownSlideIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: top center;
 }
 
 .item {
@@ -113,14 +142,28 @@
     line-height: $line-height-normal;
 
     cursor: pointer;
-    transition: background-color $transition-fast, color $transition-fast;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+
+    // Каскадная анимация для каждого элемента
+    animation: itemFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+
+    @for $i from 1 through 20 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.03}s;
+        }
+    }
 
     &:hover {
         background: $color-gray-light;
+        transform: translateX(4px);
     }
 
     &:active {
         background: $color-green-light;
+        transform: translateX(2px);
     }
 
     &:focus-visible {
@@ -130,22 +173,68 @@
 }
 
 .itemActive {
-    background: $color-green-lightest;
+    background: linear-gradient(
+        90deg,
+        $color-green-lightest 0%,
+        rgba($color-green-primary, 0.08) 100%
+    );
     color: $color-green-dark;
+    font-weight: $font-weight-medium;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background: $color-green-primary;
+        border-radius: 0 2px 2px 0;
+    }
 }
 
 .item + .item {
-    border-top: 1px solid $color-gray-border;
+    border-top: 1px solid rgba($color-gray-border, 0.5);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
 
+// ===== Custom Scrollbar =====
 .content::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
+}
+
+.content::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 4px 0;
 }
 
 .content::-webkit-scrollbar-thumb {
-    background: $color-gray-border;
-    border-radius: $radius-xl;
-    border: 2px solid #fff;
+    background: rgba($color-gray-medium, 0.25);
+    border-radius: 10px;
+
+    &:hover {
+        background: rgba($color-green-primary, 0.4);
+    }
+}
+
+// ===== Reduced motion =====
+@media (prefers-reduced-motion: reduce) {
+    .content {
+        animation: none;
+    }
+
+    .item {
+        animation: none;
+
+        &:hover {
+            transform: none;
+        }
+    }
+
+    .chevron {
+        transition: none;
+    }
 }
