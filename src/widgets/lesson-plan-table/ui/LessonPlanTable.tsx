@@ -7,7 +7,11 @@ import {
 } from '@tanstack/react-table';
 import type { LessonPlanRow, QuarterId } from '@/entities/lesson-plan';
 import { useLessonPlanStore } from '@/entities/lesson-plan';
+import toast from 'react-hot-toast';
 import { LessonPlanFilesModal } from '@/widgets/lesson-plan-files-modal';
+import { AddFilesModal, useAddFilesStore } from '@/features/add-files';
+import { EditKMJModal, useEditKMJStore, type KMJData } from '@/features/edit-kmj';
+import { ConfirmModal } from '@/shared/ui/confirm-modal';
 
 import {
     DndContext,
@@ -107,8 +111,13 @@ export const LessonPlanTable = ({ grade, quarter }: LessonPlanTableProps) => {
 
     const [filesOpen, setFilesOpen] = useState(false);
     const [activeRow, setActiveRow] = useState<LessonPlanRow | null>(null);
+    const [deleteRow, setDeleteRow] = useState<LessonPlanRow | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+    const { openModal: openAddFilesModal } = useAddFilesStore();
+    const { openModal: openEditKMJModal } = useEditKMJStore();
 
     const openFiles = useCallback((row: LessonPlanRow) => {
         setActiveRow(row);
@@ -118,6 +127,57 @@ export const LessonPlanTable = ({ grade, quarter }: LessonPlanTableProps) => {
     const closeFiles = useCallback(() => {
         setFilesOpen(false);
         setActiveRow(null);
+    }, []);
+
+    const handleAddFiles = useCallback(
+        (rowId: string) => {
+            openAddFilesModal(rowId);
+        },
+        [openAddFilesModal]
+    );
+
+    const handleEditKMJ = useCallback(
+        (row: LessonPlanRow) => {
+            const kmjData: KMJData = {
+                id: row.id,
+                title: row.topic,
+                classLevel: '5-сынып',
+                quarter: '1 тоқсан',
+                subjectCode: 'Алгебра ЖМБ',
+                hours: row.hours,
+                lessonTopic: row.topic,
+                learningObjectives: row.objectives.map(o => `${o.code} ${o.text}`).join('; '),
+                existingAdditionalFiles: [],
+                subjects: [],
+                institutionType: 'Мектеп'
+            };
+            openEditKMJModal(kmjData);
+        },
+        [openEditKMJModal]
+    );
+
+    const handleDeleteClick = useCallback((row: LessonPlanRow) => {
+        setDeleteRow(row);
+    }, []);
+
+    const handleDeleteConfirm = useCallback(async () => {
+        if (!deleteRow) return;
+
+        setIsDeleting(true);
+        try {
+            // TODO: API call to delete row
+            console.log('Deleting row:', deleteRow.id);
+            toast.success('Сабақ жоспары сәтті жойылды!');
+            setDeleteRow(null);
+        } catch {
+            toast.error('Жою кезінде қате орын алды');
+        } finally {
+            setIsDeleting(false);
+        }
+    }, [deleteRow]);
+
+    const handleDeleteCancel = useCallback(() => {
+        setDeleteRow(null);
     }, []);
 
     void grade;
@@ -206,26 +266,29 @@ export const LessonPlanTable = ({ grade, quarter }: LessonPlanTableProps) => {
             {
                 id: 'actions',
                 header: 'Действия',
-                cell: () => (
+                cell: ({ row }) => (
                     <div
                         className={s.actions}
                         onPointerDown={e => e.stopPropagation()}>
                         <button
                             type="button"
                             className={s.iconBtn}
-                            aria-label="Добавить">
+                            aria-label="Добавить"
+                            onClick={() => handleAddFiles(row.original.id)}>
                             +
                         </button>
                         <button
                             type="button"
                             className={s.iconBtn}
+                            onClick={() => handleEditKMJ(row.original)}
                             aria-label="Редактировать">
                             ✎
                         </button>
                         <button
                             type="button"
                             className={s.iconBtn}
-                            aria-label="Удалить">
+                            aria-label="Удалить"
+                            onClick={() => handleDeleteClick(row.original)}>
                             🗑
                         </button>
                     </div>
@@ -233,7 +296,7 @@ export const LessonPlanTable = ({ grade, quarter }: LessonPlanTableProps) => {
                 size: 180
             }
         ],
-        [openFiles]
+        [openFiles, handleAddFiles, handleEditKMJ, handleDeleteClick]
     );
 
     useEffect(() => {
@@ -329,6 +392,21 @@ export const LessonPlanTable = ({ grade, quarter }: LessonPlanTableProps) => {
                           )
                         : []
                 }
+            />
+
+            <AddFilesModal />
+            <EditKMJModal />
+
+            <ConfirmModal
+                open={!!deleteRow}
+                onClose={handleDeleteCancel}
+                onConfirm={handleDeleteConfirm}
+                title="Сабақ жоспарын жою"
+                message={`"${deleteRow?.topic}" сабақ жоспарын жойғыңыз келетініне сенімдісіз бе? Бұл әрекетті қайтару мүмкін емес.`}
+                confirmText="Жою"
+                cancelText="Бас тарту"
+                variant="danger"
+                loading={isDeleting}
             />
         </DndContext>
     );

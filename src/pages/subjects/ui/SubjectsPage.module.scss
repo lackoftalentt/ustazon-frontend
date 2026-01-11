@@ -1,545 +1,498 @@
 @use '@/shared/styles/variables' as *;
 
 .subjectMaterialPage {
-    min-height: 100vh;
-    background: linear-gradient(
-        135deg,
-        $color-gray-light 0%,
-        $color-blue-lightest 100%
-    );
-    padding: $spacing-3xl 0 $spacing-3xl * 2;
-    animation: pageFadeIn $transition-slow ease-out;
+	padding: $spacing-3xl 0 $spacing-3xl * 2;
+	animation: pageFadeIn $transition-slow ease-out;
 
-    @keyframes pageFadeIn {
-        from {
-            opacity: 0;
-            transform: translateY($spacing-lg);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-}
-
-.container {
-    width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
+	@keyframes pageFadeIn {
+		from {
+			opacity: 0;
+			transform: translateY($spacing-lg);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 
 .header {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-2xl;
-    width: 100%;
-    margin-bottom: $spacing-3xl;
-    animation: headerSlideIn $transition-slow ease-out 0.2s both;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-2xl;
+	width: 100%;
+	margin-bottom: $spacing-3xl;
+	animation: headerSlideIn $transition-slow ease-out 0.2s both;
 
-    @keyframes headerSlideIn {
-        from {
-            opacity: 0;
-            transform: translateY(-$spacing-xl);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-}
-
-.title {
-    margin: 0;
-    font-size: $font-size-2xl;
-    color: $color-gray-dark;
-    position: relative;
-    display: inline-block;
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -$spacing-md;
-        left: 0;
-        width: 100px;
-        height: 4px;
-        background: linear-gradient(
-            90deg,
-            $color-green-primary 0%,
-            $color-green-dark 100%
-        );
-        border-radius: 2px;
-        animation: lineExpand 1s ease-out 0.4s both;
-    }
-
-    @keyframes lineExpand {
-        from {
-            width: 0;
-        }
-        to {
-            width: 100px;
-        }
-    }
+	@keyframes headerSlideIn {
+		from {
+			opacity: 0;
+			transform: translateY(-$spacing-xl);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 
 .searchContainer {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    animation: searchSlideIn $transition-slow ease-out 0.4s both;
+	position: relative;
+	width: 100%;
+	max-width: 600px;
+	animation: searchSlideIn $transition-slow ease-out 0.4s both;
 
-    @keyframes searchSlideIn {
-        from {
-            opacity: 0;
-            transform: translateX(-$spacing-xl);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
+	@keyframes searchSlideIn {
+		from {
+			opacity: 0;
+			transform: translateX(-$spacing-xl);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
 }
 
 .searchInput {
-    width: 100%;
-    transition: all $transition-normal;
+	width: 100%;
+	transition: all $transition-normal;
 
-    &:focus-within {
-        transform: translateY(-1px);
-        box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.15);
-    }
+	&:focus-within {
+		transform: translateY(-1px);
+		box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.15);
+	}
 }
 
 .filters {
-    display: flex;
-    gap: $spacing-md;
-    flex-wrap: wrap;
-    margin-bottom: $spacing-2xl;
-    animation: fadeInUp $transition-slow ease-out 0.6s both;
+	display: flex;
+	gap: $spacing-md;
+	flex-wrap: wrap;
+	margin-bottom: $spacing-2xl;
+	animation: fadeInUp $transition-slow ease-out 0.6s both;
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY($spacing-lg);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY($spacing-lg);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 
 .filterChip {
-    padding: $spacing-md $spacing-lg;
-    background: white;
-    border: 1px solid $color-gray-border;
-    border-radius: $radius-lg;
-    color: $color-gray-medium;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    cursor: pointer;
-    transition: all $transition-fast;
+	padding: $spacing-md $spacing-lg;
+	background: white;
+	border: 1px solid $color-gray-border;
+	border-radius: $radius-lg;
+	color: $color-gray-medium;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	cursor: pointer;
+	transition: all $transition-fast;
 
-    &:hover {
-        background: $color-green-lightest;
-        border-color: $color-green-primary;
-        color: $color-green-dark;
-        transform: translateY(-1px);
-    }
+	&:hover {
+		background: $color-green-lightest;
+		border-color: $color-green-primary;
+		color: $color-green-dark;
+		transform: translateY(-1px);
+	}
 
-    &.active {
-        background: $color-green-primary;
-        border-color: $color-green-primary;
-        color: white;
-    }
+	&.active {
+		background: $color-green-primary;
+		border-color: $color-green-primary;
+		color: white;
+	}
 }
 
 .cardsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: $spacing-2xl;
-    width: 100%;
-    animation: cardsAppear $transition-slow ease-out 0.8s both;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: $spacing-2xl;
+	width: 100%;
+	animation: cardsAppear $transition-slow ease-out 0.8s both;
 
-    @keyframes cardsAppear {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
+	@keyframes cardsAppear {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 }
 
 .cardsContainer > * {
-    animation: cardSlideUp 0.5s ease-out forwards;
-    opacity: 0;
+	animation: cardSlideUp 0.5s ease-out forwards;
+	opacity: 0;
 
-    @for $i from 1 through 12 {
-        &:nth-child(#{$i}) {
-            animation-delay: #{0.05s * $i};
-        }
-    }
+	@for $i from 1 through 12 {
+		&:nth-child(#{$i}) {
+			animation-delay: #{0.05s * $i};
+		}
+	}
 }
 
 @keyframes cardSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 // Состояние загрузки
 .loadingState {
-    text-align: center;
-    padding: $spacing-3xl * 2 $spacing-2xl;
-    animation: fadeIn $transition-fast;
+	text-align: center;
+	padding: $spacing-3xl * 2 $spacing-2xl;
+	animation: fadeIn $transition-fast;
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 }
 
 .spinnerContainer {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto $spacing-2xl;
+	position: relative;
+	width: 80px;
+	height: 80px;
+	margin: 0 auto $spacing-2xl;
 }
 
 .spinner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 4px solid $color-gray-border;
-    border-top-color: $color-green-primary;
-    border-radius: 50%;
-    animation: spin 1.2s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 4px solid $color-gray-border;
+	border-top-color: $color-green-primary;
+	border-radius: 50%;
+	animation: spin 1.2s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
 }
 
 .spinnerRing {
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: 100px;
-    height: 100px;
-    border: 2px solid $color-green-lightest;
-    border-radius: 50%;
-    animation: ringPulse 2s ease-in-out infinite;
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	width: 100px;
+	height: 100px;
+	border: 2px solid $color-green-lightest;
+	border-radius: 50%;
+	animation: ringPulse 2s ease-in-out infinite;
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 @keyframes ringPulse {
-    0%,
-    100% {
-        transform: scale(0.95);
-        opacity: 0.5;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.8;
-    }
+	0%,
+	100% {
+		transform: scale(0.95);
+		opacity: 0.5;
+	}
+	50% {
+		transform: scale(1.05);
+		opacity: 0.8;
+	}
 }
 
 .loadingText {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
-    color: $color-green-dark;
-    margin-bottom: $spacing-md;
-    animation: textPulse 2s infinite;
+	font-size: $font-size-xl;
+	font-weight: $font-weight-semibold;
+	color: $color-green-dark;
+	margin-bottom: $spacing-md;
+	animation: textPulse 2s infinite;
 }
 
 .loadingSubtext {
-    font-size: $font-size-base;
-    color: $color-gray-medium;
+	font-size: $font-size-base;
+	color: $color-gray-medium;
 }
 
 @keyframes textPulse {
-    0%,
-    100% {
-        opacity: 0.7;
-    }
-    50% {
-        opacity: 1;
-    }
+	0%,
+	100% {
+		opacity: 0.7;
+	}
+	50% {
+		opacity: 1;
+	}
 }
 
 // Состояние ошибки
 .errorState {
-    text-align: center;
-    padding: $spacing-3xl * 2 $spacing-2xl;
-    animation: errorShake 0.5s ease-out;
+	text-align: center;
+	padding: $spacing-3xl * 2 $spacing-2xl;
+	animation: errorShake 0.5s ease-out;
 
-    @keyframes errorShake {
-        0%,
-        100% {
-            transform: translateX(0);
-        }
-        25% {
-            transform: translateX(-5px);
-        }
-        75% {
-            transform: translateX(5px);
-        }
-    }
+	@keyframes errorShake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		25% {
+			transform: translateX(-5px);
+		}
+		75% {
+			transform: translateX(5px);
+		}
+	}
 }
 
 .errorIcon {
-    width: 80px;
-    height: 80px;
-    background: $color-red-error-light;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto $spacing-2xl;
-    animation: pulseError 2s infinite;
+	width: 80px;
+	height: 80px;
+	background: $color-red-error-light;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto $spacing-2xl;
+	animation: pulseError 2s infinite;
 
-    svg {
-        color: $color-red-error;
-        width: 40px;
-        height: 40px;
-    }
+	svg {
+		color: $color-red-error;
+		width: 40px;
+		height: 40px;
+	}
 }
 
 @keyframes pulseError {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.05);
+		opacity: 0.9;
+	}
 }
 
 .errorTitle {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $color-gray-dark;
-    margin-bottom: $spacing-md;
+	font-size: $font-size-xl;
+	font-weight: $font-weight-bold;
+	color: $color-gray-dark;
+	margin-bottom: $spacing-md;
 }
 
 .errorDescription {
-    font-size: $font-size-base;
-    color: $color-gray-medium;
-    margin-bottom: $spacing-2xl;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: $line-height-relaxed;
+	font-size: $font-size-base;
+	color: $color-gray-medium;
+	margin-bottom: $spacing-2xl;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: $line-height-relaxed;
 }
 
 .retryButton {
-    padding: $spacing-lg $spacing-2xl;
-    background: $color-green-primary;
-    color: white;
-    border: none;
-    border-radius: $radius-md;
-    font-weight: $font-weight-semibold;
-    cursor: pointer;
-    transition: all $transition-normal;
+	padding: $spacing-lg $spacing-2xl;
+	background: $color-green-primary;
+	color: white;
+	border: none;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	transition: all $transition-normal;
 
-    &:hover {
-        background: $color-green-dark;
-        transform: translateY(-1px);
-        box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.3);
-    }
+	&:hover {
+		background: $color-green-dark;
+		transform: translateY(-1px);
+		box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.3);
+	}
 }
 
 // Состояние пустого результата
 .emptyState {
-    text-align: center;
-    padding: $spacing-3xl * 2 $spacing-2xl;
-    grid-column: 1 / -1;
-    animation: fadeIn $transition-slow;
+	text-align: center;
+	padding: $spacing-3xl * 2 $spacing-2xl;
+	grid-column: 1 / -1;
+	animation: fadeIn $transition-slow;
 }
 
 .emptyIcon {
-    width: 80px;
-    height: 80px;
-    background: $color-green-lightest;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto $spacing-2xl;
-    animation: gentleFloat 3s ease-in-out infinite;
+	width: 80px;
+	height: 80px;
+	background: $color-green-lightest;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto $spacing-2xl;
+	animation: gentleFloat 3s ease-in-out infinite;
 
-    svg {
-        color: $color-green-primary;
-        width: 40px;
-        height: 40px;
-    }
+	svg {
+		color: $color-green-primary;
+		width: 40px;
+		height: 40px;
+	}
 }
 
 @keyframes gentleFloat {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
 }
 
 .emptyTitle {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-dark;
-    margin-bottom: $spacing-md;
+	font-size: $font-size-xl;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+	margin-bottom: $spacing-md;
 }
 
 .emptyDescription {
-    font-size: $font-size-base;
-    color: $color-gray-medium;
-    margin-bottom: $spacing-2xl;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: $line-height-relaxed;
+	font-size: $font-size-base;
+	color: $color-gray-medium;
+	margin-bottom: $spacing-2xl;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: $line-height-relaxed;
 }
 
 .clearSearchButton {
-    padding: $spacing-lg $spacing-2xl;
-    background: $color-green-lightest;
-    color: $color-green-dark;
-    border: 1px solid $color-green-primary;
-    border-radius: $radius-md;
-    font-weight: $font-weight-semibold;
-    cursor: pointer;
-    transition: all $transition-normal;
+	padding: $spacing-lg $spacing-2xl;
+	background: $color-green-lightest;
+	color: $color-green-dark;
+	border: 1px solid $color-green-primary;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	transition: all $transition-normal;
 
-    &:hover {
-        background: $color-green-primary;
-        color: white;
-        transform: translateY(-1px);
-    }
+	&:hover {
+		background: $color-green-primary;
+		color: white;
+		transform: translateY(-1px);
+	}
 }
 
-// Кнопка "Загрузить ещё"
 .loadMoreContainer {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: $spacing-3xl;
-    animation: fadeIn $transition-slow ease-out 1s both;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin-top: $spacing-3xl;
+	animation: fadeIn $transition-slow ease-out 1s both;
 }
 
 .loadMoreButton {
-    padding: $spacing-xl $spacing-3xl;
-    background: linear-gradient(
-        135deg,
-        $color-green-primary 0%,
-        $color-green-dark 100%
-    );
-    color: white;
-    border: none;
-    border-radius: $radius-md;
-    font-weight: $font-weight-semibold;
-    font-size: $font-size-base;
-    cursor: pointer;
-    transition: all $transition-normal;
-    position: relative;
-    overflow: hidden;
+	padding: $spacing-xl $spacing-3xl;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	color: white;
+	border: none;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	font-size: $font-size-base;
+	cursor: pointer;
+	transition: all $transition-normal;
+	position: relative;
+	overflow: hidden;
 
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-green-primary, 0.3);
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-green-primary, 0.3);
 
-        &::before {
-            left: 100%;
-        }
-    }
+		&::before {
+			left: 100%;
+		}
+	}
 
-    &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none !important;
-    }
+	&:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+		transform: none !important;
+	}
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent
-        );
-        transition: left 0.7s;
-    }
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 255, 255, 0.2),
+			transparent
+		);
+		transition: left 0.7s;
+	}
 }
 
-// Адаптивность
 @media (max-width: 768px) {
-    .subjectMaterialPage {
-        padding: $spacing-xl 0 $spacing-2xl;
-    }
+	.subjectMaterialPage {
+		padding: $spacing-xl 0 $spacing-2xl;
+	}
 
-    .header {
-        gap: $spacing-xl;
-        margin-bottom: $spacing-2xl;
-    }
+	.header {
+		gap: $spacing-xl;
+		margin-bottom: $spacing-2xl;
+	}
 
-    .title {
-        font-size: $font-size-xl;
-    }
+	.title {
+		font-size: $font-size-xl;
+	}
 
-    .cardsContainer {
-        grid-template-columns: 1fr;
-        gap: $spacing-lg;
-    }
+	.cardsContainer {
+		grid-template-columns: 1fr;
+		gap: $spacing-lg;
+	}
 
-    .filters {
-        gap: $spacing-sm;
-        overflow-x: auto;
-        padding-bottom: $spacing-sm;
+	.filters {
+		gap: $spacing-sm;
+		overflow-x: auto;
+		padding-bottom: $spacing-sm;
 
-        &::-webkit-scrollbar {
-            height: 4px;
-        }
+		&::-webkit-scrollbar {
+			height: 4px;
+		}
 
-        &::-webkit-scrollbar-track {
-            background: $color-gray-light;
-        }
+		&::-webkit-scrollbar-track {
+			background: $color-gray-light;
+		}
 
-        &::-webkit-scrollbar-thumb {
-            background: $color-green-primary;
-            border-radius: $radius-full;
-        }
-    }
+		&::-webkit-scrollbar-thumb {
+			background: $color-green-primary;
+			border-radius: $radius-full;
+		}
+	}
 
-    .filterChip {
-        padding: $spacing-sm $spacing-md;
-        font-size: $font-size-xs;
-        white-space: nowrap;
-    }
+	.filterChip {
+		padding: $spacing-sm $spacing-md;
+		font-size: $font-size-xs;
+		white-space: nowrap;
+	}
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-    .cardsContainer {
-        grid-template-columns: repeat(2, 1fr);
-        gap: $spacing-xl;
-    }
+	.cardsContainer {
+		grid-template-columns: repeat(2, 1fr);
+		gap: $spacing-xl;
+	}
 }

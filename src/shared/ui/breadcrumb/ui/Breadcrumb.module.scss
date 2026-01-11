@@ -39,7 +39,6 @@
     gap: $spacing-xs;
     padding: $spacing-sm $spacing-md;
     background: transparent;
-    border: 1px solid $color-gray-border;
     border-radius: $radius-sm;
     cursor: pointer;
     font-size: $font-size-sm;
@@ -54,14 +53,7 @@
     }
 
     &:hover {
-        background: linear-gradient(
-            135deg,
-            $color-green-lightest 0%,
-            #fff 100%
-        );
-        border-color: $color-green-primary;
         color: $color-green-primary;
-        box-shadow: 0 2px 8px rgba($color-green-primary, 0.15);
 
         svg {
             transform: translateX(-3px);

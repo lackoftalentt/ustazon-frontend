@@ -7,7 +7,7 @@ interface CreateMaterialModalState {
 }
 
 export const useCreateMaterialStore = create<CreateMaterialModalState>(set => ({
-    isOpen: true,
+    isOpen: false,
     openModal: () => set({ isOpen: true }),
     closeModal: () => set({ isOpen: false })
 }));

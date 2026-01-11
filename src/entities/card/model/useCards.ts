@@ -31,7 +31,7 @@ export const useCards = (filters?: CardFilters) => {
     return useQuery({
         queryKey: cardKeys.list(filters),
         queryFn: () => cardApi.getCards(filters),
-        staleTime: 3 * 60 * 1000 // 3 minutes
+        staleTime: 3 * 60 * 1000
     });
 };
 

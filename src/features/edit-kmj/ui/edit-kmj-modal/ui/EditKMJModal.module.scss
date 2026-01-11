@@ -1,0 +1,511 @@
+@use '@/shared/styles/variables' as *;
+
+// ===== Header =====
+.header {
+    margin-bottom: $spacing-xl;
+    padding-bottom: $spacing-lg;
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    margin: 0 0 $spacing-md;
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+}
+
+.badge {
+    padding: $spacing-xs $spacing-md;
+    background: linear-gradient(135deg, rgba($color-green-primary, 0.08) 0%, rgba($color-green-primary, 0.12) 100%);
+    border: 1px solid rgba($color-green-primary, 0.2);
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-green-dark;
+}
+
+// ===== Form =====
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+}
+
+// ===== Section =====
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+    background: linear-gradient(180deg, #fafbfc 0%, #f5f6f7 100%);
+    border-radius: $radius-lg;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.sectionTitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    margin: 0;
+    padding-bottom: $spacing-sm;
+    border-bottom: 2px solid $color-green-primary;
+    width: fit-content;
+}
+
+// ===== Row =====
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-lg;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ===== Field =====
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
+}
+
+.hint {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+    line-height: 1.4;
+}
+
+.error {
+    font-size: $font-size-xs;
+    color: $color-red-error;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+}
+
+// ===== Hours Input =====
+.hoursInput {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: fit-content;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    overflow: hidden;
+}
+
+.hoursBtn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: $color-gray-light;
+    color: $color-gray-dark;
+    font-size: $font-size-lg;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $color-green-lightest;
+        color: $color-green-primary;
+    }
+
+    &:active {
+        background: rgba($color-green-primary, 0.2);
+    }
+}
+
+.hoursValue {
+    width: 60px;
+    height: 40px;
+    border: none;
+    text-align: center;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
+    background: white;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    -moz-appearance: textfield;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+// ===== Textarea =====
+.textarea {
+    width: 100%;
+    padding: $spacing-md;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-family: inherit;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: $color-green-primary;
+        box-shadow: $shadow-focus;
+    }
+
+    &::placeholder {
+        color: $color-gray-medium;
+    }
+}
+
+.textareaError {
+    border-color: $color-red-error;
+
+    &:focus {
+        box-shadow: $shadow-error-focus;
+    }
+}
+
+// ===== Hidden Input =====
+.hiddenInput {
+    display: none;
+}
+
+// ===== File Button =====
+.fileButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-md;
+    background: white;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: $color-green-primary;
+        box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
+    }
+}
+
+.fileButtonText {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+}
+
+.fileButtonAction {
+    padding: $spacing-xs $spacing-md;
+    background: $color-green-primary;
+    color: white;
+    border-radius: $radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+}
+
+// ===== Dropzone =====
+@keyframes dropzonePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba($color-green-primary, 0);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba($color-green-primary, 0.1);
+    }
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-md;
+    padding: $spacing-2xl;
+    border: 2px dashed rgba($color-gray-medium, 0.3);
+    border-radius: $radius-lg;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: $color-gray-medium;
+
+    svg {
+        transition: all 0.3s ease;
+    }
+
+    span {
+        font-size: $font-size-sm;
+        text-align: center;
+    }
+
+    &:hover {
+        border-color: $color-green-primary;
+        background: rgba($color-green-primary, 0.02);
+
+        svg {
+            color: $color-green-primary;
+            transform: translateY(-2px);
+        }
+    }
+
+    &.dragOver {
+        border-color: $color-green-primary;
+        border-style: solid;
+        background: rgba($color-green-primary, 0.05);
+        animation: dropzonePulse 1.5s ease-in-out infinite;
+
+        svg {
+            color: $color-green-primary;
+            transform: translateY(-4px) scale(1.1);
+        }
+    }
+}
+
+// ===== File List =====
+.fileList {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+}
+
+.fileListTitle {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-medium;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@keyframes fileItemIn {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fileItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    background: linear-gradient(135deg, rgba($color-green-primary, 0.04) 0%, rgba($color-green-primary, 0.08) 100%);
+    border: 1px solid rgba($color-green-primary, 0.15);
+    border-radius: $radius-md;
+    animation: fileItemIn 0.25s ease backwards;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.3);
+        transform: translateX(2px);
+    }
+}
+
+.fileIcon {
+    font-size: 18px;
+}
+
+.fileInfo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fileName {
+    flex: 1;
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fileSize {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+}
+
+.fileRemove {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: $color-gray-medium;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba($color-red-error, 0.1);
+        color: $color-red-error;
+    }
+}
+
+// ===== Subjects Grid =====
+.subjectsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: $spacing-sm;
+    margin-top: $spacing-sm;
+}
+
+.subjectItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    background: white;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.5);
+        box-shadow: 0 2px 8px rgba($color-green-primary, 0.08);
+    }
+
+    &.selected {
+        background: linear-gradient(145deg, rgba($color-green-primary, 0.08) 0%, rgba($color-green-primary, 0.14) 100%);
+        border-color: $color-green-primary;
+        box-shadow: 0 2px 8px rgba($color-green-primary, 0.12);
+
+        .subjectName {
+            color: $color-green-dark;
+            font-weight: $font-weight-medium;
+        }
+    }
+}
+
+.subjectCheckbox {
+    width: 16px;
+    height: 16px;
+    accent-color: $color-green-primary;
+    pointer-events: none;
+}
+
+.subjectName {
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    transition: all 0.2s ease;
+}
+
+// ===== Institution Grid =====
+.institutionGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-top: $spacing-sm;
+}
+
+.institutionItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-lg;
+    background: white;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.5);
+    }
+
+    &.selected {
+        background: linear-gradient(145deg, rgba($color-green-primary, 0.08) 0%, rgba($color-green-primary, 0.14) 100%);
+        border-color: $color-green-primary;
+
+        .institutionName {
+            color: $color-green-dark;
+            font-weight: $font-weight-medium;
+        }
+    }
+}
+
+.institutionRadio {
+    width: 16px;
+    height: 16px;
+    accent-color: $color-green-primary;
+    pointer-events: none;
+}
+
+.institutionName {
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    transition: all 0.2s ease;
+}
+
+// ===== Actions =====
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+    padding-top: $spacing-xl;
+    border-top: 1px solid $color-gray-border;
+}
+
+.deleteBtn {
+    color: $color-red-error !important;
+    border-color: $color-red-error !important;
+
+    &:hover {
+        background: rgba($color-red-error, 0.08) !important;
+    }
+}
+
+// ===== Responsive =====
+@media (max-width: 600px) {
+    .section {
+        padding: $spacing-md;
+    }
+
+    .subjectsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .institutionGrid {
+        flex-direction: column;
+    }
+
+    .institutionItem {
+        width: 100%;
+    }
+
+    .actions {
+        flex-direction: column-reverse;
+
+        button {
+            width: 100%;
+        }
+    }
+}

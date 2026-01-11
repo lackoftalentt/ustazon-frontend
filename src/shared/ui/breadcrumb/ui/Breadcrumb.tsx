@@ -1,25 +1,80 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import s from './Breadcrumb.module.scss';
-import clsx from 'clsx';
 
 interface BreadcrumbItem {
     label: string;
     path: string;
 }
 
-const routeLabels: Record<string, string> = {
-    subjects: 'Каталог курсов',
-    'subjects-materials': 'Материалы',
-    detail: 'Детали',
-    'ai-chat': 'ИИ чат',
-    kmzh: 'КМЖБ',
-    'subject-presentation-detail': 'Презентация',
-    profile: 'Профиль',
-    'profile-settings': 'Настройки профиля',
-    tests: 'Тесты',
-    'take-test': 'Пройти тест',
-    'lesson-plan': 'План урока'
+interface RouteConfig {
+    label: string;
+    navigable: boolean;
+}
+
+const routeConfig: Record<string, RouteConfig> = {
+    subjects: { label: 'Пәндер каталогы', navigable: true },
+    'subjects-materials': { label: 'Материалдар', navigable: true },
+    'subject-windows': { label: 'Терезелер', navigable: true },
+    detail: { label: 'Толық ақпарат', navigable: false },
+    'ai-chat': { label: 'AI чат', navigable: true },
+    kmzh: { label: 'КМЖБ', navigable: true },
+    'subject-presentation-detail': { label: 'Презентация', navigable: true },
+    profile: { label: 'Профиль', navigable: true },
+    'profile-settings': { label: 'Профиль баптаулары', navigable: true },
+    tests: { label: 'Тесттер', navigable: true },
+    'take-test': { label: 'Тест тапсыру', navigable: true },
+    'lesson-plan': { label: 'Сабақ жоспары', navigable: true }
+};
+
+const isNavigableRoute = (path: string, segments: string[]): boolean => {
+    const lastSegment = segments[segments.length - 1];
+
+    if (path === '/') return true;
+
+    if (routeConfig[lastSegment]) {
+        return routeConfig[lastSegment].navigable;
+    }
+
+    const pathParts = path.split('/').filter(Boolean);
+
+    if (pathParts[0] === 'subjects-materials' && pathParts.length === 2) {
+        return true;
+    }
+    if (pathParts[0] === 'subject-windows' && pathParts.length === 2) {
+        return true;
+    }
+    if (pathParts[0] === 'lesson-plan' && pathParts.length === 3) {
+        return true;
+    }
+
+    return false;
+};
+
+const getRouteLabel = (segment: string, _fullPath: string, allSegments: string[]): string | null => {
+    if (routeConfig[segment]) {
+        return routeConfig[segment].label;
+    }
+
+    const segmentIndex = allSegments.indexOf(segment);
+    if (segmentIndex > 0) {
+        const prevSegment = allSegments[segmentIndex - 1];
+
+        if (prevSegment === 'subjects-materials' || prevSegment === 'subject-windows') {
+            return null;
+        }
+        if (prevSegment === 'detail') {
+            return null;
+        }
+        if (prevSegment === 'lesson-plan') {
+            return null;
+        }
+        if (allSegments[0] === 'lesson-plan' && segmentIndex === 2) {
+            return null;
+        }
+    }
+
+    return null;
 };
 
 export const Breadcrumb = () => {
@@ -32,13 +87,23 @@ export const Breadcrumb = () => {
 
     const pathSegments = location.pathname.split('/').filter(Boolean);
 
-    const breadcrumbs: BreadcrumbItem[] = [{ label: 'Главная', path: '/' }];
+    const breadcrumbs: BreadcrumbItem[] = [{ label: 'Басты бет', path: '/' }];
 
     let currentPath = '';
-    pathSegments.forEach(segment => {
+    pathSegments.forEach((segment, index) => {
         currentPath += `/${segment}`;
 
-        const label = routeLabels[segment] || segment;
+        const segmentsUpToHere = pathSegments.slice(0, index + 1);
+
+        if (!isNavigableRoute(currentPath, segmentsUpToHere)) {
+            return;
+        }
+
+        const label = getRouteLabel(segment, currentPath, pathSegments);
+
+        if (label === null) {
+            return;
+        }
 
         breadcrumbs.push({
             label,
@@ -57,10 +122,10 @@ export const Breadcrumb = () => {
     return (
         <nav className={s.breadcrumb}>
             <li
-                className={clsx(s.backButton, s.item)}
+                className={s.backButton}
                 onClick={handleBack}>
                 <ChevronLeft size={18} />
-                <span>Назад</span>
+                <span>Артқа</span>
             </li>
 
             <div className={s.separator} />
