@@ -1,4 +1,3 @@
-import { AlertTriangle, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/shared/ui/button'
@@ -6,9 +5,12 @@ import { Container } from '@/shared/ui/container'
 import { SearchInput } from '@/shared/ui/search-input'
 import { SectionTitle } from '@/shared/ui/section-title'
 
+import { SubjectCard } from '@/entities/subject'
 import { useSubjects } from '@/entities/subject/model/useSubjects'
-import { SubjectCard } from '@/entities/subject/ui'
 
+import { EmptyState } from '@/shared/ui/empty-state/ui/EmptyState'
+import { ErrorState } from '@/shared/ui/error-state/ui/ErrorState'
+import { Loader } from '@/shared/ui/loader'
 import s from './SubjectsPage.module.scss'
 
 const PAGE_SIZE = 9
@@ -20,11 +22,8 @@ export const SubjectsPage = () => {
 	const { data: subjects = [], isLoading, isError, refetch } = useSubjects()
 
 	const filteredSubjects = useMemo(() => {
-		let filtered = subjects.filter(
-			subject => subject.name.toLowerCase().includes(search.toLowerCase())
-			// (subject.description?.toLowerCase() || '').includes(
-			//     search.toLowerCase()
-			// )
+		let filtered = subjects.filter(subject =>
+			subject.name.toLowerCase().includes(search.toLowerCase())
 		)
 
 		return filtered
@@ -103,35 +102,9 @@ export const SubjectsPage = () => {
                     </div> */}
 				</div>
 
-				{isLoading && (
-					<div className={s.loadingState}>
-						<div className={s.spinnerContainer}>
-							<div className={s.spinner}></div>
-							<div className={s.spinnerRing}></div>
-						</div>
-						<p className={s.loadingText}>Курстар жүктелуде...</p>
-						<p className={s.loadingSubtext}>Біраз уақыт күтіңіз</p>
-					</div>
-				)}
+				{isLoading && <Loader />}
 
-				{isError && (
-					<div className={s.errorState}>
-						<div className={s.errorIcon}>
-							<AlertTriangle />
-						</div>
-						<h3 className={s.errorTitle}>Жүктеу сәтсіз аяқталды</h3>
-						<p className={s.errorDescription}>
-							Курстарды жүктеу кезінде қате пайда болды. Өтінеміз, қайта байқап
-							көріңіз.
-						</p>
-						<button
-							className={s.retryButton}
-							onClick={handleRetry}
-						>
-							Қайта жүктеу
-						</button>
-					</div>
-				)}
+				{isError && <ErrorState handleRetry={handleRetry} />}
 
 				{!isLoading && !isError && (
 					<>
@@ -161,31 +134,10 @@ export const SubjectsPage = () => {
 								)}
 							</>
 						) : (
-							<div className={s.emptyState}>
-								<div className={s.emptyIcon}>
-									<Search />
-								</div>
-								<h3 className={s.emptyTitle}>Курстар табылмады</h3>
-								<p className={s.emptyDescription}>
-									{search ? (
-										<>
-											&quot;{search}&quot; сөзі бойынша сәйкес келетін курстар
-											жоқ. Басқа сөздермен іздеп көріңіз немесе барлық курстарды
-											көріңіз.
-										</>
-									) : (
-										'Әзірше ешбір курс қолжетімді емес'
-									)}
-								</p>
-								{search && (
-									<button
-										className={s.clearSearchButton}
-										onClick={handleClearSearch}
-									>
-										Барлық курстарды көрсету
-									</button>
-								)}
-							</div>
+							<EmptyState
+								search={search}
+								handleClearSearch={handleClearSearch}
+							/>
 						)}
 					</>
 				)}

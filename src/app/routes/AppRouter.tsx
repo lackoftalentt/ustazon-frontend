@@ -1,9 +1,20 @@
 import { AuthLayout } from '@/app/layouts/AuthLayout'
 import { MainLayout } from '@/app/layouts/MainLayout'
-import LessonPlanQuarterPage from '@/pages/lesson-plan'
+import LessonPlansPage from '@/pages/lesson-plans'
 import { LoaderPage } from '@/pages/loader-page/ui/LoaderPage'
-import { lazy, Suspense } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { lazy, Suspense, useEffect } from 'react'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { PrivateRoute } from './PrivateRoute'
+
+const ScrollToTop = () => {
+	const { pathname } = useLocation()
+
+	useEffect(() => {
+		window.scrollTo(0, 0)
+	}, [pathname])
+
+	return null
+}
 
 const LoginPage = lazy(() => import('@/pages/login'))
 const RegisterPage = lazy(() => import('@/pages/register'))
@@ -14,104 +25,149 @@ const SubjectsPage = lazy(() => import('@/pages/subjects'))
 const SubjectDetailPage = lazy(() => import('@/pages/subject-detail'))
 const SubjectWindowsPage = lazy(() => import('@/pages/subject-windows'))
 const AIChatPage = lazy(() => import('@/pages/ai-chat'))
-const KmzhPage = lazy(() => import('@/pages/kmzh'))
-const SubjectPresentationDetailPage = lazy(
-	() => import('@/pages/subject-presentation-detail')
-)
+const LessonPlansListPage = lazy(() => import('@/pages/lesson-plans-list'))
 const ProfilePage = lazy(() => import('@/pages/profile'))
 const ProfileSettingsPage = lazy(() => import('@/pages/profile-settings'))
 const TestsPage = lazy(() => import('@/pages/tests'))
 const TakeTestPage = lazy(() => import('@/pages/take-test'))
+const NotFoundPage = lazy(() => import('@/pages/not-found'))
 
 export const AppRouter = () => {
 	return (
-		<Suspense fallback={<LoaderPage />}>
-			<Routes>
-				<Route element={<AuthLayout />}>
-					<Route
-						path="login"
-						element={<LoginPage />}
-					/>
-					<Route
-						path="register"
-						element={<RegisterPage />}
-					/>
-					<Route
-						path="reset-password"
-						element={<ResetPasswordPage />}
-					/>
-				</Route>
+		<>
+			<ScrollToTop />
+			<Suspense fallback={<LoaderPage />}>
+				<Routes>
+					<Route element={<AuthLayout />}>
+						<Route
+							path="login"
+							element={<LoginPage />}
+						/>
+						<Route
+							path="register"
+							element={<RegisterPage />}
+						/>
+						<Route
+							path="reset-password"
+							element={<ResetPasswordPage />}
+						/>
+					</Route>
 
-				<Route
-					path="/"
-					element={<MainLayout />}
-				>
 					<Route
-						index
-						element={<HomePage />}
-					/>
-					<Route
-						path="/subjects"
-						element={<SubjectsPage />}
-					/>
-					<Route
-						path="subjects-materials/:subjectCode"
-						element={<SubjectsMaterialsPage />}
-					/>
-					<Route
-						path="/subjects-materials/:subjectCode/detail/:cardId"
-						element={<SubjectDetailPage />}
-					/>
-					<Route
-						path="/subject-windows/:subjectCode"
-						element={<SubjectWindowsPage />}
-					/>
-					<Route
-						path="ai-chat"
-						element={<AIChatPage />}
-					/>
-					<Route
-						path="kmzh"
-						element={<KmzhPage />}
-					/>
-					<Route
-						path="subject-presentation-detail"
-						element={<SubjectPresentationDetailPage />}
-					/>
-					<Route
-						path="profile"
-						element={<ProfilePage />}
-					/>
-					<Route
-						path="profile-settings"
-						element={<ProfileSettingsPage />}
-					/>
-					<Route
-						path="tests"
-						element={<TestsPage />}
-					/>
-					<Route
-						path="take-test"
-						element={<TakeTestPage />}
-					/>
-
-					<Route path="lesson-plan">
+						path="/"
+						element={<MainLayout />}
+					>
 						<Route
 							index
+							element={<HomePage />}
+						/>
+						<Route
+							path="/subjects"
 							element={
-								<Navigate
-									to="5/q1"
-									replace
-								/>
+								<PrivateRoute>
+									<SubjectsPage />
+								</PrivateRoute>
 							}
 						/>
 						<Route
-							path=":grade/:quarter"
-							element={<LessonPlanQuarterPage />}
+							path="subjects-materials/:subjectCode"
+							element={
+								<PrivateRoute>
+									<SubjectsMaterialsPage />
+								</PrivateRoute>
+							}
 						/>
+						<Route
+							path="/subjects-materials/:subjectCode/detail/:cardId"
+							element={
+								<PrivateRoute>
+									<SubjectDetailPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="/subject-windows/:subjectCode"
+							element={
+								<PrivateRoute>
+									<SubjectWindowsPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="ai-chat"
+							element={
+								<PrivateRoute>
+									<AIChatPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="profile"
+							element={
+								<PrivateRoute>
+									<ProfilePage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="profile-settings"
+							element={
+								<PrivateRoute>
+									<ProfileSettingsPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="tests"
+							element={
+								<PrivateRoute>
+									<TestsPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="take-test/:testId"
+							element={
+								<PrivateRoute>
+									<TakeTestPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="lesson-plans/:code/:quarter?/:grade?"
+							element={
+								<PrivateRoute>
+									<LessonPlansPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route path="lesson-plans-list">
+							<Route
+								index
+								element={
+									<Navigate
+										to="5/q1"
+										replace
+									/>
+								}
+							/>
+							<Route
+								path=":grade/:quarter"
+								element={
+									<PrivateRoute>
+										<LessonPlansListPage />
+									</PrivateRoute>
+								}
+							/>
+						</Route>
 					</Route>
-				</Route>
-			</Routes>
-		</Suspense>
+
+					<Route
+						path="*"
+						element={<NotFoundPage />}
+					/>
+				</Routes>
+			</Suspense>
+		</>
 	)
 }

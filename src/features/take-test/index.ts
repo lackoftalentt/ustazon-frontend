@@ -1,2 +1,2 @@
-export { useTestStore } from './model';
-export type { Question } from './model';
+export { useTestStore, useTestTimer, useTestData, useTestScore, useSubmitTest } from './model'
+export type { Question, Answer, TestSubmitResult, QuestionResult } from './model'

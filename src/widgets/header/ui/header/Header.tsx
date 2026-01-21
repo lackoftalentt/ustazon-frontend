@@ -64,7 +64,7 @@ export const Header = () => {
 							variant="outline"
 							className={s.loginBtn}
 						>
-							Войти
+							Кіру
 						</Button>
 					)}
 				</div>

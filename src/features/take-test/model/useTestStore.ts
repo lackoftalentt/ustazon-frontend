@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Question, TestStore } from './types';
+import type { Question, TestStore, TestSubmitResult } from './types';
 
 const DEFAULT_TIME_LIMIT = 300;
 const STORAGE_KEY = 'test-progress';
@@ -16,6 +16,8 @@ export const useTestStore = create<TestStore>()(
             endTime: null,
             isTestStarted: false,
             isTestCompleted: false,
+            submitResult: null,
+            isSubmitting: false,
 
             startTest: (questions: Question[], timeLimit = DEFAULT_TIME_LIMIT) => {
                 set({
@@ -79,8 +81,18 @@ export const useTestStore = create<TestStore>()(
                     startTime: null,
                     endTime: null,
                     isTestStarted: false,
-                    isTestCompleted: false
+                    isTestCompleted: false,
+                    submitResult: null,
+                    isSubmitting: false
                 });
+            },
+
+            setSubmitResult: (result: TestSubmitResult) => {
+                set({ submitResult: result });
+            },
+
+            setIsSubmitting: (isSubmitting: boolean) => {
+                set({ isSubmitting });
             },
 
             getScore: () => {
@@ -113,7 +125,8 @@ export const useTestStore = create<TestStore>()(
                 startTime: state.startTime,
                 endTime: state.endTime,
                 isTestStarted: state.isTestStarted,
-                isTestCompleted: state.isTestCompleted
+                isTestCompleted: state.isTestCompleted,
+                submitResult: state.submitResult
             })
         }
     )

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createMaterialSchema, type CreateMaterialSchema } from './validation';
-import type { CreateMaterialFormData, SourceType, SubjectOption } from './types';
+import type { CreateMaterialFormData, SourceType } from './types';
 
 export const useCreateMaterialForm = (onSubmit: (data: CreateMaterialFormData) => void) => {
     const form = useForm<CreateMaterialSchema>({
@@ -35,12 +35,12 @@ export const useCreateMaterialForm = (onSubmit: (data: CreateMaterialFormData) =
         form.setValue('file', file, { shouldValidate: form.formState.isSubmitted });
     };
 
-    const handleSubjectToggle = (subject: SubjectOption) => {
+    const handleSubjectToggle = (subject: string) => {
         const current = form.getValues('subjects') || [];
         const updated = current.includes(subject)
             ? current.filter(s => s !== subject)
             : [...current, subject];
-        form.setValue('subjects', updated as SubjectOption[]);
+        form.setValue('subjects', updated);
     };
 
     const resetForm = () => {

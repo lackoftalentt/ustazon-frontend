@@ -1,0 +1,121 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	gap: $spacing-md;
+}
+
+.iframe {
+	width: 100%;
+	flex: 1;
+	min-height: 500px;
+	border: 0;
+	border-radius: $radius-md;
+	background: $color-gray-light;
+}
+
+.fallbackBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $spacing-lg;
+	padding: $spacing-lg $spacing-2xl;
+	background: linear-gradient(
+		135deg,
+		rgba($color-green-primary, 0.08) 0%,
+		rgba($color-green-light, 0.15) 100%
+	);
+	border: 1px solid rgba($color-green-primary, 0.15);
+	border-radius: $radius-md;
+	animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.hintWrapper {
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
+}
+
+.infoIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	background: rgba($color-green-primary, 0.12);
+	border-radius: $radius-full;
+	flex-shrink: 0;
+
+	svg {
+		width: 18px;
+		height: 18px;
+		color: $color-green-primary;
+	}
+}
+
+.hint {
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
+	line-height: $line-height-normal;
+}
+
+.button {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: $spacing-md $spacing-xl;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: white;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	border: none;
+	border-radius: $radius-sm;
+	cursor: pointer;
+	transition: all $transition-normal;
+	box-shadow: 0 2px 8px rgba($color-green-active, 0.25);
+	white-space: nowrap;
+
+	&:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba($color-green-active, 0.35);
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 600px) {
+	.fallbackBar {
+		flex-direction: column;
+		text-align: center;
+		padding: $spacing-lg;
+	}
+
+	.hintWrapper {
+		flex-direction: column;
+	}
+
+	.button {
+		width: 100%;
+		justify-content: center;
+	}
+}

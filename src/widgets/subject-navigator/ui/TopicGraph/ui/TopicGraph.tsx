@@ -47,8 +47,7 @@ interface TopicGraphProps {
 export const TopicGraph = ({
     subjectCode,
     topics = [],
-    onTopicSelect,
-    selectedTopicId
+    onTopicSelect
 }: TopicGraphProps) => {
     const svgRef = useRef<SVGSVGElement>(null);
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });

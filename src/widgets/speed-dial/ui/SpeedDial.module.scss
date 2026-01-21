@@ -1,0 +1,148 @@
+@use '@/shared/styles/variables' as *;
+
+.wrapper {
+	position: fixed;
+	bottom: 48px;
+	right: 48px;
+	z-index: $z-index-modal;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.fab {
+	width: 64px;
+	height: 64px;
+	border-radius: $radius-full;
+	background: $color-green-primary;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: none;
+	cursor: pointer;
+	box-shadow: 0 4px 12px rgba(47, 132, 80, 0.35);
+	transition: all $transition-fast;
+
+	&:hover {
+		background: $color-green-dark;
+		box-shadow: 0 6px 16px rgba(47, 132, 80, 0.45);
+		transform: translateY(-2px);
+	}
+
+	&:active {
+		transform: translateY(0);
+	}
+}
+
+.plus {
+	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rot {
+	transform: rotate(45deg);
+}
+
+.backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.25);
+	backdrop-filter: blur(4px);
+	z-index: -1;
+}
+
+.actions {
+	position: absolute;
+	bottom: 80px;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+	pointer-events: none;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.open {
+	pointer-events: auto;
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.actionItem {
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
+	justify-content: flex-end;
+}
+
+.action {
+	width: 56px;
+	height: 56px;
+	border-radius: $radius-full;
+	border: none;
+	background: white;
+	color: $color-green-primary;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+	transition: all $transition-fast;
+	opacity: 0;
+	transform: scale(0.8) translateY(10px);
+
+	&:hover {
+		background: $color-green-primary;
+		color: white;
+		box-shadow: 0 4px 12px rgba(47, 132, 80, 0.3);
+		transform: scale(1.05) translateY(0);
+	}
+}
+
+.open .action {
+	opacity: 1;
+	transform: scale(1) translateY(0);
+}
+
+.label {
+	background: white;
+	padding: $spacing-sm $spacing-md;
+	border-radius: $radius-sm;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	white-space: nowrap;
+	opacity: 0;
+	transform: translateX(10px);
+	transition: all $transition-fast;
+}
+
+.open .label {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+	.wrapper {
+		bottom: 28px;
+		right: 28px;
+	}
+
+	.fab {
+		width: 60px;
+		height: 60px;
+	}
+
+	.action {
+		width: 52px;
+		height: 52px;
+	}
+
+	.label {
+		padding: $spacing-xs $spacing-sm;
+		font-size: $font-size-base;
+	}
+}

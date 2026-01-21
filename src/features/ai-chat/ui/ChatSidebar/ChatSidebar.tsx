@@ -1,6 +1,6 @@
 import { Plus, MessageSquare, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import s from './ChatSidebar.module.scss';
-import { ConversationListItem } from '@/shared/api/ai';
+import type { ConversationListItem } from '@/shared/api/ai';
 
 interface ChatSidebarProps {
     conversations: ConversationListItem[];

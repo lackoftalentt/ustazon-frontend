@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { CLASS_OPTIONS, TERM_OPTIONS, SUBJECT_OPTIONS } from './types';
 
 const urlRegex = /^https?:\/\/.+/;
 
@@ -7,13 +6,13 @@ export const createMaterialSchema = z
     .object({
         name: z.string().min(1, 'Материалдың атауын енгізіңіз'),
         topic: z.string().optional(),
-        classLevel: z.enum(CLASS_OPTIONS as unknown as [string, ...string[]]).optional(),
-        term: z.enum(TERM_OPTIONS as unknown as [string, ...string[]]).optional(),
+        classLevel: z.string().optional(),
+        term: z.string().optional(),
         sourceType: z.enum(['link', 'file']),
         link: z.string().optional(),
         file: z.instanceof(File).optional(),
         showAsIframe: z.boolean(),
-        subjects: z.array(z.enum(SUBJECT_OPTIONS as unknown as [string, ...string[]]))
+        subjects: z.array(z.string())
     })
     .superRefine((data, ctx) => {
         if (data.sourceType === 'link') {

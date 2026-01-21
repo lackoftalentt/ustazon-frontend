@@ -1,11 +1,11 @@
 import { AlertTriangle, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
+import { SubjectCard } from '@/entities/subject'
 import {
 	useSubjectByCode,
 	useWindows
 } from '@/entities/subject/model/useSubjects'
-import { SubjectCard } from '@/entities/subject/ui'
 
 import { Button } from '@/shared/ui/button'
 import { Container } from '@/shared/ui/container'
@@ -13,6 +13,7 @@ import { SearchInput } from '@/shared/ui/search-input'
 import { SectionTitle } from '@/shared/ui/section-title'
 
 import { LoaderPage } from '@/pages/loader-page'
+import { Loader } from '@/shared/ui/loader'
 import { useParams } from 'react-router'
 import s from './SubjectWindowsPage.module.scss'
 
@@ -23,7 +24,7 @@ export const SubjectWindowsPage = () => {
 
 	const { data: subject, isLoading: isLoadingSubject } = useSubjectByCode(
 		subjectCode || '',
-		!!subjectCode
+		{ enabled: !!subjectCode }
 	)
 
 	const { data: windows = [], isLoading, isError, refetch } = useWindows()
@@ -74,8 +75,7 @@ export const SubjectWindowsPage = () => {
 				</div>
 				<h3 className={s.errorTitle}>Жүктеу сәтсіз аяқталды</h3>
 				<p className={s.errorDescription}>
-					Курстарды жүктеу кезінде қате пайда болды. Өтінеміз, қайта байқап
-					көріңіз.
+					Терезелерді жүктеу кезінде қате пайда болды. Қайта байқап көріңіз.
 				</p>
 				<button
 					className={s.retryButton}
@@ -105,16 +105,7 @@ export const SubjectWindowsPage = () => {
 					/>
 				</div>
 
-				{isLoading && (
-					<div className={s.loadingState}>
-						<div className={s.spinnerContainer}>
-							<div className={s.spinner}></div>
-							<div className={s.spinnerRing}></div>
-						</div>
-						<p className={s.loadingText}>Курстар жүктелуде...</p>
-						<p className={s.loadingSubtext}>Біраз уақыт күтіңіз</p>
-					</div>
-				)}
+				{isLoading && <Loader />}
 
 				{isError && (
 					<div className={s.errorState}>
@@ -123,8 +114,7 @@ export const SubjectWindowsPage = () => {
 						</div>
 						<h3 className={s.errorTitle}>Жүктеу сәтсіз аяқталды</h3>
 						<p className={s.errorDescription}>
-							Курстарды жүктеу кезінде қате пайда болды. Өтінеміз, қайта байқап
-							көріңіз.
+							Терезелерді жүктеу кезінде қате пайда болды. Қайта байқап көріңіз.
 						</p>
 						<button
 							className={s.retryButton}
@@ -140,14 +130,23 @@ export const SubjectWindowsPage = () => {
 						{visibleWindows.length > 0 ? (
 							<>
 								<div className={s.windowsList}>
-									{visibleWindows.map(w => (
-										<SubjectCard
-											key={w.id}
-											id={w.id}
-											title={w.name}
-											path={`/subjects-materials/${subjectCode}?window=${w.id}`}
-										/>
-									))}
+									{visibleWindows.map(w => {
+										let path = `/subjects-materials/${subjectCode}?window=${w.id}`
+										if (w.id === 19) {
+											path = `/lesson-plans/${subjectCode}`
+										} else if (w.id === 18) {
+											path = `/tests?code=${subjectCode}`
+										}
+
+										return (
+											<SubjectCard
+												key={w.id}
+												id={w.id}
+												title={w.name}
+												path={path}
+											/>
+										)
+									})}
 								</div>
 
 								{hasMore && (
@@ -156,7 +155,7 @@ export const SubjectWindowsPage = () => {
 											className={s.loadMoreButton}
 											onClick={handleLoadMore}
 										>
-											Показать еще
+											Тағы көрсету
 										</Button>
 									</div>
 								)}
@@ -166,16 +165,15 @@ export const SubjectWindowsPage = () => {
 								<div className={s.emptyIcon}>
 									<Search />
 								</div>
-								<h3 className={s.emptyTitle}>Курстар табылмады</h3>
+								<h3 className={s.emptyTitle}>Терезелер табылмады</h3>
 								<p className={s.emptyDescription}>
 									{search ? (
 										<>
-											&quot;{search}&quot; сөзі бойынша сәйкес келетін курстар
-											жоқ. Басқа сөздермен іздеп көріңіз немесе барлық курстарды
-											көріңіз.
+											&quot;{search}&quot; бойынша сәйкес келетін терезелер жоқ.
+											Басқа сөзбен іздеп көріңіз.
 										</>
 									) : (
-										'Пока что окна недоступны'
+										'Пока терезелер жоқ'
 									)}
 								</p>
 								{search && (
@@ -183,7 +181,7 @@ export const SubjectWindowsPage = () => {
 										className={s.clearSearchButton}
 										onClick={handleClearSearch}
 									>
-										Барлық курстарды көрсету
+										Барлығын көрсету
 									</button>
 								)}
 							</div>

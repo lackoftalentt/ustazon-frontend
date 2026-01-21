@@ -1,0 +1,1 @@
+export { TopicFilterBadge } from './TopicFilterBadge'

@@ -1,0 +1,214 @@
+@use '@/shared/styles/variables' as *;
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.takeTestPage {
+	min-height: 100vh;
+	padding: 40px 0;
+	animation: fadeIn 0.5s ease-out;
+}
+
+.container {
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 30px;
+}
+
+.startContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: calc(100vh - 200px);
+	padding: $spacing-2xl;
+	animation: fadeIn $transition-slow;
+}
+
+.startCard {
+	background: white;
+	border-radius: $radius-xl;
+	padding: $spacing-3xl;
+	max-width: 520px;
+	width: 100%;
+	text-align: center;
+	box-shadow:
+		0 4px 20px rgba(0, 0, 0, 0.06),
+		0 1px 2px rgba(0, 0, 0, 0.04);
+	transition: $transition-normal;
+
+	&:hover {
+		box-shadow:
+			0 8px 28px rgba(0, 0, 0, 0.08),
+			0 2px 4px rgba(0, 0, 0, 0.05);
+	}
+
+	@media (max-width: 768px) {
+		padding: $spacing-2xl $spacing-xl;
+		margin: 0 $spacing-lg;
+	}
+}
+
+.startIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 72px;
+	height: 72px;
+	border-radius: $radius-full;
+	margin-bottom: $spacing-xl;
+	background: linear-gradient(
+		135deg,
+		$color-green-lightest,
+		rgba($color-green-primary, 0.12)
+	);
+
+	svg {
+		color: $color-green-primary;
+		width: $icon-size-md;
+		height: $icon-size-md;
+	}
+}
+
+.startTitle {
+	font-size: $font-size-xl;
+	font-weight: $font-weight-bold;
+	color: $color-gray-dark;
+	margin-bottom: $spacing-xl;
+	line-height: $line-height-normal;
+}
+
+.startInfoGrid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: $spacing-lg;
+	margin-bottom: $spacing-2xl;
+}
+
+.startInfoItem {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-sm;
+	padding: $spacing-lg;
+	border-radius: $radius-md;
+	font-size: $font-size-base;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
+	background: $color-gray-light;
+	transition: $transition-normal;
+
+	svg {
+		color: $color-green-primary;
+	}
+
+	&.easy {
+		background: rgba($color-green-primary, 0.12);
+		color: $color-green-primary;
+
+		svg {
+			color: $color-green-primary;
+		}
+	}
+
+	&.medium {
+		background: rgba(237, 137, 54, 0.12);
+		color: #ed8936;
+
+		svg {
+			color: #ed8936;
+		}
+	}
+
+	&.hard {
+		background: rgba($color-red-error, 0.12);
+		color: $color-red-error;
+
+		svg {
+			color: $color-red-error;
+		}
+	}
+}
+
+.startWarning {
+	display: flex;
+	background: rgba(245, 158, 11, 0.08);
+	border-radius: $radius-md;
+	padding: $spacing-lg;
+	gap: $spacing-md;
+	text-align: left;
+	margin-bottom: $spacing-2xl;
+
+	svg {
+		color: #ca8500;
+		margin-top: 2px;
+	}
+
+	p {
+		margin: 0;
+		font-size: $font-size-sm;
+		color: #8a5200;
+		line-height: $line-height-normal;
+	}
+}
+
+.startButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: $spacing-sm;
+	width: 100%;
+	padding: $spacing-lg;
+	border-radius: $radius-lg;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+	color: white;
+	border: none;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	cursor: pointer;
+	transition: $transition-normal;
+	margin-bottom: $spacing-md;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 20px rgba($color-green-primary, 0.3);
+	}
+}
+
+.backButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-sm;
+	width: 100%;
+	padding: $spacing-md $spacing-xl;
+	font-size: $font-size-base;
+	font-weight: $font-weight-medium;
+	color: $color-gray-medium;
+	background: $color-gray-light;
+	border: none;
+	border-radius: $radius-lg;
+	cursor: pointer;
+	transition: $transition-normal;
+
+	&:hover {
+		background: darken($color-gray-light, 4%);
+		color: white;
+		transform: translateY(-1px);
+	}
+}

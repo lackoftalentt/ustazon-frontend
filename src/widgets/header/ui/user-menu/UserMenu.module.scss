@@ -78,3 +78,72 @@
         color: #dc2626;
     }
 }
+
+// Tablet
+@media (max-width: 768px) {
+    .avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .dropdown {
+        min-width: 180px;
+        right: -8px;
+    }
+
+    .userInfo {
+        padding: 10px 14px;
+    }
+
+    .userName {
+        font-size: 0.9375rem;
+    }
+
+    .userPhone {
+        font-size: 0.8125rem;
+    }
+
+    .menuItem {
+        padding: 8px 14px;
+        font-size: 0.875rem;
+    }
+}
+
+// Small mobile
+@media (max-width: 480px) {
+    .avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .dropdown {
+        min-width: 160px;
+        position: fixed;
+        top: auto;
+        right: 16px;
+        left: auto;
+        bottom: auto;
+    }
+
+    .userInfo {
+        padding: 8px 12px;
+    }
+
+    .userName {
+        font-size: 0.875rem;
+    }
+
+    .userPhone {
+        font-size: 0.75rem;
+    }
+
+    .menuItems {
+        padding: 4px 0;
+    }
+
+    .menuItem {
+        padding: 8px 12px;
+        font-size: 0.8125rem;
+        gap: 8px;
+    }
+}

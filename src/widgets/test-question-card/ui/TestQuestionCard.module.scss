@@ -1,0 +1,182 @@
+@use '@/shared/styles/variables' as *;
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+}
+
+.questionCard {
+	background: linear-gradient(135deg, #fafbfc 0%, white 100%);
+	border: 1px solid $color-gray-border;
+	border-radius: 20px;
+	padding: 36px;
+	margin-bottom: 32px;
+	animation: scaleIn 0.5s ease-out 0.2s both;
+
+	@media (max-width: 768px) {
+		padding: 24px;
+	}
+}
+
+.questionHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.questionNumber {
+	font-size: $font-size-sm;
+	color: $color-green-primary;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1.5px;
+}
+
+.unansweredHint {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: $font-size-sm;
+	color: #f59e0b;
+	font-weight: 500;
+	animation: pulse 2s ease-in-out infinite;
+}
+
+.questionMedia {
+	margin-bottom: 20px;
+	border-radius: 12px;
+	overflow: hidden;
+
+	img,
+	video {
+		width: 100%;
+		max-height: 400px;
+		object-fit: contain;
+		border-radius: 12px;
+	}
+}
+
+.questionText {
+	font-size: 22px;
+	font-weight: 600;
+	color: $color-gray-dark;
+	line-height: 1.5;
+	margin: 0 0 32px 0;
+
+	@media (max-width: 768px) {
+		font-size: 18px;
+	}
+}
+
+.optionsGrid {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.option {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 24px;
+	background: white;
+	border: 2px solid $color-gray-border;
+	border-radius: 14px;
+	text-align: left;
+	cursor: pointer;
+	transition: all 0.25s ease;
+	animation: slideUp 0.4s ease-out forwards;
+	opacity: 0;
+
+	@for $i from 1 through 5 {
+		&:nth-child(#{$i}) {
+			animation-delay: #{0.05s * $i + 0.25s};
+		}
+	}
+
+	&:hover:not(.selected) {
+		border-color: $color-green-primary;
+		background: rgba($color-green-primary, 0.03);
+		transform: translateX(8px);
+
+		.optionLetter {
+			background: $color-green-primary;
+			color: white;
+		}
+	}
+
+	&.selected {
+		border-color: $color-green-primary;
+		background: linear-gradient(
+			135deg,
+			rgba($color-green-primary, 0.08),
+			rgba($color-green-primary, 0.15)
+		);
+		box-shadow: 0 4px 16px rgba($color-green-primary, 0.2);
+
+		.optionLetter {
+			background: $color-green-primary;
+			color: white;
+		}
+	}
+}
+
+.optionContent {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex: 1;
+}
+
+.optionLetter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background: $color-gray-light;
+	border-radius: 10px;
+	font-weight: 700;
+	color: $color-gray-dark;
+	flex-shrink: 0;
+	transition: all 0.25s ease;
+}
+
+.optionText {
+	font-size: 16px;
+	line-height: 1.5;
+	color: $color-gray-dark;
+}
+
+.selectedIndicator {
+	color: $color-green-primary;
+	animation: scaleIn 0.3s ease-out;
+}

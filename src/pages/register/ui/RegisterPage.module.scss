@@ -26,3 +26,34 @@
     align-items: flex-start;
     padding: 0 80px;
 }
+
+// Tablet
+@media (max-width: 1024px) {
+    .form {
+        padding: 0 40px;
+    }
+}
+
+// Mobile
+@media (max-width: 768px) {
+    .RegisterPage {
+        flex-direction: column;
+    }
+
+    .illustration {
+        display: none;
+    }
+
+    .form {
+        flex: 1;
+        padding: 32px 24px;
+        align-items: center;
+    }
+}
+
+// Small mobile
+@media (max-width: 480px) {
+    .form {
+        padding: 24px 16px;
+    }
+}

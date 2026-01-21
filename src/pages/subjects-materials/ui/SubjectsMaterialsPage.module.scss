@@ -36,14 +36,16 @@
 	font-size: $font-size-base;
 	font-weight: $font-weight-medium;
 
-	box-shadow: 0 4px 12px rgba($color-green-primary, 0.08),
+	box-shadow:
+		0 4px 12px rgba($color-green-primary, 0.08),
 		0 1px 2px rgba(0, 0, 0, 0.04);
 
 	transition: all $transition-normal;
 
 	&:hover {
 		border-color: rgba($color-green-primary, 0.25);
-		box-shadow: 0 6px 16px rgba($color-green-primary, 0.12),
+		box-shadow:
+			0 6px 16px rgba($color-green-primary, 0.12),
 			0 2px 4px rgba(0, 0, 0, 0.05);
 	}
 }
@@ -122,14 +124,16 @@
 	font-size: $font-size-base;
 	font-weight: $font-weight-medium;
 
-	box-shadow: 0 2px 8px rgba($color-green-primary, 0.06),
+	box-shadow:
+		0 2px 8px rgba($color-green-primary, 0.06),
 		0 1px 2px rgba(0, 0, 0, 0.04);
 
 	transition: all $transition-normal;
 
 	&:hover {
 		border-color: rgba($color-green-primary, 0.2);
-		box-shadow: 0 4px 12px rgba($color-green-primary, 0.1),
+		box-shadow:
+			0 4px 12px rgba($color-green-primary, 0.1),
 			0 2px 4px rgba(0, 0, 0, 0.05);
 	}
 }
@@ -348,6 +352,63 @@
 		.arrowIcon {
 			filter: brightness(0) invert(1);
 		}
+	}
+}
+
+.loadMoreContainer {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin-top: $spacing-3xl;
+	animation: fadeIn $transition-slow ease-out 1s both;
+}
+
+.loadMoreButton {
+	padding: $spacing-xl $spacing-3xl;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	color: white;
+	border: none;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	font-size: $font-size-base;
+	cursor: pointer;
+	transition: all $transition-normal;
+	position: relative;
+	overflow: hidden;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-green-primary, 0.3);
+
+		&::before {
+			left: 100%;
+		}
+	}
+
+	&:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+		transform: none !important;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 255, 255, 0.2),
+			transparent
+		);
+		transition: left 0.7s;
 	}
 }
 

@@ -1,0 +1,121 @@
+@use '@/shared/styles/variables' as *;
+
+.openedNotice {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 48px 24px;
+	min-height: 400px;
+	border-radius: $radius-lg;
+	animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		transform: scale(1);
+		box-shadow: 0 0 0 0 rgba($color-green-active, 0.4);
+	}
+	50% {
+		transform: scale(1.05);
+		box-shadow: 0 0 0 12px rgba($color-green-active, 0);
+	}
+}
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+
+.iconWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 80px;
+	height: 80px;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	border-radius: $radius-full;
+	margin-bottom: $spacing-2xl;
+	animation: pulse 2s ease-in-out infinite, float 3s ease-in-out infinite;
+}
+
+.icon {
+	width: 36px;
+	height: 36px;
+	color: white;
+}
+
+.title {
+	font-size: $font-size-xl;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+	margin: 0 0 $spacing-md;
+	animation: fadeIn 0.5s ease-out 0.2s both;
+}
+
+.description {
+	font-size: $font-size-base;
+	color: $color-gray-medium;
+	max-width: 400px;
+	line-height: $line-height-relaxed;
+	margin: 0 0 $spacing-3xl;
+	animation: fadeIn 0.5s ease-out 0.3s both;
+}
+
+.button {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: 14px 28px;
+	font-size: $font-size-base;
+	font-weight: $font-weight-medium;
+	color: white;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	border: none;
+	border-radius: $radius-md;
+	cursor: pointer;
+	transition: all $transition-normal;
+	animation: fadeIn 0.5s ease-out 0.4s both;
+	box-shadow: 0 4px 14px rgba($color-green-active, 0.3);
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba($color-green-active, 0.4);
+		background: linear-gradient(
+			135deg,
+			$color-green-dark 0%,
+			$color-green-primary 100%
+		);
+	}
+
+	&:active {
+		transform: translateY(0);
+		box-shadow: 0 2px 8px rgba($color-green-active, 0.3);
+	}
+}

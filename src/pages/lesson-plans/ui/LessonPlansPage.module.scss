@@ -1,0 +1,65 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+	padding-top: $spacing-xl;
+	padding-bottom: $spacing-3xl;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+}
+
+.subtitle {
+	margin: 0;
+	color: $color-green-dark;
+	font-size: $font-size-lg;
+	line-height: $line-height-normal;
+	margin-bottom: $spacing-md;
+}
+
+.filters {
+	display: flex;
+	gap: $spacing-lg;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+// .resetBtn {
+// 	padding: $spacing-sm $spacing-md;
+// 	background: transparent;
+// 	border: 1px solid $color-green-dark;
+// 	border-radius: $radius-sm;
+// 	color: $color-green-dark;
+// 	font-size: $font-size-sm;
+// 	cursor: pointer;
+// 	transition: all 0.2s ease;
+
+// 	&:hover {
+// 		background: $color-green-dark;
+// 		color: white;
+// 	}
+// }
+
+.stats {
+	margin-top: $spacing-2xl;
+
+	display: flex;
+	gap: $spacing-2xl;
+}
+
+.section {
+	margin-top: $spacing-3xl;
+
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xl;
+}
+
+.cards {
+	display: grid;
+	gap: $spacing-2xl;
+
+	grid-template-columns: repeat(3, 1fr);
+	align-items: stretch;
+}

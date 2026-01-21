@@ -1,0 +1,50 @@
+import type { Test } from '@/entities/test'
+import { TestItem } from '@/entities/test'
+import ArrowIcon from '@/shared/assets/icons/arrowLeft.svg?react'
+import { SectionTitle } from '@/shared/ui/section-title'
+import { Link } from 'react-router-dom'
+import s from '../SubjectsMaterialsPage.module.scss'
+
+interface TestsSectionProps {
+	testsData: Test[]
+	subjectCode: string
+}
+
+export const TestsSection = ({ testsData, subjectCode }: TestsSectionProps) => {
+	const displayItems = testsData.slice(0, 3)
+	const hasMore = testsData.length > 3
+
+	return (
+		<div className={s.windowSection}>
+			<SectionTitle
+				className={s.rowTitle}
+				title="Тесттер"
+			/>
+			<div className={s.container}>
+				{displayItems.map(test => (
+					<TestItem
+						key={test.id}
+						id={String(test.id)}
+						title={test.title}
+						description={test.subject}
+						questionsCount={test.questions_count}
+						timeLimit={test.duration}
+						difficulty={test.difficulty}
+						category={test.subject}
+					/>
+				))}
+			</div>
+			{hasMore && (
+				<div className={s.showMoreWrapper}>
+					<Link
+						to={`/tests`}
+						className={s.showMoreLink}
+					>
+						Көбірек көру
+						<ArrowIcon className={s.arrowIcon} />
+					</Link>
+				</div>
+			)}
+		</div>
+	)
+}

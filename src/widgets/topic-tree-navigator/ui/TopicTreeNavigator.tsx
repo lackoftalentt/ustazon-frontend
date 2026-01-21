@@ -68,7 +68,6 @@ export const TopicTreeNavigator = ({
     topics,
     onTopicClick
 }: TopicTreeNavigatorProps) => {
-    // Build tree structure
     const buildTree = (topics: Topic[]): Topic[] => {
         const topicMap = new Map<number, Topic>();
         const roots: Topic[] = [];
@@ -92,7 +91,6 @@ export const TopicTreeNavigator = ({
         return roots;
     };
 
-    // Generate nodes and edges from tree
     const generateNodesAndEdges = () => {
         const nodes: Node[] = [];
         const edges: Edge[] = [];
@@ -162,7 +160,6 @@ export const TopicTreeNavigator = ({
                 processNode(root, startX + index * siblingGap, centerY, true);
             });
         } else {
-            // Show placeholder if no topics
             nodes.push({
                 id: 'placeholder',
                 type: 'topicNode',

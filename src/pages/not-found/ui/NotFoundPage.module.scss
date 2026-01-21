@@ -1,0 +1,496 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: calc(100vh - 200px);
+	padding: $spacing-2xl;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
+}
+
+// Школьная доска на фоне (декоративные линии)
+.chalkboard {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 0;
+	opacity: 0.03;
+}
+
+.chalkLine {
+	position: absolute;
+	height: 2px;
+	background: $color-green-dark;
+	width: 100%;
+
+	&:nth-child(1) {
+		top: 25%;
+	}
+	&:nth-child(2) {
+		top: 50%;
+	}
+	&:nth-child(3) {
+		top: 75%;
+	}
+}
+
+.content {
+	max-width: 650px;
+	position: relative;
+	z-index: 1;
+}
+
+// Иллюстрация с доской и персонажами
+.illustration {
+	position: relative;
+	margin-bottom: $spacing-2xl;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+// Учитель
+.teacher {
+	font-size: 60px;
+	position: absolute;
+	top: 20px;
+	left: -80px;
+	animation: teacherWave 3s ease-in-out infinite;
+	filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+	z-index: 2;
+}
+
+@keyframes teacherWave {
+	0%,
+	100% {
+		transform: rotate(-5deg);
+	}
+	50% {
+		transform: rotate(5deg);
+	}
+}
+
+// Школьная доска
+.board {
+	background: #2d5016;
+	border-radius: $radius-md;
+	padding: 0;
+	position: relative;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+		inset 0 2px 4px rgba(255, 255, 255, 0.1);
+	overflow: hidden;
+}
+
+.boardTop {
+	height: 20px;
+	background: linear-gradient(180deg, #8b4513 0%, #654321 100%);
+	border-radius: $radius-md $radius-md 0 0;
+}
+
+.boardContent {
+	padding: $spacing-2xl $spacing-3xl;
+	position: relative;
+	background: repeating-linear-gradient(
+		0deg,
+		transparent,
+		transparent 30px,
+		rgba(255, 255, 255, 0.02) 30px,
+		rgba(255, 255, 255, 0.02) 31px
+	);
+}
+
+.errorCode {
+	font-size: 140px;
+	font-weight: 900;
+	line-height: 1;
+	color: #f5f5dc;
+	user-select: none;
+	position: relative;
+	font-family: 'Comic Sans MS', 'Chalkboard', cursive;
+	text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2),
+		-1px -1px 0 rgba(255, 255, 255, 0.1);
+	animation: chalkWrite 0.5s ease-out;
+
+	// Эффект мела
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+		pointer-events: none;
+	}
+}
+
+@keyframes chalkWrite {
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.chalk {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	font-size: 40px;
+	color: #f5f5dc;
+	font-family: 'Comic Sans MS', cursive;
+	animation: chalkBounce 2s ease-in-out infinite;
+	opacity: 0.8;
+}
+
+@keyframes chalkBounce {
+	0%,
+	100% {
+		transform: translateY(0) rotate(0deg);
+	}
+	50% {
+		transform: translateY(-5px) rotate(10deg);
+	}
+}
+
+// Ученики
+.students {
+	display: flex;
+	gap: $spacing-lg;
+	margin-top: $spacing-lg;
+	justify-content: center;
+}
+
+.student {
+	font-size: 48px;
+	animation: studentLook 4s ease-in-out infinite;
+	filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.1));
+
+	&:nth-child(1) {
+		animation-delay: 0s;
+	}
+	&:nth-child(2) {
+		animation-delay: 0.5s;
+	}
+	&:nth-child(3) {
+		animation-delay: 1s;
+	}
+}
+
+@keyframes studentLook {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	25% {
+		transform: translateY(-8px);
+	}
+	75% {
+		transform: translateY(-4px);
+	}
+}
+
+// Заголовок и текст
+.title {
+	font-size: $font-size-2xl;
+	font-weight: $font-weight-bold;
+	color: #2d5016;
+	margin-bottom: $spacing-md;
+	margin-top: $spacing-xl;
+	position: relative;
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: -8px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 80px;
+		height: 4px;
+		background: linear-gradient(90deg, $color-green-primary, #8bc34a);
+		border-radius: 2px;
+	}
+}
+
+.description {
+	font-size: $font-size-lg;
+	color: $color-gray-medium;
+	line-height: $line-height-relaxed;
+	margin-bottom: $spacing-3xl;
+	margin-top: $spacing-2xl;
+}
+
+// Кнопки
+.actions {
+	display: flex;
+	gap: $spacing-lg;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.primaryButton {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: $spacing-lg $spacing-3xl;
+	background: linear-gradient(135deg, $color-green-primary 0%, #2d5016 100%);
+	color: white;
+	border: none;
+	border-radius: $radius-xl;
+	font-size: $font-size-base;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	text-decoration: none;
+	position: relative;
+	overflow: hidden;
+	transition: transform $transition-fast, box-shadow $transition-fast;
+	box-shadow: 0 4px 15px rgba($color-green-primary, 0.4);
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 255, 255, 0.3),
+			transparent
+		);
+		transition: left 0.5s ease;
+	}
+
+	&:hover {
+		transform: translateY(-3px) scale(1.02);
+		box-shadow: 0 8px 25px rgba($color-green-primary, 0.5);
+
+		&::before {
+			left: 100%;
+		}
+	}
+
+	&:active {
+		transform: translateY(-1px) scale(1);
+	}
+}
+
+.secondaryButton {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: $spacing-lg $spacing-3xl;
+	background: white;
+	color: $color-green-primary;
+	border: 2px solid $color-green-primary;
+	border-radius: $radius-xl;
+	font-size: $font-size-base;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	text-decoration: none;
+	position: relative;
+	overflow: hidden;
+	transition: all $transition-fast;
+	box-shadow: 0 4px 15px rgba($color-green-primary, 0.1);
+
+	&::after {
+		content: '';
+		position: absolute;
+		width: 0;
+		height: 100%;
+		top: 0;
+		left: 0;
+		background: linear-gradient(135deg, $color-green-primary 0%, #2d5016 100%);
+		transition: width $transition-fast;
+		z-index: -1;
+	}
+
+	&:hover {
+		color: white;
+		border-color: transparent;
+		transform: translateY(-3px);
+		box-shadow: 0 8px 25px rgba($color-green-primary, 0.3);
+
+		&::after {
+			width: 100%;
+		}
+	}
+
+	&:active {
+		transform: translateY(-1px);
+	}
+}
+
+// Подсказка
+.hint {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-sm;
+	margin-top: $spacing-2xl;
+	padding: $spacing-md $spacing-lg;
+	background: rgba($color-green-primary, 0.08);
+	border-radius: $radius-lg;
+	color: $color-gray-medium;
+	font-size: $font-size-sm;
+}
+
+.hintIcon {
+	font-size: 18px;
+}
+
+// Плавающие школьные предметы
+.floatingShapes {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	z-index: 0;
+	overflow: hidden;
+}
+
+.shape {
+	position: absolute;
+	font-size: 36px;
+	opacity: 0.6;
+	filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+
+	&.book {
+		top: 10%;
+		left: 8%;
+		animation: floatItem 6s ease-in-out infinite;
+	}
+
+	&.pencil {
+		top: 20%;
+		right: 12%;
+		animation: floatItem 7s ease-in-out infinite 0.5s;
+		transform: rotate(45deg);
+	}
+
+	&.ruler {
+		bottom: 25%;
+		left: 5%;
+		animation: floatItem 8s ease-in-out infinite 1s;
+	}
+
+	&.apple {
+		top: 60%;
+		right: 8%;
+		animation: floatItem 5s ease-in-out infinite 1.5s;
+	}
+
+	&.globe {
+		bottom: 15%;
+		right: 20%;
+		animation: floatItem 9s ease-in-out infinite 0.3s;
+		font-size: 42px;
+	}
+
+	&.calculator {
+		top: 45%;
+		left: 3%;
+		animation: floatItem 7s ease-in-out infinite 2s;
+	}
+
+	&.notebook {
+		top: 8%;
+		right: 30%;
+		animation: floatItem 6s ease-in-out infinite 0.8s;
+	}
+
+	&.lightbulb {
+		bottom: 35%;
+		left: 15%;
+		animation: floatItem 5s ease-in-out infinite 1.2s;
+		font-size: 32px;
+	}
+}
+
+@keyframes floatItem {
+	0%,
+	100% {
+		transform: translateY(0) rotate(0deg);
+	}
+	25% {
+		transform: translateY(-15px) rotate(5deg);
+	}
+	50% {
+		transform: translateY(-8px) rotate(-3deg);
+	}
+	75% {
+		transform: translateY(-20px) rotate(2deg);
+	}
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+	.errorCode {
+		font-size: 80px;
+	}
+
+	.boardContent {
+		padding: $spacing-lg $spacing-xl;
+	}
+
+	.teacher {
+		font-size: 40px;
+		left: -50px;
+		top: 10px;
+	}
+
+	.student {
+		font-size: 36px;
+	}
+
+	.title {
+		font-size: $font-size-xl;
+	}
+
+	.description {
+		font-size: $font-size-base;
+	}
+
+	.actions {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.primaryButton,
+	.secondaryButton {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.shape {
+		font-size: 24px;
+		opacity: 0.4;
+	}
+}
+
+@media (max-width: 480px) {
+	.teacher {
+		display: none;
+	}
+
+	.errorCode {
+		font-size: 60px;
+	}
+
+	.chalk {
+		font-size: 24px;
+	}
+}

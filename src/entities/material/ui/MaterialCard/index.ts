@@ -1,1 +1,0 @@
-export { MaterialCard } from './MaterialCard';

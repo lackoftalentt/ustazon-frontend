@@ -1,482 +1,560 @@
 @use '@/shared/styles/variables' as *;
 
 .testPage {
-    min-height: 100vh;
-    background: linear-gradient(
-        135deg,
-        $color-gray-light 0%,
-        $color-blue-lightest 100%
-    );
-    padding: $spacing-3xl 0 $spacing-3xl * 2;
-    animation: fadeIn $transition-slow ease-out;
+	padding: $spacing-3xl 0 $spacing-3xl * 2;
+	animation: fadeIn $transition-slow ease-out;
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY($spacing-lg);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY($spacing-lg);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 
 .header {
-    text-align: left;
-    margin-bottom: $spacing-3xl;
-    animation: slideInFromLeft $transition-slow ease-out 0.2s both;
+	text-align: left;
+	margin-bottom: $spacing-3xl;
+	animation: slideInFromLeft $transition-slow ease-out 0.2s both;
 
-    @keyframes slideInFromLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-$spacing-2xl);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
+	@keyframes slideInFromLeft {
+		from {
+			opacity: 0;
+			transform: translateX(-$spacing-2xl);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
 }
 
 .subjectInfo {
-    max-width: 800px;
+	max-width: 800px;
 }
 
 .subjectHeader {
-    display: flex;
-    align-items: center;
-    gap: $spacing-lg;
-    margin-bottom: $spacing-lg;
-    animation: fadeInUp $transition-slow ease-out 0.3s both;
+	display: flex;
+	align-items: center;
+	gap: $spacing-lg;
+	margin-bottom: $spacing-lg;
+	animation: fadeInUp $transition-slow ease-out 0.3s both;
 }
 
 .subjectIcon {
-    color: $color-green-primary;
-    animation: iconFloat 3s ease-in-out infinite;
+	color: $color-green-primary;
+	animation: iconFloat 3s ease-in-out infinite;
 
-    @keyframes iconFloat {
-        0%,
-        100% {
-            transform: translateY(0) rotate(0deg);
-        }
-        50% {
-            transform: translateY(-5px) rotate(5deg);
-        }
-    }
+	@keyframes iconFloat {
+		0%,
+		100% {
+			transform: translateY(0) rotate(0deg);
+		}
+		50% {
+			transform: translateY(-5px) rotate(5deg);
+		}
+	}
 }
 
 .subjectName {
-    font-size: $font-size-2xl;
-    font-weight: $font-weight-bold;
-    color: $color-green-active;
-    margin: 0;
-    position: relative;
-    display: inline-block;
-    animation: textReveal 1s ease-out 0.4s both;
+	font-size: $font-size-2xl;
+	font-weight: $font-weight-bold;
+	color: $color-green-active;
+	margin: 0;
+	position: relative;
+	display: inline-block;
+	animation: textReveal 1s ease-out 0.4s both;
 
-    @keyframes textReveal {
-        from {
-            clip-path: inset(0 100% 0 0);
-        }
-        to {
-            clip-path: inset(0 0 0 0);
-        }
-    }
+	@keyframes textReveal {
+		from {
+			clip-path: inset(0 100% 0 0);
+		}
+		to {
+			clip-path: inset(0 0 0 0);
+		}
+	}
 
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: -$spacing-md;
-        left: 0;
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(
-            90deg,
-            $color-green-primary 0%,
-            $color-green-dark 100%
-        );
-        border-radius: 2px;
-        animation: expandWidth 1s ease-out 0.6s both;
-    }
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: -$spacing-md;
+		left: 0;
+		width: 80px;
+		height: 4px;
+		background: linear-gradient(
+			90deg,
+			$color-green-primary 0%,
+			$color-green-dark 100%
+		);
+		border-radius: 2px;
+		animation: expandWidth 1s ease-out 0.6s both;
+	}
 
-    @keyframes expandWidth {
-        from {
-            width: 0;
-        }
-        to {
-            width: 80px;
-        }
-    }
+	@keyframes expandWidth {
+		from {
+			width: 0;
+		}
+		to {
+			width: 80px;
+		}
+	}
 }
 
 .subtitle {
-    font-size: $font-size-lg;
-    color: $color-gray-medium;
-    line-height: $line-height-relaxed;
-    margin-bottom: $spacing-2xl;
-    animation: fadeInUp $transition-slow ease-out 0.5s both;
-    max-width: 600px;
+	font-size: $font-size-lg;
+	color: $color-gray-medium;
+	line-height: $line-height-relaxed;
+	margin-bottom: $spacing-2xl;
+	animation: fadeInUp $transition-slow ease-out 0.5s both;
+	max-width: 600px;
 }
 
 .controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: $spacing-xl;
-    margin-bottom: $spacing-3xl;
-    animation: fadeInUp $transition-slow ease-out 0.8s both;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: $spacing-xl;
+	margin-bottom: $spacing-3xl;
+	animation: fadeInUp $transition-slow ease-out 0.8s both;
 
-    @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: stretch;
-    }
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: stretch;
+	}
 }
 
 .controlsLeft {
-    display: flex;
-    align-items: center;
-    gap: $spacing-2xl;
-    flex-wrap: wrap;
+	display: flex;
+	align-items: center;
+	gap: $spacing-lg;
+	flex-wrap: wrap;
 
-    @media (max-width: 768px) {
-        flex-direction: column;
-        gap: $spacing-lg;
-        width: 100%;
-    }
+	@media (max-width: 768px) {
+		flex-direction: column;
+		gap: $spacing-lg;
+		width: 100%;
+	}
+}
+
+.filterGroup {
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+
+	@media (max-width: 768px) {
+		width: 100%;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+.filterLabel {
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-gray-medium;
+	white-space: nowrap;
 }
 
 .testsCount {
-    display: inline-flex;
-    align-items: center;
-    gap: $spacing-md;
-    padding: $spacing-md $spacing-2xl;
-    background: white;
-    border-radius: $radius-md;
-    box-shadow: 0 $spacing-xs $spacing-2xl rgba($color-gray-dark, 0.08);
-    font-weight: $font-weight-semibold;
-    color: $color-gray-medium;
-    animation: popIn 0.6s ease-out 0.9s both;
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-md $spacing-2xl;
+	background: white;
+	border-radius: $radius-md;
+	box-shadow: 0 $spacing-xs $spacing-2xl rgba($color-gray-dark, 0.08);
+	font-weight: $font-weight-semibold;
+	color: $color-gray-medium;
+	animation: popIn 0.6s ease-out 0.9s both;
 
-    svg {
-        color: $color-green-primary;
-        width: $icon-size-md;
-        height: $icon-size-md;
-        animation: pulse 2s infinite;
-    }
+	svg {
+		color: $color-green-primary;
+		width: $icon-size-md;
+		height: $icon-size-md;
+		animation: pulse 2s infinite;
+	}
 }
 
 .countNumber {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $color-green-dark;
+	font-size: $font-size-xl;
+	font-weight: $font-weight-bold;
+	color: $color-green-dark;
 }
 
 .countText {
-    font-size: $font-size-base;
-    color: $color-gray-medium;
+	font-size: $font-size-base;
+	color: $color-gray-medium;
 }
 
 .searchContainer {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
-    animation: slideInFromRight $transition-slow ease-out 1s both;
+	min-width: 200px;
+	max-width: 250px;
+	animation: slideInFromRight $transition-slow ease-out 1s both;
 
-    @media (max-width: 768px) {
-        min-width: 100%;
-        max-width: 100%;
-    }
+	@media (max-width: 768px) {
+		min-width: 100%;
+		max-width: 100%;
+	}
 }
 
 .searchInput {
-    width: 100%;
-    transition: all $transition-normal;
+	width: 100%;
+	transition: all $transition-normal;
 
-    &:focus-within {
-        transform: translateY(-1px);
-        box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.15);
-    }
+	&:focus-within {
+		transform: translateY(-1px);
+		box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.15);
+	}
+}
+
+.dropdown {
+	animation: slideInFromRight $transition-slow ease-out 1.05s both;
+
+	@media (max-width: 768px) {
+		width: 100%;
+	}
 }
 
 .buttonContainer {
-    animation: slideInFromRight $transition-slow ease-out 1.1s both;
+	animation: slideInFromRight $transition-slow ease-out 1.1s both;
 
-    @keyframes slideInFromRight {
-        from {
-            opacity: 0;
-            transform: translateX($spacing-2xl);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
+	@keyframes slideInFromRight {
+		from {
+			opacity: 0;
+			transform: translateX($spacing-2xl);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
 }
 
 .btnNewTest {
-    display: inline-flex;
-    align-items: center;
-    gap: $spacing-md;
-    padding: $spacing-md $spacing-3xl;
-    background: linear-gradient(
-        135deg,
-        $color-green-primary 0%,
-        $color-green-dark 100%
-    );
-    color: white;
-    border: none;
-    border-radius: $radius-md;
-    font-weight: $font-weight-semibold;
-    font-size: $font-size-base;
-    cursor: pointer;
-    transition: all $transition-normal;
-    position: relative;
-    overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-md $spacing-3xl;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	color: white;
+	border: none;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	font-size: $font-size-base;
+	cursor: pointer;
+	transition: all $transition-normal;
+	position: relative;
+	overflow: hidden;
 
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-green-primary, 0.3);
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-green-primary, 0.3);
 
-        svg {
-            animation: bounce 0.5s;
-        }
-    }
+		svg {
+			animation: bounce 0.5s;
+		}
+	}
 
-    &:active {
-        transform: translateY(0);
-        background: $color-green-dark;
-    }
+	&:active {
+		transform: translateY(0);
+		background: $color-green-dark;
+	}
 
-    &:focus {
-        outline: none;
-        box-shadow: $shadow-focus;
-    }
+	&:focus {
+		outline: none;
+		box-shadow: $shadow-focus;
+	}
 
-    svg {
-        width: $icon-size-md;
-        height: $icon-size-md;
-        transition: transform $transition-normal;
-    }
+	svg {
+		width: $icon-size-md;
+		height: $icon-size-md;
+		transition: transform $transition-normal;
+	}
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent
-        );
-        transition: left 0.7s;
-    }
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 255, 255, 0.2),
+			transparent
+		);
+		transition: left 0.7s;
+	}
 
-    &:hover::before {
-        left: 100%;
-    }
+	&:hover::before {
+		left: 100%;
+	}
 
-    @keyframes bounce {
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-$spacing-xs);
-        }
-    }
+	@keyframes bounce {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-$spacing-xs);
+		}
+	}
 
-    @keyframes popIn {
-        0% {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        70% {
-            transform: scale(1.05);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
+	@keyframes popIn {
+		0% {
+			opacity: 0;
+			transform: scale(0.9);
+		}
+		70% {
+			transform: scale(1.05);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
 
-    @keyframes pulse {
-        0%,
-        100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.7;
-        }
-    }
+	@keyframes pulse {
+		0%,
+		100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.7;
+		}
+	}
 }
 
 .testList {
-    margin-top: $spacing-3xl;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: $spacing-2xl;
-    animation: fadeIn $transition-slow ease-out 1.2s both;
+	margin-top: $spacing-3xl;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: $spacing-2xl;
+	animation: fadeIn $transition-slow ease-out 1.2s both;
+	align-items: stretch;
 
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY($spacing-lg);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY($spacing-lg);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 }
 
 .testList > * {
-    animation: cardAppear 0.5s ease-out forwards;
-    opacity: 0;
+	animation: cardAppear 0.5s ease-out forwards;
+	opacity: 0;
 
-    @for $i from 1 through 12 {
-        &:nth-child(#{$i}) {
-            animation-delay: #{0.1s * $i};
-        }
-    }
+	@for $i from 1 through 12 {
+		&:nth-child(#{$i}) {
+			animation-delay: #{0.1s * $i};
+		}
+	}
 }
 
 @keyframes cardAppear {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+	from {
+		opacity: 0;
+		transform: translateY(20px) scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.loadMoreContainer {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin-top: $spacing-3xl;
+	animation: fadeIn $transition-slow ease-out 0.5s both;
+}
+
+.loadMoreButton {
+	padding: $spacing-lg $spacing-3xl;
+	background: linear-gradient(
+		135deg,
+		$color-green-primary 0%,
+		$color-green-dark 100%
+	);
+	color: white;
+	border: none;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	font-size: $font-size-base;
+	cursor: pointer;
+	transition: all $transition-normal;
+	position: relative;
+	overflow: hidden;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-green-primary, 0.3);
+
+		&::before {
+			left: 100%;
+		}
+	}
+
+	&:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+		transform: none !important;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 255, 255, 0.2),
+			transparent
+		);
+		transition: left 0.7s;
+	}
 }
 
 .emptyList {
-    text-align: center;
-    padding: $spacing-3xl * 2 $spacing-2xl;
-    animation: fadeIn $transition-slow ease-out 0.8s both;
+	text-align: center;
+	padding: $spacing-3xl * 2 $spacing-2xl;
+	animation: fadeIn $transition-slow ease-out 0.8s both;
 
-    @keyframes gentlePulse {
-        0%,
-        100% {
-            opacity: 0.7;
-        }
-        50% {
-            opacity: 1;
-        }
-    }
+	@keyframes gentlePulse {
+		0%,
+		100% {
+			opacity: 0.7;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
 }
 
 .emptyIcon {
-    margin-bottom: $spacing-2xl;
-    color: $color-gray-medium;
-    opacity: 0.5;
-    animation: gentlePulse 2s infinite;
+	margin-bottom: $spacing-2xl;
+	color: $color-gray-medium;
+	opacity: 0.5;
+	animation: gentlePulse 2s infinite;
 }
 
 .emptyTitle {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-dark;
-    margin-bottom: $spacing-lg;
+	font-size: $font-size-xl;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+	margin-bottom: $spacing-lg;
 }
 
 .emptyDescription {
-    font-size: $font-size-base;
-    color: $color-gray-medium;
-    max-width: 400px;
-    margin: 0 auto $spacing-2xl;
-    line-height: $line-height-relaxed;
+	font-size: $font-size-base;
+	color: $color-gray-medium;
+	max-width: 400px;
+	margin: 0 auto $spacing-2xl;
+	line-height: $line-height-relaxed;
 }
 
 .resetButton {
-    padding: $spacing-lg $spacing-2xl;
-    background: $color-green-lightest;
-    color: $color-green-dark;
-    border: 1px solid $color-green-primary;
-    border-radius: $radius-md;
-    font-weight: $font-weight-semibold;
-    cursor: pointer;
-    transition: all $transition-normal;
+	padding: $spacing-lg $spacing-2xl;
+	background: $color-green-lightest;
+	color: $color-green-dark;
+	border: 1px solid $color-green-primary;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	transition: all $transition-normal;
 
-    &:hover {
-        background: $color-green-primary;
-        color: white;
-        transform: translateY(-1px);
-    }
+	&:hover {
+		background: $color-green-primary;
+		color: white;
+		transform: translateY(-1px);
+	}
 }
 
 @media (max-width: 768px) {
-    .testPage {
-        padding: $spacing-xl 0 $spacing-2xl;
-    }
+	.testPage {
+		padding: $spacing-xl 0 $spacing-2xl;
+	}
 
-    .header {
-        margin-bottom: $spacing-2xl;
-    }
+	.header {
+		margin-bottom: $spacing-2xl;
+	}
 
-    .subjectHeader {
-        gap: $spacing-md;
-    }
+	.subjectHeader {
+		gap: $spacing-md;
+	}
 
-    .subjectName {
-        font-size: $font-size-xl;
-    }
+	.subjectName {
+		font-size: $font-size-xl;
+	}
 
-    .subtitle {
-        font-size: $font-size-base;
-        margin-top: $spacing-xl;
-    }
+	.subtitle {
+		font-size: $font-size-base;
+		margin-top: $spacing-xl;
+	}
 
-    .controlsLeft {
-        width: 100%;
-    }
+	.controlsLeft {
+		width: 100%;
+	}
 
-    .testsCount {
-        width: 100%;
-        justify-content: center;
-    }
+	.testsCount {
+		width: 100%;
+		justify-content: center;
+	}
 
-    .buttonContainer {
-        width: 100%;
+	.buttonContainer {
+		width: 100%;
 
-        .btn-new-test {
-            width: 100%;
-            justify-content: center;
-        }
-    }
+		.btn-new-test {
+			width: 100%;
+			justify-content: center;
+		}
+	}
 
-    .testList {
-        grid-template-columns: 1fr;
-        gap: $spacing-lg;
-    }
+	.testList {
+		grid-template-columns: 1fr;
+		gap: $spacing-lg;
+	}
 
-    .statItem {
-        min-width: 100%;
-    }
+	.statItem {
+		min-width: 100%;
+	}
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY($spacing-lg);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	from {
+		opacity: 0;
+		transform: translateY($spacing-lg);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }

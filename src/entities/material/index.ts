@@ -1,8 +1,2 @@
-export { MaterialCard } from './ui/MaterialCard';
-export {
-    type MaterialType,
-    type SavedMaterial,
-    type UserStats,
-    materialTypeLabels,
-    materialTypeBadgeLabels
-} from './model/types';
+export { materialTypeLabels } from './model/types'
+export { MaterialCard } from './ui/MaterialCard'

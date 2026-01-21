@@ -1,2 +1,1 @@
-export { SubjectDetailPage } from './ui/SubjectDetailPage';
-export { default } from './ui/SubjectDetailPage';
+export { default, SubjectDetailPage } from './ui/SubjectDetailPage'

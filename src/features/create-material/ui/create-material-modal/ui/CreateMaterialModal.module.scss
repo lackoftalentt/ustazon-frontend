@@ -1,5 +1,51 @@
 @use '@/shared/styles/variables' as *;
 
+// ===== Header =====
+.header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding-bottom: $spacing-xl;
+    margin-bottom: $spacing-lg;
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.headerIcon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba($color-green-primary, 0.1) 0%, rgba($color-green-primary, 0.2) 100%);
+    border-radius: $radius-lg;
+    color: $color-green-primary;
+    flex-shrink: 0;
+}
+
+.headerContent {
+    flex: 1;
+}
+
+.headerTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    margin: 0 0 $spacing-xs;
+}
+
+.headerSubtitle {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin: 0;
+}
+
+.headerLogo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
 // ===== Form Container =====
 .form {
     display: flex;
@@ -63,9 +109,17 @@
 }
 
 .dropdownLabel {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
     font-size: $font-size-sm;
     font-weight: $font-weight-medium;
     color: $color-gray-dark;
+
+    svg {
+        color: $color-green-primary;
+        flex-shrink: 0;
+    }
 }
 
 // ===== Source Toggle (Сілтеме / Файл) =====

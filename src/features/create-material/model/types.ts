@@ -52,11 +52,11 @@ export type SubjectOption = typeof SUBJECT_OPTIONS[number];
 export interface CreateMaterialFormData {
     name: string;
     topic?: string;
-    classLevel?: ClassOption;
-    term?: TermOption;
+    classLevel?: string;
+    term?: string;
     sourceType: SourceType;
     link?: string;
     file?: File;
     showAsIframe: boolean;
-    subjects: SubjectOption[];
+    subjects: string[];
 }

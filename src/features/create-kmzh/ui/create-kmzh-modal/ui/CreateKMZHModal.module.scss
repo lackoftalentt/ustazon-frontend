@@ -1,0 +1,375 @@
+@use '@/shared/styles/variables' as *;
+
+// ===== Header =====
+.header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding-bottom: $spacing-xl;
+    margin-bottom: $spacing-lg;
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.headerIcon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba($color-green-primary, 0.1) 0%, rgba($color-green-primary, 0.2) 100%);
+    border-radius: $radius-lg;
+    color: $color-green-primary;
+    flex-shrink: 0;
+}
+
+.headerContent {
+    flex: 1;
+}
+
+.headerTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    margin: 0 0 $spacing-xs;
+}
+
+.headerSubtitle {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin: 0;
+}
+
+.headerLogo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+// ===== Form =====
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+}
+
+// ===== Row =====
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-lg;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ===== Field =====
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
+
+    svg {
+        color: $color-green-primary;
+        flex-shrink: 0;
+    }
+}
+
+.hint {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+    line-height: 1.4;
+}
+
+.error {
+    font-size: $font-size-xs;
+    color: $color-red-error;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+}
+
+// ===== Hours Input =====
+.hoursInput {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: fit-content;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    overflow: hidden;
+}
+
+.hoursBtn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: $color-gray-light;
+    color: $color-gray-dark;
+    font-size: $font-size-lg;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $color-green-lightest;
+        color: $color-green-primary;
+    }
+
+    &:active {
+        background: rgba($color-green-primary, 0.2);
+    }
+}
+
+.hoursValue {
+    width: 60px;
+    height: 40px;
+    border: none;
+    text-align: center;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
+    background: white;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    -moz-appearance: textfield;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+// ===== Textarea =====
+.textarea {
+    width: 100%;
+    padding: $spacing-md;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-family: inherit;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: $color-green-primary;
+        box-shadow: $shadow-focus;
+    }
+
+    &::placeholder {
+        color: $color-gray-medium;
+    }
+}
+
+.textareaError {
+    border-color: $color-red-error;
+
+    &:focus {
+        box-shadow: $shadow-error-focus;
+    }
+}
+
+// ===== Hidden Input =====
+.hiddenInput {
+    display: none;
+}
+
+// ===== Dropzone =====
+@keyframes dropzonePulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba($color-green-primary, 0);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba($color-green-primary, 0.1);
+    }
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-md;
+    padding: $spacing-2xl;
+    border: 2px dashed rgba($color-gray-medium, 0.3);
+    border-radius: $radius-lg;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: $color-gray-medium;
+
+    svg {
+        transition: all 0.3s ease;
+    }
+
+    span {
+        font-size: $font-size-sm;
+        text-align: center;
+    }
+
+    &:hover {
+        border-color: $color-green-primary;
+        background: rgba($color-green-primary, 0.02);
+
+        svg {
+            color: $color-green-primary;
+            transform: translateY(-2px);
+        }
+    }
+
+    &.dragOver {
+        border-color: $color-green-primary;
+        border-style: solid;
+        background: rgba($color-green-primary, 0.05);
+        animation: dropzonePulse 1.5s ease-in-out infinite;
+
+        svg {
+            color: $color-green-primary;
+            transform: translateY(-4px) scale(1.1);
+        }
+    }
+
+    &.hasError {
+        border-color: $color-red-error;
+    }
+}
+
+.dropzoneText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xs;
+}
+
+.dropzoneTitle {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-gray-dark;
+}
+
+.dropzoneHint {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+}
+
+// ===== File List =====
+.fileList {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+}
+
+@keyframes fileItemIn {
+    from {
+        opacity: 0;
+        transform: translateX(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fileItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    background: linear-gradient(135deg, rgba($color-green-primary, 0.04) 0%, rgba($color-green-primary, 0.08) 100%);
+    border: 1px solid rgba($color-green-primary, 0.15);
+    border-radius: $radius-md;
+    animation: fileItemIn 0.25s ease backwards;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.3);
+        transform: translateX(2px);
+    }
+}
+
+.fileIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-green-primary;
+}
+
+.fileInfo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fileName {
+    font-size: $font-size-sm;
+    color: $color-gray-dark;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fileSize {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+}
+
+.fileRemove {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: $color-gray-medium;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba($color-red-error, 0.1);
+        color: $color-red-error;
+    }
+}
+
+// ===== Actions =====
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $color-gray-border;
+}
+
+// ===== Responsive =====
+@media (max-width: 600px) {
+    .actions {
+        flex-direction: column-reverse;
+
+        button {
+            width: 100%;
+        }
+    }
+}

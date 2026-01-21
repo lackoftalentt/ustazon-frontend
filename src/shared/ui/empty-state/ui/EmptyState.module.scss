@@ -1,0 +1,69 @@
+// Состояние пустого результата
+.emptyState {
+	text-align: center;
+	padding: $spacing-3xl * 2 $spacing-2xl;
+	grid-column: 1 / -1;
+	animation: fadeIn $transition-slow;
+}
+
+.emptyIcon {
+	width: 80px;
+	height: 80px;
+	background: $color-green-lightest;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto $spacing-2xl;
+	animation: gentleFloat 3s ease-in-out infinite;
+
+	svg {
+		color: $color-green-primary;
+		width: 40px;
+		height: 40px;
+	}
+}
+
+@keyframes gentleFloat {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+}
+
+.emptyTitle {
+	font-size: $font-size-xl;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+	margin-bottom: $spacing-md;
+}
+
+.emptyDescription {
+	font-size: $font-size-base;
+	color: $color-gray-medium;
+	margin-bottom: $spacing-2xl;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	line-height: $line-height-relaxed;
+}
+
+.clearSearchButton {
+	padding: $spacing-lg $spacing-2xl;
+	background: $color-green-lightest;
+	color: $color-green-dark;
+	border: 1px solid $color-green-primary;
+	border-radius: $radius-md;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	transition: all $transition-normal;
+
+	&:hover {
+		background: $color-green-primary;
+		color: white;
+		transform: translateY(-1px);
+	}
+}

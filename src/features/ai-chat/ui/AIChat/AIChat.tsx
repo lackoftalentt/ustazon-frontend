@@ -3,7 +3,7 @@ import { Send, Paperclip, Loader2, Bot, User, Sparkles, X, FileText } from 'luci
 import ReactMarkdown from 'react-markdown';
 import s from './AIChat.module.scss';
 import { aiApi } from '@/shared/api/ai';
-import type { ConversationListItem, ChatMessage } from '@/shared/api/ai';
+import type { ConversationListItem } from '@/shared/api/ai';
 import { ChatSidebar } from '../ChatSidebar/ChatSidebar';
 
 interface Message {

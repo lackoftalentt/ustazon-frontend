@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { cardApi } from '../api/cardApi';
 import type {
     CardCreate,
@@ -12,6 +12,7 @@ export const cardKeys = {
     all: ['cards'] as const,
     lists: () => [...cardKeys.all, 'list'] as const,
     list: (filters?: CardFilters) => [...cardKeys.lists(), filters] as const,
+    infinite: (filters?: Omit<CardFilters, 'skip' | 'limit'>) => [...cardKeys.all, 'infinite', filters] as const,
     details: () => [...cardKeys.all, 'detail'] as const,
     detail: (id: number) => [...cardKeys.details(), id] as const,
     favorites: () => [...cardKeys.all, 'favorites'] as const,
@@ -31,6 +32,27 @@ export const useCards = (filters?: CardFilters) => {
     return useQuery({
         queryKey: cardKeys.list(filters),
         queryFn: () => cardApi.getCards(filters),
+        staleTime: 3 * 60 * 1000
+    });
+};
+
+/**
+ * Hook to get cards with infinite scroll pagination
+ */
+export const useInfiniteCards = (
+    filters?: Omit<CardFilters, 'skip' | 'limit'>,
+    pageSize = 20
+) => {
+    return useInfiniteQuery({
+        queryKey: cardKeys.infinite(filters),
+        queryFn: ({ pageParam = 0 }) =>
+            cardApi.getCards({ ...filters, skip: pageParam, limit: pageSize }),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage, allPages) => {
+            if (lastPage.length < pageSize) return undefined;
+            return allPages.length * pageSize;
+        },
+        enabled: filters !== undefined,
         staleTime: 3 * 60 * 1000
     });
 };

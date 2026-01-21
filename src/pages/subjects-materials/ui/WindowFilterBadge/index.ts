@@ -1,0 +1,1 @@
+export { WindowFilterBadge } from './WindowFilterBadge'

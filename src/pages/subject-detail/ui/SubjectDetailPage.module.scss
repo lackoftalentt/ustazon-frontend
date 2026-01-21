@@ -1,56 +1,50 @@
 @use '@/shared/styles/variables' as *;
 
 .page {
-    min-height: 100vh;
-    background: radial-gradient(
-        circle at top,
-        $color-blue-lightest 0,
-        hsl(213, 36%, 95%) 40%,
-        #e4ebf5 100%
-    );
-    color: $color-gray-dark;
+	min-height: 100vh;
+	color: $color-gray-dark;
 }
 
 .layout {
-    display: grid;
-    grid-template-columns: minmax(0, 2.5fr) minmax(320px, 1fr);
-    gap: $spacing-3xl;
-    padding: $spacing-3xl;
+	display: grid;
+	grid-template-columns: minmax(0, 2.5fr) minmax(320px, 1fr);
+	gap: $spacing-3xl;
+	padding: $spacing-3xl;
 
-    @media (max-width: 1200px) {
-        grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-        gap: $spacing-2xl;
-    }
+	@media (max-width: 1200px) {
+		grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+		gap: $spacing-2xl;
+	}
 
-    @media (max-width: 960px) {
-        grid-template-columns: 1fr;
-        padding: $spacing-xl;
-    }
+	@media (max-width: 960px) {
+		grid-template-columns: 1fr;
+		padding: $spacing-xl;
+	}
 }
 
 .main {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xl;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xl;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: $spacing-sm;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-bottom: $spacing-sm;
 }
 
 .subtitle {
-    margin-top: $spacing-sm;
-    font-size: $font-size-base;
-    font-weight: $font-weight-normal;
-    line-height: $line-height-normal;
-    color: $color-gray-medium;
+	margin-top: $spacing-sm;
+	font-size: $font-size-base;
+	font-weight: $font-weight-normal;
+	line-height: $line-height-normal;
+	color: $color-gray-medium;
 }
 
 .sidebar {
-    align-self: flex-start;
-    position: sticky;
-    top: $spacing-3xl;
+	align-self: flex-start;
+	position: sticky;
+	top: $spacing-3xl;
 }

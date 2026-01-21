@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '@/shared/styles/variables' as *;
 
 .searchBox {
@@ -66,7 +67,7 @@
         }
 
         &::placeholder {
-            color: lighten($color-gray-medium, 15%);
+            color: color.adjust($color-gray-medium, $lightness: 15%);
         }
     }
 

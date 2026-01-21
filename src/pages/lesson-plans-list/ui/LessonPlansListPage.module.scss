@@ -1,0 +1,34 @@
+@use '@/shared/styles/variables' as *;
+
+.container {
+    padding-top: $spacing-xl;
+}
+
+.subtitle {
+    font-size: $font-size-lg;
+    color: $color-green-dark;
+    margin-bottom: $spacing-lg;
+    font-weight: $font-weight-medium;
+    padding-left: $spacing-sm;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 20px;
+        background: $color-green-primary;
+        border-radius: $radius-full;
+    }
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-xl;
+    flex-wrap: wrap;
+}

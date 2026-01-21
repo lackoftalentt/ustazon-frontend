@@ -1,28 +1,66 @@
 .LoginPage {
-    display: flex;
-    min-height: 100vh;
+	display: flex;
+	min-height: 100vh;
 }
 
 .illustration {
-    flex: 1 1 50%;
-    position: relative;
-    overflow: hidden;
+	flex: 1 1 50%;
+	position: relative;
+	overflow: hidden;
 }
 
 .Illustration {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
 }
 
 .form {
-    flex: 1 1 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0 80px;
+	flex: 1 1 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 0 80px;
+}
+
+// Tablet
+@media (max-width: 1024px) {
+	.form {
+		padding: 0 40px;
+	}
+}
+
+// Mobile
+@media (max-width: 768px) {
+	.LoginPage {
+		flex-direction: column;
+	}
+
+	.illustration {
+		display: none;
+		flex: 0 0 200px;
+		min-height: 500px;
+	}
+
+	.form {
+		flex: 1;
+		padding: 32px 24px;
+		align-items: center;
+	}
+}
+
+// Small mobile
+@media (max-width: 480px) {
+	.illustration {
+		flex: 0 0 150px;
+		min-height: 150px;
+	}
+
+	.form {
+		padding: 24px 16px;
+	}
 }
