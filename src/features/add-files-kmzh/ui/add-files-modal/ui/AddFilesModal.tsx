@@ -1,8 +1,10 @@
 import { useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from '@/shared/ui/modal';
 import { Button } from '@/shared/ui/button';
+import { qmjApi } from '@/shared/api/qmjApi';
 import { useAddFilesStore } from '../../../model/useAddFilesStore';
 import {
     type FileItem,
@@ -13,11 +15,12 @@ import {
 import s from './AddFilesModal.module.scss';
 
 export const AddFilesModal = () => {
-    const { isOpen, files, closeModal, addFiles, removeFile, clearFiles } =
+    const { isOpen, rowId, files, closeModal, addFiles, removeFile, clearFiles } =
         useAddFilesStore();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragOver, setIsDragOver] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
+    const queryClient = useQueryClient();
 
     const handleClose = useCallback(() => {
         clearFiles();
@@ -95,11 +98,24 @@ export const AddFilesModal = () => {
             return;
         }
 
+        if (!rowId) {
+            toast.error('QMJ ID табылмады');
+            return;
+        }
+
         setIsUploading(true);
 
         try {
-            // TODO: Implement actual upload API call
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            const qmjId = parseInt(rowId);
+
+            for (const fileItem of files) {
+                await qmjApi.addFileToQMJ(qmjId, {
+                    file: fileItem.file
+                });
+            }
+
+            queryClient.invalidateQueries({ queryKey: ['qmj'] });
+            queryClient.invalidateQueries({ queryKey: ['kmzh'] });
             toast.success(`${files.length} файл сәтті жүктелді!`);
             handleClose();
         } catch {

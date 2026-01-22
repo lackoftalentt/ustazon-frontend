@@ -1,13 +1,15 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { editKMJSchema, type EditKMJSchema } from './validation'
-import type { EditKMJFormData, KMJData } from './types'
+import type { EditKMJFormData, KMJData, ExistingFile } from './types'
 
 export const useEditKMJForm = (
 	kmjData: KMJData | null,
 	onSubmit: (data: EditKMJFormData) => void
 ) => {
+	const [filesToDelete, setFilesToDelete] = useState<string[]>([])
+
 	const form = useForm<EditKMJSchema>({
 		resolver: zodResolver(editKMJSchema),
 		mode: 'onSubmit',
@@ -38,6 +40,7 @@ export const useEditKMJForm = (
 				subjects: kmjData.subjects,
 				institutionType: kmjData.institutionType
 			})
+			setFilesToDelete([])
 		}
 	}, [kmjData, form])
 
@@ -72,6 +75,7 @@ export const useEditKMJForm = (
 			'existingAdditionalFiles',
 			current.filter(f => f.id !== fileId)
 		)
+		setFilesToDelete(prev => [...prev, fileId])
 	}
 
 	const handleHoursChange = (value: number) => {
@@ -83,12 +87,14 @@ export const useEditKMJForm = (
 
 	const resetForm = () => {
 		form.reset()
+		setFilesToDelete([])
 	}
 
 	return {
 		...form,
 		subjects,
 		existingFiles,
+		filesToDelete,
 		handleSubjectToggle,
 		handleMainFileChange,
 		handleAdditionalFilesChange,

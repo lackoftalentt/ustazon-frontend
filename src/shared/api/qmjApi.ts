@@ -13,10 +13,21 @@ export interface CreateQMJRequest {
 	institution_type_ids: number[]
 }
 
+export interface UpdateQMJRequest {
+	grade?: number
+	quarter?: number
+	code?: string
+	title?: string
+	text?: string
+	hour?: number
+	order?: number
+	file?: string
+	subject_ids?: number[]
+	institution_type_ids?: number[]
+}
+
 export interface AddFileToQMJRequest {
-	file: string
-	file_size: number
-	file_type: string
+	file: File
 }
 
 export interface QMJFileResponse {
@@ -59,10 +70,30 @@ export const qmjApi = {
 		qmjId: number,
 		fileData: AddFileToQMJRequest
 	): Promise<QMJFileResponse> {
+		const formData = new FormData()
+		formData.append('file', fileData.file)
+
 		const response = await apiClient.post<QMJFileResponse>(
 			`/qmj/${qmjId}/files`,
-			fileData
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			}
 		)
 		return response.data
+	},
+
+	async updateQMJ(
+		qmjId: number,
+		data: UpdateQMJRequest
+	): Promise<QMJResponse> {
+		const response = await apiClient.put<QMJResponse>(`/qmj/${qmjId}`, data)
+		return response.data
+	},
+
+	async deleteQMJFile(fileId: number): Promise<void> {
+		await apiClient.delete(`/qmj/files/${fileId}`)
 	}
 }

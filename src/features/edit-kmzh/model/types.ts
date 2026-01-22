@@ -143,6 +143,8 @@ export interface ExistingFile {
     name: string;
     size: string;
     path: string;
+    file_size?: number;
+    file_type?: string;
 }
 
 export interface EditKMJFormData {
@@ -178,4 +180,7 @@ export interface KMJData {
     existingAdditionalFiles: ExistingFile[];
     subjects: string[];
     institutionType: string;
+    mainFile?: string;
+    subject_ids?: number[];
+    institution_type_ids?: number[];
 }

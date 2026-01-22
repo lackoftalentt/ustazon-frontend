@@ -1,5 +1,7 @@
 import { useSubjectByCode } from '@/entities/subject/model/useSubjects'
 import { TestItem, useInfiniteTests, type TestDifficulty } from '@/entities/test'
+import { CreateTestModal, useCreateTestStore } from '@/features/create-test'
+import { EditTestModal, useEditTestStore, type TestData } from '@/features/edit-test'
 import { Button } from '@/shared/ui/button'
 import { Container } from '@/shared/ui/container'
 import { Dropdown } from '@/shared/ui/dropdown'
@@ -74,6 +76,9 @@ export const TestsPage = () => {
 
 	const [isMounted, setIsMounted] = useState(false)
 	const [searchQuery, setSearchQuery] = useState('')
+
+	const { openModal: openCreateTestModal } = useCreateTestStore()
+	const { openModal: openEditTestModal } = useEditTestStore()
 
 	const {
 		data: testsData,
@@ -200,7 +205,7 @@ export const TestsPage = () => {
 					<div className={s.buttonContainer}>
 						<Button
 							className={s.btnNewTest}
-							onClick={() => console.log('Создание нового теста')}
+							onClick={openCreateTestModal}
 						>
 							<Plus size={20} />
 							<span>Жаңа тест жасау</span>
@@ -223,6 +228,14 @@ export const TestsPage = () => {
 									timeLimit={test.duration}
 									difficulty={test.difficulty}
 									category={test.subject}
+									onEdit={() => openEditTestModal({
+										id: test.id,
+										title: test.title,
+										subject: test.subject,
+										duration: test.duration,
+										difficulty: test.difficulty,
+										questionsCount: test.questions_count
+									} as TestData)}
 								/>
 							))}
 						</div>
@@ -245,6 +258,9 @@ export const TestsPage = () => {
 					/>
 				)}
 			</Container>
+
+			<CreateTestModal />
+			<EditTestModal />
 		</main>
 	)
 }

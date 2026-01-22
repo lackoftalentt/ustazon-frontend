@@ -1,0 +1,231 @@
+@use '@/shared/styles/variables' as *;
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding-bottom: $spacing-lg;
+    margin-bottom: $spacing-lg;
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.headerIcon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(
+        135deg,
+        rgba($color-green-primary, 0.1) 0%,
+        rgba($color-green-primary, 0.2) 100%
+    );
+    border-radius: $radius-lg;
+    color: $color-green-primary;
+    flex-shrink: 0;
+}
+
+.headerContent {
+    flex: 1;
+}
+
+.headerTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-gray-dark;
+    margin: 0 0 $spacing-xs;
+}
+
+.headerSubtitle {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin: 0;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-lg;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+
+    svg {
+        color: $color-green-primary;
+        flex-shrink: 0;
+    }
+}
+
+.hint {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+}
+
+.error {
+    font-size: $font-size-sm;
+    color: $color-red-error;
+}
+
+.durationInput {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: fit-content;
+    border: 2px solid $color-gray-border;
+    border-radius: $radius-lg;
+    overflow: hidden;
+    background: white;
+}
+
+.durationBtn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: $color-gray-light;
+    color: $color-gray-dark;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $color-green-lightest;
+        color: $color-green-primary;
+    }
+}
+
+.durationValue {
+    width: 80px;
+    height: 44px;
+    border: none;
+    text-align: center;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+    background: white;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    -moz-appearance: textfield;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.difficultyOptions {
+    display: flex;
+    gap: $spacing-md;
+}
+
+.difficultyOption {
+    flex: 1;
+    padding: $spacing-md;
+    border: 2px solid $color-gray-border;
+    border-radius: $radius-lg;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+
+    &:hover {
+        border-color: rgba($color-green-primary, 0.5);
+    }
+
+    &.selected {
+        border-color: $color-green-primary;
+        background: rgba($color-green-primary, 0.05);
+
+        span {
+            color: $color-green-primary;
+        }
+    }
+
+    span {
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $color-gray-dark;
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: $spacing-md;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $color-gray-border;
+}
+
+.actionsLeft {
+    display: flex;
+    gap: $spacing-md;
+}
+
+.actionsRight {
+    display: flex;
+    gap: $spacing-md;
+}
+
+.deleteBtn {
+    color: $color-red-error;
+    border-color: $color-red-error;
+
+    &:hover {
+        background: rgba($color-red-error, 0.1);
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .difficultyOptions {
+        flex-direction: column;
+        gap: $spacing-sm;
+    }
+
+    .actions {
+        flex-direction: column-reverse;
+        gap: $spacing-sm;
+    }
+
+    .actionsLeft,
+    .actionsRight {
+        width: 100%;
+
+        button {
+            flex: 1;
+        }
+    }
+}

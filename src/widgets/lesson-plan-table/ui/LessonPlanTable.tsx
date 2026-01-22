@@ -1,6 +1,7 @@
-import { useKmzhByQuarter, type KmzhItem } from '@/entities/kmzh'
+import { useKmzhByQuarter, kmzhApi, type KmzhItem } from '@/entities/kmzh'
 import type { LessonPlanRow, QuarterId } from '@/entities/lesson-plan'
 import { AddFilesModal, useAddFilesStore } from '@/features/add-files-kmzh'
+import { CreateKMZHModal, useCreateKMZHStore } from '@/features/create-kmzh'
 import {
 	EditKMJModal,
 	useEditKMJStore,
@@ -35,9 +36,11 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
+import { Button } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Loader } from '@/shared/ui/loader'
 import { SearchInput } from '@/shared/ui/search-input'
+import { Plus } from 'lucide-react'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import s from './LessonPlanTable.module.scss'
 
@@ -183,6 +186,7 @@ export const LessonPlanTable = ({
 
 	const { openModal: openAddFilesModal } = useAddFilesStore()
 	const { openModal: openEditKMJModal } = useEditKMJStore()
+	const { openModal: openCreateKMZHModal } = useCreateKMZHStore()
 
 	const openFiles = useCallback((row: LessonPlanRow) => {
 		setActiveRow(row)
@@ -202,23 +206,38 @@ export const LessonPlanTable = ({
 	)
 
 	const handleEditKMJ = useCallback(
-		(row: LessonPlanRow) => {
-			const kmjData: KMJData = {
-				id: row.id,
-				title: row.topic,
-				classLevel: '5-сынып',
-				quarter: '1 тоқсан',
-				subjectCode: 'Алгебра ЖМБ',
-				hours: row.hours,
-				lessonTopic: row.topic,
-				learningObjectives: row.objectives
-					.map(o => `${o.code} ${o.text}`)
-					.join('; '),
-				existingAdditionalFiles: [],
-				subjects: [],
-				institutionType: 'Мектеп'
+		async (row: LessonPlanRow) => {
+			try {
+				const detail = await kmzhApi.getKmzhById(parseInt(row.id))
+
+				const gradeToClassLevel = (grade: number): string => `${grade}-сынып`
+				const quarterToString = (q: number): string => `${q} тоқсан`
+
+				const kmjData: KMJData = {
+					id: row.id,
+					title: detail.title,
+					classLevel: gradeToClassLevel(detail.grade),
+					quarter: quarterToString(detail.quarter),
+					subjectCode: detail.code,
+					hours: detail.hour,
+					lessonTopic: detail.title,
+					learningObjectives: detail.text,
+					existingAdditionalFiles: detail.files.map(f => ({
+						id: String(f.id),
+						name: f.file.split('/').pop() || f.file,
+						size: f.file_size_formatted,
+						path: f.file,
+						file_size: f.file_size,
+						file_type: f.file_type
+					})),
+					subjects: [],
+					institutionType: 'Мектеп',
+					mainFile: detail.file || undefined
+				}
+				openEditKMJModal(kmjData)
+			} catch {
+				toast.error('Деректерді жүктеу кезінде қате орын алды')
 			}
-			openEditKMJModal(kmjData)
 		},
 		[openEditKMJModal]
 	)
@@ -423,6 +442,14 @@ export const LessonPlanTable = ({
 					value={searchQuery}
 					onChange={e => setSearchQuery(e.target.value)}
 				/>
+				<Button
+					variant="primary"
+					onClick={openCreateKMZHModal}
+					className={s.createBtn}
+				>
+					<Plus size={18} />
+					ҚМЖ қосу
+				</Button>
 			</div>
 
 			{!data.length ? (
@@ -486,6 +513,7 @@ export const LessonPlanTable = ({
 
 			<AddFilesModal />
 			<EditKMJModal />
+			<CreateKMZHModal />
 
 			<ConfirmModal
 				open={!!deleteRow}

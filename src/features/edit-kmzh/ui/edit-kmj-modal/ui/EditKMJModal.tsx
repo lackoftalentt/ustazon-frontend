@@ -1,11 +1,14 @@
 import { useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import toast from 'react-hot-toast';
+import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from '@/shared/ui/modal';
 import { Input } from '@/shared/ui/input';
 import { Button } from '@/shared/ui/button';
 import { Dropdown } from '@/shared/ui/dropdown';
 import { ConfirmModal } from '@/shared/ui/confirm-modal';
+import { qmjApi } from '@/shared/api/qmjApi';
+import { uploadApi } from '@/shared/api/uploadApi';
 import { useEditKMJForm } from '../../../model/useEditKMJForm';
 import { useEditKMJStore } from '../../../model/useEditKMJStore';
 import {
@@ -23,6 +26,16 @@ import {
 } from '../../../model/types';
 import s from './EditKMJModal.module.scss';
 
+const parseGrade = (classLevel: string): number => {
+    const match = classLevel.match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : 1;
+};
+
+const parseQuarter = (quarter: string): number => {
+    const match = quarter.match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : 1;
+};
+
 export const EditKMJModal = () => {
     const { isOpen, kmjData, closeModal } = useEditKMJStore();
     const mainFileRef = useRef<HTMLInputElement>(null);
@@ -30,6 +43,7 @@ export const EditKMJModal = () => {
     const [isDragOver, setIsDragOver] = useState(false);
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const queryClient = useQueryClient();
 
     const {
         register,
@@ -38,6 +52,7 @@ export const EditKMJModal = () => {
         formState: { errors, isSubmitting },
         subjects,
         existingFiles,
+        filesToDelete,
         handleSubjectToggle,
         handleMainFileChange,
         handleAdditionalFilesChange,
@@ -46,9 +61,51 @@ export const EditKMJModal = () => {
         resetForm,
         onSubmit
     } = useEditKMJForm(kmjData, async (data: EditKMJFormData) => {
+        if (!kmjData) return;
+
         try {
-            // TODO: API call to update KMJ
-            console.log('Updating KMJ:', data);
+            const qmjId = parseInt(kmjData.id);
+
+            // Delete removed files
+            for (const fileId of filesToDelete) {
+                try {
+                    await qmjApi.deleteQMJFile(parseInt(fileId));
+                } catch (err) {
+                    console.error('Failed to delete file:', fileId, err);
+                }
+            }
+
+            // Upload main file if changed
+            let mainFileUrl: string | undefined;
+            if (data.mainFile) {
+                const uploadResult = await uploadApi.uploadDocument(data.mainFile);
+                mainFileUrl = uploadResult.file_path;
+            }
+
+            // Update QMJ
+            await qmjApi.updateQMJ(qmjId, {
+                grade: parseGrade(data.classLevel),
+                quarter: parseQuarter(data.quarter),
+                code: data.subjectCode,
+                title: data.lessonTopic,
+                text: data.learningObjectives,
+                hour: data.hours,
+                ...(mainFileUrl && { file: mainFileUrl }),
+                subject_ids: kmjData.subject_ids || [],
+                institution_type_ids: kmjData.institution_type_ids || []
+            });
+
+            // Upload additional files
+            if (data.additionalFiles && data.additionalFiles.length > 0) {
+                for (const file of data.additionalFiles) {
+                    await qmjApi.addFileToQMJ(qmjId, {
+                        file: file
+                    });
+                }
+            }
+
+            queryClient.invalidateQueries({ queryKey: ['qmj'] });
+            queryClient.invalidateQueries({ queryKey: ['kmzh'] });
             toast.success('ҚМЖ сәтті сақталды!');
             handleClose();
         } catch {

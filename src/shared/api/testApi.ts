@@ -22,6 +22,26 @@ export interface CreateTestRequest {
 	questions: CreateQuestionRequest[]
 }
 
+export interface UpdateTestRequest {
+	title?: string
+	subject?: string
+	duration?: number
+	difficulty?: 'easy' | 'medium' | 'hard'
+}
+
+export interface UpdateQuestionRequest {
+	text?: string
+	photo?: string
+	video?: string
+	order?: number
+}
+
+export interface UpdateAnswerRequest {
+	text?: string
+	is_correct?: boolean
+	order?: number
+}
+
 export interface AnswerResponse {
 	id: number
 	text: string
@@ -80,6 +100,48 @@ export const testApi = {
 		const response = await apiClient.post<AnswerResponse>(
 			`/tests/questions/${questionId}/answers`,
 			answer
+		)
+		return response.data
+	},
+
+	async updateTest(
+		testId: number,
+		data: UpdateTestRequest
+	): Promise<TestResponse> {
+		const response = await apiClient.put<TestResponse>(
+			`/tests/${testId}`,
+			data
+		)
+		return response.data
+	},
+
+	async deleteTest(testId: number): Promise<void> {
+		await apiClient.delete(`/tests/${testId}`)
+	},
+
+	async getTestById(testId: number): Promise<TestResponse> {
+		const response = await apiClient.get<TestResponse>(`/tests/${testId}`)
+		return response.data
+	},
+
+	async updateQuestion(
+		questionId: number,
+		data: UpdateQuestionRequest
+	): Promise<QuestionResponse> {
+		const response = await apiClient.put<QuestionResponse>(
+			`/tests/questions/${questionId}`,
+			data
+		)
+		return response.data
+	},
+
+	async updateAnswer(
+		answerId: number,
+		data: UpdateAnswerRequest
+	): Promise<AnswerResponse> {
+		const response = await apiClient.put<AnswerResponse>(
+			`/tests/answers/${answerId}`,
+			data
 		)
 		return response.data
 	}

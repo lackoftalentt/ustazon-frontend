@@ -47,6 +47,13 @@ $ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
 	max-width: 500px;
 }
 
+.createBtn {
+	display: flex;
+	align-items: center;
+	gap: $spacing-xs;
+	white-space: nowrap;
+}
+
 .gradeDropdown {
 	min-width: 150px;
 }

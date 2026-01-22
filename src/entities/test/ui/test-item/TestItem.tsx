@@ -1,4 +1,12 @@
-import { BarChart, Check, Clock, Copy, QrCode, Share2 } from 'lucide-react'
+import {
+	BarChart,
+	Check,
+	Clock,
+	Copy,
+	Edit2,
+	QrCode,
+	Share2
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import s from './TestItem.module.scss'
 
@@ -13,9 +21,9 @@ interface TestItemProps {
 	description: string
 	questionsCount: number
 	timeLimit: number
-	// participants: number
 	difficulty: 'easy' | 'medium' | 'hard'
 	category: string
+	onEdit?: () => void
 }
 
 export const TestItem = ({
@@ -24,9 +32,9 @@ export const TestItem = ({
 	description,
 	questionsCount,
 	timeLimit,
-	// participants,
 	difficulty,
-	category
+	category,
+	onEdit
 }: TestItemProps) => {
 	const [, /* isHovered */ setIsHovered] = useState(false)
 	const [showShareOptions, setShowShareOptions] = useState(false)
@@ -145,6 +153,18 @@ export const TestItem = ({
 				<div className={s.categoryBadge}>{category}</div>
 				<div className={s.headerActions}>
 					<div className={s.actionButtons}>
+						{/* {onEdit && (
+							<button
+								className={s.actionButton}
+								onClick={e => {
+									e.stopPropagation()
+									onEdit()
+								}}
+								title="Өңдеу"
+							>
+								<Edit2 size={18} />
+							</button>
+						)} */}
 						<button
 							ref={shareButtonRef}
 							className={s.actionButton}
