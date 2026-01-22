@@ -8,8 +8,6 @@ export {
     type SourceType,
     type ClassOption,
     type TermOption,
-    type SubjectOption,
     CLASS_OPTIONS,
-    TERM_OPTIONS,
-    SUBJECT_OPTIONS
+    TERM_OPTIONS
 } from './model';

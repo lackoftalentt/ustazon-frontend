@@ -4,6 +4,8 @@ import { Button } from '@/shared/ui/button'
 import { Dropdown } from '@/shared/ui/dropdown'
 import { Input } from '@/shared/ui/input'
 import { Modal } from '@/shared/ui/modal'
+import { useQueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { clsx } from 'clsx'
 import {
 	BookMarked,
@@ -19,11 +21,7 @@ import {
 } from 'lucide-react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import {
-	type CreateTestFormData,
-	DIFFICULTY_LEVELS,
-	type DifficultyLevel
-} from '../../../model/types'
+import { DIFFICULTY_LEVELS, type DifficultyLevel } from '../../../model/types'
 import { useCreateTestForm } from '../../../model/useCreateTestForm'
 import { useCreateTestStore } from '../../../model/useCreateTestStore'
 import s from './CreateTestModal.module.scss'
@@ -32,6 +30,7 @@ export const CreateTestModal = () => {
 	const { isOpen, closeModal } = useCreateTestStore()
 	const imageInputRefs = useRef<Record<string, HTMLInputElement | null>>({})
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+	const queryClient = useQueryClient()
 
 	const { data: subjects = [] } = useSubjects()
 
@@ -72,14 +71,10 @@ export const CreateTestModal = () => {
 		setCorrectAnswer,
 		resetForm,
 		onSubmit
-	} = useCreateTestForm(async (data: CreateTestFormData) => {
-		try {
-			console.log('Creating test:', data)
-			toast.success('Тест сәтті құрылды!')
-			handleClose()
-		} catch {
-			toast.error('Тест құру кезінде қате орын алды')
-		}
+	} = useCreateTestForm(async () => {
+		queryClient.invalidateQueries({ queryKey: ['tests'] })
+		toast.success('Тест сәтті құрылды!')
+		handleClose()
 	})
 
 	const handleClose = useCallback(() => {
@@ -123,6 +118,41 @@ export const CreateTestModal = () => {
 		return !!errors.questions?.[index]
 	}
 
+	const [dragOverQuestion, setDragOverQuestion] = useState<number | null>(null)
+
+	const handleQuestionFile = (questionIndex: number, file?: File) => {
+		if (!file) return
+
+		if (!file.type.startsWith('image/')) {
+			toast.error('Тек сурет файлдарын жүктеуге болады')
+			return
+		}
+
+		if (file.size > 5 * 1024 * 1024) {
+			toast.error('Сурет өлшемі 5MB-дан аспауы керек')
+			return
+		}
+
+		updateQuestionImage(questionIndex, file)
+	}
+
+	const handleDragOver = (e: React.DragEvent, index: number) => {
+		e.preventDefault()
+		setDragOverQuestion(index)
+	}
+
+	const handleDragLeave = () => {
+		setDragOverQuestion(null)
+	}
+
+	const handleDrop = (e: React.DragEvent, index: number) => {
+		e.preventDefault()
+		setDragOverQuestion(null)
+
+		const file = e.dataTransfer.files?.[0]
+		handleQuestionFile(index, file)
+	}
+
 	return (
 		<Modal
 			open={isOpen}
@@ -146,7 +176,20 @@ export const CreateTestModal = () => {
 			</div>
 
 			<form
-				onSubmit={onSubmit}
+				onSubmit={async e => {
+					try {
+						await onSubmit(e)
+					} catch (error) {
+						if (error instanceof AxiosError) {
+							toast.error(
+								error.response?.data?.detail ||
+									'Тест құру кезінде қате орын алды'
+							)
+						} else {
+							toast.error('Тест құру кезінде қате орын алды')
+						}
+					}
+				}}
 				className={s.form}
 			>
 				<div className={s.field}>
@@ -263,7 +306,9 @@ export const CreateTestModal = () => {
 						<button
 							type="button"
 							className={s.paginationArrow}
-							onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
+							onClick={() =>
+								setCurrentQuestionIndex(prev => Math.max(0, prev - 1))
+							}
 							disabled={currentQuestionIndex === 0}
 						>
 							<ChevronLeft size={20} />
@@ -289,7 +334,11 @@ export const CreateTestModal = () => {
 						<button
 							type="button"
 							className={s.paginationArrow}
-							onClick={() => setCurrentQuestionIndex(prev => Math.min(questions.length - 1, prev + 1))}
+							onClick={() =>
+								setCurrentQuestionIndex(prev =>
+									Math.min(questions.length - 1, prev + 1)
+								)
+							}
 							disabled={currentQuestionIndex === questions.length - 1}
 						>
 							<ChevronRight size={20} />
@@ -322,11 +371,14 @@ export const CreateTestModal = () => {
 								<textarea
 									className={clsx(
 										s.textarea,
-										errors.questions?.[currentQuestionIndex]?.text && s.textareaError
+										errors.questions?.[currentQuestionIndex]?.text &&
+											s.textareaError
 									)}
 									placeholder="Сұрақ мәтінін енгізіңіз..."
 									value={currentQuestion.text}
-									onChange={e => updateQuestionText(currentQuestionIndex, e.target.value)}
+									onChange={e =>
+										updateQuestionText(currentQuestionIndex, e.target.value)
+									}
 								/>
 								{errors.questions?.[currentQuestionIndex]?.text && (
 									<span className={s.error}>
@@ -337,37 +389,62 @@ export const CreateTestModal = () => {
 
 							<div className={s.field}>
 								<label className={s.label}>Сұрақ суреті (міндетті емес)</label>
-								<div className={s.imageUpload}>
-									<input
-										ref={el => {
-											imageInputRefs.current[currentQuestion.id] = el
-										}}
-										type="file"
-										accept="image/*"
-										className={s.hiddenInput}
-										onChange={e => handleImageChange(currentQuestionIndex, e)}
-									/>
-									<button
-										type="button"
-										className={s.imageUploadBtn}
-										onClick={() => imageInputRefs.current[currentQuestion.id]?.click()}
-									>
-										<ImagePlus size={18} />
-										Сурет таңдау
-									</button>
-									{currentQuestion.image && (
-										<div className={s.imagePreview}>
-											<span>{currentQuestion.image.name}</span>
-											<button
-												type="button"
-												className={s.removeImageBtn}
-												onClick={() => updateQuestionImage(currentQuestionIndex, undefined)}
-											>
-												<X size={16} />
-											</button>
+
+								<input
+									ref={el => {
+										imageInputRefs.current[currentQuestion.id] = el
+									}}
+									type="file"
+									accept="image/*"
+									style={{ display: 'none' }}
+									onChange={e =>
+										handleQuestionFile(
+											currentQuestionIndex,
+											e.target.files?.[0]
+										)
+									}
+								/>
+
+								{currentQuestion.image ? (
+									<div className={s.fileSelected}>
+										<div className={s.fileSelectedIcon}>
+											<ImagePlus size={20} />
 										</div>
-									)}
-								</div>
+										<span className={s.fileName}>
+											{currentQuestion.image.name}
+										</span>
+										<button
+											type="button"
+											className={s.fileRemove}
+											onClick={() =>
+												updateQuestionImage(currentQuestionIndex, undefined)
+											}
+										>
+											<X size={16} />
+										</button>
+									</div>
+								) : (
+									<div
+										className={clsx(
+											s.fileDropzone,
+											dragOverQuestion === currentQuestionIndex && s.dragOver
+										)}
+										onDragOver={e => handleDragOver(e, currentQuestionIndex)}
+										onDragLeave={handleDragLeave}
+										onDrop={e => handleDrop(e, currentQuestionIndex)}
+										onClick={() =>
+											imageInputRefs.current[currentQuestion.id]?.click()
+										}
+									>
+										<ImagePlus className={s.fileIcon} />
+										<div className={s.fileText}>
+											<span className={s.fileTitle}>
+												Суретті осында сүйреңіз немесе таңдаңыз
+											</span>
+											<span className={s.fileHint}>Жүктеу үшін басыңыз</span>
+										</div>
+									</div>
+								)}
 							</div>
 
 							<div className={s.answersSection}>
@@ -391,7 +468,9 @@ export const CreateTestModal = () => {
 													s.answerRadio,
 													answer.isCorrect && s.selected
 												)}
-												onClick={() => setCorrectAnswer(currentQuestionIndex, aIndex)}
+												onClick={() =>
+													setCorrectAnswer(currentQuestionIndex, aIndex)
+												}
 											/>
 											<span className={s.answerLabel}>Жауап {aIndex + 1}</span>
 											<input
@@ -399,7 +478,11 @@ export const CreateTestModal = () => {
 												placeholder="Жауап мәтінін енгізіңіз..."
 												value={answer.text}
 												onChange={e =>
-													updateAnswerText(currentQuestionIndex, aIndex, e.target.value)
+													updateAnswerText(
+														currentQuestionIndex,
+														aIndex,
+														e.target.value
+													)
 												}
 											/>
 										</div>
@@ -407,8 +490,8 @@ export const CreateTestModal = () => {
 								</div>
 								{errors.questions?.[currentQuestionIndex]?.answers && (
 									<span className={s.error}>
-										{typeof errors.questions[currentQuestionIndex]?.answers?.message ===
-										'string'
+										{typeof errors.questions[currentQuestionIndex]?.answers
+											?.message === 'string'
 											? errors.questions[currentQuestionIndex]?.answers?.message
 											: 'Жауап нұсқаларын тексеріңіз'}
 									</span>

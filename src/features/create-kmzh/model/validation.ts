@@ -14,7 +14,8 @@ export const createKMZHSchema = z.object({
         .refine(
             files => files.every(file => file.size <= MAX_FILE_SIZE),
             `Файл өлшемі ${MAX_FILE_SIZE / 1024 / 1024}MB-дан аспауы керек`
-        )
+        ),
+    institutionTypeIds: z.array(z.number())
 });
 
 export type CreateKMZHSchema = z.infer<typeof createKMZHSchema>;

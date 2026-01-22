@@ -1,1 +1,0 @@
-export { KmzhCard } from './KmzhCard'

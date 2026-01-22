@@ -1,3 +1,5 @@
+import { testApi, type CreateTestRequest } from '@/shared/api/testApi'
+import { uploadApi } from '@/shared/api/uploadApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -12,7 +14,7 @@ import {
 import { createTestSchema } from './validation'
 
 export const useCreateTestForm = (
-	onSubmitSuccess: (data: CreateTestFormData) => Promise<void>
+	onSubmitSuccess: () => Promise<void>
 ) => {
 	const [questions, setQuestions] = useState<Question[]>([
 		createDefaultQuestion('1')
@@ -130,8 +132,41 @@ export const useCreateTestForm = (
 		})
 	}, [reset])
 
-	const onSubmit = handleSubmit(async data => {
-		await onSubmitSuccess(data)
+	const onSubmit = handleSubmit(async (data: CreateTestFormData) => {
+		const questionsWithPhotos = await Promise.all(
+			data.questions.map(async (question, index) => {
+				let photoUrl: string | undefined
+
+				if (question.image) {
+					const uploadResult = await uploadApi.uploadImage(question.image)
+					photoUrl = uploadResult.file_path
+				}
+
+				return {
+					text: question.text,
+					photo: photoUrl,
+					order: index,
+					answers: question.answers
+						.filter(answer => answer.text.trim() !== '')
+						.map((answer, answerIndex) => ({
+							text: answer.text,
+							is_correct: answer.isCorrect,
+							order: answerIndex
+						}))
+				}
+			})
+		)
+
+		const requestData: CreateTestRequest = {
+			title: data.name,
+			subject: data.subjectCode,
+			duration: data.duration,
+			difficulty: data.difficulty,
+			questions: questionsWithPhotos
+		}
+
+		await testApi.createTest(requestData)
+		await onSubmitSuccess()
 	})
 
 	return {

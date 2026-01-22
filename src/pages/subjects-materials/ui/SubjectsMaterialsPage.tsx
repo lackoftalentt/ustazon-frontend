@@ -10,10 +10,10 @@ import { useSubjectMaterialsPage } from '../model/useSubjectMaterialsPage'
 import { FilteredCardsSection } from './FilteredCardsSection'
 import { KmzhSection } from './KmzhSection'
 import { MaterialsCategorySection } from './MaterialsCategorySection'
+import s from './SubjectsMaterialsPage.module.scss'
 import { TestsSection } from './TestsSection'
 import { TopicFilterBadge } from './TopicFilterBadge'
 import { WindowFilterBadge } from './WindowFilterBadge'
-import s from './SubjectsMaterialsPage.module.scss'
 
 export const SubjectsMaterialsPage = () => {
 	const {
@@ -105,7 +105,10 @@ export const SubjectsMaterialsPage = () => {
 				)}
 
 				{!windowId && kmzhData && kmzhData.length > 0 && (
-					<KmzhSection kmzhData={kmzhData} subjectCode={subjectCode || ''} />
+					<KmzhSection
+						kmzhData={kmzhData}
+						subjectCode={subjectCode || ''}
+					/>
 				)}
 
 				{!windowId &&
@@ -120,7 +123,10 @@ export const SubjectsMaterialsPage = () => {
 					))}
 
 				{!windowId && testsData && testsData.length > 0 && (
-					<TestsSection testsData={testsData} subjectCode={subjectCode || ''} />
+					<TestsSection
+						testsData={testsData}
+						subjectCode={subjectCode || ''}
+					/>
 				)}
 
 				{!windowId && categories.length > 0 && (

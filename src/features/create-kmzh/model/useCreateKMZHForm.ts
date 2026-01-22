@@ -1,10 +1,29 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useCallback } from 'react';
-import { createKMZHSchema, type CreateKMZHSchema } from './validation';
-import { type CreateKMZHFormData, MAX_FILE_SIZE, MAX_HOURS } from './types';
+import { qmjApi, type CreateQMJRequest } from '@/shared/api/qmjApi'
+import { uploadApi } from '@/shared/api/uploadApi'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useCallback, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { type CreateKMZHFormData, MAX_FILE_SIZE, MAX_HOURS } from './types'
+import { createKMZHSchema, type CreateKMZHSchema } from './validation'
 
-export const useCreateKMZHForm = (onSubmitCallback: (data: CreateKMZHFormData) => Promise<void>) => {
+const parseGrade = (classLevel: string): number => {
+	const match = classLevel.match(/(\d+)/)
+	return match ? parseInt(match[1], 10) : 1
+}
+
+const parseQuarter = (quarter: string): number => {
+	const match = quarter.match(/(\d+)/)
+	return match ? parseInt(match[1], 10) : 1
+}
+
+interface UseCreateKMZHFormOptions {
+	getSubjectIdByCode: (code: string) => number | undefined
+}
+
+export const useCreateKMZHForm = (
+	onSubmitCallback: () => Promise<void>,
+	options: UseCreateKMZHFormOptions
+) => {
     const [files, setFiles] = useState<File[]>([]);
 
     const {
@@ -23,7 +42,8 @@ export const useCreateKMZHForm = (onSubmitCallback: (data: CreateKMZHFormData) =
             hours: 1,
             lessonTopic: '',
             learningObjectives: '',
-            files: []
+            files: [],
+            institutionTypeIds: []
         }
     });
 
@@ -48,22 +68,62 @@ export const useCreateKMZHForm = (onSubmitCallback: (data: CreateKMZHFormData) =
         setValue('hours', clampedValue, { shouldValidate: true });
     }, [setValue]);
 
+    const handleInstitutionToggle = useCallback((institutionId: number) => {
+        const current = watch('institutionTypeIds') || [];
+        const updated = current.includes(institutionId)
+            ? current.filter(id => id !== institutionId)
+            : [...current, institutionId];
+        setValue('institutionTypeIds', updated);
+    }, [watch, setValue]);
+
+    const institutionTypeIds = watch('institutionTypeIds') || [];
+
     const resetForm = useCallback(() => {
         reset();
         setFiles([]);
     }, [reset]);
 
     const onSubmit = handleSubmit(async (data) => {
-        const formData: CreateKMZHFormData = {
-            subjectCode: data.subjectCode,
-            classLevel: data.classLevel,
-            quarter: data.quarter,
-            hours: data.hours,
-            lessonTopic: data.lessonTopic,
-            learningObjectives: data.learningObjectives,
-            files: data.files
-        };
-        await onSubmitCallback(formData);
+        const subjectId = options.getSubjectIdByCode(data.subjectCode)
+
+        let mainFileUrl: string | undefined
+        if (data.files.length > 0) {
+            const uploadResult = await uploadApi.uploadDocument(data.files[0])
+            mainFileUrl = uploadResult.file_path
+        }
+
+        const requestData: CreateQMJRequest = {
+            grade: parseGrade(data.classLevel),
+            quarter: parseQuarter(data.quarter),
+            code: data.subjectCode,
+            title: data.lessonTopic,
+            text: data.learningObjectives,
+            hour: data.hours,
+            order: 1,
+            subject_ids: subjectId ? [subjectId] : [],
+            institution_type_ids: data.institutionTypeIds
+        }
+
+        if (mainFileUrl) {
+            requestData.file = mainFileUrl
+        }
+
+        console.log('➡️ QMJ payload:', JSON.stringify(requestData, null, 2))
+        const createdQMJ = await qmjApi.createQMJ(requestData)
+
+        if (data.files.length > 1) {
+            for (let i = 1; i < data.files.length; i++) {
+                const file = data.files[i]
+                const uploadResult = await uploadApi.uploadDocument(file)
+                await qmjApi.addFileToQMJ(createdQMJ.id, {
+                    file: uploadResult.file_path,
+                    file_size: file.size,
+                    file_type: file.type || 'application/octet-stream'
+                })
+            }
+        }
+
+        await onSubmitCallback()
     });
 
     return {
@@ -72,9 +132,11 @@ export const useCreateKMZHForm = (onSubmitCallback: (data: CreateKMZHFormData) =
         watch,
         formState: { errors, isSubmitting },
         files,
+        institutionTypeIds,
         handleAddFiles,
         handleRemoveFile,
         handleHoursChange,
+        handleInstitutionToggle,
         resetForm,
         onSubmit
     };

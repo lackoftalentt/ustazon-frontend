@@ -1,9 +1,14 @@
-import { useSubjects } from '@/entities/subject/model/useSubjects'
+import {
+	useInstitutionTypes,
+	useSubjects
+} from '@/entities/subject/model/useSubjects'
 import logo from '@/shared/assets/images/logo.png'
 import { Button } from '@/shared/ui/button'
 import { Dropdown } from '@/shared/ui/dropdown'
 import { Input } from '@/shared/ui/input'
 import { Modal } from '@/shared/ui/modal'
+import { useQueryClient } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { clsx } from 'clsx'
 import {
 	BookMarked,
@@ -23,7 +28,6 @@ import {
 	MAX_FILE_SIZE,
 	QUARTERS,
 	type ClassLevel,
-	type CreateKMZHFormData,
 	type Quarter
 } from '../../../model/types'
 import { useCreateKMZHForm } from '../../../model/useCreateKMZHForm'
@@ -40,16 +44,16 @@ export const CreateKMZHModal = () => {
 	const { isOpen, closeModal } = useCreateKMZHStore()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [isDragOver, setIsDragOver] = useState(false)
+	const queryClient = useQueryClient()
 
 	const { data: subjects = [] } = useSubjects()
+	const { data: institutionTypes = [] } = useInstitutionTypes()
 
-	// Map subjects to dropdown items (show name, but store code)
 	const subjectItems = useMemo(
 		() => subjects.map(subject => subject.name),
 		[subjects]
 	)
 
-	// Get subject name by code for display
 	const getSubjectNameByCode = useCallback(
 		(code: string) => {
 			const subject = subjects.find(s => s.code === code)
@@ -58,11 +62,18 @@ export const CreateKMZHModal = () => {
 		[subjects]
 	)
 
-	// Get subject code by name for storage
 	const getSubjectCodeByName = useCallback(
 		(name: string) => {
 			const subject = subjects.find(s => s.name === name)
 			return subject?.code || ''
+		},
+		[subjects]
+	)
+
+	const getSubjectIdByCode = useCallback(
+		(code: string) => {
+			const subject = subjects.find(s => s.code === code)
+			return subject?.id
 		},
 		[subjects]
 	)
@@ -73,20 +84,21 @@ export const CreateKMZHModal = () => {
 		watch,
 		formState: { errors, isSubmitting },
 		files,
+		institutionTypeIds,
 		handleAddFiles,
 		handleRemoveFile,
 		handleHoursChange,
+		handleInstitutionToggle,
 		resetForm,
 		onSubmit
-	} = useCreateKMZHForm(async (data: CreateKMZHFormData) => {
-		try {
-			console.log('Creating KMZH:', data)
+	} = useCreateKMZHForm(
+		async () => {
+			queryClient.invalidateQueries({ queryKey: ['qmj'] })
 			toast.success('ҚМЖ сәтті қосылды!')
 			handleClose()
-		} catch {
-			toast.error('ҚМЖ қосу кезінде қате орын алды')
-		}
-	})
+		},
+		{ getSubjectIdByCode }
+	)
 
 	const handleClose = useCallback(() => {
 		resetForm()
@@ -155,7 +167,20 @@ export const CreateKMZHModal = () => {
 			</div>
 
 			<form
-				onSubmit={onSubmit}
+				onSubmit={async e => {
+					try {
+						await onSubmit(e)
+					} catch (error) {
+						if (error instanceof AxiosError) {
+							toast.error(
+								error.response?.data?.detail ||
+									'ҚМЖ қосу кезінде қате орын алды'
+							)
+						} else {
+							toast.error('ҚМЖ қосу кезінде қате орын алды')
+						}
+					}
+				}}
 				className={s.form}
 			>
 				<div className={s.field}>
@@ -347,6 +372,34 @@ export const CreateKMZHModal = () => {
 							))}
 						</div>
 					)}
+				</div>
+
+				<div className={s.subjectsSection}>
+					<div className={s.subjectsHeader}>
+						<span className={s.sectionTitle}>Оқу орнының түрі</span>
+						<span className={s.sectionHint}>Бірнеше түрді таңдауға болады</span>
+					</div>
+
+					<div className={s.subjectsGrid}>
+						{institutionTypes.map(institution => (
+							<div
+								key={institution.id}
+								className={clsx(
+									s.subjectItem,
+									institutionTypeIds.includes(institution.id) && s.selected
+								)}
+								onClick={() => handleInstitutionToggle(institution.id)}
+							>
+								<input
+									type="checkbox"
+									className={s.subjectCheckbox}
+									checked={institutionTypeIds.includes(institution.id)}
+									readOnly
+								/>
+								<span className={s.subjectName}>{institution.name}</span>
+							</div>
+						))}
+					</div>
 				</div>
 
 				<div className={s.actions}>

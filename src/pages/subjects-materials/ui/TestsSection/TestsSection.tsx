@@ -11,7 +11,7 @@ interface TestsSectionProps {
 }
 
 export const TestsSection = ({ testsData, subjectCode }: TestsSectionProps) => {
-	const displayItems = testsData.slice(0, 3)
+	const displayItems = testsData.slice(0, 4)
 	const hasMore = testsData.length > 3
 
 	return (

@@ -2,624 +2,694 @@
 
 // ===== Header =====
 .header {
-    display: flex;
-    align-items: center;
-    gap: $spacing-lg;
-    padding-bottom: $spacing-xl;
-    margin-bottom: $spacing-lg;
-    border-bottom: 1px solid $color-gray-border;
+	display: flex;
+	align-items: center;
+	gap: $spacing-lg;
+	padding-bottom: $spacing-xl;
+	margin-bottom: $spacing-lg;
+	border-bottom: 1px solid $color-gray-border;
 }
 
 .headerIcon {
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba($color-green-primary, 0.1) 0%, rgba($color-green-primary, 0.2) 100%);
-    border-radius: $radius-lg;
-    color: $color-green-primary;
-    flex-shrink: 0;
+	width: 56px;
+	height: 56px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(
+		135deg,
+		rgba($color-green-primary, 0.1) 0%,
+		rgba($color-green-primary, 0.2) 100%
+	);
+	border-radius: $radius-lg;
+	color: $color-green-primary;
+	flex-shrink: 0;
 }
 
 .headerContent {
-    flex: 1;
+	flex: 1;
 }
 
 .headerTitle {
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-dark;
-    margin: 0 0 $spacing-xs;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+	margin: 0 0 $spacing-xs;
 }
 
 .headerSubtitle {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
-    margin: 0;
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
+	margin: 0;
 }
 
 .headerLogo {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    flex-shrink: 0;
+	width: 40px;
+	height: 40px;
+	object-fit: contain;
+	flex-shrink: 0;
 }
 
 // ===== Form Container =====
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xl;
-    overflow-y: auto;
-    padding-right: 12px;
-    margin-right: -4px;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xl;
+	overflow-y: auto;
+	padding-right: 12px;
+	margin-right: -4px;
 }
 
 // ===== Sections =====
 .section {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
 }
 
 .sectionTitle {
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-dark;
-    letter-spacing: -0.01em;
+	font-size: $font-size-base;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+	letter-spacing: -0.01em;
 }
 
 .sectionHint {
-    font-size: $font-size-xs;
-    color: $color-gray-medium;
-    line-height: 1.4;
+	font-size: $font-size-xs;
+	color: $color-gray-medium;
+	line-height: 1.4;
 }
 
 // ===== Row Layout =====
 .row {
-    display: flex;
-    gap: $spacing-lg;
+	display: flex;
+	gap: $spacing-lg;
 
-    // Make children (inputs, dropdowns) take equal width
-    > * {
-        flex: 1;
-        min-width: 0;
-    }
+	// Make children (inputs, dropdowns) take equal width
+	> * {
+		flex: 1;
+		min-width: 0;
+	}
 
-    @media (max-width: 600px) {
-        flex-direction: column;
+	@media (max-width: 600px) {
+		flex-direction: column;
 
-        > * {
-            flex: none;
-        }
-    }
+		> * {
+			flex: none;
+		}
+	}
 }
 
 // ===== Dropdown =====
 .dropdownsWrapper {
-    display: flex;
+	display: flex;
 }
 
 .dropdownWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-sm;
-    flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-sm;
+	flex: 1;
 }
 
 .dropdownLabel {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    color: $color-gray-dark;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
 
-    svg {
-        color: $color-green-primary;
-        flex-shrink: 0;
-    }
+	svg {
+		color: $color-green-primary;
+		flex-shrink: 0;
+	}
 }
 
 // ===== Source Toggle (Сілтеме / Файл) =====
 .sourceToggle {
-    display: inline-flex;
-    padding: 3px;
-    background: linear-gradient(145deg, #f0f0f0 0%, #e8e8e8 100%);
-    border-radius: $radius-md;
-    width: fit-content;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+	display: inline-flex;
+	padding: 3px;
+	background: linear-gradient(145deg, #f0f0f0 0%, #e8e8e8 100%);
+	border-radius: $radius-md;
+	width: fit-content;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .sourceButton {
-    padding: $spacing-sm $spacing-2xl;
-    border: none;
-    border-radius: calc($radius-md - 2px);
-    background: transparent;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    color: $color-gray-medium;
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+	padding: $spacing-sm $spacing-2xl;
+	border: none;
+	border-radius: calc($radius-md - 2px);
+	background: transparent;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-gray-medium;
+	cursor: pointer;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
 
-    &:hover:not(.active) {
-        color: $color-gray-dark;
-        background: rgba(255, 255, 255, 0.5);
-    }
+	&:hover:not(.active) {
+		color: $color-gray-dark;
+		background: rgba(255, 255, 255, 0.5);
+	}
 
-    &.active {
-        background: white;
-        color: $color-green-primary;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
+	&.active {
+		background: white;
+		color: $color-green-primary;
+		box-shadow:
+			0 1px 3px rgba(0, 0, 0, 0.1),
+			0 4px 12px rgba(0, 0, 0, 0.05);
+	}
 }
 
 // ===== Link Section =====
 .linkSection {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
-    padding: $spacing-lg;
-    background: linear-gradient(
-        145deg,
-        rgba($color-green-primary, 0.03) 0%,
-        rgba($color-green-primary, 0.06) 100%
-    );
-    border-radius: $radius-lg;
-    border: 1px solid rgba($color-green-primary, 0.12);
-    position: relative;
-    overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+	padding: $spacing-lg;
+	background: linear-gradient(
+		145deg,
+		rgba($color-green-primary, 0.03) 0%,
+		rgba($color-green-primary, 0.06) 100%
+	);
+	border-radius: $radius-lg;
+	border: 1px solid rgba($color-green-primary, 0.12);
+	position: relative;
+	overflow: hidden;
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: linear-gradient(
-            180deg,
-            $color-green-primary 0%,
-            $color-green-dark 100%
-        );
-        border-radius: 0 4px 4px 0;
-    }
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 4px;
+		height: 100%;
+		background: linear-gradient(
+			180deg,
+			$color-green-primary 0%,
+			$color-green-dark 100%
+		);
+		border-radius: 0 4px 4px 0;
+	}
 }
 
 // ===== File Upload =====
 .fileUpload {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
 }
 
 .fileDropzone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-lg;
-    padding: $spacing-3xl $spacing-2xl;
-    border: 2px dashed rgba($color-gray-medium, 0.3);
-    border-radius: $radius-lg;
-    background: linear-gradient(180deg, #fafbfc 0%, #f5f6f7 100%);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-lg;
+	padding: $spacing-3xl $spacing-2xl;
+	border: 2px dashed rgba($color-gray-medium, 0.3);
+	border-radius: $radius-lg;
+	background: linear-gradient(180deg, #fafbfc 0%, #f5f6f7 100%);
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	overflow: hidden;
 
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-            circle at center,
-            rgba($color-green-primary, 0) 0%,
-            rgba($color-green-primary, 0) 100%
-        );
-        transition: all 0.3s ease;
-    }
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(
+			circle at center,
+			rgba($color-green-primary, 0) 0%,
+			rgba($color-green-primary, 0) 100%
+		);
+		transition: all 0.3s ease;
+	}
 
-    &:hover {
-        border-color: $color-green-primary;
-        background: linear-gradient(
-            180deg,
-            rgba($color-green-primary, 0.02) 0%,
-            rgba($color-green-primary, 0.06) 100%
-        );
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba($color-green-primary, 0.1);
+	&:hover {
+		border-color: $color-green-primary;
+		background: linear-gradient(
+			180deg,
+			rgba($color-green-primary, 0.02) 0%,
+			rgba($color-green-primary, 0.06) 100%
+		);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba($color-green-primary, 0.1);
 
-        .fileIcon {
-            color: $color-green-primary;
-            transform: translateY(-4px);
-        }
+		.fileIcon {
+			color: $color-green-primary;
+			transform: translateY(-4px);
+		}
 
-        .fileTitle {
-            color: $color-green-dark;
-        }
-    }
+		.fileTitle {
+			color: $color-green-dark;
+		}
+	}
 
-    &.dragOver {
-        border-color: $color-green-primary;
-        border-style: solid;
-        background: linear-gradient(
-            180deg,
-            rgba($color-green-primary, 0.06) 0%,
-            rgba($color-green-primary, 0.1) 100%
-        );
-        transform: scale(1.02);
-        box-shadow: 0 12px 32px rgba($color-green-primary, 0.15),
-            inset 0 0 0 2px rgba($color-green-primary, 0.1);
+	&.dragOver {
+		border-color: $color-green-primary;
+		border-style: solid;
+		background: linear-gradient(
+			180deg,
+			rgba($color-green-primary, 0.06) 0%,
+			rgba($color-green-primary, 0.1) 100%
+		);
+		transform: scale(1.02);
+		box-shadow:
+			0 12px 32px rgba($color-green-primary, 0.15),
+			inset 0 0 0 2px rgba($color-green-primary, 0.1);
 
-        &::before {
-            background: radial-gradient(
-                circle at center,
-                rgba($color-green-primary, 0.1) 0%,
-                rgba($color-green-primary, 0) 70%
-            );
-        }
+		&::before {
+			background: radial-gradient(
+				circle at center,
+				rgba($color-green-primary, 0.1) 0%,
+				rgba($color-green-primary, 0) 70%
+			);
+		}
 
-        .fileIcon {
-            color: $color-green-primary;
-            transform: translateY(-8px) scale(1.15);
-        }
-    }
+		.fileIcon {
+			color: $color-green-primary;
+			transform: translateY(-8px) scale(1.15);
+		}
+	}
 
-    &.hasError {
-        border-color: $color-red-error;
-        background: rgba($color-red-error, 0.03);
-    }
+	&.hasError {
+		border-color: $color-red-error;
+		background: rgba($color-red-error, 0.03);
+	}
 }
 
 .fileIcon {
-    width: 52px;
-    height: 52px;
-    color: $color-gray-medium;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+	width: 52px;
+	height: 52px;
+	color: $color-gray-medium;
+	transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .fileText {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xs;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xs;
 }
 
 .fileTitle {
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-    color: $color-gray-dark;
-    transition: color 0.2s ease;
+	font-size: $font-size-base;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
+	transition: color 0.2s ease;
 }
 
 .fileHint {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
 }
 
 .fileSelected {
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    padding: $spacing-md $spacing-lg;
-    background: linear-gradient(
-        135deg,
-        $color-green-lightest 0%,
-        rgba($color-green-primary, 0.15) 100%
-    );
-    border: 1px solid rgba($color-green-primary, 0.25);
-    border-radius: $radius-lg;
-    box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
-    animation: fileSelectedIn 0.3s ease;
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-md $spacing-lg;
+	background: linear-gradient(
+		135deg,
+		$color-green-lightest 0%,
+		rgba($color-green-primary, 0.15) 100%
+	);
+	border: 1px solid rgba($color-green-primary, 0.25);
+	border-radius: $radius-lg;
+	box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
+	animation: fileSelectedIn 0.3s ease;
 }
 
 @keyframes fileSelectedIn {
-    from {
-        opacity: 0;
-        transform: translateY(-8px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+	from {
+		opacity: 0;
+		transform: translateY(-8px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
 }
 
 .fileSelectedIcon {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border-radius: $radius-md;
-    color: $color-green-primary;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06),
-        0 4px 16px rgba($color-green-primary, 0.1);
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: white;
+	border-radius: $radius-md;
+	color: $color-green-primary;
+	box-shadow:
+		0 2px 8px rgba(0, 0, 0, 0.06),
+		0 4px 16px rgba($color-green-primary, 0.1);
 }
 
 .fileName {
-    flex: 1;
-    font-size: $font-size-sm;
-    font-weight: $font-weight-medium;
-    color: $color-gray-dark;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	flex: 1;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .fileRemove {
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: $radius-sm;
-    background: rgba(255, 255, 255, 0.9);
-    color: $color-gray-medium;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	width: 34px;
+	height: 34px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: $radius-sm;
+	background: rgba(255, 255, 255, 0.9);
+	color: $color-gray-medium;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
-    &:hover {
-        background: white;
-        color: $color-red-error;
-        transform: scale(1.08);
-        box-shadow: 0 2px 8px rgba($color-red-error, 0.2);
-    }
+	&:hover {
+		background: white;
+		color: $color-red-error;
+		transform: scale(1.08);
+		box-shadow: 0 2px 8px rgba($color-red-error, 0.2);
+	}
 
-    &:active {
-        transform: scale(0.95);
-    }
+	&:active {
+		transform: scale(0.95);
+	}
 }
 
 // ===== Iframe Toggle =====
 .iframeToggle {
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    padding: $spacing-md $spacing-lg;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: $radius-md;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-md $spacing-lg;
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: $radius-md;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	border: 1px solid transparent;
 
-    &:hover {
-        background: rgba(255, 255, 255, 0.95);
-        border-color: rgba($color-green-primary, 0.2);
-    }
+	&:hover {
+		background: rgba(255, 255, 255, 0.95);
+		border-color: rgba($color-green-primary, 0.2);
+	}
 }
 
 .checkbox {
-    width: 20px;
-    height: 20px;
-    accent-color: $color-green-primary;
-    cursor: pointer;
+	width: 20px;
+	height: 20px;
+	accent-color: $color-green-primary;
+	cursor: pointer;
 }
 
 .checkboxLabel {
-    font-size: $font-size-sm;
-    color: $color-gray-dark;
-    cursor: pointer;
-    user-select: none;
+	font-size: $font-size-sm;
+	color: $color-gray-dark;
+	cursor: pointer;
+	user-select: none;
 }
 
 // ===== Subjects Section =====
 .subjectsSection {
-    padding: $spacing-xl;
-    background: linear-gradient(180deg, #f8f9fa 0%, #f3f4f5 100%);
-    border-radius: $radius-xl;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+	padding: $spacing-xl;
+	background: linear-gradient(180deg, #f8f9fa 0%, #f3f4f5 100%);
+	border-radius: $radius-xl;
+	border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .subjectsHeader {
-    display: flex;
-    align-items: baseline;
-    gap: $spacing-md;
-    margin-bottom: $spacing-lg;
+	display: flex;
+	align-items: baseline;
+	gap: $spacing-md;
+	margin-bottom: $spacing-lg;
 }
 
 .subjectsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-    gap: $spacing-sm;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+	gap: $spacing-sm;
 }
 
 .subjectItem {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    padding: $spacing-md;
-    background: white;
-    border: 1px solid $color-gray-border;
-    border-radius: $radius-md;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    user-select: none;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: $spacing-md;
+	background: white;
+	border: 1px solid $color-gray-border;
+	border-radius: $radius-md;
+	cursor: pointer;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	user-select: none;
 
-    &:hover {
-        border-color: rgba($color-green-primary, 0.5);
-        box-shadow: 0 4px 12px rgba($color-green-primary, 0.08);
-        transform: translateY(-2px);
+	&:hover {
+		border-color: rgba($color-green-primary, 0.5);
+		box-shadow: 0 4px 12px rgba($color-green-primary, 0.08);
+		transform: translateY(-2px);
 
-        .subjectCheckbox {
-            border-color: $color-green-primary;
-        }
-    }
+		.subjectCheckbox {
+			border-color: $color-green-primary;
+		}
+	}
 
-    &.selected {
-        background: linear-gradient(
-            145deg,
-            rgba($color-green-primary, 0.08) 0%,
-            rgba($color-green-primary, 0.14) 100%
-        );
-        border-color: $color-green-primary;
-        box-shadow: 0 4px 12px rgba($color-green-primary, 0.12),
-            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+	&.selected {
+		background: linear-gradient(
+			145deg,
+			rgba($color-green-primary, 0.08) 0%,
+			rgba($color-green-primary, 0.14) 100%
+		);
+		border-color: $color-green-primary;
+		box-shadow:
+			0 4px 12px rgba($color-green-primary, 0.12),
+			inset 0 1px 0 rgba(255, 255, 255, 0.5);
 
-        .subjectName {
-            color: $color-green-dark;
-            font-weight: $font-weight-semibold;
-        }
-    }
+		.subjectName {
+			color: $color-green-dark;
+			font-weight: $font-weight-semibold;
+		}
+	}
 
-    &:active {
-        transform: translateY(0) scale(0.98);
-    }
+	&:active {
+		transform: translateY(0) scale(0.98);
+	}
 }
 
 .subjectCheckbox {
-    width: 18px;
-    height: 18px;
-    accent-color: $color-green-primary;
-    pointer-events: none;
-    transition: border-color 0.2s ease;
+	width: 18px;
+	height: 18px;
+	accent-color: $color-green-primary;
+	pointer-events: none;
+	transition: border-color 0.2s ease;
 }
 
 .subjectName {
-    font-size: $font-size-sm;
-    color: $color-gray-dark;
-    transition: all 0.2s ease;
-    line-height: 1.3;
+	font-size: $font-size-sm;
+	color: $color-gray-dark;
+	transition: all 0.2s ease;
+	line-height: 1.3;
 }
 
 // ===== Actions =====
 .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: $spacing-md;
-    padding-top: $spacing-xl;
-    margin-top: $spacing-md;
-    border-top: 1px solid $color-gray-border;
+	display: flex;
+	justify-content: flex-end;
+	gap: $spacing-md;
+	padding-top: $spacing-xl;
+	margin-top: $spacing-md;
+	border-top: 1px solid $color-gray-border;
 }
 
 // ===== Error Message =====
 .error {
-    font-size: $font-size-xs;
-    color: $color-red-error;
-    margin-top: $spacing-sm;
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    padding: $spacing-sm $spacing-md;
-    background: rgba($color-red-error, 0.06);
-    border-radius: $radius-sm;
-    animation: errorIn 0.2s ease;
+	font-size: $font-size-xs;
+	color: $color-red-error;
+	margin-top: $spacing-sm;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: $spacing-sm $spacing-md;
+	background: rgba($color-red-error, 0.06);
+	border-radius: $radius-sm;
+	animation: errorIn 0.2s ease;
 
-    &::before {
-        content: '!';
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 18px;
-        height: 18px;
-        background: $color-red-error;
-        color: white;
-        border-radius: 50%;
-        font-size: 11px;
-        font-weight: $font-weight-bold;
-        flex-shrink: 0;
-    }
+	&::before {
+		content: '!';
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		background: $color-red-error;
+		color: white;
+		border-radius: 50%;
+		font-size: 11px;
+		font-weight: $font-weight-bold;
+		flex-shrink: 0;
+	}
 }
 
+.textareaWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	width: 100%;
+}
+
+.textareaLabel {
+	font-size: 14px;
+	font-weight: 500;
+	color: #3a3a3a;
+}
+
+.textarea {
+	min-height: 80px;
+	max-height: 200px;
+	resize: vertical;
+	padding: 10px 12px;
+	border: 1px solid #d4d4d4;
+	border-radius: 8px;
+	font-size: 14px;
+	line-height: 1.4;
+	outline: none;
+	transition: border 0.15s;
+}
+
+.textarea:focus {
+	border-color: $color-green-dark;
+}
+
+.hasError {
+	border-color: #e5433b !important;
+}
+
+.charCount {
+	font-size: 12px;
+	color: #777;
+	text-align: right;
+}
+
+.inputsWrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.dropdownsGrid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: $spacing-lg;
+}
+
+.dropdownItem {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-sm;
+}
+@media (max-width: 768px) {
+	.dropdownsGrid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
 @keyframes errorIn {
-    from {
-        opacity: 0;
-        transform: translateX(-4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+	from {
+		opacity: 0;
+		transform: translateX(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 // ===== Responsive =====
 @media (max-width: 600px) {
-    .subjectsGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+	.subjectsGrid {
+		grid-template-columns: repeat(2, 1fr);
+	}
 
-    .sourceToggle {
-        width: 100%;
-    }
+	.sourceToggle {
+		width: 100%;
+	}
 
-    .sourceButton {
-        flex: 1;
-        text-align: center;
-    }
+	.sourceButton {
+		flex: 1;
+		text-align: center;
+	}
 
-    .actions {
-        flex-direction: column-reverse;
+	.actions {
+		flex-direction: column-reverse;
 
-        button {
-            width: 100%;
-        }
-    }
+		button {
+			width: 100%;
+		}
+	}
 
-    .subjectsSection {
-        padding: $spacing-lg;
-    }
+	.subjectsSection {
+		padding: $spacing-lg;
+	}
 }
 
 // ===== Custom Scrollbar =====
 .form {
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
+	scrollbar-width: thin;
+	scrollbar-color: transparent transparent;
 
-    &:hover {
-        scrollbar-color: rgba($color-gray-medium, 0.3) transparent;
-    }
+	&:hover {
+		scrollbar-color: rgba($color-gray-medium, 0.3) transparent;
+	}
 }
 
 .form::-webkit-scrollbar {
-    width: 6px;
+	width: 6px;
 }
 
 .form::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 10px;
-    margin: 4px 0;
+	background: transparent;
+	border-radius: 10px;
+	margin: 4px 0;
 }
 
 .form::-webkit-scrollbar-thumb {
-    background: transparent;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    transition: background 0.3s ease;
+	background: transparent;
+	border-radius: 10px;
+	border: 1px solid transparent;
+	transition: background 0.3s ease;
 }
 
 .form:hover::-webkit-scrollbar-thumb {
-    background: linear-gradient(
-        180deg,
-        rgba($color-gray-medium, 0.25) 0%,
-        rgba($color-gray-medium, 0.4) 100%
-    );
+	background: linear-gradient(
+		180deg,
+		rgba($color-gray-medium, 0.25) 0%,
+		rgba($color-gray-medium, 0.4) 100%
+	);
 }
 
 .form::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(
-        180deg,
-        rgba($color-green-primary, 0.3) 0%,
-        rgba($color-green-primary, 0.5) 100%
-    );
+	background: linear-gradient(
+		180deg,
+		rgba($color-green-primary, 0.3) 0%,
+		rgba($color-green-primary, 0.5) 100%
+	);
 }
 
 .form::-webkit-scrollbar-thumb:active {
-    background: linear-gradient(
-        180deg,
-        rgba($color-green-primary, 0.4) 0%,
-        rgba($color-green-primary, 0.6) 100%
-    );
+	background: linear-gradient(
+		180deg,
+		rgba($color-green-primary, 0.4) 0%,
+		rgba($color-green-primary, 0.6) 100%
+	);
 }
 
 // Firefox specific (shows on hover only)
 @supports (scrollbar-width: thin) {
-    .form {
-        transition: scrollbar-color 0.3s ease;
-    }
+	.form {
+		transition: scrollbar-color 0.3s ease;
+	}
 }

@@ -11,12 +11,15 @@ interface KmzhSectionProps {
 }
 
 export const KmzhSection = ({ kmzhData, subjectCode }: KmzhSectionProps) => {
-	const displayItems = kmzhData.slice(0, 3)
+	const displayItems = kmzhData.slice(0, 4)
 	const hasMore = kmzhData.length > 3
 
 	return (
 		<div className={s.windowSection}>
-			<SectionTitle className={s.rowTitle} title="ҚМЖ" />
+			<SectionTitle
+				className={s.rowTitle}
+				title="ҚМЖ"
+			/>
 			<div className={s.container}>
 				{displayItems.map(kmzh => (
 					<KmzhCard
@@ -34,7 +37,10 @@ export const KmzhSection = ({ kmzhData, subjectCode }: KmzhSectionProps) => {
 			</div>
 			{hasMore && (
 				<div className={s.showMoreWrapper}>
-					<Link to={`/lesson-plans/${subjectCode}`} className={s.showMoreLink}>
+					<Link
+						to={`/lesson-plans/${subjectCode}`}
+						className={s.showMoreLink}
+					>
 						Көбірек көру
 						<ArrowIcon className={s.arrowIcon} />
 					</Link>

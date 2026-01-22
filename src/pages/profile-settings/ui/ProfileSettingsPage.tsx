@@ -1,5 +1,6 @@
 import { getCurrentUser, updateUserProfile } from '@/entities/user/api/userApi'
 import { useAuthStore } from '@/entities/user/model/store/useAuthStore'
+import { LoaderPage } from '@/pages/loader-page'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -59,6 +60,7 @@ export const ProfileSettingsPage = () => {
 		onSuccess: data => {
 			queryClient.setQueryData(['currentUser'], data)
 			setUser({
+				id: data.id,
 				iin: data.iin,
 				name: data.name,
 				phoneNumber: data.phone
@@ -89,13 +91,7 @@ export const ProfileSettingsPage = () => {
 	}
 
 	if (isLoading) {
-		return (
-			<div className={s.container}>
-				<div className={s.card}>
-					<p>Жүктелуде...</p>
-				</div>
-			</div>
-		)
+		return <LoaderPage />
 	}
 
 	if (!userData) {

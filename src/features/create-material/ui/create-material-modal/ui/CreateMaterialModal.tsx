@@ -1,27 +1,50 @@
+import { cardApi, type CardCreate } from '@/entities/card/api/cardApi'
+import { useCardTopics } from '@/entities/card/model/useCards'
+import {
+	useInstitutionTypes,
+	useSubjects,
+	useWindows
+} from '@/entities/subject/model/useSubjects'
+import { uploadApi } from '@/shared/api/uploadApi'
 import logo from '@/shared/assets/images/logo.png'
 import { Button } from '@/shared/ui/button'
 import { Dropdown } from '@/shared/ui/dropdown'
 import { Input } from '@/shared/ui/input'
 import { Modal } from '@/shared/ui/modal'
 import { clsx } from 'clsx'
-import { BookMarked, Calendar, GraduationCap } from 'lucide-react'
+import { BookMarked, Calendar, GraduationCap, LayoutGrid } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import {
 	CLASS_OPTIONS,
-	SUBJECT_OPTIONS,
 	TERM_OPTIONS,
-	type CreateMaterialFormData,
-	type SubjectOption
+	type CreateMaterialFormData
 } from '../../../model/types'
 import { useCreateMaterialForm } from '../../../model/useCreateMaterialForm'
 import { useCreateMaterialStore } from '../../../model/useCreateMaterialStore'
 import s from './CreateMaterialModal.module.scss'
 
+const parseGrade = (classLevel?: string): number | undefined => {
+	if (!classLevel) return undefined
+	const match = classLevel.match(/^(\d+)/)
+	return match ? parseInt(match[1], 10) : undefined
+}
+
+const parseQuarter = (term?: string): number | undefined => {
+	if (!term) return undefined
+	const match = term.match(/^(\d+)/)
+	return match ? parseInt(match[1], 10) : undefined
+}
+
 export const CreateMaterialModal = () => {
 	const { isOpen, closeModal } = useCreateMaterialStore()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [isDragOver, setIsDragOver] = useState(false)
+
+	const { data: subjects = [] } = useSubjects()
+	const { data: windows = [] } = useWindows()
+	const { data: institutionTypes = [] } = useInstitutionTypes()
+	const { data: topics = [] } = useCardTopics()
 
 	const {
 		register,
@@ -29,16 +52,43 @@ export const CreateMaterialModal = () => {
 		watch,
 		formState: { errors, isSubmitting },
 		sourceType,
-		subjects,
+		subjectIds,
+		institutionTypeIds,
 		handleSourceTypeChange,
 		handleFileChange,
 		handleSubjectToggle,
+		handleInstitutionToggle,
 		resetForm,
 		onSubmit
 	} = useCreateMaterialForm(async (data: CreateMaterialFormData) => {
 		try {
-			// TODO: API call to save material
-			console.log('Saving material:', data)
+			let filePath: string | undefined
+
+			if (data.sourceType === 'file' && data.file) {
+				const uploadResult = await uploadApi.uploadDocument(data.file)
+				filePath = uploadResult.file_path
+			}
+
+			const cardData: CardCreate = {
+				name: data.name,
+				description: data.description,
+				topic_id: data.topicId,
+				grade: parseGrade(data.classLevel),
+				quarter: parseQuarter(data.term),
+				url: data.sourceType === 'link' ? data.link : undefined,
+				file_path: filePath,
+				iframe: data.showAsIframe,
+				window_id: data.windowId,
+				subject_ids: data.subjectIds.length > 0 ? data.subjectIds : undefined,
+				institution_type_ids:
+					data.institutionTypeIds.length > 0
+						? data.institutionTypeIds
+						: undefined
+			}
+
+			console.log('➡️ Отправляемый payload:', cardData)
+
+			await cardApi.createCard(cardData)
 			toast.success('Материал сәтті сақталды!')
 			handleClose()
 		} catch {
@@ -108,48 +158,93 @@ export const CreateMaterialModal = () => {
 				onSubmit={onSubmit}
 				className={s.form}
 			>
-				<div className={s.row}>
+				<div className={clsx(s.row, s.inputsWrapper)}>
 					<Input
 						{...register('name')}
 						label="Аты *"
 						placeholder="Материалдың атауын жазыңыз"
 						error={errors.name?.message}
 					/>
-					<Input
-						{...register('topic')}
-						label="Тақырып"
-						placeholder="Тақырып атауын жазыңыз"
-					/>
+					<div className={s.textareaWrapper}>
+						<label className={s.textareaLabel}>Сипаттама</label>
+						<textarea
+							{...register('description')}
+							placeholder="Материал туралы қысқаша сипаттама"
+							className={clsx(s.textarea, errors.description && s.hasError)}
+							maxLength={50}
+						/>
+						{errors.description && (
+							<span className={s.error}>{errors.description.message}</span>
+						)}
+						<div className={s.charCount}>
+							{watch('description')?.length ?? 0} / 50
+						</div>
+					</div>
 				</div>
 
 				<div className={s.row}>
-					<div className={s.dropdownWrapper}>
-						<span className={s.dropdownLabel}>
-							<GraduationCap size={16} />
-							Сынып/Курс
-						</span>
-						<Dropdown
-							items={[...CLASS_OPTIONS]}
-							value={watch('classLevel')}
-							placeholder="Таңдаңыз"
-							onChange={value =>
-								setValue('classLevel', value as (typeof CLASS_OPTIONS)[number])
-							}
-						/>
-					</div>
-					<div className={s.dropdownWrapper}>
-						<span className={s.dropdownLabel}>
-							<Calendar size={16} />
-							Тоқсан/Семестр
-						</span>
-						<Dropdown
-							items={[...TERM_OPTIONS]}
-							value={watch('term')}
-							placeholder="Таңдаңыз"
-							onChange={value =>
-								setValue('term', value as (typeof TERM_OPTIONS)[number])
-							}
-						/>
+					<div className={s.dropdownsGrid}>
+						<div className={s.dropdownItem}>
+							<span className={s.dropdownLabel}>
+								<GraduationCap size={16} />
+								Сынып/Курс
+							</span>
+							<Dropdown
+								items={[...CLASS_OPTIONS]}
+								value={watch('classLevel')}
+								placeholder="Таңдаңыз"
+								onChange={value =>
+									setValue(
+										'classLevel',
+										value as (typeof CLASS_OPTIONS)[number]
+									)
+								}
+							/>
+						</div>
+						<div className={s.dropdownItem}>
+							<span className={s.dropdownLabel}>
+								<Calendar size={16} />
+								Тоқсан/Семестр
+							</span>
+							<Dropdown
+								items={[...TERM_OPTIONS]}
+								value={watch('term')}
+								placeholder="Таңдаңыз"
+								onChange={value =>
+									setValue('term', value as (typeof TERM_OPTIONS)[number])
+								}
+							/>
+						</div>
+						<div className={s.dropdownItem}>
+							<span className={s.dropdownLabel}>
+								<LayoutGrid size={16} />
+								Бөлім
+							</span>
+							<Dropdown
+								items={windows.map(w => w.name)}
+								value={windows.find(w => w.id === watch('windowId'))?.name}
+								placeholder="Таңдаңыз"
+								onChange={value => {
+									const window = windows.find(w => w.name === value)
+									setValue('windowId', window?.id)
+								}}
+							/>
+						</div>
+						<div className={s.dropdownItem}>
+							<span className={s.dropdownLabel}>
+								<BookMarked size={16} />
+								Тақырып
+							</span>
+							<Dropdown
+								items={topics.map(t => t.topic)}
+								value={topics.find(t => t.id === watch('topicId'))?.topic}
+								placeholder="Таңдаңыз"
+								onChange={value => {
+									const topic = topics.find(t => t.topic === value)
+									setValue('topicId', topic?.id)
+								}}
+							/>
+						</div>
 					</div>
 				</div>
 
@@ -188,18 +283,6 @@ export const CreateMaterialModal = () => {
 							<span className={s.sectionHint}>
 								Материалға сілтемені енгізіңіз
 							</span>
-
-							{/* <label className={s.iframeToggle}>
-                                <input
-                                    type="checkbox"
-                                    id="showAsIframe"
-                                    className={s.checkbox}
-                                    {...register('showAsIframe')}
-                                />
-                                <span className={s.checkboxLabel}>
-                                    Iframe ретінде көрсету
-                                </span>
-                            </label> */}
 						</div>
 					) : (
 						<div className={s.fileUpload}>
@@ -301,40 +384,61 @@ export const CreateMaterialModal = () => {
 
 				<div className={s.subjectsSection}>
 					<div className={s.subjectsHeader}>
-						{' '}
-						<span className={s.sectionTitle}>Пән карточкасы</span>
-						<span className={s.sectionHint}>Бірнеше пәнді таңдауға болады</span>
+						<span className={s.sectionTitle}>Оқу орнының түрі</span>
+						<span className={s.sectionHint}>Бірнеше түрді таңдауға болады</span>
 					</div>
 
 					<div className={s.subjectsGrid}>
-						{SUBJECT_OPTIONS.map(subject => (
+						{institutionTypes.map(institution => (
 							<div
-								key={subject}
+								key={institution.id}
 								className={clsx(
 									s.subjectItem,
-									subjects.includes(subject as SubjectOption) && s.selected
+									institutionTypeIds.includes(institution.id) && s.selected
 								)}
-								onClick={() => handleSubjectToggle(subject as SubjectOption)}
+								onClick={() => handleInstitutionToggle(institution.id)}
 							>
 								<input
 									type="checkbox"
 									className={s.subjectCheckbox}
-									checked={subjects.includes(subject as SubjectOption)}
+									checked={institutionTypeIds.includes(institution.id)}
 									readOnly
 								/>
-								<span className={s.subjectName}>{subject}</span>
+								<span className={s.subjectName}>{institution.name}</span>
+							</div>
+						))}
+					</div>
+				</div>
+
+				<div className={s.subjectsSection}>
+					<div className={s.subjectsHeader}>
+						<span className={s.sectionTitle}>Пәндер</span>
+						<span className={s.sectionHint}>Бірнеше пәнді таңдауға болады</span>
+					</div>
+
+					<div className={s.subjectsGrid}>
+						{subjects.map(subject => (
+							<div
+								key={subject.id}
+								className={clsx(
+									s.subjectItem,
+									subjectIds.includes(subject.id) && s.selected
+								)}
+								onClick={() => handleSubjectToggle(subject.id)}
+							>
+								<input
+									type="checkbox"
+									className={s.subjectCheckbox}
+									checked={subjectIds.includes(subject.id)}
+									readOnly
+								/>
+								<span className={s.subjectName}>{subject.name}</span>
 							</div>
 						))}
 					</div>
 				</div>
 
 				<div className={s.actions}>
-					{/* <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleBack}>
-                        Артқа
-                    </Button> */}
 					<Button
 						type="submit"
 						variant="primary"

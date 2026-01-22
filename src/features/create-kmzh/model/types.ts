@@ -26,4 +26,5 @@ export interface CreateKMZHFormData {
     lessonTopic: string;
     learningObjectives: string;
     files: File[];
+    institutionTypeIds: number[];
 }

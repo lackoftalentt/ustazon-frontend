@@ -1,353 +1,313 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import {
-    Settings,
-    BookMarked,
-    CheckCircle,
-    Eye,
-    ChevronLeft,
-    ChevronRight
-} from 'lucide-react';
-import { Container } from '@/shared/ui/container';
-import { Button } from '@/shared/ui/button';
-import { SearchInput } from '@/shared/ui/search-input';
-import { useAuthStore } from '@/entities/user';
+	useCards,
+	useDeleteCard,
+	useToggleFavorite
+} from '@/entities/card/model/useCards'
+import { useFavoritesStore } from '@/entities/card/model/useFavoritesStore'
+import { MaterialCard } from '@/entities/material'
+import { useAuthStore } from '@/entities/user'
+import { Button } from '@/shared/ui/button'
+import { ConfirmModal } from '@/shared/ui/confirm-modal'
+import { Container } from '@/shared/ui/container'
+import { Loader } from '@/shared/ui/loader'
+import { SearchInput } from '@/shared/ui/search-input'
 import {
-    MaterialCard,
-    type MaterialType,
-    type SavedMaterial,
-    type UserStats,
-    materialTypeLabels
-} from '@/entities/material';
-import s from './ProfilePage.module.scss';
+	BookMarked,
+	CheckCircle,
+	ChevronLeft,
+	ChevronRight,
+	Eye,
+	Settings
+} from 'lucide-react'
+import { useMemo, useState } from 'react'
+import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom'
+import s from './ProfilePage.module.scss'
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 8
 
-const mockMaterials: SavedMaterial[] = [
-    {
-        id: '1',
-        title: 'Математика: Квадрат теңдеулер',
-        description: 'Квадрат теңдеулерді шешу әдістері және формулалары',
-        type: 'card',
-        thumbnail: '',
-        savedAt: '2024-01-15',
-        path: '/subjects-materials/math/detail/1',
-        subjectName: 'Математика'
-    },
-    {
-        id: '2',
-        title: 'Физика бойынша тест',
-        description: 'Механика бөлімі бойынша тест тапсырмалары',
-        type: 'test',
-        thumbnail: '',
-        savedAt: '2024-01-14',
-        path: '/take-test?id=2',
-        subjectName: 'Физика'
-    },
-    {
-        id: '3',
-        title: 'Қазақ тілі КМЖ - 5 сынып',
-        description: 'Күнтізбелік-мазмұндық жоспар, 1-тоқсан',
-        type: 'kmzh',
-        thumbnail: '',
-        savedAt: '2024-01-13',
-        path: '/kmzh',
-        subjectName: 'Қазақ тілі'
-    },
-    {
-        id: '4',
-        title: 'Химия: Периодтық кесте',
-        description: 'Менделеев кестесі және элементтер қасиеттері',
-        type: 'card',
-        thumbnail: '',
-        savedAt: '2024-01-12',
-        path: '/subjects-materials/chemistry/detail/4',
-        subjectName: 'Химия'
-    },
-    {
-        id: '5',
-        title: 'Биология тесті',
-        description: 'Жасуша құрылысы бойынша тест',
-        type: 'test',
-        thumbnail: '',
-        savedAt: '2024-01-11',
-        path: '/take-test?id=5',
-        subjectName: 'Биология'
-    },
-    {
-        id: '6',
-        title: 'Ағылшын тілі КМЖ - 7 сынып',
-        description: 'Күнтізбелік жоспар, 2-тоқсан',
-        type: 'kmzh',
-        thumbnail: '',
-        savedAt: '2024-01-10',
-        path: '/kmzh',
-        subjectName: 'Ағылшын тілі'
-    },
-    {
-        id: '7',
-        title: 'География: Материктер',
-        description: 'Материктер мен мұхиттар туралы ақпарат',
-        type: 'card',
-        thumbnail: '',
-        savedAt: '2024-01-09',
-        path: '/subjects-materials/geography/detail/7',
-        subjectName: 'География'
-    },
-    {
-        id: '8',
-        title: 'Тарих тесті',
-        description: 'Қазақстан тарихы бойынша тест',
-        type: 'test',
-        thumbnail: '',
-        savedAt: '2024-01-08',
-        path: '/take-test?id=8',
-        subjectName: 'Тарих'
-    },
-    {
-        id: '9',
-        title: 'Информатика карточкасы',
-        description: 'Алгоритмдер және программалау негіздері',
-        type: 'card',
-        thumbnail: '',
-        savedAt: '2024-01-07',
-        path: '/subjects-materials/informatics/detail/9',
-        subjectName: 'Информатика'
-    },
-    {
-        id: '10',
-        title: 'Математика КМЖ - 6 сынып',
-        description: 'Күнтізбелік жоспар, 3-тоқсан',
-        type: 'kmzh',
-        thumbnail: '',
-        savedAt: '2024-01-06',
-        path: '/kmzh',
-        subjectName: 'Математика'
-    },
-    {
-        id: '11',
-        title: 'Физика презентациясы',
-        description: 'Электр тогы туралы презентация',
-        type: 'presentation',
-        thumbnail: '',
-        savedAt: '2024-01-05',
-        path: '/subject-presentation-detail?id=11',
-        subjectName: 'Физика'
-    }
-];
-
-const mockStats: UserStats = {
-    savedMaterials: 24,
-    completedTests: 12,
-    viewedCards: 48
-};
-
-const filterTypes: MaterialType[] = ['all', 'card', 'test', 'kmzh', 'presentation'];
+const windowIdToBadge: Record<number, string> = {
+	1: 'Жасанды интеллект',
+	2: 'Онлайн тақта',
+	3: 'Квиз ойын',
+	4: 'Дидактикалық ойын',
+	6: 'Ойын платформа',
+	7: 'Презентация',
+	8: 'Презентация',
+	9: 'Презентация',
+	10: 'Презентация',
+	11: 'Жұмыс парағы',
+	12: 'Көрнекілік',
+	13: 'Олимпиада',
+	14: 'Мат. сауаттылық',
+	15: 'Электронды оқулық',
+	16: 'Desmos ойын',
+	17: 'Анимация',
+	18: 'Тест',
+	19: 'ҚМЖ',
+	20: 'Электронды журнал',
+	21: 'Progress Arena',
+	22: 'Python',
+	23: 'Тақырыптық тапсырма',
+	24: 'Олимпиада есеп',
+	25: 'AI chat',
+	26: 'AI animation'
+}
 
 export const ProfilePage = () => {
-    const { user } = useAuthStore();
-    const [searchQuery, setSearchQuery] = useState('');
-    const [activeFilter, setActiveFilter] = useState<MaterialType>('all');
-    const [currentPage, setCurrentPage] = useState(1);
+	const { user } = useAuthStore()
+	const [searchQuery, setSearchQuery] = useState('')
+	const [currentPage, setCurrentPage] = useState(1)
+	const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+	const [cardToDelete, setCardToDelete] = useState<number | null>(null)
 
-    const filteredMaterials = useMemo(() => {
-        let result = mockMaterials;
+	const {
+		favoriteIds,
+		isFavorite,
+		toggleFavorite: toggleFavoriteLocal
+	} = useFavoritesStore()
+	const { mutate: toggleFavoriteApi } = useToggleFavorite()
+	const { mutate: deleteCard, isPending: isDeleting } = useDeleteCard()
 
-        if (activeFilter !== 'all') {
-            result = result.filter(m => m.type === activeFilter);
-        }
+	const favoriteIdsArray = useMemo(() => Array.from(favoriteIds), [favoriteIds])
 
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            result = result.filter(
-                m =>
-                    m.title.toLowerCase().includes(query) ||
-                    m.description?.toLowerCase().includes(query) ||
-                    m.subjectName?.toLowerCase().includes(query)
-            );
-        }
+	const { data: allCards = [], isLoading } = useCards(
+		favoriteIdsArray.length > 0 ? { limit: 1000 } : undefined
+	)
 
-        return result;
-    }, [activeFilter, searchQuery]);
+	const favoriteCards = useMemo(() => {
+		return allCards.filter(card => favoriteIds.has(card.id))
+	}, [allCards, favoriteIds])
 
-    const totalPages = Math.ceil(filteredMaterials.length / ITEMS_PER_PAGE);
-    const paginatedMaterials = filteredMaterials.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
-    );
+	const filteredCards = useMemo(() => {
+		if (!searchQuery.trim()) return favoriteCards
 
-    const handleFilterChange = (filter: MaterialType) => {
-        setActiveFilter(filter);
-        setCurrentPage(1);
-    };
+		const query = searchQuery.toLowerCase()
+		return favoriteCards.filter(
+			card =>
+				card.name.toLowerCase().includes(query) ||
+				card.description?.toLowerCase().includes(query) ||
+				card.topic?.topic?.toLowerCase().includes(query)
+		)
+	}, [favoriteCards, searchQuery])
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value);
-        setCurrentPage(1);
-    };
+	const totalPages = Math.ceil(filteredCards.length / ITEMS_PER_PAGE)
+	const paginatedCards = filteredCards.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
+	)
 
-    return (
-        <main className={s.profilePage}>
-            <Container>
-                <div className={s.header}>
-                    <div className={s.userInfo}>
-                        <div className={s.avatar}>
-                            {user?.name?.charAt(0).toUpperCase() || 'U'}
-                        </div>
-                        <div className={s.userDetails}>
-                            <h1 className={s.userName}>
-                                {user?.name || 'Пайдаланушы'}
-                            </h1>
-                            <p className={s.userPhone}>
-                                {user?.phoneNumber || ''}
-                            </p>
-                        </div>
-                    </div>
-                    <Link to="/profile-settings">
-                        <Button
-                            variant="outline"
-                            className={s.settingsButton}>
-                            <Settings size={18} />
-                            Баптаулар
-                        </Button>
-                    </Link>
-                </div>
+	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchQuery(e.target.value)
+		setCurrentPage(1)
+	}
 
-                <div className={s.stats}>
-                    <div className={s.statCard}>
-                        <div className={s.statIcon}>
-                            <BookMarked size={24} />
-                        </div>
-                        <div className={s.statInfo}>
-                            <span className={s.statValue}>
-                                {mockStats.savedMaterials}
-                            </span>
-                            <span className={s.statLabel}>
-                                Сақталған материалдар
-                            </span>
-                        </div>
-                    </div>
-                    <div className={s.statCard}>
-                        <div className={s.statIcon}>
-                            <CheckCircle size={24} />
-                        </div>
-                        <div className={s.statInfo}>
-                            <span className={s.statValue}>
-                                {mockStats.completedTests}
-                            </span>
-                            <span className={s.statLabel}>Өтілген тесттер</span>
-                        </div>
-                    </div>
-                    <div className={s.statCard}>
-                        <div className={s.statIcon}>
-                            <Eye size={24} />
-                        </div>
-                        <div className={s.statInfo}>
-                            <span className={s.statValue}>
-                                {mockStats.viewedCards}
-                            </span>
-                            <span className={s.statLabel}>
-                                Қаралған карточкалар
-                            </span>
-                        </div>
-                    </div>
-                </div>
+	const handleFavoriteToggle = (id: number) => {
+		const isNowFavorite = toggleFavoriteLocal(id)
 
-                <section className={s.materialsSection}>
-                    <h2 className={s.sectionTitle}>Сақталған материалдар</h2>
+		toggleFavoriteApi(id, {
+			onSuccess: () => {
+				toast.success(
+					isNowFavorite ? 'Таңдаулыға қосылды' : 'Таңдаулыдан алынды'
+				)
+			},
+			onError: () => {
+				toggleFavoriteLocal(id)
+				toast.error('Қате орын алды')
+			}
+		})
+	}
 
-                    <div className={s.controls}>
-                        <SearchInput
-                            placeholder="Материалдарды іздеу..."
-                            value={searchQuery}
-                            onChange={handleSearch}
-                            className={s.searchInput}
-                        />
+	const handleDeleteClick = (id: number) => {
+		setCardToDelete(id)
+		setDeleteModalOpen(true)
+	}
 
-                        <div className={s.filters}>
-                            {filterTypes.map(type => (
-                                <button
-                                    key={type}
-                                    className={`${s.filterButton} ${
-                                        activeFilter === type ? s.active : ''
-                                    }`}
-                                    onClick={() => handleFilterChange(type)}>
-                                    {materialTypeLabels[type]}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+	const handleDeleteConfirm = () => {
+		if (cardToDelete === null) return
 
-                    {paginatedMaterials.length > 0 ? (
-                        <>
-                            <div className={s.materialsGrid}>
-                                {paginatedMaterials.map(material => (
-                                    <MaterialCard
-                                        key={material.id}
-                                        material={material}
-                                    />
-                                ))}
-                            </div>
+		deleteCard(cardToDelete, {
+			onSuccess: () => {
+				toast.success('Карточка сәтті жойылды')
+				setDeleteModalOpen(false)
+				setCardToDelete(null)
+				if (isFavorite(cardToDelete)) {
+					toggleFavoriteLocal(cardToDelete)
+				}
+			},
+			onError: () => {
+				toast.error('Карточканы жою кезінде қате орын алды')
+			}
+		})
+	}
 
-                            {totalPages > 1 && (
-                                <div className={s.pagination}>
-                                    <button
-                                        className={s.paginationButton}
-                                        onClick={() =>
-                                            setCurrentPage(p =>
-                                                Math.max(1, p - 1)
-                                            )
-                                        }
-                                        disabled={currentPage === 1}>
-                                        <ChevronLeft size={18} />
-                                    </button>
+	const handleDeleteCancel = () => {
+		setDeleteModalOpen(false)
+		setCardToDelete(null)
+	}
 
-                                    <div className={s.paginationNumbers}>
-                                        {Array.from(
-                                            { length: totalPages },
-                                            (_, i) => i + 1
-                                        ).map(page => (
-                                            <button
-                                                key={page}
-                                                className={`${s.pageNumber} ${
-                                                    currentPage === page
-                                                        ? s.active
-                                                        : ''
-                                                }`}
-                                                onClick={() =>
-                                                    setCurrentPage(page)
-                                                }>
-                                                {page}
-                                            </button>
-                                        ))}
-                                    </div>
+	return (
+		<main className={s.profilePage}>
+			<Container>
+				<div className={s.header}>
+					<div className={s.userInfo}>
+						<div className={s.avatar}>
+							{user?.name?.charAt(0).toUpperCase() || 'U'}
+						</div>
+						<div className={s.userDetails}>
+							<h1 className={s.userName}>{user?.name || 'Пайдаланушы'}</h1>
+							<p className={s.userPhone}>{user?.phoneNumber || ''}</p>
+						</div>
+					</div>
+					<Link to="/profile-settings">
+						<Button
+							variant="outline"
+							className={s.settingsButton}
+						>
+							<Settings size={18} />
+							Баптаулар
+						</Button>
+					</Link>
+				</div>
 
-                                    <button
-                                        className={s.paginationButton}
-                                        onClick={() =>
-                                            setCurrentPage(p =>
-                                                Math.min(totalPages, p + 1)
-                                            )
-                                        }
-                                        disabled={currentPage === totalPages}>
-                                        <ChevronRight size={18} />
-                                    </button>
-                                </div>
-                            )}
-                        </>
-                    ) : (
-                        <div className={s.emptyState}>
-                            <BookMarked
-                                size={48}
-                                strokeWidth={1.5}
-                            />
-                            <p>Материалдар табылмады</p>
-                        </div>
-                    )}
-                </section>
-            </Container>
-        </main>
-    );
-};
+				<div className={s.stats}>
+					<div className={s.statCard}>
+						<div className={s.statIcon}>
+							<BookMarked size={24} />
+						</div>
+						<div className={s.statInfo}>
+							<span className={s.statValue}>{favoriteIdsArray.length}</span>
+							<span className={s.statLabel}>Сақталған материалдар</span>
+						</div>
+					</div>
+					<div className={s.statCard}>
+						<div className={s.statIcon}>
+							<CheckCircle size={24} />
+						</div>
+						<div className={s.statInfo}>
+							<span className={s.statValue}>0</span>
+							<span className={s.statLabel}>Өтілген тесттер</span>
+						</div>
+					</div>
+					<div className={s.statCard}>
+						<div className={s.statIcon}>
+							<Eye size={24} />
+						</div>
+						<div className={s.statInfo}>
+							<span className={s.statValue}>0</span>
+							<span className={s.statLabel}>Қаралған карточкалар</span>
+						</div>
+					</div>
+				</div>
 
-export default ProfilePage;
+				<section className={s.materialsSection}>
+					<h2 className={s.sectionTitle}>Таңдаулы материалдар</h2>
+
+					<div className={s.controls}>
+						<SearchInput
+							placeholder="Материалдарды іздеу..."
+							value={searchQuery}
+							onChange={handleSearch}
+							className={s.searchInput}
+						/>
+					</div>
+
+					{isLoading ? (
+						<Loader />
+					) : paginatedCards.length > 0 ? (
+						<>
+							<div className={s.materialsGrid}>
+								{paginatedCards.map(card => (
+									<MaterialCard
+										key={card.id}
+										id={card.id}
+										title={card.name}
+										description={
+											card.description ||
+											`${card.topic?.topic || 'Материал'}${card.grade ? ` • ${card.grade}-сынып` : ''}`
+										}
+										thumbnail={card.img1_url}
+										path={`/subjects-materials/${card.subject_card || 'all'}/detail/${card.id}`}
+										templateName={
+											card.window_id
+												? windowIdToBadge[card.window_id] || 'Карточка'
+												: 'Карточка'
+										}
+										isFavorite={isFavorite(card.id)}
+										showDelete={user?.id === card.author?.id}
+										onFavoriteToggle={handleFavoriteToggle}
+										onDelete={handleDeleteClick}
+									/>
+								))}
+							</div>
+
+							{totalPages > 1 && (
+								<div className={s.pagination}>
+									<button
+										className={s.paginationButton}
+										onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+										disabled={currentPage === 1}
+									>
+										<ChevronLeft size={18} />
+									</button>
+
+									<div className={s.paginationNumbers}>
+										{Array.from({ length: totalPages }, (_, i) => i + 1).map(
+											page => (
+												<button
+													key={page}
+													className={`${s.pageNumber} ${
+														currentPage === page ? s.active : ''
+													}`}
+													onClick={() => setCurrentPage(page)}
+												>
+													{page}
+												</button>
+											)
+										)}
+									</div>
+
+									<button
+										className={s.paginationButton}
+										onClick={() =>
+											setCurrentPage(p => Math.min(totalPages, p + 1))
+										}
+										disabled={currentPage === totalPages}
+									>
+										<ChevronRight size={18} />
+									</button>
+								</div>
+							)}
+						</>
+					) : (
+						<div className={s.emptyState}>
+							<BookMarked
+								size={48}
+								strokeWidth={1.5}
+							/>
+							<p>
+								{favoriteIdsArray.length === 0
+									? 'Таңдаулы материалдар жоқ'
+									: 'Материалдар табылмады'}
+							</p>
+						</div>
+					)}
+				</section>
+			</Container>
+
+			<ConfirmModal
+				open={deleteModalOpen}
+				onClose={handleDeleteCancel}
+				onConfirm={handleDeleteConfirm}
+				title="Карточканы жою"
+				message="Карточканы жоюға сенімдісіз бе? Бұл әрекетті қайтару мүмкін емес."
+				confirmText="Жою"
+				cancelText="Бас тарту"
+				variant="danger"
+				loading={isDeleting}
+			/>
+		</main>
+	)
+}
+
+export default ProfilePage

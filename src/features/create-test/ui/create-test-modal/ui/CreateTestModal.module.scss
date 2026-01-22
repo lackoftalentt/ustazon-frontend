@@ -2,779 +2,840 @@
 
 // ===== Header =====
 .header {
-    display: flex;
-    align-items: center;
-    gap: $spacing-lg;
-    padding-bottom: $spacing-xl;
-    margin-bottom: $spacing-lg;
-    border-bottom: 1px solid $color-gray-border;
+	display: flex;
+	align-items: center;
+	gap: $spacing-lg;
+	padding-bottom: $spacing-xl;
+	margin-bottom: $spacing-lg;
+	border-bottom: 1px solid $color-gray-border;
 }
 
 .headerIcon {
-    width: 64px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba($color-green-primary, 0.1) 0%, rgba($color-green-primary, 0.2) 100%);
-    border-radius: $radius-lg;
-    color: $color-green-primary;
-    flex-shrink: 0;
+	width: 64px;
+	height: 64px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(
+		135deg,
+		rgba($color-green-primary, 0.1) 0%,
+		rgba($color-green-primary, 0.2) 100%
+	);
+	border-radius: $radius-lg;
+	color: $color-green-primary;
+	flex-shrink: 0;
 }
 
 .headerContent {
-    flex: 1;
+	flex: 1;
 }
 
 .headerTitle {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $color-gray-dark;
-    margin: 0 0 $spacing-xs;
+	font-size: $font-size-xl;
+	font-weight: $font-weight-bold;
+	color: $color-gray-dark;
+	margin: 0 0 $spacing-xs;
 }
 
 .headerSubtitle {
-    font-size: $font-size-base;
-    color: $color-gray-medium;
-    margin: 0;
-    line-height: 1.5;
+	font-size: $font-size-base;
+	color: $color-gray-medium;
+	margin: 0;
+	line-height: 1.5;
 }
 
 .headerLogo {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    flex-shrink: 0;
+	width: 48px;
+	height: 48px;
+	object-fit: contain;
+	flex-shrink: 0;
 }
 
 // ===== Form =====
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xl;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xl;
 }
 
 // ===== Row =====
 .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: $spacing-xl;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: $spacing-xl;
 
-    @media (max-width: 600px) {
-        grid-template-columns: 1fr;
-    }
+	@media (max-width: 600px) {
+		grid-template-columns: 1fr;
+	}
 }
 
 // ===== Field =====
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-sm;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-sm;
 }
 
 .label {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-dark;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	font-size: $font-size-base;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
 
-    svg {
-        color: $color-green-primary;
-        flex-shrink: 0;
-    }
+	svg {
+		color: $color-green-primary;
+		flex-shrink: 0;
+	}
 }
 
 .hint {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
-    line-height: 1.5;
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
+	line-height: 1.5;
 }
 
 .error {
-    font-size: $font-size-sm;
-    color: $color-red-error;
-    display: flex;
-    align-items: center;
-    gap: $spacing-xs;
+	font-size: $font-size-sm;
+	color: $color-red-error;
+	display: flex;
+	align-items: center;
+	gap: $spacing-xs;
 }
 
 // ===== Duration Input =====
 .durationInput {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    width: fit-content;
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-lg;
-    overflow: hidden;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	display: flex;
+	align-items: center;
+	gap: 0;
+	width: fit-content;
+	border: 2px solid $color-gray-border;
+	border-radius: $radius-lg;
+	overflow: hidden;
+	background: white;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .durationBtn {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background: $color-gray-light;
-    color: $color-gray-dark;
-    font-size: $font-size-xl;
-    font-weight: $font-weight-medium;
-    cursor: pointer;
-    transition: all 0.2s ease;
+	width: 48px;
+	height: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	background: $color-gray-light;
+	color: $color-gray-dark;
+	font-size: $font-size-xl;
+	font-weight: $font-weight-medium;
+	cursor: pointer;
+	transition: all 0.2s ease;
 
-    &:hover {
-        background: $color-green-lightest;
-        color: $color-green-primary;
-    }
+	&:hover {
+		background: $color-green-lightest;
+		color: $color-green-primary;
+	}
 
-    &:active {
-        background: rgba($color-green-primary, 0.2);
-    }
+	&:active {
+		background: rgba($color-green-primary, 0.2);
+	}
 }
 
 .durationValue {
-    width: 100px;
-    height: 48px;
-    border: none;
-    text-align: center;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-dark;
-    background: white;
+	width: 100px;
+	height: 48px;
+	border: none;
+	text-align: center;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+	background: white;
 
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
 
-    -moz-appearance: textfield;
+	-moz-appearance: textfield;
 
-    &:focus {
-        outline: none;
-    }
+	&:focus {
+		outline: none;
+	}
 }
 
 // ===== Difficulty Selector =====
 .difficultyOptions {
-    display: flex;
-    gap: $spacing-md;
+	display: flex;
+	gap: $spacing-md;
 }
 
 .difficultyOption {
-    flex: 1;
-    padding: $spacing-lg $spacing-md;
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-lg;
-    background: white;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+	flex: 1;
+	padding: $spacing-lg $spacing-md;
+	border: 2px solid $color-gray-border;
+	border-radius: $radius-lg;
+	background: white;
+	cursor: pointer;
+	transition: all 0.25s ease;
+	text-align: center;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
-    &:hover {
-        border-color: rgba($color-green-primary, 0.5);
-        background: rgba($color-green-primary, 0.02);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba($color-green-primary, 0.1);
-    }
+	&:hover {
+		border-color: rgba($color-green-primary, 0.5);
+		background: rgba($color-green-primary, 0.02);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba($color-green-primary, 0.1);
+	}
 
-    &.selected {
-        border-color: $color-green-primary;
-        background: linear-gradient(135deg, rgba($color-green-primary, 0.05) 0%, rgba($color-green-primary, 0.1) 100%);
-        box-shadow: 0 4px 16px rgba($color-green-primary, 0.15);
+	&.selected {
+		border-color: $color-green-primary;
+		background: linear-gradient(
+			135deg,
+			rgba($color-green-primary, 0.05) 0%,
+			rgba($color-green-primary, 0.1) 100%
+		);
+		box-shadow: 0 4px 16px rgba($color-green-primary, 0.15);
 
-        span {
-            color: $color-green-primary;
-        }
-    }
+		span {
+			color: $color-green-primary;
+		}
+	}
 
-    span {
-        font-size: $font-size-base;
-        font-weight: $font-weight-semibold;
-        color: $color-gray-dark;
-    }
+	span {
+		font-size: $font-size-base;
+		font-weight: $font-weight-semibold;
+		color: $color-gray-dark;
+	}
 }
 
 // ===== Questions Section =====
 .questionsSection {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-lg;
-    padding: $spacing-xl;
-    background: linear-gradient(135deg, rgba($color-gray-light, 0.5) 0%, rgba($color-gray-light, 0.8) 100%);
-    border-radius: $radius-xl;
-    border: 1px solid rgba($color-gray-border, 0.5);
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-lg;
+	padding: $spacing-xl;
+	background: linear-gradient(
+		135deg,
+		rgba($color-gray-light, 0.5) 0%,
+		rgba($color-gray-light, 0.8) 100%
+	);
+	border-radius: $radius-xl;
+	border: 1px solid rgba($color-gray-border, 0.5);
 }
 
 .sectionHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: $spacing-md;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $spacing-md;
 }
 
 .sectionTitle {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-bold;
-    color: $color-gray-dark;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-bold;
+	color: $color-gray-dark;
 
-    svg {
-        color: $color-green-primary;
-    }
+	svg {
+		color: $color-green-primary;
+	}
 }
 
 .addQuestionBtn {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    padding: $spacing-md $spacing-lg;
-    border: 2px dashed $color-green-primary;
-    border-radius: $radius-lg;
-    background: white;
-    color: $color-green-primary;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    cursor: pointer;
-    transition: all 0.25s ease;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: $spacing-md $spacing-lg;
+	border: 2px dashed $color-green-primary;
+	border-radius: $radius-lg;
+	background: white;
+	color: $color-green-primary;
+	font-size: $font-size-base;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	transition: all 0.25s ease;
 
-    &:hover {
-        background: $color-green-primary;
-        color: white;
-        border-style: solid;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
-    }
+	&:hover {
+		background: $color-green-primary;
+		color: white;
+		border-style: solid;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
+	}
 }
 
 // ===== Question Pagination =====
 .questionPagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-sm;
-    padding: $spacing-md 0;
-    flex-wrap: wrap;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-sm;
+	padding: $spacing-md 0;
+	flex-wrap: wrap;
 }
 
 .questionPageBtn {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-lg;
-    background: white;
-    color: $color-gray-dark;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    cursor: pointer;
-    transition: all 0.2s ease;
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid $color-gray-border;
+	border-radius: $radius-lg;
+	background: white;
+	color: $color-gray-dark;
+	font-size: $font-size-base;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	transition: all 0.2s ease;
 
-    &:hover:not(.active):not(:disabled) {
-        border-color: $color-green-primary;
-        color: $color-green-primary;
-        transform: translateY(-2px);
-    }
+	&:hover:not(.active):not(:disabled) {
+		border-color: $color-green-primary;
+		color: $color-green-primary;
+		transform: translateY(-2px);
+	}
 
-    &.active {
-        background: $color-green-primary;
-        border-color: $color-green-primary;
-        color: white;
-        box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
-    }
+	&.active {
+		background: $color-green-primary;
+		border-color: $color-green-primary;
+		color: white;
+		box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
+	}
 
-    &.hasError {
-        border-color: $color-red-error;
-        color: $color-red-error;
+	&.hasError {
+		border-color: $color-red-error;
+		color: $color-red-error;
 
-        &.active {
-            background: $color-red-error;
-            color: white;
-        }
-    }
+		&.active {
+			background: $color-red-error;
+			color: white;
+		}
+	}
 
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
 }
 
 .paginationNav {
-    display: flex;
-    align-items: center;
-    gap: $spacing-xs;
+	display: flex;
+	align-items: center;
+	gap: $spacing-xs;
 }
 
 .paginationArrow {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: $radius-md;
-    background: transparent;
-    color: $color-gray-medium;
-    cursor: pointer;
-    transition: all 0.2s ease;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: $radius-md;
+	background: transparent;
+	color: $color-gray-medium;
+	cursor: pointer;
+	transition: all 0.2s ease;
 
-    &:hover:not(:disabled) {
-        background: $color-gray-light;
-        color: $color-green-primary;
-    }
+	&:hover:not(:disabled) {
+		background: $color-gray-light;
+		color: $color-green-primary;
+	}
 
-    &:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-    }
+	&:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+	}
 }
 
 // ===== Question Card =====
 .questionCard {
-    padding: $spacing-xl;
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-xl;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xl;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    animation: slideIn 0.3s ease;
+	padding: $spacing-xl;
+	border: 2px solid $color-gray-border;
+	border-radius: $radius-xl;
+	background: white;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xl;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+	animation: slideIn 0.3s ease;
 }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+	from {
+		opacity: 0;
+		transform: translateX(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 .questionHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: $spacing-md;
-    padding-bottom: $spacing-lg;
-    border-bottom: 1px solid $color-gray-border;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $spacing-md;
+	padding-bottom: $spacing-lg;
+	border-bottom: 1px solid $color-gray-border;
 }
 
 .questionNumber {
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    font-size: $font-size-lg;
-    font-weight: $font-weight-bold;
-    color: $color-gray-dark;
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-bold;
+	color: $color-gray-dark;
 
-    .badge {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, $color-green-primary 0%, $color-green-dark 100%);
-        color: white;
-        border-radius: $radius-full;
-        font-size: $font-size-base;
-        font-weight: $font-weight-bold;
-        box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
-    }
+	.badge {
+		width: 36px;
+		height: 36px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(
+			135deg,
+			$color-green-primary 0%,
+			$color-green-dark 100%
+		);
+		color: white;
+		border-radius: $radius-full;
+		font-size: $font-size-base;
+		font-weight: $font-weight-bold;
+		box-shadow: 0 4px 12px rgba($color-green-primary, 0.3);
+	}
 }
 
 .removeQuestionBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: $radius-lg;
-    background: transparent;
-    color: $color-gray-medium;
-    cursor: pointer;
-    transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border: none;
+	border-radius: $radius-lg;
+	background: transparent;
+	color: $color-gray-medium;
+	cursor: pointer;
+	transition: all 0.2s ease;
 
-    &:hover {
-        background: rgba($color-red-error, 0.1);
-        color: $color-red-error;
-    }
+	&:hover {
+		background: rgba($color-red-error, 0.1);
+		color: $color-red-error;
+	}
 
-    &:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-    }
+	&:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+	}
 }
 
 // ===== Textarea =====
 .textarea {
-    width: 100%;
-    padding: $spacing-lg;
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-lg;
-    font-size: $font-size-base;
-    font-family: inherit;
-    line-height: 1.6;
-    resize: vertical;
-    min-height: 100px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	width: 100%;
+	padding: $spacing-lg;
+	border: 2px solid $color-gray-border;
+	border-radius: $radius-lg;
+	font-size: $font-size-base;
+	font-family: inherit;
+	line-height: 1.6;
+	resize: vertical;
+	min-height: 100px;
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
 
-    &:focus {
-        outline: none;
-        border-color: $color-green-primary;
-        box-shadow: 0 0 0 4px rgba($color-green-primary, 0.1);
-    }
+	&:focus {
+		outline: none;
+		border-color: $color-green-primary;
+		box-shadow: 0 0 0 4px rgba($color-green-primary, 0.1);
+	}
 
-    &::placeholder {
-        color: $color-gray-medium;
-    }
+	&::placeholder {
+		color: $color-gray-medium;
+	}
 }
 
 .textareaError {
-    border-color: $color-red-error;
+	border-color: $color-red-error;
 
-    &:focus {
-        box-shadow: 0 0 0 4px rgba($color-red-error, 0.1);
-    }
+	&:focus {
+		box-shadow: 0 0 0 4px rgba($color-red-error, 0.1);
+	}
 }
 
 // ===== Image Dropzone =====
-.hiddenInput {
-    display: none;
+.fileUpload {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
 }
 
-@keyframes dropzonePulse {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba($color-green-primary, 0);
-    }
-    50% {
-        box-shadow: 0 0 0 6px rgba($color-green-primary, 0.1);
-    }
+.fileDropzone {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-lg;
+	padding: $spacing-3xl $spacing-2xl;
+	border: 2px dashed rgba($color-gray-medium, 0.3);
+	border-radius: $radius-lg;
+	background: linear-gradient(180deg, #fafbfc 0%, #f5f6f7 100%);
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(
+			circle at center,
+			rgba($color-green-primary, 0) 0%,
+			rgba($color-green-primary, 0) 100%
+		);
+		transition: all 0.3s ease;
+	}
+
+	&:hover {
+		border-color: $color-green-primary;
+		background: linear-gradient(
+			180deg,
+			rgba($color-green-primary, 0.02) 0%,
+			rgba($color-green-primary, 0.06) 100%
+		);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba($color-green-primary, 0.1);
+
+		.fileIcon {
+			color: $color-green-primary;
+			transform: translateY(-4px);
+		}
+
+		.fileTitle {
+			color: $color-green-dark;
+		}
+	}
+
+	&.dragOver {
+		border-color: $color-green-primary;
+		border-style: solid;
+		background: linear-gradient(
+			180deg,
+			rgba($color-green-primary, 0.06) 0%,
+			rgba($color-green-primary, 0.1) 100%
+		);
+		transform: scale(1.02);
+		box-shadow:
+			0 12px 32px rgba($color-green-primary, 0.15),
+			inset 0 0 0 2px rgba($color-green-primary, 0.1);
+
+		&::before {
+			background: radial-gradient(
+				circle at center,
+				rgba($color-green-primary, 0.1) 0%,
+				rgba($color-green-primary, 0) 70%
+			);
+		}
+
+		.fileIcon {
+			color: $color-green-primary;
+			transform: translateY(-8px) scale(1.15);
+		}
+	}
+
+	&.hasError {
+		border-color: $color-red-error;
+		background: rgba($color-red-error, 0.03);
+	}
 }
 
-.imageDropzone {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-md;
-    padding: $spacing-xl;
-    border: 2px dashed rgba($color-gray-medium, 0.3);
-    border-radius: $radius-lg;
-    background: white;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: $color-gray-medium;
-
-    svg {
-        transition: all 0.3s ease;
-    }
-
-    &:hover {
-        border-color: $color-green-primary;
-        background: rgba($color-green-primary, 0.02);
-
-        svg {
-            color: $color-green-primary;
-            transform: translateY(-2px);
-        }
-    }
-
-    &.dragOver {
-        border-color: $color-green-primary;
-        border-style: solid;
-        background: rgba($color-green-primary, 0.05);
-        animation: dropzonePulse 1.5s ease-in-out infinite;
-
-        svg {
-            color: $color-green-primary;
-            transform: translateY(-4px) scale(1.1);
-        }
-    }
+.fileIcon {
+	width: 52px;
+	height: 52px;
+	color: $color-gray-medium;
+	transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-.dropzoneText {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $spacing-xs;
-    text-align: center;
+.fileText {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xs;
 }
 
-.dropzoneTitle {
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-    color: $color-gray-dark;
+.fileTitle {
+	font-size: $font-size-base;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
+	transition: color 0.2s ease;
 }
 
-.dropzoneHint {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
+.fileHint {
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
 }
 
-.imagePreviewCard {
-    display: flex;
-    align-items: center;
-    gap: $spacing-lg;
-    padding: $spacing-md $spacing-lg;
-    background: linear-gradient(135deg, rgba($color-green-primary, 0.04) 0%, rgba($color-green-primary, 0.08) 100%);
-    border: 1px solid rgba($color-green-primary, 0.15);
-    border-radius: $radius-lg;
-    animation: fileItemIn 0.25s ease backwards;
-    transition: all 0.2s ease;
-
-    &:hover {
-        border-color: rgba($color-green-primary, 0.3);
-    }
+.fileSelected {
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-md $spacing-lg;
+	background: linear-gradient(
+		135deg,
+		$color-green-lightest 0%,
+		rgba($color-green-primary, 0.15) 100%
+	);
+	border: 1px solid rgba($color-green-primary, 0.25);
+	border-radius: $radius-lg;
+	box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
+	animation: fileSelectedIn 0.3s ease;
 }
 
-@keyframes fileItemIn {
-    from {
-        opacity: 0;
-        transform: translateX(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+@keyframes fileSelectedIn {
+	from {
+		opacity: 0;
+		transform: translateY(-8px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
 }
 
-.imagePreviewThumb {
-    width: 64px;
-    height: 64px;
-    border-radius: $radius-md;
-    object-fit: cover;
-    border: 1px solid rgba($color-green-primary, 0.2);
-    flex-shrink: 0;
+.fileSelectedIcon {
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: white;
+	border-radius: $radius-md;
+	color: $color-green-primary;
+	box-shadow:
+		0 2px 8px rgba(0, 0, 0, 0.06),
+		0 4px 16px rgba($color-green-primary, 0.1);
 }
 
-.imagePreviewInfo {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+.fileName {
+	flex: 1;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
-.imagePreviewName {
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-    color: $color-gray-dark;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+.fileRemove {
+	width: 34px;
+	height: 34px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: $radius-sm;
+	background: rgba(255, 255, 255, 0.9);
+	color: $color-gray-medium;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
-.imagePreviewSize {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
-}
+	&:hover {
+		background: white;
+		color: $color-red-error;
+		transform: scale(1.08);
+		box-shadow: 0 2px 8px rgba($color-red-error, 0.2);
+	}
 
-.imageRemoveBtn {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: $radius-md;
-    background: transparent;
-    color: $color-gray-medium;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-
-    &:hover {
-        background: rgba($color-red-error, 0.1);
-        color: $color-red-error;
-    }
+	&:active {
+		transform: scale(0.95);
+	}
 }
 
 // ===== Answers Section =====
 .answersSection {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-lg;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-lg;
 }
 
 .answersHeader {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-    color: $color-gray-dark;
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	font-size: $font-size-base;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
 }
 
 .answersHint {
-    font-size: $font-size-sm;
-    color: $color-gray-medium;
-    font-weight: $font-weight-normal;
-    padding: $spacing-xs $spacing-sm;
-    background: rgba($color-green-primary, 0.1);
-    border-radius: $radius-sm;
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
+	font-weight: $font-weight-normal;
+	padding: $spacing-xs $spacing-sm;
+	background: rgba($color-green-primary, 0.1);
+	border-radius: $radius-sm;
 }
 
 .answersList {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
 }
 
 .answerItem {
-    display: flex;
-    align-items: center;
-    gap: $spacing-lg;
-    padding: $spacing-md $spacing-lg;
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-lg;
-    transition: all 0.2s ease;
-    background: white;
+	display: flex;
+	align-items: center;
+	gap: $spacing-lg;
+	padding: $spacing-md $spacing-lg;
+	border: 2px solid $color-gray-border;
+	border-radius: $radius-lg;
+	transition: all 0.2s ease;
+	background: white;
 
-    &:hover {
-        border-color: rgba($color-green-primary, 0.3);
-    }
+	&:hover {
+		border-color: rgba($color-green-primary, 0.3);
+	}
 
-    &.correct {
-        border-color: $color-green-primary;
-        background: linear-gradient(135deg, rgba($color-green-primary, 0.02) 0%, rgba($color-green-primary, 0.06) 100%);
-        box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
-    }
+	&.correct {
+		border-color: $color-green-primary;
+		background: linear-gradient(
+			135deg,
+			rgba($color-green-primary, 0.02) 0%,
+			rgba($color-green-primary, 0.06) 100%
+		);
+		box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
+	}
 }
 
 .answerRadio {
-    width: 24px;
-    height: 24px;
-    border: 2px solid $color-gray-border;
-    border-radius: $radius-full;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s ease;
+	width: 24px;
+	height: 24px;
+	border: 2px solid $color-gray-border;
+	border-radius: $radius-full;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	transition: all 0.2s ease;
 
-    &:hover {
-        border-color: $color-green-primary;
-        transform: scale(1.1);
-    }
+	&:hover {
+		border-color: $color-green-primary;
+		transform: scale(1.1);
+	}
 
-    &.selected {
-        border-color: $color-green-primary;
-        background: $color-green-primary;
-        box-shadow: 0 2px 8px rgba($color-green-primary, 0.3);
+	&.selected {
+		border-color: $color-green-primary;
+		background: $color-green-primary;
+		box-shadow: 0 2px 8px rgba($color-green-primary, 0.3);
 
-        &::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: $radius-full;
-        }
-    }
+		&::after {
+			content: '';
+			width: 10px;
+			height: 10px;
+			background: white;
+			border-radius: $radius-full;
+		}
+	}
 }
 
 .answerLabel {
-    font-size: $font-size-base;
-    font-weight: $font-weight-medium;
-    color: $color-gray-dark;
-    min-width: 90px;
+	font-size: $font-size-base;
+	font-weight: $font-weight-medium;
+	color: $color-gray-dark;
+	min-width: 90px;
 }
 
 .answerInput {
-    flex: 1;
-    padding: $spacing-sm;
-    border: none;
-    background: transparent;
-    font-size: $font-size-base;
-    font-family: inherit;
-    color: $color-gray-dark;
+	flex: 1;
+	padding: $spacing-sm;
+	border: none;
+	background: transparent;
+	font-size: $font-size-base;
+	font-family: inherit;
+	color: $color-gray-dark;
 
-    &:focus {
-        outline: none;
-    }
+	&:focus {
+		outline: none;
+	}
 
-    &::placeholder {
-        color: $color-gray-medium;
-    }
+	&::placeholder {
+		color: $color-gray-medium;
+	}
 }
 
 // ===== Actions =====
 .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: $spacing-md;
-    padding-top: $spacing-xl;
-    border-top: 1px solid $color-gray-border;
+	display: flex;
+	justify-content: flex-end;
+	gap: $spacing-md;
+	padding-top: $spacing-xl;
+	border-top: 1px solid $color-gray-border;
 }
 
 // ===== Responsive =====
 @media (max-width: 600px) {
-    .header {
-        flex-direction: column;
-        text-align: center;
-        gap: $spacing-md;
-    }
+	.header {
+		flex-direction: column;
+		text-align: center;
+		gap: $spacing-md;
+	}
 
-    .headerLogo {
-        display: none;
-    }
+	.headerLogo {
+		display: none;
+	}
 
-    .difficultyOptions {
-        flex-direction: column;
-        gap: $spacing-sm;
-    }
+	.difficultyOptions {
+		flex-direction: column;
+		gap: $spacing-sm;
+	}
 
-    .difficultyOption {
-        padding: $spacing-md;
-    }
+	.difficultyOption {
+		padding: $spacing-md;
+	}
 
-    .actions {
-        flex-direction: column-reverse;
+	.actions {
+		flex-direction: column-reverse;
 
-        button {
-            width: 100%;
-        }
-    }
+		button {
+			width: 100%;
+		}
+	}
 
-    .questionCard {
-        padding: $spacing-lg;
-    }
+	.questionCard {
+		padding: $spacing-lg;
+	}
 
-    .questionsSection {
-        padding: $spacing-lg;
-    }
+	.questionsSection {
+		padding: $spacing-lg;
+	}
 
-    .sectionHeader {
-        flex-direction: column;
-        align-items: stretch;
-        gap: $spacing-md;
-    }
+	.sectionHeader {
+		flex-direction: column;
+		align-items: stretch;
+		gap: $spacing-md;
+	}
 
-    .answerItem {
-        flex-wrap: wrap;
-        gap: $spacing-sm;
-    }
+	.answerItem {
+		flex-wrap: wrap;
+		gap: $spacing-sm;
+	}
 
-    .answerLabel {
-        min-width: auto;
-    }
+	.answerLabel {
+		min-width: auto;
+	}
 
-    .answerInput {
-        width: 100%;
-        order: 3;
-    }
+	.answerInput {
+		width: 100%;
+		order: 3;
+	}
 }

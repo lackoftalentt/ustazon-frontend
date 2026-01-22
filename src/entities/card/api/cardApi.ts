@@ -28,6 +28,7 @@ export interface CardListItem {
     author: CardAuthor;
     topic: CardTopic | null;
     window_id: number | null;
+    template_id: number | null;
 }
 
 export interface CardDetailResponse {
