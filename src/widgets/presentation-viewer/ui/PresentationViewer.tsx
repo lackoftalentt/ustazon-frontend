@@ -45,7 +45,7 @@ export const PresentationViewer = ({
 			return url
 		}
 		// Добавляем базовый URL API
-		const baseUrl = import.meta.env.VITE_API_URL || window.location.origin
+		const baseUrl = import.meta.env.URL || window.location.origin
 		return `${baseUrl}/${url.replace(/^\//, '')}`
 	}
 

@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { chatApi } from '../api/chatApi';
+import { aiApi } from '@/shared/api/ai';
+import { uploadApi } from '@/shared/api/uploadApi';
 import type { ChatAttachment } from '../api/types';
 import { useChatStore } from './useChatStore';
 
@@ -14,18 +15,23 @@ export const useSendMessage = () => {
             message: string;
             attachments?: ChatAttachment[];
         }) => {
-            const attachmentIds = attachments
-                ?.filter(a => a.id)
-                .map(a => a.id);
+            // Extract files from attachments
+            const files = attachments
+                ?.filter(a => a.file)
+                .map(a => a.file!);
 
-            return chatApi.sendMessage(message, attachmentIds);
+            return aiApi.sendMessage({
+                message,
+                files,
+                save_to_history: true
+            });
         },
         onMutate: ({ message, attachments }) => {
             addUserMessage(message, attachments);
             setLoading(true);
         },
         onSuccess: data => {
-            addAssistantMessage(data.message);
+            addAssistantMessage(data.assistant_message.content);
         },
         onSettled: () => {
             setLoading(false);
@@ -35,13 +41,31 @@ export const useSendMessage = () => {
 
 export const useUploadAttachment = () => {
     return useMutation({
-        mutationFn: (file: File) => chatApi.uploadAttachment(file)
+        mutationFn: async (file: File) => {
+            const result = await uploadApi.uploadImage(file);
+            return {
+                id: result.file_path,
+                url: result.file_path,
+                name: file.name,
+                mimeType: file.type,
+                size: file.size
+            };
+        }
     });
 };
 
 export const useUploadAttachments = () => {
     return useMutation({
-        mutationFn: (files: File[]) => chatApi.uploadAttachments(files)
+        mutationFn: async (files: File[]) => {
+            const results = await uploadApi.uploadImages(files);
+            return results.map((result, index) => ({
+                id: result.file_path,
+                url: result.file_path,
+                name: files[index].name,
+                mimeType: files[index].type,
+                size: files[index].size
+            }));
+        }
     });
 };
 

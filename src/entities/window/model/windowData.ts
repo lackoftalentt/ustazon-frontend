@@ -260,7 +260,7 @@ export const WINDOW_DATA: WindowData[] = [
     {
         name: 'ҚМЖ',
         template_id: 3,
-        link: 'http://185.129.51.101:5555/qmj',
+        link: '/qmj',
         nsub: false,
         image_url: 'https://ustazon.com/static/main/img/books12.jpg',
         id: 19,
