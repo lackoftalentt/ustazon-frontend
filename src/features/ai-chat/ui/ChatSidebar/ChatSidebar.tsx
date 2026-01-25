@@ -1,4 +1,4 @@
-import { Plus, MessageSquare, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, MessageSquare, Trash2, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import s from './ChatSidebar.module.scss';
 import type { ConversationListItem } from '@/shared/api/ai';
 
@@ -10,6 +10,7 @@ interface ChatSidebarProps {
     onDelete: (id: number, e: React.MouseEvent) => void;
     isOpen: boolean;
     onToggle: () => void;
+    isLoading?: boolean;
 }
 
 export const ChatSidebar = ({
@@ -19,7 +20,8 @@ export const ChatSidebar = ({
     onNewChat,
     onDelete,
     isOpen,
-    onToggle
+    onToggle,
+    isLoading = false
 }: ChatSidebarProps) => {
     return (
         <div className={`${s.sidebar} ${isOpen ? s.open : s.closed}`}>
@@ -38,29 +40,41 @@ export const ChatSidebar = ({
                 </button>
 
                 <div className={s.list}>
-                    {conversations.map(conv => (
-                        <div
-                            key={conv.id}
-                            className={`${s.item} ${currentId === conv.id ? s.active : ''}`}
-                            onClick={() => onSelect(conv.id)}
-                        >
-                            <MessageSquare size={18} className={s.icon} />
-                            <div className={s.info}>
-                                <span className={s.title}>
-                                    {conv.title || conv.subject || 'Новый диалог'}
-                                </span>
-                                <span className={s.date}>
-                                    {new Date(conv.created_at).toLocaleDateString()}
-                                </span>
-                            </div>
-                            <button
-                                className={s.deleteBtn}
-                                onClick={(e) => onDelete(conv.id, e)}
-                            >
-                                <Trash2 size={14} />
-                            </button>
+                    {isLoading ? (
+                        <div className={s.loader}>
+                            <Loader2 size={24} className={s.spinner} />
+                            <span className={s.loaderText}>Загрузка истории...</span>
                         </div>
-                    ))}
+                    ) : conversations.length === 0 ? (
+                        <div className={s.emptyState}>
+                            <MessageSquare size={32} opacity={0.3} />
+                            <span className={s.emptyText}>Нет диалогов</span>
+                        </div>
+                    ) : (
+                        conversations.map(conv => (
+                            <div
+                                key={conv.id}
+                                className={`${s.item} ${currentId === conv.id ? s.active : ''}`}
+                                onClick={() => onSelect(conv.id)}
+                            >
+                                <MessageSquare size={18} className={s.icon} />
+                                <div className={s.info}>
+                                    <span className={s.title}>
+                                        {conv.title || conv.subject || 'Новый диалог'}
+                                    </span>
+                                    <span className={s.date}>
+                                        {new Date(conv.created_at).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                <button
+                                    className={s.deleteBtn}
+                                    onClick={(e) => onDelete(conv.id, e)}
+                                >
+                                    <Trash2 size={14} />
+                                </button>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>

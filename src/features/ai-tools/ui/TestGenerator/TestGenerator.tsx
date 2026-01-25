@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { aiApi } from '@/shared/api/ai';
-import { FileCheck, CheckCircle, ListChecks, HelpCircle, Calculator, Brain } from 'lucide-react';
+import { FileCheck, CheckCircle, ListChecks, HelpCircle, Calculator, Brain, AlertCircle } from 'lucide-react';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
-import { AICard } from '@/features/ai-tools/ui/components/AICard/AICard';
+import styles from './TestGenerator.module.scss';
 
 export const TestGenerator = () => {
     const [subject, setSubject] = useState('');
@@ -16,13 +16,23 @@ export const TestGenerator = () => {
     const [model, setModel] = useState('gemini-2.5-flash');
     const [isGenerating, setIsGenerating] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleGenerate = async () => {
-        if (!subject || !grade || !topic) return;
+        if (!subject || !grade || !topic) {
+            setError('Пожалуйста, заполните все обязательные поля');
+            return;
+        }
+
+        if (questionCount < 5 || questionCount > 50) {
+            setError('Количество вопросов должно быть от 5 до 50');
+            return;
+        }
 
         try {
             setIsGenerating(true);
             setIsSuccess(false);
+            setError(null);
 
             const blob = await aiApi.generateTest(
                 subject,
@@ -46,8 +56,19 @@ export const TestGenerator = () => {
             setSubject('');
             setTopic('');
             setQuestionCount(15);
-        } catch (err) {
+        } catch (err: any) {
             console.error('Error generating test:', err);
+            if (err.response?.status === 401) {
+                setError('Сессия истекла. Пожалуйста, войдите снова');
+            } else if (err.response?.status === 500) {
+                setError('Ошибка на сервере. Попробуйте еще раз');
+            } else if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+                setError('Превышено время ожидания. Попробуйте уменьшить количество вопросов');
+            } else if (!navigator.onLine) {
+                setError('Нет подключения к интернету');
+            } else {
+                setError(err.response?.data?.detail || 'Не удалось создать тест. Попробуйте еще раз');
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -122,6 +143,21 @@ export const TestGenerator = () => {
         </>
     );
 
+    const errorPreview = error ? (
+        <div style={{ textAlign: 'center', animation: 'fadeIn 0.5s ease' }}>
+            <AlertCircle size={64} color="#dc2626" style={{ marginBottom: '1.5rem' }} />
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#991b1b', marginBottom: '1rem' }}>
+                Ошибка
+            </h3>
+            <p style={{ color: '#737373', marginBottom: '2rem' }}>
+                {error}
+            </p>
+            <AIButton variant="secondary" onClick={() => setError(null)}>
+                Попробовать снова
+            </AIButton>
+        </div>
+    ) : null;
+
     const successPreview = isSuccess ? (
         <div style={{ textAlign: 'center', animation: 'fadeIn 0.5s ease' }}>
             <CheckCircle size={64} color="#16a34a" style={{ marginBottom: '1.5rem' }} />
@@ -137,34 +173,62 @@ export const TestGenerator = () => {
         </div>
     ) : null;
 
-    const featuresPreview = !isSuccess ? (
-        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1b5a42' }}>
-                Структура теста:
-            </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <ListChecks size={24} color="#2f8450" />
-                    <span className="font-medium">Тесты</span>
-                    <span className="text-sm text-slate-500">Вопросы с выбором</span>
-                </AICard>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <HelpCircle size={24} color="#2f8450" />
-                    <span className="font-medium">Открытые</span>
-                    <span className="text-sm text-slate-500">Вопросы на размышление</span>
-                </AICard>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <Calculator size={24} color="#2f8450" />
-                    <span className="font-medium">Задачи</span>
-                    <span className="text-sm text-slate-500">Практическое применение</span>
-                </AICard>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <Brain size={24} color="#2f8450" />
-                    <span className="font-medium">Ответы</span>
-                    <span className="text-sm text-slate-500">Ключи ко всем заданиям</span>
-                </AICard>
+    const featuresPreview = !isSuccess && !error ? (
+<div className={styles.featuresPreview}>
+    <h3 className={styles.featuresHeading}>
+        Структура теста:
+    </h3>
+
+    <div className={styles.featuresGrid}>
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <ListChecks size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Тесты</div>
+                <div className={styles.featureText}>
+                    Вопросы с выбором
+                </div>
             </div>
         </div>
+
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <HelpCircle size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Открытые</div>
+                <div className={styles.featureText}>
+                    Вопросы на размышление
+                </div>
+            </div>
+        </div>
+
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <Calculator size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Задачи</div>
+                <div className={styles.featureText}>
+                    Практическое применение
+                </div>
+            </div>
+        </div>
+
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <Brain size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Ответы</div>
+                <div className={styles.featureText}>
+                    Ключи ко всем заданиям
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     ) : null;
 
     return (
@@ -173,7 +237,7 @@ export const TestGenerator = () => {
             description="СОР, СОЧ и проверочные работы за пару кликов"
             icon={<FileCheck color="#2f8450" size={28} />}
             form={form}
-            preview={isSuccess ? successPreview : featuresPreview}
+            preview={error ? errorPreview : (isSuccess ? successPreview : featuresPreview)}
             isGenerating={isGenerating}
         />
     );

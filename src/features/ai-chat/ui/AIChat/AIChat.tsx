@@ -18,6 +18,7 @@ export const AIChat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [conversations, setConversations] = useState<ConversationListItem[]>([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isLoadingConversations, setIsLoadingConversations] = useState(true);
 
     const [inputValue, setInputValue] = useState('');
     const [conversationId, setConversationId] = useState<number | null>(null);
@@ -51,10 +52,13 @@ export const AIChat = () => {
 
     const loadConversations = async () => {
         try {
+            setIsLoadingConversations(true);
             const list = await aiApi.getConversations();
             setConversations(list);
         } catch (err) {
             console.error('Failed to load conversations', err);
+        } finally {
+            setIsLoadingConversations(false);
         }
     };
 
@@ -192,6 +196,7 @@ export const AIChat = () => {
                 onDelete={handleDeleteConversation}
                 isOpen={isSidebarOpen}
                 onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+                isLoading={isLoadingConversations}
             />
 
             <div className={s.mainContent}>

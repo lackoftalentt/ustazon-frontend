@@ -27,12 +27,6 @@ const tools = [
         path: '/ai-test',
         icon: FileCheck,
         name: 'Тесты/СОР'
-    },
-    {
-        id: 'manim',
-        path: '/ai-manim',
-        icon: Video,
-        name: 'Manim Visualizer'
     }
 ];
 

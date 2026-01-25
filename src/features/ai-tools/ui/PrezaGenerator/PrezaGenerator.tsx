@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { aiApi } from '@/shared/api/ai';
-import { Presentation, CheckCircle, LayoutTemplate, Image, List, Edit3 } from 'lucide-react';
+import { Presentation, CheckCircle, LayoutTemplate, Image, List, Edit3, AlertCircle } from 'lucide-react';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
 import { AICard } from '@/features/ai-tools/ui/components/AICard/AICard';
+import styles from './PrezaGenerator.module.scss';
 
 export const PrezaGenerator = () => {
     const [subject, setSubject] = useState('');
@@ -15,13 +16,23 @@ export const PrezaGenerator = () => {
     const [model, setModel] = useState('gemini-2.5-flash');
     const [isGenerating, setIsGenerating] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleGenerate = async () => {
-        if (!subject || !grade || !topic) return;
+        if (!subject || !grade || !topic) {
+            setError('Пожалуйста, заполните все обязательные поля');
+            return;
+        }
+
+        if (slidesCount < 5 || slidesCount > 30) {
+            setError('Количество слайдов должно быть от 5 до 30');
+            return;
+        }
 
         try {
             setIsGenerating(true);
             setIsSuccess(false);
+            setError(null);
 
             const blob = await aiApi.generatePresentation(
                 subject,
@@ -44,8 +55,19 @@ export const PrezaGenerator = () => {
             setSubject('');
             setTopic('');
             setSlidesCount(12);
-        } catch (err) {
+        } catch (err: any) {
             console.error('Error generating presentation:', err);
+            if (err.response?.status === 401) {
+                setError('Сессия истекла. Пожалуйста, войдите снова');
+            } else if (err.response?.status === 500) {
+                setError('Ошибка на сервере. Попробуйте еще раз');
+            } else if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+                setError('Превышено время ожидания. Попробуйте уменьшить количество слайдов');
+            } else if (!navigator.onLine) {
+                setError('Нет подключения к интернету');
+            } else {
+                setError(err.response?.data?.detail || 'Не удалось создать презентацию. Попробуйте еще раз');
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -109,6 +131,21 @@ export const PrezaGenerator = () => {
         </>
     );
 
+    const errorPreview = error ? (
+        <div style={{ textAlign: 'center', animation: 'fadeIn 0.5s ease' }}>
+            <AlertCircle size={64} color="#dc2626" style={{ marginBottom: '1.5rem' }} />
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#991b1b', marginBottom: '1rem' }}>
+                Ошибка
+            </h3>
+            <p style={{ color: '#737373', marginBottom: '2rem' }}>
+                {error}
+            </p>
+            <AIButton variant="secondary" onClick={() => setError(null)}>
+                Попробовать снова
+            </AIButton>
+        </div>
+    ) : null;
+
     const successPreview = isSuccess ? (
         <div style={{ textAlign: 'center', animation: 'fadeIn 0.5s ease' }}>
             <CheckCircle size={64} color="#16a34a" style={{ marginBottom: '1.5rem' }} />
@@ -124,34 +161,52 @@ export const PrezaGenerator = () => {
         </div>
     ) : null;
 
-    const featuresPreview = !isSuccess ? (
-        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1b5a42' }}>
-                Состав презентации:
-            </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <LayoutTemplate size={24} color="#2f8450" />
-                    <span className="font-medium">Структура</span>
-                    <span className="text-sm text-slate-500">Логическое изложение</span>
-                </AICard>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <List size={24} color="#2f8450" />
-                    <span className="font-medium">Содержание</span>
-                    <span className="text-sm text-slate-500">Цели, теория, выводы</span>
-                </AICard>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <Image size={24} color="#2f8450" />
-                    <span className="font-medium">Оформление</span>
-                    <span className="text-sm text-slate-500">Места для изображений</span>
-                </AICard>
-                <AICard hoverable className="flex flex-col gap-3 items-start">
-                    <Edit3 size={24} color="#2f8450" />
-                    <span className="font-medium">Редактируемость</span>
-                    <span className="text-sm text-slate-500">Полный формат PPTX</span>
-                </AICard>
+    const featuresPreview = !isSuccess && !error ? (
+        <div className={styles.featuresPreview}>
+    <h3 className={styles.featuresHeading}>Состав презентации</h3>
+
+    <div className={styles.featuresGrid}>
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <LayoutTemplate size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Структура</div>
+                <div className={styles.featureText}>Логическое изложение</div>
             </div>
         </div>
+
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <List size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Содержание</div>
+                <div className={styles.featureText}>Цели, теория, выводы</div>
+            </div>
+        </div>
+
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <Image size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Оформление</div>
+                <div className={styles.featureText}>Места для изображений</div>
+            </div>
+        </div>
+
+        <div className={styles.featureCard}>
+            <div className={styles.featureIconBox}>
+                <Edit3 size={22} />
+            </div>
+            <div>
+                <div className={styles.featureTitle}>Редактируемость</div>
+                <div className={styles.featureText}>Полный формат PPTX</div>
+            </div>
+        </div>
+    </div>
+</div>
     ) : null;
 
     return (
@@ -160,7 +215,7 @@ export const PrezaGenerator = () => {
             description="Создавайте красивые презентации для уроков"
             icon={<Presentation color="#2f8450" size={28} />}
             form={form}
-            preview={isSuccess ? successPreview : featuresPreview}
+            preview={error ? errorPreview : (isSuccess ? successPreview : featuresPreview)}
             isGenerating={isGenerating}
         />
     );

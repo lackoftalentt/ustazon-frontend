@@ -200,6 +200,121 @@
     flex-shrink: 0;
 }
 
+.featuresPreview {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.featuresHeading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1b5a42;
+    margin: 0;
+}
+
+.featuresGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.featureCard {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+    border-radius: 16px;
+    background: rgba(231, 76, 60, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.featureIconBox {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.featureTitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-dark;
+}
+
+.featureText {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin-top: 2px;
+}.featureCard {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+    border-radius: 16px;
+    background: rgba(231, 76, 60, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.featureCard {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+    border-radius: 16px;
+    background: rgba(47, 132, 80, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.featureIconBox {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #2f8450;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.featureTitle {
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: #1b5a42;
+}
+
+.featureText {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin-top: 2px;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: $spacing-lg;
