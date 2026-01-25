@@ -8,7 +8,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
 
     &.open {
         width: 280px;
@@ -19,6 +19,7 @@
         width: 0;
         min-width: 0;
         border-right: none;
+        background: transparent;
 
         .content {
             opacity: 0;
@@ -67,6 +68,7 @@
     width: 280px; // Fixed width for content to prevent layout shifts
     opacity: 1;
     transition: opacity 0.2s ease;
+    overflow: hidden;
 }
 
 .newChatBtn {
