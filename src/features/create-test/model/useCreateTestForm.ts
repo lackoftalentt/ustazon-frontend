@@ -31,7 +31,7 @@ export const useCreateTestForm = (
 		}
 	})
 
-	const { handleSubmit, setValue, watch, reset } = form
+	const { handleSubmit, setValue, reset } = form
 
 	const handleDurationChange = useCallback(
 		(value: number) => {

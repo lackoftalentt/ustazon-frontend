@@ -48,7 +48,6 @@ export const EditTestModal = () => {
 
     const {
         register,
-        setValue,
         watch,
         formState: { errors, isSubmitting },
         questions,

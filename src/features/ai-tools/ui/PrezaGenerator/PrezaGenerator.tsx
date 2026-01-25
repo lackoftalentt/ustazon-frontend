@@ -5,7 +5,6 @@ import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGenerator
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
-import { AICard } from '@/features/ai-tools/ui/components/AICard/AICard';
 import styles from './PrezaGenerator.module.scss';
 
 export const PrezaGenerator = () => {

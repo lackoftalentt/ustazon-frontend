@@ -29,6 +29,7 @@ export const LoginForm = () => {
 			const userData = await getCurrentUser()
 
 			setUser({
+				id: userData.id,
 				iin: userData.iin,
 				name: userData.name,
 				phoneNumber: userData.phone

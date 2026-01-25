@@ -30,7 +30,7 @@ export const createTestSchema = z.object({
         .min(MIN_DURATION, `Ең аз уақыт: ${MIN_DURATION} минут`)
         .max(MAX_DURATION, `Ең көп уақыт: ${MAX_DURATION} минут`),
     difficulty: z.enum(['easy', 'medium', 'hard'], {
-        required_error: 'Күрделілік деңгейін таңдаңыз'
+        message: 'Күрделілік деңгейін таңдаңыз'
     }),
     questions: z.array(questionSchema)
         .min(MIN_QUESTIONS, `Кем дегенде ${MIN_QUESTIONS} сұрақ қосыңыз`)

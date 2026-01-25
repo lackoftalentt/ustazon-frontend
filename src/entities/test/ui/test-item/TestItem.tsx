@@ -3,7 +3,6 @@ import {
 	Check,
 	Clock,
 	Copy,
-	Edit2,
 	QrCode,
 	Share2
 } from 'lucide-react'
@@ -23,7 +22,6 @@ interface TestItemProps {
 	timeLimit: number
 	difficulty: 'easy' | 'medium' | 'hard'
 	category: string
-	onEdit?: () => void
 }
 
 export const TestItem = ({
@@ -33,8 +31,7 @@ export const TestItem = ({
 	questionsCount,
 	timeLimit,
 	difficulty,
-	category,
-	onEdit
+	category
 }: TestItemProps) => {
 	const [, /* isHovered */ setIsHovered] = useState(false)
 	const [showShareOptions, setShowShareOptions] = useState(false)

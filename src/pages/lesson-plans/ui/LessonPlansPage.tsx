@@ -158,7 +158,6 @@ export const LessonPlansPage = () => {
 									<PlanCard
 										key={p.grade}
 										title={`${p.grade} сынып`}
-										hours={p.hours}
 										kmzhCount={String(p.count)}
 										lessonsCount={p.hours}
 										onDetails={() =>

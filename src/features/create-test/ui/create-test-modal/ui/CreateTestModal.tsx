@@ -85,21 +85,6 @@ export const CreateTestModal = () => {
 
 	const difficulty = watch('difficulty')
 
-	const handleImageChange = (
-		questionIndex: number,
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
-		const file = e.target.files?.[0]
-		if (file) {
-			if (file.size > 5 * 1024 * 1024) {
-				toast.error('Сурет өлшемі 5MB-дан аспауы керек')
-				return
-			}
-			updateQuestionImage(questionIndex, file)
-		}
-		e.target.value = ''
-	}
-
 	const handleAddQuestion = () => {
 		addQuestion()
 		setCurrentQuestionIndex(questions.length)

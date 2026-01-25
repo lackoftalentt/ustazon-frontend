@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { editKMJSchema, type EditKMJSchema } from './validation'
-import type { EditKMJFormData, KMJData, ExistingFile } from './types'
+import type { EditKMJFormData, KMJData } from './types'
 
 export const useEditKMJForm = (
 	kmjData: KMJData | null,

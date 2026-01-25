@@ -32,7 +32,7 @@ export const editTestSchema = z.object({
         .min(MIN_DURATION, `Ұзақтығы кемінде ${MIN_DURATION} минут болуы керек`)
         .max(MAX_DURATION, `Ұзақтығы ${MAX_DURATION} минуттан аспауы керек`),
     difficulty: z.enum(['easy', 'medium', 'hard'], {
-        required_error: 'Қиындық деңгейін таңдаңыз'
+        message: 'Қиындық деңгейін таңдаңыз'
     }),
     questions: z.array(questionSchema).min(1, 'Кемінде 1 сұрақ қажет')
 });

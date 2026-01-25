@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, MessageSquare, Presentation, FileCheck, Video } from 'lucide-react';
+import { Menu, X, MessageSquare, Presentation, FileCheck } from 'lucide-react';
 import s from './AIToolLayout.module.scss';
 
 interface AIToolLayoutProps {

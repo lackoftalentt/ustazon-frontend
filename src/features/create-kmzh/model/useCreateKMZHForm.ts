@@ -3,7 +3,7 @@ import { uploadApi } from '@/shared/api/uploadApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { type CreateKMZHFormData, MAX_FILE_SIZE, MAX_HOURS } from './types'
+import { MAX_FILE_SIZE, MAX_HOURS } from './types'
 import { createKMZHSchema, type CreateKMZHSchema } from './validation'
 
 const parseGrade = (classLevel: string): number => {
@@ -114,11 +114,8 @@ export const useCreateKMZHForm = (
         if (data.files.length > 1) {
             for (let i = 1; i < data.files.length; i++) {
                 const file = data.files[i]
-                const uploadResult = await uploadApi.uploadDocument(file)
                 await qmjApi.addFileToQMJ(createdQMJ.id, {
-                    file: uploadResult.file_path,
-                    file_size: file.size,
-                    file_type: file.type || 'application/octet-stream'
+                    file: file
                 })
             }
         }

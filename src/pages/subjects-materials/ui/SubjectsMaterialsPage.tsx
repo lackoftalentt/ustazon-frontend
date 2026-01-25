@@ -125,7 +125,6 @@ export const SubjectsMaterialsPage = () => {
 				{!windowId && testsData && testsData.length > 0 && (
 					<TestsSection
 						testsData={testsData}
-						subjectCode={subjectCode || ''}
 					/>
 				)}
 

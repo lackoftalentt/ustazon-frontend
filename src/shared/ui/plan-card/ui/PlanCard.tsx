@@ -8,7 +8,6 @@ type Props = {
 	title: string
 	kmzhCount: number | string
 	lessonsCount: number | string
-	hours: number
 	className?: string
 	onDetails?: () => void
 }
@@ -17,7 +16,6 @@ export const PlanCard = ({
 	title,
 	kmzhCount,
 	lessonsCount,
-	hours,
 	className,
 	onDetails
 }: Props) => {

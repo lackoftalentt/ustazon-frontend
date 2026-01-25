@@ -26,7 +26,7 @@ export const useEditTestForm = (
         }
     });
 
-    const { handleSubmit, setValue, watch, reset, formState } = form;
+    const { handleSubmit, setValue, reset, formState } = form;
 
     useEffect(() => {
         if (fullTestData) {

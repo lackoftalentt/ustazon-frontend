@@ -7,10 +7,9 @@ import s from '../SubjectsMaterialsPage.module.scss'
 
 interface TestsSectionProps {
 	testsData: Test[]
-	subjectCode: string
 }
 
-export const TestsSection = ({ testsData, subjectCode }: TestsSectionProps) => {
+export const TestsSection = ({ testsData }: TestsSectionProps) => {
 	const displayItems = testsData.slice(0, 4)
 	const hasMore = testsData.length > 3
 
