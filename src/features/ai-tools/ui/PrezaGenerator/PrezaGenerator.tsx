@@ -58,10 +58,14 @@ export const PrezaGenerator = () => {
             console.error('Error generating presentation:', err);
             if (err.response?.status === 401) {
                 setError('Сессия истекла. Пожалуйста, войдите снова');
+            } else if (err.response?.status === 405) {
+                setError('Сервис временно недоступен. Пожалуйста, убедитесь, что backend сервер запущен и обновлен');
             } else if (err.response?.status === 500) {
-                setError('Ошибка на сервере. Попробуйте еще раз');
+                setError('Ошибка на сервере. Попробуйте еще раз. Проверьте, что UNSPLASH_ACCESS_KEY настроен в backend .env');
             } else if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
                 setError('Превышено время ожидания. Попробуйте уменьшить количество слайдов');
+            } else if (err.code === 'ECONNREFUSED' || err.message?.includes('Network Error')) {
+                setError('Не удается подключиться к серверу. Проверьте, запущен ли backend');
             } else if (!navigator.onLine) {
                 setError('Нет подключения к интернету');
             } else {

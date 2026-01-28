@@ -340,6 +340,7 @@ export const aiApi = {
             formData,
             {
                 responseType: 'blob',
+                timeout: 120000, // 2 minutes for test generation
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
