@@ -101,6 +101,23 @@ export interface SubjectInfo {
     name_kk: string;
 }
 
+// Teaching Materials types
+export interface UserPresentation {
+    id: number;
+    title: string;
+    grade: string;
+    topic: string;
+    status: string;
+    gamma_url: string | null;
+    created_at: string;
+}
+
+export interface PresentationStatusResponse {
+    id: number;
+    status: string;
+    gamma_url: string | null;
+}
+
 export const aiApi = {
     // Basic chat (no history saving)
     chat: async (request: ChatRequest): Promise<ChatResponse> => {
@@ -260,31 +277,37 @@ export const aiApi = {
         return response.data;
     },
 
-    // Generate PowerPoint presentation
+    // Start presentation generation via Gamma API (async — returns immediately)
     generatePresentation: async (
         subject: string,
         grade: string,
         topic: string,
-        slidesCount: number = 12,
-        model: string = 'gemini-2.5-flash'
-    ): Promise<Blob> => {
+        slidesCount: number = 12
+    ): Promise<{ id: number; gamma_document_id: string; status: string }> => {
         const formData = new FormData();
         formData.append('subject', subject);
         formData.append('grade', grade);
         formData.append('topic', topic);
         formData.append('slides_count', slidesCount.toString());
-        formData.append('model', model);
 
-        const response = await apiClient.post(
-            '/ai/generate-presentation',
+        const response = await apiClient.post<{ id: number; gamma_document_id: string; status: string }>(
+            '/ai/generate-presentation-gamma',
             formData,
             {
-                responseType: 'blob',
-                timeout: 120000, // 2 minutes for presentation generation
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }
+        );
+        return response.data;
+    },
+
+    // Check presentation generation status
+    checkPresentationStatus: async (
+        presentationId: number
+    ): Promise<PresentationStatusResponse> => {
+        const response = await apiClient.get<PresentationStatusResponse>(
+            `/ai/presentations/${presentationId}/status`
         );
         return response.data;
     },
@@ -458,6 +481,15 @@ export const aiApi = {
                     'Content-Type': 'multipart/form-data'
                 }
             }
+        );
+        return response.data;
+    },
+
+    // Get user's generated presentations
+    getUserPresentations: async (): Promise<UserPresentation[]> => {
+        const response = await apiClient.get<UserPresentation[]>(
+            '/teaching-materials/my',
+            { params: { material_type: 'presentation' } }
         );
         return response.data;
     }

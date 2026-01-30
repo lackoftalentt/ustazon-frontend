@@ -110,8 +110,10 @@
 
 .cardsContainer {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
 	gap: $spacing-2xl;
+	justify-content: center;
+	gap: clamp(40px, 6vw, 80px);
 	width: 100%;
 	animation: cardsAppear $transition-slow ease-out 0.8s both;
 
