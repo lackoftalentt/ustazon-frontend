@@ -14,7 +14,7 @@ export const PrezaGenerator = () => {
   const [subject, setSubject] = useState('');
   const [grade, setGrade] = useState('');
   const [topic, setTopic] = useState('');
-  const [slidesCount, setSlidesCount] = useState(10);
+  const [slidesCount, setSlidesCount] = useState(12);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,31 +35,6 @@ export const PrezaGenerator = () => {
     refetchOnWindowFocus: false,
     staleTime: 5_000,
   });
-
-  const SUBJECTS = [
-  'Балабақша',
-  'Бастауыш',
-  'Математика',
-  'Қазақ тілі | әдебиеті',
-  'Тарих',
-  'География',
-  'Биология',
-  'Информатика',
-  'Физика',
-  'Химия',
-  'Орыс тілі',
-  'Ағылшын тілі',
-  'Еңбек',
-  'Дене шынықтыру',
-  'Геометрия',
-  'Қазақ тілі',
-  'Қазақ әдебиеті',
-  'Қазақстан тарихы',
-  'Дүниежүзі тарих',
-  'Python',
-];
-
-
 
   /* ===========================
      ГЕНЕРАЦИЯ БОЛЫП ЖАТҚАНДАР
@@ -225,19 +200,12 @@ if (slidesCount < 1 || slidesCount > 15) {
      =========================== */
   const form = (
     <>
-      <AISelect
+      <AIInput
         label="Пән"
+        placeholder="Мысалы: Тарих"
         value={subject}
         onChange={e => setSubject(e.target.value)}
-        required
-      >
-        <option value="">Пәнді таңдаңыз</option>
-        {SUBJECTS.map(s => (
-          <option key={s} value={s}>
-            {s}
-          </option>
-        ))}
-      </AISelect>
+      />
 
       <AISelect
         label="Сынып"

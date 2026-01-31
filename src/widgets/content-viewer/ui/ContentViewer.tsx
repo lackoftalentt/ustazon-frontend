@@ -72,9 +72,17 @@ export const ContentViewer = ({ lesson }: ContentViewerProps) => {
 
 	// 1. PDF/PPT по window_id
 	if (isPresentationWindow(lesson)) {
+		const fileUrl = lesson.file_path || url || ''
+		if (!fileUrl) {
+			// Fallback to URL viewer if file_path and url are empty
+			if (url) {
+				return <TryEmbedUrl url={url} />
+			}
+			return <SubjectDetailPlayer url={url ?? ''} />
+		}
 		return (
 			<PresentationViewer
-				fileUrl={lesson.file_path || url || ''}
+				fileUrl={fileUrl}
 				fileName={lesson.name}
 			/>
 		)

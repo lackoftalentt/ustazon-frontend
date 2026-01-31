@@ -118,6 +118,18 @@ export interface PresentationStatusResponse {
     gamma_url: string | null;
 }
 
+export interface UserTest {
+    id: number;
+    title: string;
+    subject: string;
+    duration: number;
+    difficulty: string;
+    user_id: number | null;
+    questions_count: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export const aiApi = {
     // Basic chat (no history saving)
     chat: async (request: ChatRequest): Promise<ChatResponse> => {
@@ -372,6 +384,34 @@ export const aiApi = {
         return response.data;
     },
 
+    // Generate Test and save to DB
+    generateTestToDb: async (
+        subject: string,
+        grade: string,
+        topic: string,
+        questionCount: number = 15,
+        difficulty: string = 'medium'
+    ): Promise<{ id: number; title: string; subject: string; questions_count: number }> => {
+        const formData = new FormData();
+        formData.append('subject', subject);
+        formData.append('grade', grade);
+        formData.append('topic', topic);
+        formData.append('question_count', questionCount.toString());
+        formData.append('difficulty', difficulty);
+
+        const response = await apiClient.post(
+            '/ai/generate-test-db',
+            formData,
+            {
+                timeout: 120000,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        );
+        return response.data;
+    },
+
     // Generate Homework (DOCX)
     generateHomework: async (
         subject: string,
@@ -491,6 +531,12 @@ export const aiApi = {
             '/teaching-materials/my',
             { params: { material_type: 'presentation' } }
         );
+        return response.data;
+    },
+
+    // Get user's tests
+    getUserTests: async (): Promise<UserTest[]> => {
+        const response = await apiClient.get<UserTest[]>('/tests/my');
         return response.data;
     }
 };
