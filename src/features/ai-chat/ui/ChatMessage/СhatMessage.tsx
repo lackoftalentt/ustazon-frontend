@@ -103,14 +103,14 @@ export const ChatMessage = ({ text, sender, images }: ChatMessageProps) => {
 
             switch (type) {
                 case 'presentation':
-                    blob = await aiApi.generatePresentation(
+                    await aiApi.generatePresentation(
                         params.subject,
                         params.grade,
                         params.topic,
                         params.slidesCount
                     );
-                    filename = `${params.topic.replace(/\s+/g, '_')}_${params.grade.replace(/\s+/g, '_')}.pptx`;
-                    break;
+                    setIsGenerating(false);
+                    return;
 
                 case 'lesson_plan':
                     blob = await aiApi.generateLessonPlan(

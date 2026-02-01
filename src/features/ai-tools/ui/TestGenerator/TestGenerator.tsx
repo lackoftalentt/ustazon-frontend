@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { aiApi, UserTest } from '@/shared/api/ai';
+import { aiApi } from '@/shared/api/ai';
+import type { UserTest } from '@/shared/api/ai';
 import { FileCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { aiApi, UserPresentation } from '@/shared/api/ai';
+import { aiApi } from '@/shared/api/ai';
+import type { UserPresentation } from '@/shared/api/ai';
 import { Presentation, AlertCircle, Loader2 } from 'lucide-react';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
@@ -80,7 +81,7 @@ export const PrezaGenerator = () => {
   useEffect(() => {
     if (!hasActiveIds) return;
 
-    let intervalId: NodeJS.Timeout | null = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
