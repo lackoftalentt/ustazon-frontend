@@ -204,7 +204,7 @@ export const AIChat = () => {
                     {messages.length === 0 ? (
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0.6 }}>
                             <Sparkles size={48} color="#cbd5e1" />
-                            <p style={{ marginTop: '1rem', color: '#64748b' }}>Начните общение с UstazOn AI</p>
+                            <p style={{ marginTop: '1rem', color: '#64748b' }}>UstazOn AI-ден бастаңыз</p>
                         </div>
                     ) : (
                         messages.map(m => (

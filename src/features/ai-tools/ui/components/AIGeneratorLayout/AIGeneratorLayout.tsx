@@ -43,14 +43,14 @@ export const AIGeneratorLayout = ({
                                     <div className={s.emptyIcon}>
                                         <Sparkles className="animate-spin" size={64} />
                                     </div>
-                                    <h3 className={s.emptyTitle}>AI генерирует контент...</h3>
-                                    <p>Это может занять от 10 до 30 секунд. Пожалуйста, подождите.</p>
+                                    <h3 className={s.emptyTitle}>AI мазмұнды жасауда...</h3>
+                                    <p>Бұл 10-30 секундқа созылуы мүмкін. Күте тұрыңыз.</p>
                                 </>
                             ) : (
                                 <>
                                     <div className={s.emptyIcon}>✨</div>
-                                    <h3 className={s.emptyTitle}>Создайте свой первый материал</h3>
-                                    <p>Заполните форму слева, чтобы сгенерировать уникальный образовательный контент с помощью ИИ.</p>
+                                    <h3 className={s.emptyTitle}>Бірінші материалды жасаңыз</h3>
+                                    <p>AI көмегімен бірегей білім беру мазмұнын жасау үшін сол жақтағы пішінді толтырыңыз.</p>
                                 </>
                             )}
                         </div>

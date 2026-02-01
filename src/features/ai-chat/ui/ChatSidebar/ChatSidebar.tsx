@@ -36,7 +36,7 @@ export const ChatSidebar = ({
             <div className={s.content}>
                 <button className={s.newChatBtn} onClick={onNewChat}>
                     <Plus size={18} />
-                    <span>Новый чат</span>
+                    <span>Жаңа чат</span>
                 </button>
 
                 <div className={s.list}>
