@@ -1,4 +1,5 @@
 import CardPlaceholder from '@/shared/assets/images/card-placeholder.png'
+import { getFileUrl } from '@/shared/lib/fileUrl'
 import { Button } from '@/shared/ui/button'
 import clsx from 'clsx'
 import { Eye, Star, Trash2 } from 'lucide-react'
@@ -47,7 +48,7 @@ export const MaterialCard = ({
 		thumbnail !== 'null' &&
 		thumbnail !== 'None' &&
 		thumbnail.trim() !== ''
-			? thumbnail
+			? getFileUrl(thumbnail)
 			: CardPlaceholder
 
 	const templateCodeName = templateName?.toLowerCase() || 'card'

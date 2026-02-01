@@ -1,6 +1,7 @@
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer'
 import '@cyntler/react-doc-viewer/dist/index.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { getFileUrl } from '@/shared/lib/fileUrl'
 import s from './PresentationViewer.module.scss'
 
 interface PresentationViewerProps {
@@ -38,18 +39,7 @@ export const PresentationViewer = ({
 		}
 	}, [])
 
-	// Формируем абсолютный URL если передан относительный путь
-	const getAbsoluteUrl = (url: string): string => {
-		if (!url) return ''
-		if (url.startsWith('http://') || url.startsWith('https://')) {
-			return url
-		}
-		// Добавляем базовый URL API
-		const baseUrl = import.meta.env.URL || window.location.origin
-		return `${baseUrl}/${url.replace(/^\//, '')}`
-	}
-
-	const absoluteUrl = getAbsoluteUrl(fileUrl)
+	const absoluteUrl = getFileUrl(fileUrl)
 
 	const getFileType = (url: string): string | undefined => {
 		const ext = url.split('.').pop()?.toLowerCase()

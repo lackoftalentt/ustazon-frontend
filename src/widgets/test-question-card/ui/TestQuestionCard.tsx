@@ -1,4 +1,5 @@
 import type { Question } from '@/features/take-test'
+import { getFileUrl } from '@/shared/lib/fileUrl'
 import { AlertCircle, CheckCircle } from 'lucide-react'
 import s from './TestQuestionCard.module.scss'
 
@@ -36,13 +37,13 @@ export const TestQuestionCard = ({
 
 			{question.photo && (
 				<div className={s.questionMedia}>
-					<img src={question.photo} alt="Сұрақ суреті" />
+					<img src={getFileUrl(question.photo)} alt="Сұрақ суреті" />
 				</div>
 			)}
 
 			{question.video && (
 				<div className={s.questionMedia}>
-					<video src={question.video} controls />
+					<video src={getFileUrl(question.video)} controls />
 				</div>
 			)}
 

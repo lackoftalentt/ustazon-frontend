@@ -1,5 +1,6 @@
 import Arrow from '@/shared/assets/icons/arrowLeft.svg?react'
 import CardPlaceholder from '@/shared/assets/images/card-placeholder.png'
+import { getFileUrl } from '@/shared/lib/fileUrl'
 import { Button } from '@/shared/ui/button'
 import { Link } from 'react-router-dom'
 import s from './SubjectCard.module.scss'
@@ -20,20 +21,12 @@ export const SubjectCard = ({
 	thumbnailAlt = 'Subject thumbnail',
 	path = '/subject'
 }: SubjectCardProps) => {
-	const getFullImageUrl = (url: string) => {
-		if (url.startsWith('http://') || url.startsWith('https://')) {
-			return url
-		}
-		const baseUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1').replace(/\/api\/v1\/?$/, '')
-		return `${baseUrl}/${url}`
-	}
-
 	const normalizedThumbnail =
 		thumbnail &&
 		thumbnail !== 'null' &&
 		thumbnail !== 'None' &&
 		thumbnail.trim() !== ''
-			? getFullImageUrl(thumbnail)
+			? getFileUrl(thumbnail)
 			: CardPlaceholder
 
 	return (
