@@ -7,6 +7,7 @@ import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGenerator
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
+import { SUBJECTS } from '@/shared/constants/subjects';
 import styles from './TestGenerator.module.scss';
 
 export const TestGenerator = () => {
@@ -17,29 +18,6 @@ export const TestGenerator = () => {
     const [difficulty, setDifficulty] = useState('medium');
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    const SUBJECTS = [
-        'Балабақша',
-        'Бастауыш',
-        'Математика',
-        'Қазақ тілі | әдебиеті',
-        'Тарих',
-        'География',
-        'Биология',
-        'Информатика',
-        'Физика',
-        'Химия',
-        'Орыс тілі',
-        'Ағылшын тілі',
-        'Еңбек',
-        'Дене шынықтыру',
-        'Геометрия',
-        'Қазақ тілі',
-        'Қазақ әдебиеті',
-        'Қазақстан тарихы',
-        'Дүниежүзі тарих',
-        'Python',
-        ];
 
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -56,12 +34,12 @@ export const TestGenerator = () => {
 
     const handleGenerate = async () => {
         if (!subject || !grade || !topic) {
-            setError('Пожалуйста, заполните все обязательные поля');
+            setError('Барлық міндетті өрістерді толтырыңыз');
             return;
         }
 
-        if (questionCount < 5 || questionCount > 50) {
-            setError('Количество вопросов должно быть от 5 до 50');
+        if (questionCount < 5 || questionCount > 20) {
+            setError('Сұрақтар саны 5-тен 20-ге дейін болуы керек');
             return;
         }
 
@@ -87,7 +65,7 @@ export const TestGenerator = () => {
             console.error('Error generating test:', err);
             setError(
                 err.response?.data?.detail ||
-                'Не удалось создать тест. Попробуйте еще раз'
+                'Тест жасау мүмкін болмады. Қайта көріңіз'
             );
         } finally {
             setIsGenerating(false);
@@ -100,9 +78,9 @@ export const TestGenerator = () => {
 
     const renderDifficulty = (t: UserTest) => {
         const map: Record<string, { label: string; cls: string }> = {
-            easy: { label: 'Базовый', cls: styles.difficultyEasy },
-            medium: { label: 'Средний', cls: styles.difficultyMedium },
-            hard: { label: 'Высокий', cls: styles.difficultyHard },
+            easy: { label: 'Базалық', cls: styles.difficultyEasy },
+            medium: { label: 'Орташа', cls: styles.difficultyMedium },
+            hard: { label: 'Жоғары', cls: styles.difficultyHard },
         };
         const info = map[t.difficulty] || { label: t.difficulty, cls: styles.difficultyMedium };
         return (
@@ -114,48 +92,52 @@ export const TestGenerator = () => {
 
     const form = (
         <>
-            <AIInput
-                label="Предмет"
-                placeholder="Например: Физика"
+            <AISelect
+                label="Пән"
                 value={subject}
                 onChange={e => setSubject(e.target.value)}
-            />
+            >
+                <option value="">Пәнді таңдаңыз</option>
+                {SUBJECTS.map(s => (
+                    <option key={s} value={s}>{s}</option>
+                ))}
+            </AISelect>
 
             <AISelect
-                label="Класс"
+                label="Сынып"
                 value={grade}
                 onChange={e => setGrade(e.target.value)}
             >
-                <option value="">Выберите класс</option>
+                <option value="">Сыныпты таңдаңыз</option>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(n => (
-                    <option key={n} value={`${n} класс`}>{n} класс</option>
+                    <option key={n} value={`${n} сынып`}>{n} сынып</option>
                 ))}
             </AISelect>
 
             <AIInput
-                label="Тема теста"
-                placeholder="Например: Законы Ньютона"
+                label="Тест тақырыбы"
+                placeholder="Мысалы: Ньютон заңдары"
                 value={topic}
                 onChange={e => setTopic(e.target.value)}
             />
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <AIInput
-                    label="Количество вопросов"
+                    label="Сұрақтар саны"
                     type="number"
                     min={5}
-                    max={50}
+                    max={20}
                     value={questionCount}
                     onChange={e => setQuestionCount(parseInt(e.target.value))}
                 />
                 <AISelect
-                    label="Сложность"
+                    label="Күрделілік"
                     value={difficulty}
                     onChange={e => setDifficulty(e.target.value)}
                 >
-                    <option value="easy">Базовый</option>
-                    <option value="medium">Средний</option>
-                    <option value="hard">Высокий</option>
+                    <option value="easy">Базалық</option>
+                    <option value="medium">Орташа</option>
+                    <option value="hard">Жоғары</option>
                 </AISelect>
             </div>
 
@@ -165,7 +147,7 @@ export const TestGenerator = () => {
                 style={{ marginTop: '1rem' }}
                 icon={<FileCheck />}
             >
-                {isGenerating ? 'Создаем тест...' : 'Сгенерировать тест'}
+                {isGenerating ? 'Тест жасалуда...' : 'Тест жасау'}
             </AIButton>
         </>
     );
@@ -175,17 +157,17 @@ export const TestGenerator = () => {
             <AlertCircle size={48} />
             <p>{error}</p>
             <AIButton variant="secondary" onClick={() => setError(null)}>
-                Попробовать снова
+                Қайта көру
             </AIButton>
         </div>
     ) : (
         <div className={styles.testsPreview}>
-            <h3>Мои тесты</h3>
+            <h3>Менің тесттерім</h3>
 
             {isTestsLoading ? (
                 <Loader2 className={styles.spinner} />
             ) : tests.length === 0 ? (
-                <p>Тесты еще не созданы</p>
+                <p>Тесттер әлі жасалмаған</p>
             ) : (
                 <div className={styles.testsList}>
                     {tests.map(t => (
@@ -199,10 +181,10 @@ export const TestGenerator = () => {
                                 {renderDifficulty(t)}
                             </div>
                             <div className={styles.cardTitle}>
-                                {t.title || 'Без названия'}
+                                {t.title || 'Тақырыпсыз'}
                             </div>
                             <div className={styles.cardMeta}>
-                                {t.subject} · {t.questions_count} вопросов
+                                {t.subject} · {t.questions_count} сұрақ
                             </div>
                         </div>
                     ))}
@@ -213,8 +195,8 @@ export const TestGenerator = () => {
 
     return (
         <AIGeneratorLayout
-            title="Генератор тестов"
-            description="СОР, СОЧ и проверочные работы за пару кликов"
+            title="Тест генераторы"
+            description="СОР, СОЧ және тексеру жұмыстары бірнеше клик арқылы"
             icon={<FileCheck color="#2f8450" size={28} />}
             form={form}
             preview={preview}

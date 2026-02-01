@@ -6,6 +6,7 @@ import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGenerator
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
+import { SUBJECTS } from '@/shared/constants/subjects';
 import styles from './PrezaGenerator.module.scss';
 
 const POLL_INTERVAL = 10_000; // 10 секунд
@@ -200,12 +201,16 @@ if (slidesCount < 1 || slidesCount > 15) {
      =========================== */
   const form = (
     <>
-      <AIInput
+      <AISelect
         label="Пән"
-        placeholder="Мысалы: Тарих"
         value={subject}
         onChange={e => setSubject(e.target.value)}
-      />
+      >
+        <option value="">Пәнді таңдаңыз</option>
+        {SUBJECTS.map(s => (
+          <option key={s} value={s}>{s}</option>
+        ))}
+      </AISelect>
 
       <AISelect
         label="Сынып"
@@ -297,7 +302,7 @@ if (slidesCount < 1 || slidesCount > 15) {
   return (
     <AIGeneratorLayout
       title="Презентациялар генераторы"
-      description="Презентациялар Gamma арқылы жасалып, онлайн ашылады"
+      description="Презентациялар онлайн ашылады"
       icon={<Presentation size={28} />}
       form={form}
       preview={preview}

@@ -6,30 +6,8 @@ import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
 import { aiApi } from '@/shared/api/ai';
 import { getFileUrl } from '@/shared/lib/fileUrl';
+import { SUBJECTS } from '@/shared/constants/subjects';
 import { Video, AlertCircle, Download } from 'lucide-react';
-
-const SUBJECTS = [
-    'Балабақша',
-    'Бастауыш',
-    'Математика',
-    'Қазақ тілі | әдебиеті',
-    'Тарих',
-    'География',
-    'Биология',
-    'Информатика',
-    'Физика',
-    'Химия',
-    'Орыс тілі',
-    'Ағылшын тілі',
-    'Еңбек',
-    'Дене шынықтыру',
-    'Геометрия',
-    'Қазақ тілі',
-    'Қазақ әдебиеті',
-    'Қазақстан тарихы',
-    'Дүниежүзі тарих',
-    'Python',
-];
 
 export const ManimGeneratorPage = () => {
     const [subject, setSubject] = useState('');
