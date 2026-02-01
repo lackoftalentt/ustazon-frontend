@@ -500,23 +500,24 @@ export const aiApi = {
         return response.data;
     },
 
-    // Manim Video Generation
+    // Manim Video Generation — returns JSON with video_url
     generateManimVideo: async (
+        subject: string,
         topic: string,
         detailLevel: string = 'medium',
         model: string = 'gemini-2.5-flash'
-    ): Promise<Blob> => {
+    ): Promise<{ video_url: string }> => {
         const formData = new FormData();
+        formData.append('subject', subject);
         formData.append('topic', topic);
         formData.append('detail_level', detailLevel);
         formData.append('model', model);
 
-        const response = await apiClient.post(
+        const response = await apiClient.post<{ video_url: string }>(
             '/ai/generate-manim',
             formData,
             {
-                responseType: 'blob',
-                timeout: 300000, // 5 minutes for video rendering
+                timeout: 600000, // 10 minutes for video rendering
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

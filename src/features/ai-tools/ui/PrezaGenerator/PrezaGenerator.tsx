@@ -14,7 +14,7 @@ export const PrezaGenerator = () => {
   const [subject, setSubject] = useState('');
   const [grade, setGrade] = useState('');
   const [topic, setTopic] = useState('');
-  const [slidesCount, setSlidesCount] = useState(12);
+  const [slidesCount, setSlidesCount] = useState(10);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

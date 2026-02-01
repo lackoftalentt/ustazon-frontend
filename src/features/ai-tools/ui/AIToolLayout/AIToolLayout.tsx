@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, MessageSquare, Presentation, FileCheck } from 'lucide-react';
+import { Menu, X, MessageSquare, Presentation, FileCheck, Video } from 'lucide-react';
 import s from './AIToolLayout.module.scss';
 
 interface AIToolLayoutProps {
@@ -27,6 +27,12 @@ const tools = [
         path: '/ai-test',
         icon: FileCheck,
         name: 'Тесты/СОР'
+    },
+    {
+        id: 'manim',
+        path: '/ai-manim',
+        icon: Video,
+        name: 'Manim видео'
     }
 ];
 
