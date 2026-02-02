@@ -28,6 +28,8 @@ const AIChatPage = lazy(() => import('@/pages/ai-chat'))
 const AIPrezaPage = lazy(() => import('@/pages/ai-preza'))
 const AITestPage = lazy(() => import('@/pages/ai-test'))
 const AIManimPage = lazy(() => import('@/pages/ai-manim'))
+const AILessonGeneratorPage = lazy(() => import('@/pages/ai-lesson-generator'))
+const AILessonViewerPage = lazy(() => import('@/pages/ai-lesson-viewer'))
 const LessonPlansListPage = lazy(() => import('@/pages/lesson-plans-list'))
 const ProfilePage = lazy(() => import('@/pages/profile'))
 const ProfileSettingsPage = lazy(() => import('@/pages/profile-settings'))
@@ -101,6 +103,22 @@ export const AppRouter = () => {
 							element={
 								<PrivateRoute>
 									<AIChatPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="ai-lesson"
+							element={
+								<PrivateRoute>
+									<AILessonGeneratorPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="ai-lesson/:id"
+							element={
+								<PrivateRoute>
+									<AILessonViewerPage />
 								</PrivateRoute>
 							}
 						/>

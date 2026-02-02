@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, MessageSquare, Presentation, FileCheck, Video } from 'lucide-react';
+import { Menu, X, MessageSquare, Presentation, FileCheck, Video, BookOpen } from 'lucide-react';
 import s from './AIToolLayout.module.scss';
 
 interface AIToolLayoutProps {
@@ -15,6 +15,12 @@ const tools = [
         path: '/ai-chat',
         icon: MessageSquare,
         name: 'AI Chat'
+    },
+    {
+        id: 'lesson',
+        path: '/ai-lesson',
+        icon: BookOpen,
+        name: 'Сабақ / Lesson'
     },
     {
         id: 'preza',
