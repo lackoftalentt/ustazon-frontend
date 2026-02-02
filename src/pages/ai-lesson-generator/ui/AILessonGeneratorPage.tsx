@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { BookOpen, AlertCircle, Loader2 } from 'lucide-react';
+import { FullScreenLoader } from '@/features/ai-tools/ui/components/FullScreenLoader/FullScreenLoader';
 import { AIToolLayout } from '@/features/ai-tools/ui/AIToolLayout/AIToolLayout';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
@@ -169,6 +170,17 @@ export const AILessonGeneratorPage = () => {
 
     return (
         <AIToolLayout>
+            {isGenerating && (
+                <FullScreenLoader
+                    message="Сабақ жасалуда..."
+                    tips={[
+                        'Дайын сабақты PDF ретінде жүктей аласыз',
+                        'Сабаққа тест автоматты түрде қосылады',
+                        'Презентация генераторын қолданып көріңіз',
+                        'Manim видео арқылы тақырыпты визуализациялаңыз',
+                    ]}
+                />
+            )}
             <AIGeneratorLayout
                 title="Сабақ генераторы"
                 description="AI көмегімен толық сабақ құжатын жасаңыз — теория, сөздік, тест және ашық сұрақтар"

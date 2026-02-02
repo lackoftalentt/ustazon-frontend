@@ -115,10 +115,10 @@ export const PrezaGenerator = () => {
       return;
     }
 
-if (slidesCount < 1 || slidesCount > 15) {
-  setError('Слайдтар саны 1 мен 10 аралығында болуы керек');
-  return;
-}
+    if (slidesCount < 5 || slidesCount > 15) {
+      setError('Слайдтар саны 5 пен 15 аралығында болуы керек');
+      return;
+    }
 
     try {
       setIsGenerating(true);
@@ -129,7 +129,7 @@ if (slidesCount < 1 || slidesCount > 15) {
       setSubject('');
       setGrade('');
       setTopic('');
-      setSlidesCount(12);
+      setSlidesCount(10);
 
       queryClient.invalidateQueries({ queryKey: ['user-presentations'] });
     } catch (err: any) {
@@ -169,7 +169,7 @@ if (slidesCount < 1 || slidesCount > 15) {
       return (
         <span className={`${styles.statusBadge} ${styles.statusGenerating}`}>
           <Loader2 size={12} className={styles.spinner} />
-          Генерация…
+          Жасалуда…
         </span>
       );
     }
@@ -302,7 +302,7 @@ if (slidesCount < 1 || slidesCount > 15) {
 
   return (
     <AIGeneratorLayout
-      title="Презентациялар генераторы"
+      title="Презентация жасаушы"
       description="Презентациялар онлайн ашылады"
       icon={<Presentation size={28} />}
       form={form}

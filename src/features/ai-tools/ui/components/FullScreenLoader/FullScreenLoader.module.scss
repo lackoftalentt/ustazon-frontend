@@ -1,0 +1,65 @@
+@use '@/shared/styles/variables' as *;
+
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: $z-index-modal;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	background: rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(6px);
+}
+
+.icon {
+	animation: spin 1s linear infinite;
+}
+
+.message {
+	font-size: 1.125rem;
+	font-weight: 500;
+	color: #374151;
+	margin: 0;
+}
+
+.sub {
+	font-size: 0.875rem;
+	color: #6b7280;
+	margin: 0;
+}
+
+.progressWrap {
+	width: 280px;
+	margin-top: 0.5rem;
+}
+
+.tip {
+	margin-top: 0.75rem;
+	padding: 0.75rem 1.25rem;
+	background: rgba(47, 132, 80, 0.08);
+	border-radius: $radius-md;
+	font-size: 0.875rem;
+	color: #374151;
+	max-width: 360px;
+	text-align: center;
+	animation: tipFadeIn 0.4s ease;
+}
+
+.tipLabel {
+	font-weight: 600;
+	color: $color-green-primary;
+	margin-right: 0.35rem;
+}
+
+@keyframes tipFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

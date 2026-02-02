@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { aiApi } from '@/shared/api/ai';
 import type { UserTest } from '@/shared/api/ai';
 import { FileCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { FullScreenLoader } from '@/features/ai-tools/ui/components/FullScreenLoader/FullScreenLoader';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
@@ -195,13 +196,26 @@ export const TestGenerator = () => {
     );
 
     return (
-        <AIGeneratorLayout
-            title="Тест генераторы"
-            description="СОР, СОЧ және тексеру жұмыстары бірнеше клик арқылы"
-            icon={<FileCheck color="#2f8450" size={28} />}
-            form={form}
-            preview={preview}
-            isGenerating={isGenerating}
-        />
+        <>
+            {isGenerating && (
+                <FullScreenLoader
+                    message="Тест жасалуда..."
+                    tips={[
+                        'Сабақ жоспарын жасап, дайын материалды жүктеп алыңыз',
+                        'Презентация генераторын қолданып көріңіз',
+                        'Manim видео арқылы тақырыпты визуализациялаңыз',
+                        'Дайын тестті оқушыларға бірден жібере аласыз',
+                    ]}
+                />
+            )}
+            <AIGeneratorLayout
+                title="Тест генераторы"
+                description="СОР, СОЧ және тексеру жұмыстары бірнеше клик арқылы"
+                icon={<FileCheck color="#2f8450" size={28} />}
+                form={form}
+                preview={preview}
+                isGenerating={isGenerating}
+            />
+        </>
     );
 };

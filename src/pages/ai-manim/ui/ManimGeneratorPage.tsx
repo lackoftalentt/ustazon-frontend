@@ -8,6 +8,7 @@ import { aiApi } from '@/shared/api/ai';
 import { getFileUrl } from '@/shared/lib/fileUrl';
 import { SUBJECTS } from '@/shared/constants/subjects';
 import { Video, AlertCircle, Download } from 'lucide-react';
+import { FullScreenLoader } from '@/features/ai-tools/ui/components/FullScreenLoader/FullScreenLoader';
 
 export const ManimGeneratorPage = () => {
     const [subject, setSubject] = useState('');
@@ -147,6 +148,18 @@ export const ManimGeneratorPage = () => {
 
     return (
         <AIToolLayout>
+            {isGenerating && (
+                <FullScreenLoader
+                    message="Видео жасалуда..."
+                    icon={<Video size={48} color="#10b981" />}
+                    tips={[
+                        'Видеоны .mp4 ретінде жүктей аласыз',
+                        'Тест жасап, оқушылардың білімін тексеріңіз',
+                        'Сабақ генераторы арқылы толық сабақ жоспарын жасаңыз',
+                        'Презентация генераторын қолданып көріңіз',
+                    ]}
+                />
+            )}
             <AIGeneratorLayout
                 title="Manim визуализация"
                 description="Математикалық анимация видеолар жасаңыз"

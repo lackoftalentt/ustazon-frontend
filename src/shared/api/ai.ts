@@ -112,6 +112,26 @@ export interface UserPresentation {
     created_at: string;
 }
 
+export interface PresentationSlide {
+    slide_number: number;
+    title: string;
+    content: string[];
+    image_query?: string;
+    notes?: string;
+}
+
+export interface PresentationDetail {
+    id: number;
+    title: string | null;
+    subject: string | null;
+    grade: string | null;
+    topic: string | null;
+    status: string;
+    gamma_url: string | null;
+    slides: PresentationSlide[] | null;
+    created_at: string | null;
+}
+
 export interface PresentationStatusResponse {
     id: number;
     status: string;
@@ -531,6 +551,14 @@ export const aiApi = {
         const response = await apiClient.get<UserPresentation[]>(
             '/teaching-materials/my',
             { params: { material_type: 'presentation' } }
+        );
+        return response.data;
+    },
+
+    // Get single presentation by ID
+    getPresentationById: async (id: number): Promise<PresentationDetail> => {
+        const response = await apiClient.get<PresentationDetail>(
+            `/ai/presentations/${id}`
         );
         return response.data;
     },
