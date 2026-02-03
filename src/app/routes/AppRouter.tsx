@@ -30,6 +30,8 @@ const AITestPage = lazy(() => import('@/pages/ai-test'))
 const AIManimPage = lazy(() => import('@/pages/ai-manim'))
 const AILessonGeneratorPage = lazy(() => import('@/pages/ai-lesson-generator'))
 const AILessonViewerPage = lazy(() => import('@/pages/ai-lesson-viewer'))
+const AIQMJGeneratorPage = lazy(() => import('@/pages/ai-qmj'))
+const AIQMJViewerPage = lazy(() => import('@/pages/ai-qmj-viewer'))
 const LessonPlansListPage = lazy(() => import('@/pages/lesson-plans-list'))
 const ProfilePage = lazy(() => import('@/pages/profile'))
 const ProfileSettingsPage = lazy(() => import('@/pages/profile-settings'))
@@ -119,6 +121,22 @@ export const AppRouter = () => {
 							element={
 								<PrivateRoute>
 									<AILessonViewerPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="ai-qmj"
+							element={
+								<PrivateRoute>
+									<AIQMJGeneratorPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="ai-qmj/:id"
+							element={
+								<PrivateRoute>
+									<AIQMJViewerPage />
 								</PrivateRoute>
 							}
 						/>

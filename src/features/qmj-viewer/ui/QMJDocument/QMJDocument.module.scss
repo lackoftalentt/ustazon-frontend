@@ -1,0 +1,85 @@
+.pageWrapper {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: #f0f0f0;
+    min-height: 100vh;
+
+    @media print {
+        padding: 0;
+        background: white;
+    }
+}
+
+.page {
+    width: 100%;
+    max-width: 794px;
+    background: white;
+    padding: 48px 56px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+    line-height: 1.7;
+    font-size: 15px;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+
+    @media print {
+        box-shadow: none;
+        padding: 20mm 25mm;
+        max-width: none;
+        font-size: 12pt;
+    }
+
+    @media (max-width: 640px) {
+        padding: 24px 20px;
+    }
+}
+
+.metaBar {
+    display: flex;
+    gap: 1rem;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 0.5rem;
+
+    span {
+        &::after {
+            content: '\00B7';
+            margin-left: 1rem;
+        }
+
+        &:last-child::after {
+            content: '';
+        }
+    }
+}
+
+.title {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 1rem 0 0.25rem;
+    color: #111;
+}
+
+.topic {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0 0 1.5rem;
+    color: #444;
+}
+
+@media print {
+    :global(.qmj-export-bar) {
+        display: none !important;
+    }
+
+    .pageWrapper {
+        background: none;
+    }
+
+    .page {
+        box-shadow: none;
+        font-size: 12pt;
+    }
+}

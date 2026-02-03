@@ -148,6 +148,7 @@ export const TestGenerator = () => {
                 disabled={isGenerating || !subject || !grade || !topic}
                 style={{ marginTop: '1rem' }}
                 icon={<FileCheck />}
+                loading={isGenerating}
             >
                 {isGenerating ? 'Тест жасалуда...' : 'Тест жасау'}
             </AIButton>
@@ -167,7 +168,10 @@ export const TestGenerator = () => {
             <h3>Менің тесттерім</h3>
 
             {isTestsLoading ? (
-                <Loader2 className={styles.spinner} />
+                <div className={styles.loadingState}>
+                    <Loader2 size={24} className={styles.spinner} />
+                    <p>Жүктелуде...</p>
+                </div>
             ) : tests.length === 0 ? (
                 <p>Тесттер әлі жасалмаған</p>
             ) : (

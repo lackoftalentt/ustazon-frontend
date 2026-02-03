@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, MessageSquare, Presentation, FileCheck, Video, BookOpen } from 'lucide-react';
+import { Menu, X, MessageSquare, Presentation, FileCheck, Video, BookOpen, FileText } from 'lucide-react';
 import s from './AIToolLayout.module.scss';
 
 interface AIToolLayoutProps {
@@ -21,6 +21,12 @@ const tools = [
         path: '/ai-lesson',
         icon: BookOpen,
         name: 'Сабақ / Lesson'
+    },
+    {
+        id: 'qmj',
+        path: '/ai-qmj',
+        icon: FileText,
+        name: 'ҚМЖ'
     },
     {
         id: 'preza',
