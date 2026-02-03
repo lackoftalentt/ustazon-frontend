@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2, Printer, FileDown, ClipboardList } from 'lucide-react';
-import { lessonApi, TestBlock } from '@/shared/api/lessonApi';
+import { lessonApi } from '@/shared/api/lessonApi';
 import { LessonDocument } from '@/features/lesson-viewer';
 
 const buttonStyle: React.CSSProperties = {
