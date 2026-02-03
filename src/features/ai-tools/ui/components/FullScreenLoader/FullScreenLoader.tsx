@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Loader2 } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { Progress } from '@/shared/ui/progress';
 import s from './FullScreenLoader.module.scss';
 
@@ -59,7 +59,7 @@ export const FullScreenLoader = ({ message, tips = [], icon }: FullScreenLoaderP
     return (
         <div className={s.overlay}>
             <div className={s.icon}>
-                {icon || <Loader2 size={48} color="#2f8450" />}
+                {icon || <RefreshCw size={48} color="#2f8450" />}
             </div>
             <p className={s.message}>{message}</p>
             <p className={s.sub}>Біраз уақыт күтіңіз</p>
