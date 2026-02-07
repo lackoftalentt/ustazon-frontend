@@ -143,6 +143,7 @@ export const SubjectWindowsPage = () => {
 												key={w.id}
 												id={w.id}
 												title={w.name}
+												thumbnail={w.image_file || w.image_url}
 												path={path}
 											/>
 										)

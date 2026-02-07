@@ -527,3 +527,94 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 480px) {
+    .container {
+        padding: $spacing-md;
+    }
+
+    .header {
+        padding: $spacing-md;
+        gap: $spacing-md;
+        flex-direction: column;
+        text-align: center;
+        border-radius: 16px;
+        margin-bottom: $spacing-xl;
+    }
+
+    .icon {
+        font-size: 2.5rem;
+    }
+
+    .title {
+        font-size: $font-size-lg;
+    }
+
+    .subtitle {
+        font-size: $font-size-sm;
+    }
+
+    .form,
+    .features {
+        padding: $spacing-lg;
+        border-radius: 16px;
+        margin-bottom: $spacing-xl;
+    }
+
+    .label {
+        font-size: $font-size-xs;
+    }
+
+    .input,
+    .select {
+        padding: $spacing-sm $spacing-md;
+        font-size: $font-size-sm;
+        border-radius: 10px;
+    }
+
+    .generateBtn {
+        padding: $spacing-md $spacing-lg;
+        font-size: $font-size-base;
+        border-radius: 10px;
+    }
+
+    .presentationsList {
+        max-height: 250px;
+    }
+
+    .presentationItem {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .cardTitle {
+        font-size: 0.8rem;
+    }
+
+    .cardMeta {
+        font-size: 0.7rem;
+    }
+
+    .loadingState,
+    .emptyState {
+        padding: 2rem 0.75rem;
+    }
+
+    .featureCard {
+        padding: $spacing-md;
+        gap: $spacing-md;
+    }
+
+    .featureIconBox {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .featureTitle {
+        font-size: 0.85rem;
+    }
+
+    .featureText {
+        font-size: 0.75rem;
+    }
+}

@@ -116,7 +116,7 @@ export const SubjectsPage = () => {
 											key={subject.id}
 											id={subject.id}
 											title={subject.name}
-											thumbnail={subject.image_url ?? undefined}
+											thumbnail={subject.image_file || subject.image_url || undefined}
 											path={`/subjects-materials/${subject.code || subject.id}`}
 										/>
 									))}

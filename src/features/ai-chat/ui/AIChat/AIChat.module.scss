@@ -2,6 +2,7 @@
 
 .container {
     display: flex;
+    flex-direction: column;
     height: 100%;
     position: relative;
     overflow: hidden;
@@ -11,12 +12,28 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
-.mainContent {
+.chatHeader {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md $spacing-lg;
+    background: white;
+    border-bottom: 1px solid $color-gray-border;
+    flex-shrink: 0;
+}
+
+.emptyState {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
+    gap: $spacing-md;
+
+    p {
+        color: #64748b;
+        font-size: $font-size-base;
+    }
 }
 
 .messagesContainer {
@@ -307,6 +324,13 @@
     pointer-events: none;
 }
 
+.modelLabel {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-green-dark;
+    padding: 6px 0;
+}
+
 .modelSelect {
     font-size: $font-size-xs;
     color: $color-gray-medium;
@@ -324,5 +348,205 @@
         color: $color-gray-dark;
         background: white;
         padding: 5px;
+    }
+}
+
+// Multi-model response cards
+.multiResponseContainer {
+    padding: $spacing-lg;
+    background: #f8fafc;
+    border-radius: $radius-lg;
+    margin: $spacing-md 0;
+}
+
+.multiResponseTitle {
+    font-size: $font-size-sm;
+    color: $color-gray-medium;
+    margin-bottom: $spacing-md;
+    text-align: center;
+}
+
+.responseCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-md;
+}
+
+.responseCard {
+    background: white;
+    border: 2px solid $color-gray-border;
+    border-radius: $radius-lg;
+    padding: $spacing-md;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(.responseCardError) {
+        border-color: $color-green-primary;
+        box-shadow: 0 4px 12px rgba($color-green-primary, 0.15);
+        transform: translateY(-2px);
+    }
+
+    &.responseCardError {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: #fef2f2;
+        border-color: #fecaca;
+    }
+}
+
+.responseCardHeader {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+    padding-bottom: $spacing-sm;
+    border-bottom: 1px solid $color-gray-border;
+}
+
+.providerBadge {
+    font-size: 10px;
+    font-weight: $font-weight-semibold;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: $color-green-lightest;
+    color: $color-green-primary;
+}
+
+.modelName {
+    font-size: $font-size-xs;
+    color: $color-gray-medium;
+}
+
+.responseCardBody {
+    font-size: $font-size-sm;
+    color: $color-green-dark;
+    max-height: 150px;
+    overflow: hidden;
+    line-height: 1.5;
+
+    p {
+        margin: 0;
+    }
+}
+
+.errorText {
+    color: #dc2626;
+    font-size: $font-size-xs;
+}
+
+.selectBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+    width: 100%;
+    margin-top: $spacing-md;
+    padding: $spacing-sm $spacing-md;
+    background: $color-green-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $color-green-dark;
+    }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        border-radius: 0;
+        border: none;
+        height: calc(100vh - 60px); // Account for top bar
+    }
+
+    .messagesContainer {
+        padding: $spacing-md;
+        gap: $spacing-md;
+    }
+
+    .message {
+        max-width: 95%;
+    }
+
+    .avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+
+    .bubble {
+        padding: $spacing-sm $spacing-md;
+        font-size: 0.9rem;
+    }
+
+    .footer {
+        padding: $spacing-md;
+    }
+
+    .inputWrapper {
+        padding: $spacing-xs;
+    }
+
+    .textarea {
+        font-size: 16px; // Prevents zoom on iOS
+    }
+
+    .attachBtn,
+    .sendBtn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .responseCards {
+        grid-template-columns: 1fr;
+        gap: $spacing-sm;
+    }
+
+    .responseCard {
+        padding: $spacing-sm;
+    }
+
+    .responseCardBody {
+        max-height: 100px;
+        font-size: $font-size-xs;
+    }
+
+    .multiResponseContainer {
+        padding: $spacing-md;
+        margin: $spacing-sm 0;
+    }
+
+    .multiResponseTitle {
+        font-size: $font-size-xs;
+    }
+}
+
+@media (max-width: 480px) {
+    .messagesContainer {
+        padding: $spacing-sm;
+    }
+
+    .message {
+        gap: $spacing-xs;
+    }
+
+    .avatar {
+        width: 24px;
+        height: 24px;
+    }
+
+    .bubble {
+        padding: $spacing-xs $spacing-sm;
+        font-size: 0.85rem;
+    }
+
+    .footer {
+        padding: $spacing-sm;
     }
 }

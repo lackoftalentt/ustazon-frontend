@@ -83,3 +83,17 @@
         transform: rotate(360deg);
     }
 }
+
+// Mobile responsive
+@media (max-width: 480px) {
+    .button {
+        padding: $spacing-sm $spacing-lg;
+        font-size: $font-size-sm;
+        gap: $spacing-xs;
+    }
+
+    .spinner {
+        width: 16px;
+        height: 16px;
+    }
+}

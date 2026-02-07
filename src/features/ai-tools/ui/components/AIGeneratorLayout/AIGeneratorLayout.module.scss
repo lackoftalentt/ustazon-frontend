@@ -105,3 +105,63 @@
     color: $color-green-dark;
     margin-bottom: $spacing-md;
 }
+
+// Mobile responsive
+@media (max-width: 768px) {
+    .container {
+        padding: 0;
+    }
+
+    .grid {
+        gap: $spacing-md;
+    }
+
+    .formSection {
+        padding: $spacing-md;
+        max-height: none;
+        position: static;
+        border-radius: $radius-md;
+    }
+
+    .header {
+        padding-bottom: $spacing-md;
+    }
+
+    .title {
+        font-size: $font-size-lg;
+        gap: $spacing-sm;
+    }
+
+    .description {
+        font-size: 0.875rem;
+    }
+
+    .previewSection {
+        padding: $spacing-lg;
+        min-height: 300px;
+        border-radius: $radius-md;
+    }
+
+    .emptyIcon {
+        font-size: 3rem;
+    }
+
+    .emptyTitle {
+        font-size: $font-size-base;
+    }
+}
+
+@media (max-width: 480px) {
+    .formSection {
+        padding: $spacing-sm;
+    }
+
+    .title {
+        font-size: $font-size-base;
+    }
+
+    .previewSection {
+        padding: $spacing-md;
+        min-height: 250px;
+    }
+}

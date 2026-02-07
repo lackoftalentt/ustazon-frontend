@@ -53,3 +53,22 @@
         box-shadow: 0 0 0 3px rgba($color-green-primary, 0.1);
     }
 }
+
+// Mobile responsive
+@media (max-width: 480px) {
+    .label {
+        font-size: $font-size-xs;
+    }
+
+    .select {
+        padding: $spacing-sm $spacing-md;
+        padding-right: 2rem;
+        font-size: $font-size-sm;
+    }
+
+    .selectWrapper::after {
+        right: 0.75rem;
+        width: 8px;
+        height: 5px;
+    }
+}

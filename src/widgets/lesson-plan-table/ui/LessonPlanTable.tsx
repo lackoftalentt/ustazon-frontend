@@ -188,14 +188,30 @@ export const LessonPlanTable = ({
 	const { openModal: openEditKMJModal } = useEditKMJStore()
 	const { openModal: openCreateKMZHModal } = useCreateKMZHStore()
 
-	const openFiles = useCallback((row: LessonPlanRow) => {
+	const [activeFiles, setActiveFiles] = useState<
+		{ id: string; name: string; url?: string }[]
+	>([])
+
+	const openFiles = useCallback(async (row: LessonPlanRow) => {
 		setActiveRow(row)
+		try {
+			const detail = await kmzhApi.getKmzhById(parseInt(row.id))
+			const files = detail.files.map(f => ({
+				id: String(f.id),
+				name: f.file.split('/').pop() || f.file,
+				url: `/media/${f.file}`
+			}))
+			setActiveFiles(files)
+		} catch {
+			setActiveFiles([])
+		}
 		setFilesOpen(true)
 	}, [])
 
 	const closeFiles = useCallback(() => {
 		setFilesOpen(false)
 		setActiveRow(null)
+		setActiveFiles([])
 	}, [])
 
 	const handleAddFiles = useCallback(
@@ -501,14 +517,7 @@ export const LessonPlanTable = ({
 				open={filesOpen}
 				onClose={closeFiles}
 				lessonTitle={activeRow?.topic}
-				files={
-					activeRow
-						? Array.from({ length: activeRow.filesCount }, (_, i) => ({
-								id: `${activeRow.id}-f${i}`,
-								name: `Файл ${i + 1}.pdf`
-							}))
-						: []
-				}
+				files={activeFiles}
 			/>
 
 			<AddFilesModal />

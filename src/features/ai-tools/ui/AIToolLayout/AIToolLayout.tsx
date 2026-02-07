@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, MessageSquare, Presentation, FileCheck, Video, BookOpen, FileText } from 'lucide-react';
+import { Menu, X, MessageSquare, Presentation, FileCheck, Video, BookOpen, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 import s from './AIToolLayout.module.scss';
 
 interface AIToolLayoutProps {
@@ -14,13 +14,13 @@ const tools = [
         id: 'chat',
         path: '/ai-chat',
         icon: MessageSquare,
-        name: 'AI Chat'
+        name: 'AI Чат'
     },
     {
         id: 'lesson',
         path: '/ai-lesson',
         icon: BookOpen,
-        name: 'Сабақ / Lesson'
+        name: 'Сабақ жоспары'
     },
     {
         id: 'qmj',
@@ -32,13 +32,13 @@ const tools = [
         id: 'preza',
         path: '/ai-preza',
         icon: Presentation,
-        name: 'Презентации'
+        name: 'Презентация'
     },
     {
         id: 'test',
         path: '/ai-test',
         icon: FileCheck,
-        name: 'Тесты/СОР'
+        name: 'Тест / СОР'
     },
     {
         id: 'manim',
@@ -51,6 +51,7 @@ const tools = [
 export const AIToolLayout = ({ children, actions }: AIToolLayoutProps) => {
     const location = useLocation();
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     return (
         <div className={s.layout}>
@@ -61,7 +62,18 @@ export const AIToolLayout = ({ children, actions }: AIToolLayoutProps) => {
             />
 
             {/* Sidebar */}
-            <aside className={`${s.sidebar} ${isMobileOpen ? s.open : ''}`}>
+            <aside className={`${s.sidebar} ${isMobileOpen ? s.mobileOpen : ''} ${isExpanded ? s.expanded : s.collapsed}`}>
+                <div className={s.sidebarHeader}>
+                    {isExpanded && <span className={s.sidebarTitle}>AI құралдар</span>}
+                    <button
+                        className={s.collapseBtn}
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        title={isExpanded ? "Свернуть" : "Развернуть"}
+                    >
+                        {isExpanded ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+                    </button>
+                </div>
+
                 <nav className={s.nav}>
                     {tools.map(tool => {
                         const Icon = tool.icon;
@@ -72,10 +84,10 @@ export const AIToolLayout = ({ children, actions }: AIToolLayoutProps) => {
                                 to={tool.path}
                                 className={`${s.navItem} ${isActive ? s.active : ''}`}
                                 onClick={() => setIsMobileOpen(false)}
-                                title={tool.name}
+                                title={!isExpanded ? tool.name : undefined}
                             >
-                                <Icon size={24} strokeWidth={2} />
-                                <span>{tool.name}</span>
+                                <Icon size={20} strokeWidth={2} />
+                                {isExpanded && <span>{tool.name}</span>}
                             </Link>
                         );
                     })}
@@ -89,12 +101,14 @@ export const AIToolLayout = ({ children, actions }: AIToolLayoutProps) => {
                         className={s.mobileToggle}
                         onClick={() => setIsMobileOpen(!isMobileOpen)}
                     >
-                        {isMobileOpen ? <X /> : <Menu />}
+                        {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
 
-                    <div className={s.actions}>
-                        {actions}
-                    </div>
+                    {actions && (
+                        <div className={s.actions}>
+                            {actions}
+                        </div>
+                    )}
                 </div>
 
                 <main className={s.content}>

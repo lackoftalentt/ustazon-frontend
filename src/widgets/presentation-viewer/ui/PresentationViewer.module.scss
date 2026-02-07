@@ -11,58 +11,30 @@ $ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 	background: white;
 	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 	transition: all 0.3s $ease-out-smooth;
-}
 
-.header {
-	background: white;
-	border-bottom: 2px solid rgba($color-green-primary, 0.1);
-	padding: $spacing-md $spacing-xl;
-	min-height: 56px;
-	display: flex;
-	align-items: center;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
+	:global(#react-doc-viewer) {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
 
-.iframe {
-	width: 100%;
-	height: 100%;
-	border: none;
-}
+	:global(#proxy-renderer) {
+		flex: 1;
+		min-height: 0;
+	}
 
-.loader {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: $spacing-md;
-	color: $color-green-dark;
+	:global(#msdoc-renderer) {
+		height: 100%;
+	}
 
-	p {
-		font-size: $font-size-base;
-		font-weight: $font-weight-medium;
+	:global(#msdoc-iframe) {
+		width: 100%;
+		height: 100%;
+		border: none;
 	}
 }
 
-.spinner {
-	width: 40px;
-	height: 40px;
-	border: 3px solid rgba($color-green-primary, 0.2);
-	border-top-color: $color-green-primary;
-	border-radius: 50%;
-	animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-	to {
-		transform: rotate(360deg);
-	}
-}
-
-.emptyState,
-.errorState {
+.emptyState {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -81,26 +53,11 @@ $ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 	}
 }
 
-.downloadLink {
-	padding: $spacing-sm $spacing-lg;
-	background: $color-green-primary;
-	color: white;
-	border-radius: $radius-md;
-	text-decoration: none;
-	font-weight: $font-weight-semibold;
-	transition: all 0.2s ease;
-
-	&:hover {
-		background: $color-green-dark;
-	}
-}
-
 .fullscreenButton {
 	position: absolute;
-	top: $spacing-md;
+	top: 5px;
 	right: $spacing-md;
 	z-index: 1000;
-	top: 5px;
 
 	display: flex;
 	align-items: center;
@@ -126,7 +83,6 @@ $ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 		0 1px 2px rgba(0, 0, 0, 0.04);
 
 	transition: all 0.3s $ease-out-smooth;
-
 	animation: slideInRight 0.4s $ease-out-smooth;
 
 	svg {
@@ -177,15 +133,6 @@ $ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 	to {
 		opacity: 1;
 		transform: translateX(0);
-	}
-}
-
-.fullscreenButtonText {
-	display: none;
-
-	@media (min-width: 768px) {
-		display: inline;
-		margin-left: $spacing-xs;
 	}
 }
 
@@ -248,6 +195,7 @@ $ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 	.presentationViewer {
 		height: 500px;
 		border-radius: $radius-lg;
+		overflow: auto;
 
 		:global {
 			#header-bar {
@@ -258,30 +206,10 @@ $ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 			#file-name {
 				font-size: $font-size-sm;
 			}
-
-			#proxy-renderer {
-				height: calc(100% - 48px);
-			}
-		}
-	}
-
-	.fullscreen {
-		:global {
-			#proxy-renderer {
-				height: calc(100vh - 56px) !important;
-			}
-
-			#pdf-controls {
-				height: 56px;
-			}
 		}
 	}
 }
-@media (max-width: 768px) {
-	.presentationViewer {
-		overflow: auto;
-	}
-}
+
 :global {
 	#header-bar {
 		display: flex;
@@ -304,13 +232,11 @@ $ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 	background: #f8f9fa;
 	border-radius: 0;
 
-	// Скрываем кастомные
 	.fullscreenButton,
 	.downloadButton {
 		display: none !important;
 	}
 
-	// Скрываем всё нативное от библиотеки
 	:global {
 		#header-bar,
 		#pdf-controls,

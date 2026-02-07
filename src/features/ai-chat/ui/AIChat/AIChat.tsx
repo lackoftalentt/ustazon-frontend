@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, Loader2, Bot, User, Sparkles, X, FileText } from 'lucide-react';
+import { Send, Paperclip, Loader2, Bot, User, Sparkles, X, FileText, Check } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import s from './AIChat.module.scss';
 import { aiApi } from '@/shared/api/ai';
-import type { ConversationListItem } from '@/shared/api/ai';
-import { ChatSidebar } from '../ChatSidebar/ChatSidebar';
+import type { ConversationListItem, MultiModelResponse } from '@/shared/api/ai';
+import { ChatHistory } from '../ChatHistory/ChatHistory';
 
 interface Message {
     id: string;
@@ -12,19 +12,25 @@ interface Message {
     sender: 'ai' | 'user';
     timestamp: Date;
     images?: string[];
+    model?: string;
+    provider?: string;
+}
+
+interface PendingResponses {
+    responses: MultiModelResponse[];
+    userMessageId: string;
 }
 
 export const AIChat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [conversations, setConversations] = useState<ConversationListItem[]>([]);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isLoadingConversations, setIsLoadingConversations] = useState(true);
 
     const [inputValue, setInputValue] = useState('');
     const [conversationId, setConversationId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [currentAIModel, setCurrentAIModel] = useState('gemini-2.5-flash');
     const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+    const [pendingResponses, setPendingResponses] = useState<PendingResponses | null>(null);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,13 +40,6 @@ export const AIChat = () => {
     useEffect(() => {
         loadConversations();
     }, []);
-
-    // Scroll to bottom removed as per user request
-    /*
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
-    */
 
     // Auto-resize textarea
     useEffect(() => {
@@ -70,7 +69,6 @@ export const AIChat = () => {
             const conv = await aiApi.getConversation(id);
             setConversationId(conv.id);
             if (conv.messages) {
-                // Map backend messages to UI messages
                 const uiMessages: Message[] = conv.messages.map(m => ({
                     id: m.id.toString(),
                     text: m.content,
@@ -91,11 +89,12 @@ export const AIChat = () => {
         setMessages([]);
         setAttachedFiles([]);
         setInputValue('');
+        setPendingResponses(null);
     };
 
     const handleDeleteConversation = async (id: number, e: React.MouseEvent) => {
         e.stopPropagation();
-        if (window.confirm('Вы уверены, что хотите удалить этот чат?')) {
+        if (window.confirm('Осы чатты жою керек пе?')) {
             try {
                 await aiApi.deleteConversation(id);
                 setConversations(prev => prev.filter(c => c.id !== id));
@@ -123,17 +122,16 @@ export const AIChat = () => {
         if ((!inputValue.trim() && attachedFiles.length === 0) || isLoading) return;
 
         const userMsgText = inputValue;
-        const currentFiles = [...attachedFiles];
 
         setInputValue('');
         setAttachedFiles([]);
 
-        // Reset height
         if (textareaRef.current) textareaRef.current.style.height = '24px';
 
+        const userMessageId = `user-${Date.now()}`;
         const userMessage: Message = {
-            id: `user-${Date.now()}`,
-            text: userMsgText + (currentFiles.length > 0 ? `\n[Вложения: ${currentFiles.map(f => f.name).join(', ')}]` : ''),
+            id: userMessageId,
+            text: userMsgText,
             sender: 'user',
             timestamp: new Date()
         };
@@ -142,34 +140,19 @@ export const AIChat = () => {
         setIsLoading(true);
 
         try {
-            const response = await aiApi.sendMessage({
-                conversation_id: conversationId ?? undefined,
-                message: userMsgText || (currentFiles.length > 0 ? "Проанализируй эти файлы" : ""),
-                save_to_history: true,
-                model: currentAIModel,
-                files: currentFiles
+            const response = await aiApi.chatMulti({
+                message: userMsgText,
             });
 
-            if (!conversationId) {
-                setConversationId(response.conversation_id);
-                loadConversations(); // Refresh list to show new chat
-            } else {
-                // Update title/preview in list if needed (optional optimization)
-            }
-
-            const aiMessage: Message = {
-                id: response.assistant_message.id.toString(),
-                text: response.assistant_message.content,
-                sender: 'ai',
-                timestamp: new Date(response.assistant_message.created_at)
-            };
-
-            setMessages(prev => [...prev, aiMessage]);
+            setPendingResponses({
+                responses: response.responses,
+                userMessageId
+            });
         } catch (error) {
             console.error('Error sending message:', error);
             const errorMessage: Message = {
                 id: `error-${Date.now()}`,
-                text: 'Извините, произошла ошибка. Попробуйте еще раз.',
+                text: 'Кешіріңіз, қате орын алды. Қайта көріңіз.',
                 sender: 'ai',
                 timestamp: new Date()
             };
@@ -177,6 +160,22 @@ export const AIChat = () => {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleSelectResponse = (response: MultiModelResponse) => {
+        if (!response.text) return;
+
+        const aiMessage: Message = {
+            id: `ai-${Date.now()}`,
+            text: response.text,
+            sender: 'ai',
+            timestamp: new Date(),
+            model: response.model,
+            provider: response.provider
+        };
+
+        setMessages(prev => [...prev, aiMessage]);
+        setPendingResponses(null);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -188,119 +187,135 @@ export const AIChat = () => {
 
     return (
         <div className={s.container}>
-            <ChatSidebar
-                conversations={conversations}
-                currentId={conversationId}
-                onSelect={handleSelectConversation}
-                onNewChat={handleNewChat}
-                onDelete={handleDeleteConversation}
-                isOpen={isSidebarOpen}
-                onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-                isLoading={isLoadingConversations}
-            />
+            <header className={s.chatHeader}>
+                <ChatHistory
+                    conversations={conversations}
+                    currentId={conversationId}
+                    onSelect={handleSelectConversation}
+                    onNewChat={handleNewChat}
+                    onDelete={handleDeleteConversation}
+                    isLoading={isLoadingConversations}
+                />
+            </header>
 
-            <div className={s.mainContent}>
-                <div className={s.messagesContainer}>
-                    {messages.length === 0 ? (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0.6 }}>
-                            <Sparkles size={48} color="#cbd5e1" />
-                            <p style={{ marginTop: '1rem', color: '#64748b' }}>UstazOn AI-ден бастаңыз</p>
-                        </div>
-                    ) : (
-                        messages.map(m => (
-                            <div key={m.id} className={`${s.message} ${s[m.sender]}`}>
-                                <div className={`${s.avatar} ${m.sender === 'user' ? s.userAvatar : s.aiAvatar}`}>
-                                    {m.sender === 'user' ? <User size={20} /> : <Bot size={20} />}
-                                </div>
-                                <div className={s.bubble}>
-                                    <ReactMarkdown>{m.text}</ReactMarkdown>
-                                </div>
-                            </div>
-                        ))
-                    )}
-
-                    {isLoading && (
-                        <div className={`${s.message} ${s.ai}`}>
-                            <div className={`${s.avatar} ${s.aiAvatar}`}>
-                                <Bot size={20} />
+            <div className={s.messagesContainer}>
+                {messages.length === 0 ? (
+                    <div className={s.emptyState}>
+                        <Sparkles size={48} />
+                        <p>UstazOn AI-мен сұхбатты бастаңыз</p>
+                    </div>
+                ) : (
+                    messages.map(m => (
+                        <div key={m.id} className={`${s.message} ${s[m.sender]}`}>
+                            <div className={`${s.avatar} ${m.sender === 'user' ? s.userAvatar : s.aiAvatar}`}>
+                                {m.sender === 'user' ? <User size={20} /> : <Bot size={20} />}
                             </div>
                             <div className={s.bubble}>
-                                <div className={s.typingIndicator}>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
+                                <ReactMarkdown>{m.text}</ReactMarkdown>
                             </div>
                         </div>
-                    )}
-                    <div ref={messagesEndRef} />
-                </div>
+                    ))
+                )}
 
-                <footer className={s.footer}>
-                    <div className={s.modelSelectContainer}>
-                        <Sparkles size={14} className={s.modelIcon} />
-                        <select
-                            className={s.modelSelect}
-                            value={currentAIModel}
-                            onChange={(e) => setCurrentAIModel(e.target.value)}
-                        >
-                            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                            <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash Exp</option>
-                            <option value="claude-3-5-sonnet">Claude 3.5 Sonnet</option>
-                            <option value="gpt-4o">GPT-4o</option>
-                            <option value="gpt-4o-mini">GPT-4o Mini</option>
-                        </select>
+                {isLoading && (
+                    <div className={`${s.message} ${s.ai}`}>
+                        <div className={`${s.avatar} ${s.aiAvatar}`}>
+                            <Bot size={20} />
+                        </div>
+                        <div className={s.bubble}>
+                            <div className={s.typingIndicator}>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
                     </div>
+                )}
 
-                    {attachedFiles.length > 0 && (
-                        <div className={s.filesPreview}>
-                            {attachedFiles.map((file, i) => (
-                                <div key={i} className={s.fileBadge}>
-                                    <FileText size={14} />
-                                    <span className={s.fileName}>{file.name}</span>
-                                    <button onClick={() => removeFile(i)} className={s.removeFileBtn}>
-                                        <X size={12} />
-                                    </button>
+                {pendingResponses && (
+                    <div className={s.multiResponseContainer}>
+                        <p className={s.multiResponseTitle}>Жауапты таңдаңыз:</p>
+                        <div className={s.responseCards}>
+                            {pendingResponses.responses.map((resp, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`${s.responseCard} ${!resp.text ? s.responseCardError : ''}`}
+                                    onClick={() => resp.text && handleSelectResponse(resp)}
+                                >
+                                    <div className={s.responseCardHeader}>
+                                        <span className={s.providerBadge}>{resp.provider}</span>
+                                        <span className={s.modelName}>{resp.model}</span>
+                                    </div>
+                                    <div className={s.responseCardBody}>
+                                        {resp.text ? (
+                                            <ReactMarkdown>{resp.text.slice(0, 300) + (resp.text.length > 300 ? '...' : '')}</ReactMarkdown>
+                                        ) : (
+                                            <p className={s.errorText}>Қате: {resp.error?.slice(0, 100)}...</p>
+                                        )}
+                                    </div>
+                                    {resp.text && (
+                                        <button className={s.selectBtn}>
+                                            <Check size={16} /> Таңдау
+                                        </button>
+                                    )}
                                 </div>
                             ))}
                         </div>
-                    )}
-
-                    <div className={s.inputWrapper}>
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            style={{ display: 'none' }}
-                            onChange={handleFileSelect}
-                            multiple
-                        />
-                        <button
-                            className={s.attachBtn}
-                            title="Прикрепить файл"
-                            onClick={() => fileInputRef.current?.click()}
-                        >
-                            <Paperclip size={20} />
-                        </button>
-                        <textarea
-                            ref={textareaRef}
-                            className={s.textarea}
-                            placeholder="Сообщение для AI..."
-                            value={inputValue}
-                            onChange={e => setInputValue(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            disabled={isLoading}
-                            rows={1}
-                        />
-                        <button
-                            className={s.sendBtn}
-                            onClick={handleSendMessage}
-                            disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
-                        >
-                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
-                        </button>
                     </div>
-                </footer>
+                )}
+
+                <div ref={messagesEndRef} />
             </div>
+
+            <footer className={s.footer}>
+                {attachedFiles.length > 0 && (
+                    <div className={s.filesPreview}>
+                        {attachedFiles.map((file, i) => (
+                            <div key={i} className={s.fileBadge}>
+                                <FileText size={14} />
+                                <span className={s.fileName}>{file.name}</span>
+                                <button onClick={() => removeFile(i)} className={s.removeFileBtn}>
+                                    <X size={12} />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                <div className={s.inputWrapper}>
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleFileSelect}
+                        multiple
+                    />
+                    <button
+                        className={s.attachBtn}
+                        title="Файл тіркеу"
+                        onClick={() => fileInputRef.current?.click()}
+                    >
+                        <Paperclip size={20} />
+                    </button>
+                    <textarea
+                        ref={textareaRef}
+                        className={s.textarea}
+                        placeholder="AI-ға хабарлама жазыңыз..."
+                        value={inputValue}
+                        onChange={e => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        disabled={isLoading}
+                        rows={1}
+                    />
+                    <button
+                        className={s.sendBtn}
+                        onClick={handleSendMessage}
+                        disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
+                    >
+                        {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
+                    </button>
+                </div>
+            </footer>
         </div>
     );
 };

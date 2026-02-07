@@ -13,3 +13,17 @@
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 }
+
+// Mobile responsive
+@media (max-width: 768px) {
+    .card {
+        padding: $spacing-lg;
+        border-radius: $radius-md;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: $spacing-md;
+    }
+}

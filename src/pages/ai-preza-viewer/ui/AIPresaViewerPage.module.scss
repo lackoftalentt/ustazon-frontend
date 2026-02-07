@@ -260,17 +260,98 @@
 }
 
 @media (max-width: 768px) {
+	.toolbar {
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		padding: 0.75rem;
+	}
+
+	.toolbarBtn {
+		padding: 0.5rem 1rem;
+		font-size: 13px;
+	}
+
+	.viewer {
+		padding: 1rem;
+		gap: 1rem;
+	}
+
+	.slideArea {
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
 	.slideCard {
-		min-height: 300px;
-		padding: 1.5rem;
+		min-height: 280px;
+		padding: 1.25rem;
 	}
 
 	.slideTitle {
 		font-size: 1.25rem;
+		margin-bottom: 1rem;
 	}
 
 	.slideContent li {
 		font-size: 0.9375rem;
+		padding-left: 1rem;
+
+		&::before {
+			width: 6px;
+			height: 6px;
+		}
+	}
+
+	.navBtn {
+		width: 40px;
+		height: 40px;
+	}
+
+	.thumbnails {
+		padding: 0.25rem 0;
+	}
+
+	.thumb {
+		padding: 0.375rem 0.5rem;
+		max-width: 140px;
+	}
+}
+
+@media (max-width: 480px) {
+	.toolbar {
+		padding: 0.5rem;
+	}
+
+	.toolbarBtn {
+		flex: 1;
+		justify-content: center;
+		padding: 0.5rem;
+		font-size: 12px;
+
+		span {
+			display: none;
+		}
+	}
+
+	.viewer {
+		padding: 0.5rem;
+	}
+
+	.slideCard {
+		min-height: 240px;
+		padding: 1rem;
+	}
+
+	.slideTitle {
+		font-size: 1.1rem;
+	}
+
+	.slideContent li {
+		font-size: 0.875rem;
+	}
+
+	.slideNotes {
+		font-size: 0.75rem;
+		padding: 0.5rem 0.75rem;
 	}
 
 	.navBtn {

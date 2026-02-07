@@ -154,3 +154,51 @@
         font-size: 1.5rem;
     }
 }
+
+@media (max-width: 480px) {
+    .quickCommands {
+        padding: $spacing-md;
+        gap: $spacing-lg;
+    }
+
+    .welcome {
+        margin-bottom: $spacing-md;
+    }
+
+    .welcomeTitle {
+        font-size: $font-size-lg;
+    }
+
+    .welcomeSubtitle {
+        font-size: $font-size-xs;
+    }
+
+    .actionCard {
+        padding: $spacing-sm $spacing-md;
+        border-radius: 12px;
+    }
+
+    .actionIcon {
+        width: 36px;
+        height: 36px;
+        font-size: 1.25rem;
+        border-radius: 10px;
+    }
+
+    .actionTitle {
+        font-size: $font-size-sm;
+    }
+
+    .actionDescription {
+        font-size: $font-size-xs;
+    }
+
+    .examplesTitle {
+        font-size: $font-size-xs;
+    }
+
+    .exampleChip {
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-xs;
+    }
+}

@@ -69,3 +69,32 @@
 		transform: translateY(0);
 	}
 }
+
+// Mobile responsive
+@media (max-width: 480px) {
+	.overlay {
+		gap: 0.75rem;
+		padding: 1rem;
+	}
+
+	.message {
+		font-size: 1rem;
+		text-align: center;
+	}
+
+	.sub {
+		font-size: 0.8rem;
+		text-align: center;
+	}
+
+	.progressWrap {
+		width: 100%;
+		max-width: 240px;
+	}
+
+	.tip {
+		padding: 0.5rem 1rem;
+		font-size: 0.8rem;
+		max-width: 280px;
+	}
+}

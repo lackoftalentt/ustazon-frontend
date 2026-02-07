@@ -150,11 +150,33 @@ export interface UserTest {
     updated_at: string;
 }
 
+// Multi-model response type
+export interface MultiModelResponse {
+    model: string;
+    provider: string;
+    text: string | null;
+    usage: UsageInfo | null;
+    error: string | null;
+}
+
+export interface ChatMultiResponse {
+    responses: MultiModelResponse[];
+}
+
 export const aiApi = {
     // Basic chat (no history saving)
     chat: async (request: ChatRequest): Promise<ChatResponse> => {
         const response = await apiClient.post<ChatResponse>(
             '/ai/chat',
+            request
+        );
+        return response.data;
+    },
+
+    // Multi-model chat - get responses from 3 models at once
+    chatMulti: async (request: ChatRequest): Promise<ChatMultiResponse> => {
+        const response = await apiClient.post<ChatMultiResponse>(
+            '/ai/chat/multi',
             request
         );
         return response.data;

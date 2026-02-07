@@ -173,3 +173,31 @@
 .spinner {
     animation: spin 1s linear infinite;
 }
+
+// Mobile responsive
+@media (max-width: 480px) {
+    .qmjList {
+        max-height: 250px;
+    }
+
+    .qmjItem {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .cardTitle {
+        font-size: 0.8rem;
+    }
+
+    .cardMeta {
+        font-size: 0.7rem;
+    }
+
+    .loadingState,
+    .emptyState {
+        padding: 2rem 0.75rem;
+    }
+
+    .errorState {
+        padding: 1.5rem;
+    }
+}

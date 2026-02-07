@@ -129,3 +129,70 @@
 .error {
     color: #dc3545;
 }
+
+// Mobile responsive
+@media (max-width: 768px) {
+    .quickCommands {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .promptsGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .promptCard {
+        padding: 14px;
+    }
+
+    .promptName {
+        font-size: 15px;
+    }
+
+    .promptPreview {
+        font-size: 12px;
+    }
+
+    .loading,
+    .error,
+    .empty {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .quickCommands {
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .header {
+        margin-bottom: 16px;
+    }
+
+    .title {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+
+    .categoryBtn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .promptCard {
+        padding: 12px;
+    }
+
+    .presentationCard .promptName {
+        font-size: 16px;
+    }
+}

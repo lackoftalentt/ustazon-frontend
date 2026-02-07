@@ -2,4 +2,12 @@
 
 .container {
     padding-top: $spacing-xl;
+    height: calc(100vh - 80px);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-top: $spacing-md;
+        height: calc(100vh - 60px);
+    }
 }

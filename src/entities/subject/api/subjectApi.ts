@@ -15,6 +15,7 @@ export interface Window {
     link: string | null;
     nsub: boolean;
     image_url: string | null;
+    image_file: string | null;
     created_at: string;
 }
 
@@ -24,6 +25,8 @@ export interface Subject {
     code: string;
     image_url: string | null;
     hero_image_url: string | null;
+    image_file: string | null;
+    hero_image_file: string | null;
     created_at: string;
     updated_at: string;
     institution_types: InstitutionType[];
