@@ -133,51 +133,6 @@
     gap: $spacing-md;
 }
 
-.filesPreview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $spacing-sm;
-    margin-bottom: -$spacing-xs; // Slightly pull closer to input
-}
-
-.fileBadge {
-    display: flex;
-    align-items: center;
-    gap: $spacing-xs;
-    background: #f1f5f9;
-    padding: 6px 10px;
-    border-radius: $radius-md;
-    font-size: $font-size-xs;
-    color: $color-green-dark;
-    border: 1px solid $color-gray-border;
-}
-
-.fileName {
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.removeFileBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #e2e8f0;
-    border: none;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    color: $color-gray-medium;
-    padding: 0;
-
-    &:hover {
-        background: #cbd5e1;
-        color: #ef4444;
-    }
-}
-
 .inputWrapper {
     display: flex;
     gap: $spacing-sm;
@@ -213,7 +168,6 @@
     }
 }
 
-.attachBtn,
 .sendBtn {
     display: flex;
     align-items: center;
@@ -225,19 +179,6 @@
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0;
-}
-
-.attachBtn {
-    background: #f1f5f9;
-    color: $color-gray-medium;
-
-    &:hover {
-        background: #e2e8f0;
-        color: $color-green-dark;
-    }
-}
-
-.sendBtn {
     background-color: $color-green-primary;
     color: white;
 
@@ -456,6 +397,52 @@
     }
 }
 
+// Retry button inside error bubble
+.retryBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+    margin-top: $spacing-sm;
+    padding: $spacing-xs $spacing-md;
+    background: transparent;
+    color: $color-green-primary;
+    border: 1px solid $color-green-primary;
+    border-radius: $radius-md;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $color-green-primary;
+        color: white;
+    }
+}
+
+// Retry button when all models failed
+.retryAllBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    width: 100%;
+    margin-top: $spacing-lg;
+    padding: $spacing-md;
+    background: $color-green-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $color-green-dark;
+        transform: scale(1.02);
+    }
+}
+
 // Mobile responsive
 @media (max-width: 768px) {
     .container {
@@ -497,7 +484,6 @@
         font-size: 16px; // Prevents zoom on iOS
     }
 
-    .attachBtn,
     .sendBtn {
         width: 36px;
         height: 36px;

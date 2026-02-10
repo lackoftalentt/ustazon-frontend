@@ -211,6 +211,33 @@
     }
 }
 
+.loadMoreBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: $spacing-xs;
+    padding: $spacing-sm;
+    background: transparent;
+    border: 1px dashed $color-gray-border;
+    border-radius: $radius-md;
+    color: $color-gray-medium;
+    font-size: $font-size-xs;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        border-color: $color-green-primary;
+        color: $color-green-primary;
+        background: $color-green-lightest;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: default;
+    }
+}
+
 .loader, .empty {
     display: flex;
     flex-direction: column;

@@ -10,6 +10,8 @@ interface ChatHistoryProps {
     onNewChat: () => void;
     onDelete: (id: number, e: React.MouseEvent) => void;
     isLoading?: boolean;
+    hasMore?: boolean;
+    onLoadMore?: () => void;
 }
 
 export const ChatHistory = ({
@@ -18,7 +20,9 @@ export const ChatHistory = ({
     onSelect,
     onNewChat,
     onDelete,
-    isLoading = false
+    isLoading = false,
+    hasMore = false,
+    onLoadMore
 }: ChatHistoryProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -88,32 +92,43 @@ export const ChatHistory = ({
                                 <span>Тарих бос</span>
                             </div>
                         ) : (
-                            conversations.map(conv => (
-                                <div
-                                    key={conv.id}
-                                    className={`${s.item} ${currentId === conv.id ? s.active : ''}`}
-                                    onClick={() => handleSelect(conv.id)}
-                                >
-                                    <MessageSquare size={16} className={s.icon} />
-                                    <div className={s.info}>
-                                        <span className={s.title}>
-                                            {conv.title || conv.subject || 'Жаңа диалог'}
-                                        </span>
-                                        <span className={s.date}>
-                                            {new Date(conv.created_at).toLocaleDateString()}
-                                        </span>
-                                    </div>
-                                    <button
-                                        className={s.deleteBtn}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            onDelete(conv.id, e);
-                                        }}
+                            <>
+                                {conversations.map(conv => (
+                                    <div
+                                        key={conv.id}
+                                        className={`${s.item} ${currentId === conv.id ? s.active : ''}`}
+                                        onClick={() => handleSelect(conv.id)}
                                     >
-                                        <Trash2 size={14} />
+                                        <MessageSquare size={16} className={s.icon} />
+                                        <div className={s.info}>
+                                            <span className={s.title}>
+                                                {conv.title || conv.subject || 'Жаңа диалог'}
+                                            </span>
+                                            <span className={s.date}>
+                                                {new Date(conv.created_at).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        <button
+                                            className={s.deleteBtn}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onDelete(conv.id, e);
+                                            }}
+                                        >
+                                            <Trash2 size={14} />
+                                        </button>
+                                    </div>
+                                ))}
+                                {hasMore && onLoadMore && (
+                                    <button
+                                        className={s.loadMoreBtn}
+                                        onClick={onLoadMore}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'Жүктелуде...' : 'Көбірек жүктеу'}
                                     </button>
-                                </div>
-                            ))
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

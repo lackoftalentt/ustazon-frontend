@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, Loader2, Bot, User, Sparkles, X, FileText, Check } from 'lucide-react';
+import { Send, Loader2, Bot, User, Sparkles, Check, RefreshCw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import toast from 'react-hot-toast';
 import s from './AIChat.module.scss';
 import { aiApi } from '@/shared/api/ai';
 import type { ConversationListItem, MultiModelResponse } from '@/shared/api/ai';
 import { ChatHistory } from '../ChatHistory/ChatHistory';
+
+const PAGE_SIZE = 20;
 
 interface Message {
     id: string;
@@ -25,15 +28,16 @@ export const AIChat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [conversations, setConversations] = useState<ConversationListItem[]>([]);
     const [isLoadingConversations, setIsLoadingConversations] = useState(true);
+    const [hasMoreConversations, setHasMoreConversations] = useState(false);
 
     const [inputValue, setInputValue] = useState('');
     const [conversationId, setConversationId] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+    const [isSaving, setIsSaving] = useState(false);
+    const [lastSentMessage, setLastSentMessage] = useState('');
     const [pendingResponses, setPendingResponses] = useState<PendingResponses | null>(null);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Initial load of conversations
@@ -49,17 +53,21 @@ export const AIChat = () => {
         }
     }, [inputValue]);
 
-    const loadConversations = async () => {
+    const loadConversations = async (loadMore = false) => {
         try {
             setIsLoadingConversations(true);
-            const list = await aiApi.getConversations();
-            setConversations(list);
+            const skip = loadMore ? conversations.length : 0;
+            const list = await aiApi.getConversations(skip, PAGE_SIZE);
+            setConversations(prev => loadMore ? [...prev, ...list] : list);
+            setHasMoreConversations(list.length === PAGE_SIZE);
         } catch (err) {
             console.error('Failed to load conversations', err);
         } finally {
             setIsLoadingConversations(false);
         }
     };
+
+    const handleLoadMore = () => loadConversations(true);
 
     const handleSelectConversation = async (id: number) => {
         if (id === conversationId) return;
@@ -87,7 +95,6 @@ export const AIChat = () => {
     const handleNewChat = () => {
         setConversationId(null);
         setMessages([]);
-        setAttachedFiles([]);
         setInputValue('');
         setPendingResponses(null);
     };
@@ -107,24 +114,13 @@ export const AIChat = () => {
         }
     };
 
-    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files.length > 0) {
-            const newFiles = Array.from(e.target.files);
-            setAttachedFiles(prev => [...prev, ...newFiles]);
-        }
-    };
-
-    const removeFile = (index: number) => {
-        setAttachedFiles(prev => prev.filter((_, i) => i !== index));
-    };
-
     const handleSendMessage = async () => {
-        if ((!inputValue.trim() && attachedFiles.length === 0) || isLoading) return;
+        if (!inputValue.trim() || isLoading) return;
 
         const userMsgText = inputValue;
+        setLastSentMessage(userMsgText);
 
         setInputValue('');
-        setAttachedFiles([]);
 
         if (textareaRef.current) textareaRef.current.style.height = '24px';
 
@@ -162,9 +158,10 @@ export const AIChat = () => {
         }
     };
 
-    const handleSelectResponse = (response: MultiModelResponse) => {
-        if (!response.text) return;
+    const handleSelectResponse = async (response: MultiModelResponse) => {
+        if (!response.text || isSaving) return;
 
+        // Optimistic UI update
         const aiMessage: Message = {
             id: `ai-${Date.now()}`,
             text: response.text,
@@ -176,6 +173,65 @@ export const AIChat = () => {
 
         setMessages(prev => [...prev, aiMessage]);
         setPendingResponses(null);
+        setIsSaving(true);
+
+        try {
+            const result = await aiApi.sendMessage({
+                conversation_id: conversationId ?? undefined,
+                message: lastSentMessage,
+                save_to_history: true,
+                model: response.model,
+            });
+
+            setConversationId(result.conversation_id);
+
+            // Update AI message with server content
+            setMessages(prev =>
+                prev.map(m =>
+                    m.id === aiMessage.id
+                        ? { ...m, text: result.assistant_message.content }
+                        : m
+                )
+            );
+
+            loadConversations();
+        } catch (err) {
+            console.error('Failed to save response:', err);
+            toast.error('Жауапты сақтау кезінде қате орын алды');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleRetry = async () => {
+        if (!lastSentMessage || isLoading) return;
+
+        // Remove error messages from the list
+        setMessages(prev => prev.filter(m => !m.id.startsWith('error-')));
+        setPendingResponses(null);
+        setIsLoading(true);
+
+        try {
+            const response = await aiApi.chatMulti({
+                message: lastSentMessage,
+            });
+
+            setPendingResponses({
+                responses: response.responses,
+                userMessageId: `user-retry-${Date.now()}`
+            });
+        } catch (error) {
+            console.error('Retry failed:', error);
+            const errorMessage: Message = {
+                id: `error-${Date.now()}`,
+                text: 'Кешіріңіз, қате орын алды. Қайта көріңіз.',
+                sender: 'ai',
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -195,6 +251,8 @@ export const AIChat = () => {
                     onNewChat={handleNewChat}
                     onDelete={handleDeleteConversation}
                     isLoading={isLoadingConversations}
+                    hasMore={hasMoreConversations}
+                    onLoadMore={handleLoadMore}
                 />
             </header>
 
@@ -212,6 +270,11 @@ export const AIChat = () => {
                             </div>
                             <div className={s.bubble}>
                                 <ReactMarkdown>{m.text}</ReactMarkdown>
+                                {m.id.startsWith('error-') && (
+                                    <button className={s.retryBtn} onClick={handleRetry}>
+                                        <RefreshCw size={14} /> Қайта жіберу
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))
@@ -261,6 +324,11 @@ export const AIChat = () => {
                                 </div>
                             ))}
                         </div>
+                        {pendingResponses.responses.every(r => !r.text) && (
+                            <button className={s.retryAllBtn} onClick={handleRetry}>
+                                <RefreshCw size={18} /> Қайта жіберу
+                            </button>
+                        )}
                     </div>
                 )}
 
@@ -268,35 +336,7 @@ export const AIChat = () => {
             </div>
 
             <footer className={s.footer}>
-                {attachedFiles.length > 0 && (
-                    <div className={s.filesPreview}>
-                        {attachedFiles.map((file, i) => (
-                            <div key={i} className={s.fileBadge}>
-                                <FileText size={14} />
-                                <span className={s.fileName}>{file.name}</span>
-                                <button onClick={() => removeFile(i)} className={s.removeFileBtn}>
-                                    <X size={12} />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
                 <div className={s.inputWrapper}>
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        style={{ display: 'none' }}
-                        onChange={handleFileSelect}
-                        multiple
-                    />
-                    <button
-                        className={s.attachBtn}
-                        title="Файл тіркеу"
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        <Paperclip size={20} />
-                    </button>
                     <textarea
                         ref={textareaRef}
                         className={s.textarea}
@@ -310,7 +350,7 @@ export const AIChat = () => {
                     <button
                         className={s.sendBtn}
                         onClick={handleSendMessage}
-                        disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
+                        disabled={!inputValue.trim() || isLoading}
                     >
                         {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
                     </button>
