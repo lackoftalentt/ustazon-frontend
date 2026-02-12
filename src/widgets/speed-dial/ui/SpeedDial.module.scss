@@ -35,14 +35,6 @@
 	}
 }
 
-.plus {
-	transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.rot {
-	transform: rotate(45deg);
-}
-
 .backdrop {
 	position: fixed;
 	inset: 0;
@@ -78,8 +70,8 @@
 }
 
 .action {
-	width: 56px;
-	height: 56px;
+	width: 48px;
+	height: 48px;
 	border-radius: $radius-full;
 	border: none;
 	background: white;
@@ -90,20 +82,12 @@
 	cursor: pointer;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 	transition: all $transition-fast;
-	opacity: 0;
-	transform: scale(0.8) translateY(10px);
 
 	&:hover {
 		background: $color-green-primary;
 		color: white;
 		box-shadow: 0 4px 12px rgba(47, 132, 80, 0.3);
-		transform: scale(1.05) translateY(0);
 	}
-}
-
-.open .action {
-	opacity: 1;
-	transform: scale(1) translateY(0);
 }
 
 .label {
@@ -115,14 +99,95 @@
 	color: $color-gray-dark;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 	white-space: nowrap;
-	opacity: 0;
-	transform: translateX(10px);
-	transition: all $transition-fast;
 }
 
-.open .label {
-	opacity: 1;
-	transform: translateX(0);
+// Subscription modal
+.modalOverlay {
+	position: fixed;
+	inset: 0;
+	z-index: $z-index-modal + 1;
+	background: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(6px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-xl;
+}
+
+.modal {
+	position: relative;
+	background: white;
+	border-radius: 20px;
+	padding: 40px 32px 32px;
+	max-width: 360px;
+	width: 100%;
+	text-align: center;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.modalClose {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	background: none;
+	border: none;
+	color: #94a3b8;
+	cursor: pointer;
+	padding: 4px;
+	border-radius: $radius-full;
+	transition: color 0.15s;
+
+	&:hover {
+		color: #334155;
+	}
+}
+
+.modalIcon {
+	width: 64px;
+	height: 64px;
+	border-radius: $radius-full;
+	background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 20px;
+	color: $color-green-primary;
+}
+
+.modalTitle {
+	font-size: 20px;
+	font-weight: 700;
+	color: #0f172a;
+	margin: 0 0 8px;
+}
+
+.modalText {
+	font-size: 14px;
+	color: #64748b;
+	line-height: 1.5;
+	margin: 0 0 24px;
+}
+
+.modalButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	padding: 14px 24px;
+	background: #25d366;
+	color: white;
+	font-size: 15px;
+	font-weight: 600;
+	border: none;
+	border-radius: 12px;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background 0.15s;
+
+	&:hover {
+		background: #1fb855;
+	}
 }
 
 @media (max-width: 768px) {
@@ -132,17 +197,17 @@
 	}
 
 	.fab {
-		width: 60px;
-		height: 60px;
+		width: 56px;
+		height: 56px;
 	}
 
 	.action {
-		width: 52px;
-		height: 52px;
+		width: 44px;
+		height: 44px;
 	}
 
 	.label {
 		padding: $spacing-xs $spacing-sm;
-		font-size: $font-size-base;
+		font-size: $font-size-xs;
 	}
 }

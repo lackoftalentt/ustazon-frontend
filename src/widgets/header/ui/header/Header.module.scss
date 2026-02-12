@@ -160,6 +160,48 @@
 			gap: 12px;
 		}
 
+		.favoritesButton {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: none;
+			border: 1.5px solid rgba($color-green-primary, 0.2);
+			border-radius: $radius-md;
+			padding: 8px;
+			cursor: pointer;
+			color: $color-green-dark;
+			transition: all 0.2s ease;
+
+			&:hover {
+				background: $color-green-lightest;
+				border-color: $color-green-primary;
+				color: $color-green-active;
+				transform: translateY(-1px);
+				box-shadow: 0 2px 8px rgba($color-green-primary, 0.1);
+			}
+
+			&:active {
+				transform: translateY(0);
+			}
+		}
+
+		.favBadge {
+			position: absolute;
+			top: -6px;
+			right: -6px;
+			min-width: 18px;
+			height: 18px;
+			padding: 0 4px;
+			background: $color-green-primary;
+			color: #fff;
+			font-size: 11px;
+			font-weight: $font-weight-semibold;
+			line-height: 18px;
+			text-align: center;
+			border-radius: 9px;
+		}
+
 		.userName {
 			font-size: $font-size-base;
 			font-weight: $font-weight-medium;
@@ -207,6 +249,10 @@
 		@media (max-width: 768px) {
 			.userSection {
 				gap: 8px;
+			}
+
+			.favoritesButton {
+				padding: 6px;
 			}
 
 			.userName {
@@ -281,15 +327,6 @@
 			.langSwitcher {
 				padding: 8px 12px;
 				font-size: $font-size-xs;
-
-				.langIcon {
-					width: 16px;
-					height: 16px;
-				}
-
-				span {
-					display: none;
-				}
 			}
 
 			.loginBtn {

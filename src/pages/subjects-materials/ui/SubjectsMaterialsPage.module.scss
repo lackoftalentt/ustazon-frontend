@@ -8,12 +8,19 @@
 	}
 }
 
-.searchInput {
+.searchRow {
+	display: flex;
+	align-items: center;
+	gap: $spacing-md;
 	margin-bottom: $spacing-3xl;
 
 	@media (max-width: $bp-sm) {
 		margin-bottom: $spacing-xl;
 	}
+}
+
+.searchInput {
+	flex: 1;
 }
 
 .container {
@@ -258,6 +265,86 @@
 
 .windowSection {
 	margin-bottom: $spacing-3xl;
+	// Offset for sticky header when using scrollIntoView
+	scroll-margin-top: 110px;
+	position: relative;
+	transition: border-color $transition-fast, background-color $transition-fast;
+	border: 2px solid transparent;
+	border-radius: $radius-lg;
+	padding: $spacing-md;
+	margin-left: -$spacing-md;
+	margin-right: -$spacing-md;
+
+	&.dropActive {
+		border-color: $color-green-primary;
+		border-style: dashed;
+		background-color: rgba($color-green-primary, 0.04);
+	}
+}
+
+.dropOverlay {
+	position: absolute;
+	inset: 0;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-md;
+
+	background: rgba($color-green-lightest, 0.85);
+	border-radius: $radius-lg;
+	backdrop-filter: blur(2px);
+
+	pointer-events: none;
+
+	.dropIcon {
+		width: 48px;
+		height: 48px;
+		color: $color-green-primary;
+	}
+
+	.dropText {
+		font-size: $font-size-lg;
+		font-weight: $font-weight-semibold;
+		color: $color-green-dark;
+	}
+}
+
+.uploadingOverlay {
+	position: absolute;
+	inset: 0;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-md;
+
+	background: rgba(255, 255, 255, 0.85);
+	border-radius: $radius-lg;
+	backdrop-filter: blur(2px);
+
+	.uploadSpinner {
+		width: 36px;
+		height: 36px;
+		border: 3px solid rgba($color-green-primary, 0.2);
+		border-top-color: $color-green-primary;
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	.uploadText {
+		font-size: $font-size-base;
+		font-weight: $font-weight-medium;
+		color: $color-green-dark;
+	}
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .showMoreLink {

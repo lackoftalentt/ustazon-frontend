@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { aiApi, type PromptTemplate, type PromptCategory } from '@/shared/api/ai';
 import s from './QuickCommands.module.scss';
 
@@ -8,6 +9,7 @@ interface QuickCommandsProps {
 }
 
 export const QuickCommands = ({ onSelectPrompt, onOpenPresentationModal }: QuickCommandsProps) => {
+    const { t } = useTranslation();
     const [prompts, setPrompts] = useState<PromptTemplate[]>([]);
     const [categories, setCategories] = useState<PromptCategory[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -35,7 +37,7 @@ export const QuickCommands = ({ onSelectPrompt, onOpenPresentationModal }: Quick
                 setCategories(categoriesData.categories);
             } catch (err) {
                 console.error('Error loading prompts:', err);
-                setError('Ошибка загрузки шаблонов');
+                setError(t('ai.templateLoadError'));
             } finally {
                 setIsLoading(false);
             }
@@ -51,7 +53,7 @@ export const QuickCommands = ({ onSelectPrompt, onOpenPresentationModal }: Quick
     if (isLoading) {
         return (
             <div className={s.quickCommands}>
-                <div className={s.loading}>Загрузка шаблонов...</div>
+                <div className={s.loading}>{t('ai.loadingTemplates')}</div>
             </div>
         );
     }
@@ -67,8 +69,8 @@ export const QuickCommands = ({ onSelectPrompt, onOpenPresentationModal }: Quick
     return (
         <div className={s.quickCommands}>
             <div className={s.header}>
-                <h3 className={s.title}>Быстрые команды</h3>
-                <p className={s.subtitle}>Выберите готовый шаблон для работы</p>
+                <h3 className={s.title}>{t('ai.quickCommands')}</h3>
+                <p className={s.subtitle}>{t('ai.quickCommandsDesc')}</p>
             </div>
 
             <div className={s.categories}>
@@ -76,7 +78,7 @@ export const QuickCommands = ({ onSelectPrompt, onOpenPresentationModal }: Quick
                     className={`${s.categoryBtn} ${selectedCategory === 'all' ? s.active : ''}`}
                     onClick={() => setSelectedCategory('all')}
                 >
-                    Все
+                    {t('ai.allCategory')}
                 </button>
                 {categories.map(category => (
                     <button
@@ -95,9 +97,9 @@ export const QuickCommands = ({ onSelectPrompt, onOpenPresentationModal }: Quick
                         className={`${s.promptCard} ${s.presentationCard}`}
                         onClick={onOpenPresentationModal}
                     >
-                        <div className={s.promptName}>📊 Создать презентацию</div>
+                        <div className={s.promptName}>{t('ai.createPresentation')}</div>
                         <div className={s.promptPreview}>
-                            Сгенерировать презентацию по вашему предмету и теме
+                            {t('ai.createPresentationDesc')}
                         </div>
                     </button>
                 )}
@@ -118,7 +120,7 @@ export const QuickCommands = ({ onSelectPrompt, onOpenPresentationModal }: Quick
 
             {filteredPrompts.length === 0 && (
                 <div className={s.empty}>
-                    Нет доступных шаблонов в этой категории
+                    {t('ai.noTemplates')}
                 </div>
             )}
         </div>

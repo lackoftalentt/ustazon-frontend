@@ -32,11 +32,17 @@ const AILessonGeneratorPage = lazy(() => import('@/pages/ai-lesson-generator'))
 const AILessonViewerPage = lazy(() => import('@/pages/ai-lesson-viewer'))
 const AIQMJGeneratorPage = lazy(() => import('@/pages/ai-qmj'))
 const AIQMJViewerPage = lazy(() => import('@/pages/ai-qmj-viewer'))
+const KmzhMainPage = lazy(() => import('@/pages/kmzh-main'))
 const LessonPlansListPage = lazy(() => import('@/pages/lesson-plans-list'))
 const ProfilePage = lazy(() => import('@/pages/profile'))
 const ProfileSettingsPage = lazy(() => import('@/pages/profile-settings'))
 const TestsPage = lazy(() => import('@/pages/tests'))
 const TakeTestPage = lazy(() => import('@/pages/take-test'))
+const AdminPage = lazy(() => import('@/pages/admin'))
+const TemplatesPage = lazy(() => import('@/pages/templates'))
+const InstitutionTypesPage = lazy(() => import('@/pages/institution-types'))
+const SubscriptionsPage = lazy(() => import('@/pages/subscriptions'))
+const MaterialsPage = lazy(() => import('@/pages/materials'))
 const NotFoundPage = lazy(() => import('@/pages/not-found'))
 
 export const AppRouter = () => {
@@ -165,6 +171,46 @@ export const AppRouter = () => {
 							}
 						/>
 						<Route
+							path="admin"
+							element={
+								<PrivateRoute>
+									<AdminPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="templates"
+							element={
+								<PrivateRoute>
+									<TemplatesPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="institution-types"
+							element={
+								<PrivateRoute>
+									<InstitutionTypesPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="subscriptions"
+							element={
+								<PrivateRoute>
+									<SubscriptionsPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="materials"
+							element={
+								<PrivateRoute>
+									<MaterialsPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
 							path="profile"
 							element={
 								<PrivateRoute>
@@ -193,6 +239,14 @@ export const AppRouter = () => {
 							element={
 								<PrivateRoute>
 									<TakeTestPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="kmzh"
+							element={
+								<PrivateRoute>
+									<KmzhMainPage />
 								</PrivateRoute>
 							}
 						/>

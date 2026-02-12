@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import s from './Breadcrumb.module.scss'
 
 interface BreadcrumbItem {
@@ -8,23 +9,23 @@ interface BreadcrumbItem {
 }
 
 interface RouteConfig {
-	label: string
+	labelKey: string
 	navigable: boolean
 }
 
 const routeConfig: Record<string, RouteConfig> = {
-	subjects: { label: 'Пәндер каталогы', navigable: true },
-	'subjects-materials': { label: 'Материалдар', navigable: true },
-	'subject-windows': { label: 'Терезелер', navigable: true },
-	detail: { label: 'Толық ақпарат', navigable: false },
-	'ai-chat': { label: 'AI чат', navigable: true },
-	kmzh: { label: 'КМЖБ', navigable: true },
-	'subject-presentation-detail': { label: 'Презентация', navigable: true },
-	profile: { label: 'Профиль', navigable: true },
-	'profile-settings': { label: 'Профиль баптаулары', navigable: true },
-	tests: { label: 'Тесттер', navigable: true },
-	'take-test': { label: 'Тест тапсыру', navigable: true },
-	'lesson-plan': { label: 'Сабақ жоспары', navigable: true }
+	subjects: { labelKey: 'breadcrumb.subjectsCatalog', navigable: true },
+	'subjects-materials': { labelKey: 'breadcrumb.materials', navigable: true },
+	'subject-windows': { labelKey: 'breadcrumb.windows', navigable: true },
+	detail: { labelKey: 'breadcrumb.fullInfo', navigable: false },
+	'ai-chat': { labelKey: 'breadcrumb.aiChat', navigable: true },
+	kmzh: { labelKey: 'breadcrumb.kmzh', navigable: true },
+	'subject-presentation-detail': { labelKey: 'breadcrumb.presentation', navigable: true },
+	profile: { labelKey: 'breadcrumb.profile', navigable: true },
+	'profile-settings': { labelKey: 'breadcrumb.profileSettings', navigable: true },
+	tests: { labelKey: 'breadcrumb.tests', navigable: true },
+	'take-test': { labelKey: 'breadcrumb.takeTest', navigable: true },
+	'lesson-plan': { labelKey: 'breadcrumb.lessonPlan', navigable: true }
 }
 
 const isNavigableRoute = (path: string, segments: string[]): boolean => {
@@ -54,10 +55,11 @@ const isNavigableRoute = (path: string, segments: string[]): boolean => {
 const getRouteLabel = (
 	segment: string,
 	_fullPath: string,
-	allSegments: string[]
+	allSegments: string[],
+	t: (key: string) => string
 ): string | null => {
 	if (routeConfig[segment]) {
-		return routeConfig[segment].label
+		return t(routeConfig[segment].labelKey)
 	}
 
 	const segmentIndex = allSegments.indexOf(segment)
@@ -87,6 +89,7 @@ const getRouteLabel = (
 export const Breadcrumb = () => {
 	const location = useLocation()
 	const navigate = useNavigate()
+	const { t } = useTranslation()
 
 	if (location.pathname === '/') {
 		return null
@@ -94,7 +97,7 @@ export const Breadcrumb = () => {
 
 	const pathSegments = location.pathname.split('/').filter(Boolean)
 
-	const breadcrumbs: BreadcrumbItem[] = [{ label: 'Басты бет', path: '/' }]
+	const breadcrumbs: BreadcrumbItem[] = [{ label: t('breadcrumb.home'), path: '/' }]
 
 	let currentPath = ''
 	pathSegments.forEach((segment, index) => {
@@ -106,7 +109,7 @@ export const Breadcrumb = () => {
 			return
 		}
 
-		const label = getRouteLabel(segment, currentPath, pathSegments)
+		const label = getRouteLabel(segment, currentPath, pathSegments, t)
 
 		if (label === null) {
 			return
@@ -129,7 +132,7 @@ export const Breadcrumb = () => {
 				onClick={handleBack}
 			>
 				<ChevronLeft size={18} />
-				<span>Артқа</span>
+				<span>{t('breadcrumb.back')}</span>
 			</li>
 
 			<div className={s.separator} />

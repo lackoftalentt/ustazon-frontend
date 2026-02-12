@@ -8,32 +8,37 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
+import type { TFunction } from 'i18next'
 import s from './ProfileSettingsPage.module.scss'
 
-const profileSchema = z.object({
-	name: z
-		.string()
-		.min(2, 'Аты кемінде 2 таңбадан тұруы тиіс')
-		.max(50, 'Аты 50 таңбадан аспауы тиіс')
-		.regex(
-			/^[а-яА-ЯёЁa-zA-Z\s\-]+$/,
-			'Аты тек әріптерден, бос орындардан және сызықшадан тұра алады'
-		),
-	phone: z
-		.string()
-		.regex(/^\+?7\d{10}$/, 'Телефон нөмірінің форматы қате')
-		.transform(val => (val.startsWith('+') ? val : `+${val}`))
-})
+const createProfileSchema = (t: TFunction) =>
+	z.object({
+		name: z
+			.string()
+			.min(2, t('profile.nameMinLength'))
+			.max(50, t('profile.nameMaxLength'))
+			.regex(
+				/^[а-яА-ЯёЁa-zA-Z\s\-]+$/,
+				t('profile.nameFormat')
+			),
+		phone: z
+			.string()
+			.regex(/^\+?7\d{10}$/, t('profile.phoneFormat'))
+			.transform(val => (val.startsWith('+') ? val : `+${val}`))
+	})
 
-type ProfileFormData = z.infer<typeof profileSchema>
+type ProfileFormData = z.infer<ReturnType<typeof createProfileSchema>>
 
 export const ProfileSettingsPage = () => {
+	const { t } = useTranslation()
 	const [isEditing, setIsEditing] = useState(false)
 	const navigate = useNavigate()
 	const { setUser, logout } = useAuthStore()
 	const queryClient = useQueryClient()
+	const profileSchema = createProfileSchema(t)
 
 	const { data: userData, isLoading } = useQuery({
 		queryKey: ['currentUser'],
@@ -63,14 +68,15 @@ export const ProfileSettingsPage = () => {
 				id: data.id,
 				iin: data.iin,
 				name: data.name,
-				phoneNumber: data.phone
+				phoneNumber: data.phone,
+				is_superuser: data.is_superuser
 			})
 			setIsEditing(false)
-			toast.success('Профиль сәтті жаңартылды')
+			toast.success(t('profile.profileUpdated'))
 		},
 		onError: (error: any) => {
 			const message =
-				error.response?.data?.detail || 'Профильді жаңарту кезінде қате болды'
+				error.response?.data?.detail || t('profile.profileUpdateError')
 			toast.error(message)
 		}
 	})
@@ -86,7 +92,7 @@ export const ProfileSettingsPage = () => {
 
 	const handleLogout = () => {
 		logout()
-		toast.success('Сіз аккаунттан шықтыңыз')
+		toast.success(t('profile.loggedOut'))
 		navigate('/login')
 	}
 
@@ -98,7 +104,7 @@ export const ProfileSettingsPage = () => {
 		return (
 			<div className={s.container}>
 				<div className={s.card}>
-					<p>Профиль деректерін жүктеу мүмкін болмады</p>
+					<p>{t('profile.loadFailed')}</p>
 				</div>
 			</div>
 		)
@@ -109,9 +115,9 @@ export const ProfileSettingsPage = () => {
 			<div className={s.header}>
 				<div className={s.headerContent}>
 					<div>
-						<h1 className={s.title}>Профиль</h1>
+						<h1 className={s.title}>{t('profile.profileTitle')}</h1>
 						<p className={s.subtitle}>
-							Жеке деректерді және параметрлерді басқарыңыз
+							{t('profile.profileSubtitle')}
 						</p>
 					</div>
 					<div className={s.avatarSection}>
@@ -131,16 +137,16 @@ export const ProfileSettingsPage = () => {
 						<Input
 							{...register('name')}
 							id="name"
-							label="Аты"
+							label={t('profile.nameLabel')}
 							error={errors.name?.message}
-							placeholder="Атыңызды енгізіңіз"
+							placeholder={t('profile.namePlaceholder')}
 							disabled={!isEditing}
 						/>
 
 						<Input
 							{...register('phone')}
 							id="phone"
-							label="Телефон нөмірі"
+							label={t('profile.phoneLabel')}
 							error={errors.phone?.message}
 							placeholder="+7XXXXXXXXXX"
 							disabled={!isEditing}
@@ -153,7 +159,7 @@ export const ProfileSettingsPage = () => {
 							onClick={() => setIsEditing(true)}
 							fullWidth
 						>
-							Профильді өңдеу
+							{t('profile.editProfile')}
 						</Button>
 					) : (
 						<div className={s.buttonGroup}>
@@ -163,7 +169,7 @@ export const ProfileSettingsPage = () => {
 								loading={updateMutation.isPending}
 								fullWidth
 							>
-								Өзгерістерді сақтау
+								{t('profile.saveChanges')}
 							</Button>
 							<Button
 								type="button"
@@ -171,29 +177,29 @@ export const ProfileSettingsPage = () => {
 								className={s.cancelButton}
 								fullWidth
 							>
-								Болдырмау
+								{t('profile.cancelEdit')}
 							</Button>
 						</div>
 					)}
 				</form>
 
 				<div className={s.infoSection}>
-					<h2 className={s.infoTitle}>Аккаунт туралы ақпарат</h2>
+					<h2 className={s.infoTitle}>{t('profile.accountInfo')}</h2>
 					<div className={s.infoGrid}>
 						<div className={s.infoItem}>
-							<span className={s.infoLabel}>ЖСН</span>
+							<span className={s.infoLabel}>{t('profile.iinLabel')}</span>
 							<span className={s.infoValue}>{userData.iin}</span>
 						</div>
 						<div className={s.infoItem}>
-							<span className={s.infoLabel}>Телефон статусы</span>
+							<span className={s.infoLabel}>{t('profile.phoneStatus')}</span>
 							{userData.is_verified ? (
-								<span className={s.verifiedBadge}>✓ Расталған</span>
+								<span className={s.verifiedBadge}>{t('profile.verified')}</span>
 							) : (
-								<span className={s.unverifiedBadge}>! Расталмаған</span>
+								<span className={s.unverifiedBadge}>{t('profile.notVerified')}</span>
 							)}
 						</div>
 						<div className={s.infoItem}>
-							<span className={s.infoLabel}>Тіркелу күні</span>
+							<span className={s.infoLabel}>{t('profile.registrationDate')}</span>
 							<span className={s.infoValue}>
 								{new Date(userData.created_at).toLocaleDateString('kk-KZ', {
 									year: 'numeric',
@@ -206,12 +212,12 @@ export const ProfileSettingsPage = () => {
 				</div>
 
 				<div className={s.dangerZone}>
-					<h2 className={s.dangerTitle}>Аккаунтты басқару</h2>
+					<h2 className={s.dangerTitle}>{t('profile.accountManagement')}</h2>
 					<div className={s.dangerContent}>
 						<div>
-							<p className={s.dangerText}>Аккаунттан шығу</p>
+							<p className={s.dangerText}>{t('profile.logoutLabel')}</p>
 							<p className={s.dangerDescription}>
-								Сіз кіру бетіне қайта бағытталасыз
+								{t('profile.logoutDescription')}
 							</p>
 						</div>
 						<Button
@@ -219,7 +225,7 @@ export const ProfileSettingsPage = () => {
 							className={s.logoutButton}
 							variant="outline"
 						>
-							Шығу
+							{t('profile.logoutBtn')}
 						</Button>
 					</div>
 				</div>

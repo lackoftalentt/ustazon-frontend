@@ -67,18 +67,17 @@ const normalizeUrl = (raw?: string | null) => {
 	return trimmed
 }
 
-export const ContentViewer = ({ lesson }: ContentViewerProps) => {
+const ContentBody = ({ lesson }: ContentViewerProps) => {
 	const url = normalizeUrl(lesson.url)
 
 	// 1. PDF/PPT по window_id
 	if (isPresentationWindow(lesson)) {
 		const fileUrl = lesson.file_path || url || ''
 		if (!fileUrl) {
-			// Fallback to URL viewer if file_path and url are empty
 			if (url) {
 				return <TryEmbedUrl url={url} />
 			}
-			return <SubjectDetailPlayer url={url ?? ''} />
+			return null
 		}
 		return (
 			<PresentationViewer
@@ -121,11 +120,19 @@ export const ContentViewer = ({ lesson }: ContentViewerProps) => {
 		return <SubjectDetailPlayer url={url} />
 	}
 
-	// 7. plain external URL → TryEmbed (с fallback кнопкой для открытия в новой вкладке)
+	// 7. plain external URL → TryEmbed
 	if (typeof url === 'string' && isUrl(url)) {
 		return <TryEmbedUrl url={url} />
 	}
 
-	// 8. fallback → VideoPlayer
-	return <SubjectDetailPlayer url={url ?? ''} />
+	// 8. fallback → VideoPlayer (only if url exists)
+	if (url) {
+		return <SubjectDetailPlayer url={url} />
+	}
+
+	return null
+}
+
+export const ContentViewer = ({ lesson }: ContentViewerProps) => {
+	return <ContentBody lesson={lesson} />
 }

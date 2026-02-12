@@ -7,6 +7,8 @@ import { Button } from '@/shared/ui/button'
 import { ConfirmModal } from '@/shared/ui/confirm-modal'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useDropUpload } from '../../model/useDropUpload'
+import { DropOverlay } from '../DropOverlay'
 import s from '../SubjectsMaterialsPage.module.scss'
 
 interface FilteredCardsSectionProps {
@@ -14,7 +16,13 @@ interface FilteredCardsSectionProps {
 	subjectCode: string
 	hasNextPage: boolean
 	isFetchingNextPage: boolean
+	isLocked?: boolean
 	onLoadMore: () => void
+	showAdminEdit?: boolean
+	onAdminEdit?: (id: number) => void
+	windowId?: number
+	subjectId?: number
+	isAdmin?: boolean
 }
 
 export const FilteredCardsSection = ({
@@ -22,7 +30,13 @@ export const FilteredCardsSection = ({
 	subjectCode,
 	hasNextPage,
 	isFetchingNextPage,
-	onLoadMore
+	isLocked,
+	onLoadMore,
+	showAdminEdit,
+	onAdminEdit,
+	windowId,
+	subjectId,
+	isAdmin
 }: FilteredCardsSectionProps) => {
 	const { mutate: toggleFavoriteApi } = useToggleFavorite()
 	const { mutate: deleteCard, isPending: isDeleting } = useDeleteCard()
@@ -31,6 +45,12 @@ export const FilteredCardsSection = ({
 
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 	const [cardToDelete, setCardToDelete] = useState<number | null>(null)
+
+	const { isDragOver, isUploading, dragProps } = useDropUpload({
+		windowId: windowId ?? 0,
+		subjectId,
+		enabled: !!isAdmin && !!windowId
+	})
 
 	const handleFavoriteToggle = (id: number) => {
 		const isNowFavorite = toggleFavoriteLocal(id)
@@ -73,10 +93,13 @@ export const FilteredCardsSection = ({
 		setCardToDelete(null)
 	}
 
-	if (cards.length === 0) return null
+	if (cards.length === 0 && !isAdmin) return null
 
 	return (
-		<div className={s.windowSection}>
+		<div
+			className={`${s.windowSection}${isDragOver ? ` ${s.dropActive}` : ''}`}
+			{...dragProps}
+		>
 			<div className={s.container}>
 				{cards.map(card => (
 					<MaterialCard
@@ -87,12 +110,15 @@ export const FilteredCardsSection = ({
 							card.description ||
 							`${card.topic?.topic || 'Материал'}${card.grade ? ` • ${card.grade}-сынып` : ''}`
 						}
-						thumbnail={card.img1_url}
+						thumbnails={[card.img1_url, card.img2_url, card.img3_url, card.img4_url, card.img5_url]}
 						path={`/subjects-materials/${subjectCode}/detail/${card.id}`}
 						isFavorite={isFavorite(card.id)}
-						showDelete={user?.id === card.author?.id}
+						isLocked={isLocked}
+						showDelete={!isLocked && (user?.id === card.author?.id || !!showAdminEdit)}
+						showEdit={!!showAdminEdit}
 						onFavoriteToggle={handleFavoriteToggle}
 						onDelete={handleDeleteClick}
+						onEdit={onAdminEdit}
 					/>
 				))}
 			</div>
@@ -107,6 +133,8 @@ export const FilteredCardsSection = ({
 					</Button>
 				</div>
 			)}
+
+			<DropOverlay isDragOver={isDragOver} isUploading={isUploading} />
 
 			<ConfirmModal
 				open={deleteModalOpen}

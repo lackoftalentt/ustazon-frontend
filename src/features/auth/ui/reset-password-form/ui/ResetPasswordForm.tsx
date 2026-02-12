@@ -8,6 +8,7 @@ import axios from 'axios'
 import clsx from 'clsx'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useResetPasswordForm } from '../../../model/useResetPasswordForm'
 import s from './ResetPasswordForm.module.scss'
@@ -15,6 +16,7 @@ import s from './ResetPasswordForm.module.scss'
 type Step = 'phone' | 'code' | 'newPassword'
 
 export const ResetPasswordForm = () => {
+	const { t } = useTranslation()
 	const [step, setStep] = useState<Step>('phone')
 	const navigate = useNavigate()
 
@@ -28,25 +30,25 @@ export const ResetPasswordForm = () => {
 		try {
 			if (step === 'phone') {
 				console.log('Phone from form:', data.phoneNumber)
-				toast.success('Код нөміріңізге жіберілді')
+				toast.success(t('auth.codeSent'))
 				setStep('code')
 			} else if (step === 'code') {
 				if (!data.code) {
-					toast.error('Кодты енгізіңіз')
+					toast.error(t('auth.enterCode'))
 					return
 				}
-				toast.success('Код расталды!')
+				toast.success(t('auth.codeConfirmed'))
 				setStep('newPassword')
 			} else if (step === 'newPassword') {
 				const isValid = await trigger(['newPassword', 'confirmPassword'])
 
 				if (!isValid) {
-					toast.error('Формадағы қателерді түзетіңіз')
+					toast.error(t('auth.fixFormErrors'))
 					return
 				}
 
 				if (!data.newPassword || !data.confirmPassword) {
-					toast.error('Барлық өрістерді толтырыңыз')
+					toast.error(t('auth.fillAllFields'))
 					return
 				}
 
@@ -65,7 +67,7 @@ export const ResetPasswordForm = () => {
 
 				await resetPassword(resetData)
 				navigate('/login')
-				toast.success('Құпиясөз сәтті өзгертілді!')
+				toast.success(t('auth.passwordChanged'))
 			}
 		} catch (error) {
 			console.error('Reset newPassword error:', error)
@@ -78,9 +80,9 @@ export const ResetPasswordForm = () => {
 			}
 
 			const errorMessages = {
-				phone: 'Кодты жіберу мүмкін болмады',
-				code: 'Қате код',
-				newPassword: 'Құпиясөзді өзгерту мүмкін болмады'
+				phone: t('auth.codeSendFailed'),
+				code: t('auth.wrongCode'),
+				newPassword: t('auth.passwordChangeFailed')
 			}
 			toast.error(errorMessages[step])
 		}
@@ -90,20 +92,20 @@ export const ResetPasswordForm = () => {
 		switch (step) {
 			case 'phone':
 			case 'code':
-				return 'Құпиясөзді қалпына келтіру'
+				return t('auth.resetTitle')
 			case 'newPassword':
-				return 'Жаңа құпиясөз'
+				return t('auth.newPassword')
 		}
 	}
 
 	const getSubtitle = () => {
 		switch (step) {
 			case 'phone':
-				return 'Құпиясөзді қалпына келтіру үшін деректерді толтырыңыз'
+				return t('auth.resetSubtitle')
 			case 'code':
-				return 'SMS-тен келген кодты енгізіңіз'
+				return t('auth.enterSmsCode')
 			case 'newPassword':
-				return 'Жаңа құпиясөз ойлап табыңыз'
+				return t('auth.newPasswordSubtitle')
 		}
 	}
 
@@ -122,7 +124,7 @@ export const ResetPasswordForm = () => {
 					<Input
 						{...register('phoneNumber')}
 						id="phoneNumber"
-						label="Телефон нөмірі"
+						label={t('auth.phone')}
 						error={errors.phoneNumber?.message}
 						type="tel"
 						inputMode="tel"
@@ -138,11 +140,11 @@ export const ResetPasswordForm = () => {
 						<Input
 							{...register('code')}
 							id="code"
-							label="Код"
+							label={t('auth.code')}
 							error={errors.code?.message}
 							type="text"
 							inputMode="numeric"
-							placeholder="Кодты енгізіңіз"
+							placeholder={t('auth.codePlaceholder')}
 							autoFocus
 						/>
 					</div>
@@ -153,19 +155,19 @@ export const ResetPasswordForm = () => {
 						<PasswordInput
 							{...register('newPassword')}
 							id="newPassword"
-							label="Жаңа құпиясөз"
+							label={t('auth.newPassword')}
 							error={errors.newPassword?.message}
-							placeholder="Жаңа құпиясөз енгізіңіз"
+							placeholder={t('auth.newPasswordPlaceholder')}
 							autoFocus
 						/>
 						<div className={s.resetPasswordInput}>
 							<Input
 								{...register('confirmPassword')}
 								id="confirmPassword"
-								label="Құпиясөзді растаңыз"
+								label={t('auth.confirmPassword')}
 								error={errors.confirmPassword?.message}
 								type="password"
-								placeholder="Құпиясөзді қайталаңыз"
+								placeholder={t('auth.repeatPassword')}
 							/>
 						</div>
 					</>
@@ -179,10 +181,10 @@ export const ResetPasswordForm = () => {
 					className={s.thenBtn}
 				>
 					{step === 'newPassword'
-						? 'Сақтау'
+						? t('auth.save')
 						: step === 'code'
-							? 'Растау'
-							: 'Әрі қарай'}
+							? t('auth.confirm')
+							: t('auth.next')}
 				</Button>
 			</form>
 
@@ -193,7 +195,7 @@ export const ResetPasswordForm = () => {
 					className={s.backLink}
 					to={'/login'}
 				>
-					Қайту
+					{t('auth.backToLogin')}
 				</Link>
 			</div>
 		</>

@@ -9,11 +9,13 @@ interface AuthState {
 		iin: string
 		name: string
 		phoneNumber: string
+		is_superuser?: boolean
 	} | null
 	setTokens: (accessToken: string, refreshToken: string) => void
 	setUser: (user: AuthState['user']) => void
 	logout: () => void
 	isAuthenticated: () => boolean
+	isAdmin: () => boolean
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -37,6 +39,10 @@ export const useAuthStore = create<AuthState>()(
 
 			isAuthenticated: () => {
 				return !!get().accessToken
+			},
+
+			isAdmin: () => {
+				return !!get().user?.is_superuser
 			}
 		}),
 		{

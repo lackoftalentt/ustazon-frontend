@@ -15,10 +15,12 @@ import { TestResultsScreen } from '@/widgets/test-results-screen'
 import { TestStartScreen } from '@/widgets/test-start-screen'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import s from './TakeTestPage.module.scss'
 
 export const TakeTestPage = () => {
+	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const { testId } = useParams<{ testId: string }>()
 
@@ -94,7 +96,7 @@ export const TakeTestPage = () => {
 							className={s.errorIcon}
 						/>
 						<p className={s.errorText}>{error}</p>
-						<Button onClick={handleBack}>Тесттер тізіміне оралу</Button>
+						<Button onClick={handleBack}>{t('tests.backToList')}</Button>
 					</div>
 				</Container>
 			</main>
@@ -118,11 +120,11 @@ export const TakeTestPage = () => {
 	if (isTestCompleted && submitResult) {
 		const getGrade = (percentage: number) => {
 			if (percentage >= 90)
-				return { label: 'Өте жақсы', color: 'excellent' as const }
-			if (percentage >= 70) return { label: 'Жақсы', color: 'good' as const }
+				return { label: t('tests.excellent'), color: 'excellent' as const }
+			if (percentage >= 70) return { label: t('tests.good'), color: 'good' as const }
 			if (percentage >= 50)
-				return { label: 'Қанағаттанарлық', color: 'average' as const }
-			return { label: 'Қанағаттанарлықсыз', color: 'poor' as const }
+				return { label: t('tests.satisfactory'), color: 'average' as const }
+			return { label: t('tests.unsatisfactory'), color: 'poor' as const }
 		}
 
 		return (
@@ -149,7 +151,7 @@ export const TakeTestPage = () => {
 							className={s.spinner}
 							size={48}
 						/>
-						<p className={s.loadingText}>Жүктелуде...</p>
+						<p className={s.loadingText}>{t('tests.loading')}</p>
 					</div>
 				</Container>
 			</main>
@@ -165,7 +167,7 @@ export const TakeTestPage = () => {
 			<Container className={s.container}>
 				<div className={s.testContainer}>
 					<TestHeader
-						title={testData?.title || 'Тест'}
+						title={testData?.title || t('tests.test')}
 						currentQuestionIndex={currentQuestionIndex}
 						totalQuestions={totalQuestions}
 						remainingTime={remainingTime}

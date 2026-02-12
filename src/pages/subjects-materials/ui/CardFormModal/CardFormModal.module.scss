@@ -1,0 +1,102 @@
+@use '@/shared/styles/variables' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+
+  > * {
+    flex: 1;
+  }
+}
+
+.formGroup {
+  margin-bottom: 12px;
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    margin-bottom: 4px;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+    resize: vertical;
+
+    &:focus {
+      border-color: $color-green-primary;
+    }
+  }
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  input[type='checkbox'] {
+    width: 18px;
+    height: 18px;
+    accent-color: $color-green-primary;
+  }
+
+  label {
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
+.multiSelect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.chip {
+  padding: 4px 12px;
+  font-size: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover {
+    border-color: $color-green-primary;
+  }
+
+  &Selected {
+    background: $color-green-primary;
+    color: white;
+    border-color: $color-green-primary;
+  }
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}

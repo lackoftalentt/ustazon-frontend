@@ -18,6 +18,15 @@
 	}
 }
 
+.cardLocked {
+	opacity: 0.85;
+}
+
+.lockIcon {
+	margin-left: auto;
+	opacity: 0.8;
+}
+
 .header {
 	display: flex;
 	gap: $spacing-sm;

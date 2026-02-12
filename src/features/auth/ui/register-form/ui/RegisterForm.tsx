@@ -3,11 +3,13 @@ import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { PasswordInput } from '@/shared/ui/password-input'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRegisterForm } from '../../../model/useRegisterForm'
 import s from './RegisterForm.module.scss'
 
 export const RegisterForm = () => {
+	const { t } = useTranslation()
 	const navigate = useNavigate()
 
 	const {
@@ -20,7 +22,7 @@ export const RegisterForm = () => {
 		try {
 			await registerUser(data)
 			console.log('Valid data:', data)
-			toast.success('Тіркелу сәтті өтті!')
+			toast.success(t('auth.registerSuccess'))
 			navigate('/login')
 		} catch (error) {
 			console.error('Registration error:', error)
@@ -36,10 +38,10 @@ export const RegisterForm = () => {
 					response?: { data?: { message?: string } }
 				}
 				toast.error(
-					apiError.response?.data?.message || 'Тіркелу барысында қате болды'
+					apiError.response?.data?.message || t('auth.registerError')
 				)
 			} else {
-				toast.error('Белгісіз қате орын алды')
+				toast.error(t('auth.unknownError'))
 			}
 		}
 	})
@@ -50,53 +52,53 @@ export const RegisterForm = () => {
 				className={s.form}
 				onSubmit={onSubmit}
 			>
-				<h3 className={s.title}>Тіркелу</h3>
+				<h3 className={s.title}>{t('auth.registerTitle')}</h3>
 				<p className={s.subtitle}>
-					Аккаунтны тіркеу үшін деректерді толтырыңыз
+					{t('auth.registerSubtitle')}
 				</p>
 
 				<div className={s.inputsWrapper}>
 					<Input
 						{...register('iin')}
 						id="iin"
-						label="ЖСН"
+						label={t('auth.iin')}
 						error={errors.iin?.message}
 						inputMode="numeric"
 						maxLength={12}
-						placeholder="ЖСН енгізіңіз"
+						placeholder={t('auth.iinPlaceholder')}
 						onChange={handleIinChange}
 					/>
 
 					<Input
 						{...register('name')}
 						id="name"
-						label="Аты"
+						label={t('auth.name')}
 						error={errors.name?.message}
 						type="text"
-						placeholder="Атыңызды енгізіңіз"
+						placeholder={t('auth.namePlaceholder')}
 					/>
 
 					<PasswordInput
 						{...register('password')}
 						id="password"
-						label="Құпиясөз"
+						label={t('auth.password')}
 						error={errors.password?.message}
-						placeholder="Құпиясөз енгізіңіз"
+						placeholder={t('auth.passwordPlaceholder')}
 					/>
 
 					<Input
 						{...register('confirmPassword')}
 						id="passwordConfirm"
-						label="Құпиясөзді растаңыз"
+						label={t('auth.confirmPassword')}
 						error={errors.confirmPassword?.message}
-						placeholder="Құпиясөзді растаңыз"
+						placeholder={t('auth.confirmPasswordPlaceholder')}
 						type="password"
 					/>
 
 					<Input
 						{...register('phoneNumber')}
 						id="phoneNumber"
-						label="Телефон нөмірі"
+						label={t('auth.phone')}
 						error={errors.phoneNumber?.message}
 						type="tel"
 						inputMode="tel"
@@ -112,17 +114,17 @@ export const RegisterForm = () => {
 					fullWidth
 					className={s.submitButton}
 				>
-					Тіркелу
+					{t('auth.registerBtn')}
 				</Button>
 			</form>
 
 			<div className={s.login}>
-				<p>Бұрын тіркелгенсіз бе?</p>
+				<p>{t('auth.hasAccount')}</p>
 				<Link
 					className={s.loginLink}
 					to="/login"
 				>
-					Кіру.
+					{t('auth.loginLink')}
 				</Link>
 			</div>
 		</>

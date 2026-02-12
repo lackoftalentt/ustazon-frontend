@@ -3,23 +3,23 @@ import avatar from '@/shared/assets/images/profile-image.jpg'
 export const REVIEWS_DATA = [
 	{
 		id: 1,
-		name: 'Алия Нурмуханова',
+		nameKey: 'reviews.review1Name',
 		avatar: avatar,
-		text: 'UstazOn менің оқыту тәсілімді толық өзгертті. Құрамында ЖИ бар құралдар материалдарды сағаттап емес, минуттарда дайындауға көмектеседі. Үлкен ресурс кітапханасы уақытты едәуір үнемдейді!',
+		textKey: 'reviews.review1Text',
 		date: '2025-11-15'
 	},
 	{
 		id: 2,
-		name: 'Ерлан Сейдахметов',
+		nameKey: 'reviews.review2Name',
 		avatar: avatar,
-		text: 'Платформа өте қолайлы! Әсіресе дайын презентациялар мен бейнесабақтар қатты ұнады. Енді оқушылармен жеке жұмысына көбірек уақыт бөле аламын.',
+		textKey: 'reviews.review2Text',
 		date: '2025-11-20'
 	},
 	{
 		id: 3,
-		name: 'Динара Касымова',
+		nameKey: 'reviews.review3Name',
 		avatar: avatar,
-		text: 'Кәсіби даму үшін керемет платформа! Курстар жаңа оқыту әдістерін меңгеруге көмектесті. Бір ғана тілек — ағылшын тілі бойынша материалдарды көбейту.',
+		textKey: 'reviews.review3Text',
 		date: '2025-12-01'
 	}
 ]

@@ -443,6 +443,92 @@
     }
 }
 
+// AI usage banner
+.usageBanner {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-lg;
+    background: $color-green-lightest;
+    color: $color-green-dark;
+    font-size: $font-size-sm;
+    border-bottom: 1px solid $color-gray-border;
+    flex-shrink: 0;
+
+    strong {
+        font-weight: $font-weight-semibold;
+    }
+
+    &.usageBannerWarning {
+        background: #fff7ed;
+        color: #9a3412;
+    }
+
+    &.usageBannerExceeded {
+        background: #fef2f2;
+        color: #991b1b;
+    }
+}
+
+.usageLink {
+    color: $color-green-primary;
+    font-weight: $font-weight-semibold;
+    text-decoration: underline;
+
+    &:hover {
+        color: $color-green-dark;
+    }
+}
+
+.emptyStateLimit {
+    font-size: $font-size-xs !important;
+    color: $color-gray-medium !important;
+}
+
+// Limit exceeded footer
+.limitExceededFooter {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    background: #fef2f2;
+    border-radius: $radius-lg;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+.limitTitle {
+    margin: 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+}
+
+.limitDescription {
+    margin: 2px 0 0;
+    font-size: $font-size-xs;
+    color: #b91c1c;
+}
+
+.subscribeBtn {
+    margin-left: auto;
+    flex-shrink: 0;
+    padding: $spacing-sm $spacing-lg;
+    background: $color-green-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $color-green-dark;
+        transform: scale(1.02);
+    }
+}
+
 // Mobile responsive
 @media (max-width: 768px) {
     .container {

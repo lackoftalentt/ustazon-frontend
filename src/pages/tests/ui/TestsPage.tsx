@@ -4,80 +4,52 @@ import { CreateTestModal, useCreateTestStore } from '@/features/create-test'
 import { EditTestModal } from '@/features/edit-test'
 import { Button } from '@/shared/ui/button'
 import { Container } from '@/shared/ui/container'
-import { Dropdown } from '@/shared/ui/dropdown'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Loader } from '@/shared/ui/loader'
 import { SearchInput } from '@/shared/ui/search-input'
+import { Dropdown } from '@/shared/ui/dropdown'
 import { SectionTitle } from '@/shared/ui/section-title'
-import { BookOpen, Plus, TextSelectionIcon } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { Plus } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import s from './TestsPage.module.scss'
-
-const DIFFICULTY_MAP: Record<string, TestDifficulty | ''> = {
-	Барлығы: '',
-	Оңай: 'easy',
-	Орташа: 'medium',
-	Қиын: 'hard'
-}
-
-const DIFFICULTY_LABELS = ['Барлығы', 'Оңай', 'Орташа', 'Қиын']
-
-const DIFFICULTY_REVERSE_MAP: Record<TestDifficulty | '', string> = {
-	'': 'Барлығы',
-	easy: 'Оңай',
-	medium: 'Орташа',
-	hard: 'Қиын'
-}
-
-const SUBJECT_LABELS = [
-	'Барлығы',
-	'Математика',
-	'phys',
-	'chem',
-	'bastau',
-	'math',
-	'kaz',
-	'bio',
-	'қазақ тілі | әдебиеті',
-	'Биология',
-	'geo',
-	'history',
-	'rus',
-	'lit',
-	'eng'
-]
-
-const SUBJECT_MAP: Record<string, string> = {
-	Барлығы: '',
-	Математика: 'Математика',
-	phys: 'phys',
-	chem: 'chem',
-	bastau: 'bastau',
-	math: 'math',
-	kaz: 'kaz',
-	bio: 'bio',
-	'қазақ тілі | әдебиеті': 'қазақ тілі | әдебиеті',
-	Биология: 'Биология',
-	geo: 'geo',
-	history: 'history',
-	rus: 'rus',
-	lit: 'lit',
-	eng: 'eng'
-}
 
 const PAGE_SIZE = 12
 
 export const TestsPage = () => {
-	const [searchParams, setSearchParams] = useSearchParams()
-	const subjectFilter = searchParams.get('subject') || undefined
-	const difficultyFilter =
-		(searchParams.get('difficulty') as TestDifficulty) || undefined
-
-	const [isMounted, setIsMounted] = useState(false)
+	const { t } = useTranslation()
+	const [searchParams] = useSearchParams()
+	const code = searchParams.get('code') || undefined
 	const [searchQuery, setSearchQuery] = useState('')
+	const [difficulty, setDifficulty] = useState<TestDifficulty | undefined>()
 
 	const { openModal: openCreateTestModal } = useCreateTestStore()
+
+	const difficultyLabels = [
+		t('tests.all'),
+		t('tests.easy'),
+		t('tests.medium'),
+		t('tests.hard')
+	]
+
+	const difficultyMap: Record<string, TestDifficulty | undefined> = {
+		[t('tests.all')]: undefined,
+		[t('tests.easy')]: 'easy',
+		[t('tests.medium')]: 'medium',
+		[t('tests.hard')]: 'hard'
+	}
+
+	const reverseMap: Record<string, string> = {
+		easy: t('tests.easy'),
+		medium: t('tests.medium'),
+		hard: t('tests.hard')
+	}
+
+	const { data: subject } = useSubjectByCode(code || '', {
+		enabled: !!code
+	})
+	const subjectName = subject?.name || undefined
 
 	const {
 		data: testsData,
@@ -86,51 +58,11 @@ export const TestsPage = () => {
 		hasNextPage,
 		isFetchingNextPage
 	} = useInfiniteTests(
-		{
-			subject: subjectFilter,
-			difficulty: difficultyFilter
-		},
+		{ subject: subjectName, difficulty },
 		PAGE_SIZE
 	)
 
 	const tests = useMemo(() => testsData?.pages.flat() || [], [testsData])
-
-	const { data: subject } = useSubjectByCode(subjectFilter, {
-		enabled: !!subjectFilter
-	})
-
-	useEffect(() => {
-		setIsMounted(true)
-	}, [])
-
-	const handleDifficultyChange = (label: string) => {
-		const value = DIFFICULTY_MAP[label]
-		if (value) {
-			searchParams.set('difficulty', value)
-		} else {
-			searchParams.delete('difficulty')
-		}
-		setSearchParams(searchParams)
-	}
-
-	const handleSubjectChange = (label: string) => {
-		const value = SUBJECT_MAP[label]
-		if (value) {
-			searchParams.set('subject', value)
-		} else {
-			searchParams.delete('subject')
-		}
-		setSearchParams(searchParams)
-	}
-
-	const handleLoadMore = () => {
-		if (hasNextPage && !isFetchingNextPage) {
-			fetchNextPage()
-		}
-	}
-
-	const currentDifficultyLabel = DIFFICULTY_REVERSE_MAP[difficultyFilter || '']
-	const currentSubjectLabel = subjectFilter || 'Барлығы'
 
 	const filteredTests = useMemo(() => {
 		if (!tests) return []
@@ -144,72 +76,44 @@ export const TestsPage = () => {
 		)
 	}, [tests, searchQuery])
 
+	const handleLoadMore = () => {
+		if (hasNextPage && !isFetchingNextPage) {
+			fetchNextPage()
+		}
+	}
+
 	return (
-		<main className={`${s.testPage} ${isMounted ? s.mounted : ''}`}>
+		<main className={s.testPage}>
 			<Container>
-				<div className={s.header}>
-					<SectionTitle title="Тесттер тізімі" />
-					<div className={s.subjectInfo}>
-						<div className={s.subjectHeader}>
-							<BookOpen
-								className={s.subjectIcon}
-								size={28}
-							/>
-							<h1 className={s.subjectName}>
-								{subject?.name ||
-									(subjectFilter ? subjectFilter : 'Барлық пәндер')}
-							</h1>
-						</div>
-						<p className={s.subtitle}>
-							Білімді тексеру және дайындық деңгейін бағалау үшін арналған
-							интерактивті тестілер
-						</p>
-					</div>
-				</div>
+				<header className={s.header}>
+					<SectionTitle title={t('tests.listTitle')} />
+					<p className={s.subtitle}>
+						{subject?.name || t('tests.allSubjects')}
+					</p>
+				</header>
 
 				<div className={s.controls}>
-					<div className={s.controlsLeft}>
-						<div className={s.testsCount}>
-							<TextSelectionIcon size={20} />
-							<span className={s.countNumber}>{tests?.length || 0}</span>
-							<span className={s.countText}>тест табылды</span>
-						</div>
+					<SearchInput
+						placeholder={t('tests.searchPlaceholder')}
+						value={searchQuery}
+						onChange={e => setSearchQuery(e.target.value)}
+						className={s.searchInput}
+					/>
 
-						<div className={s.searchContainer}>
-							<SearchInput
-								placeholder="Тест іздеу..."
-								value={searchQuery}
-								onChange={e => setSearchQuery(e.target.value)}
-								className={s.searchInput}
-							/>
-						</div>
+					<Dropdown
+						items={difficultyLabels}
+						value={difficulty ? reverseMap[difficulty] : undefined}
+						placeholder={t('tests.allLevels')}
+						onChange={label => setDifficulty(difficultyMap[label])}
+					/>
 
-						<Dropdown
-							items={SUBJECT_LABELS}
-							value={currentSubjectLabel === 'Барлығы' ? 'Барлық пәндер' : currentSubjectLabel}
-							placeholder="Барлық пәндер"
-							onChange={handleSubjectChange}
-							className={s.dropdown}
-						/>
-
-						<Dropdown
-							items={DIFFICULTY_LABELS}
-							value={currentDifficultyLabel === 'Барлығы' ? 'Барлық деңгейлер' : currentDifficultyLabel}
-							placeholder="Барлық деңгейлер"
-							onChange={handleDifficultyChange}
-							className={s.dropdown}
-						/>
-					</div>
-
-					<div className={s.buttonContainer}>
-						<Button
-							className={s.btnNewTest}
-							onClick={openCreateTestModal}
-						>
-							<Plus size={20} />
-							<span>Жаңа тест жасау</span>
-						</Button>
-					</div>
+					<Button
+						className={s.btnNewTest}
+						onClick={openCreateTestModal}
+					>
+						<Plus size={20} />
+						<span>{t('tests.createTest')}</span>
+					</Button>
 				</div>
 
 				{isLoading ? (
@@ -237,7 +141,7 @@ export const TestsPage = () => {
 									onClick={handleLoadMore}
 									disabled={isFetchingNextPage}
 								>
-									{isFetchingNextPage ? 'Жүктелуде...' : 'Көбірек көрсету'}
+									{isFetchingNextPage ? t('tests.loading') : t('tests.showMore')}
 								</Button>
 							</div>
 						)}

@@ -12,6 +12,8 @@ interface SubjectCardProps {
 	thumbnail?: string | null
 	thumbnailAlt?: string
 	path?: string
+	onEdit?: () => void
+	onDelete?: () => void
 }
 
 export const SubjectCard = ({
@@ -19,7 +21,9 @@ export const SubjectCard = ({
 	description,
 	thumbnail,
 	thumbnailAlt = 'Subject thumbnail',
-	path = '/subject'
+	path = '/subject',
+	onEdit,
+	onDelete
 }: SubjectCardProps) => {
 	const normalizedThumbnail =
 		thumbnail &&
@@ -31,6 +35,20 @@ export const SubjectCard = ({
 
 	return (
 		<article className={s.card}>
+			{(onEdit || onDelete) && (
+				<div className={s.adminActions}>
+					{onEdit && (
+						<button className={s.adminBtn} onClick={e => { e.preventDefault(); onEdit(); }}>
+							&#9998;
+						</button>
+					)}
+					{onDelete && (
+						<button className={`${s.adminBtn} ${s.adminBtnDanger}`} onClick={e => { e.preventDefault(); onDelete(); }}>
+							&#10005;
+						</button>
+					)}
+				</div>
+			)}
 			<div className={s.thumbnail}>
 				<img
 					src={normalizedThumbnail}

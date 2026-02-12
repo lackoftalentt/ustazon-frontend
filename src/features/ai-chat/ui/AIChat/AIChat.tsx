@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Loader2, Bot, User, Sparkles, Check, RefreshCw } from 'lucide-react';
+import { Send, Loader2, Bot, User, Sparkles, Check, RefreshCw, Lock, MessageCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+import { isAxiosError } from 'axios';
 import s from './AIChat.module.scss';
 import { aiApi } from '@/shared/api/ai';
-import type { ConversationListItem, MultiModelResponse } from '@/shared/api/ai';
+import type { AiUsageResponse, ConversationListItem, MultiModelResponse } from '@/shared/api/ai';
 import { ChatHistory } from '../ChatHistory/ChatHistory';
 
 const PAGE_SIZE = 20;
@@ -25,6 +27,7 @@ interface PendingResponses {
 }
 
 export const AIChat = () => {
+    const { t } = useTranslation();
     const [messages, setMessages] = useState<Message[]>([]);
     const [conversations, setConversations] = useState<ConversationListItem[]>([]);
     const [isLoadingConversations, setIsLoadingConversations] = useState(true);
@@ -36,14 +39,27 @@ export const AIChat = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [lastSentMessage, setLastSentMessage] = useState('');
     const [pendingResponses, setPendingResponses] = useState<PendingResponses | null>(null);
+    const [aiUsage, setAiUsage] = useState<AiUsageResponse | null>(null);
+    const [limitExceeded, setLimitExceeded] = useState(false);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // Initial load of conversations
+    // Initial load of conversations and usage
     useEffect(() => {
         loadConversations();
+        loadAiUsage();
     }, []);
+
+    const loadAiUsage = async () => {
+        try {
+            const usage = await aiApi.getUsage();
+            setAiUsage(usage);
+            setLimitExceeded(!usage.is_subscriber && usage.remaining <= 0);
+        } catch (err) {
+            console.error('Failed to load AI usage', err);
+        }
+    };
 
     // Auto-resize textarea
     useEffect(() => {
@@ -101,7 +117,7 @@ export const AIChat = () => {
 
     const handleDeleteConversation = async (id: number, e: React.MouseEvent) => {
         e.stopPropagation();
-        if (window.confirm('Осы чатты жою керек пе?')) {
+        if (window.confirm(t('ai.deleteConfirm'))) {
             try {
                 await aiApi.deleteConversation(id);
                 setConversations(prev => prev.filter(c => c.id !== id));
@@ -144,15 +160,31 @@ export const AIChat = () => {
                 responses: response.responses,
                 userMessageId
             });
+
+            // Refresh usage after successful send
+            loadAiUsage();
         } catch (error) {
             console.error('Error sending message:', error);
-            const errorMessage: Message = {
-                id: `error-${Date.now()}`,
-                text: 'Кешіріңіз, қате орын алды. Қайта көріңіз.',
-                sender: 'ai',
-                timestamp: new Date()
-            };
-            setMessages(prev => [...prev, errorMessage]);
+
+            if (isAxiosError(error) && error.response?.data?.code === 'ai_free_limit_exceeded') {
+                setLimitExceeded(true);
+                setAiUsage(prev => prev ? { ...prev, remaining: 0 } : prev);
+                const limitMessage: Message = {
+                    id: `limit-${Date.now()}`,
+                    text: t('ai.limitExceededMessage'),
+                    sender: 'ai',
+                    timestamp: new Date()
+                };
+                setMessages(prev => [...prev, limitMessage]);
+            } else {
+                const errorMessage: Message = {
+                    id: `error-${Date.now()}`,
+                    text: t('ai.errorMessage'),
+                    sender: 'ai',
+                    timestamp: new Date()
+                };
+                setMessages(prev => [...prev, errorMessage]);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -197,7 +229,7 @@ export const AIChat = () => {
             loadConversations();
         } catch (err) {
             console.error('Failed to save response:', err);
-            toast.error('Жауапты сақтау кезінде қате орын алды');
+            toast.error(t('ai.saveError'));
         } finally {
             setIsSaving(false);
         }
@@ -224,7 +256,7 @@ export const AIChat = () => {
             console.error('Retry failed:', error);
             const errorMessage: Message = {
                 id: `error-${Date.now()}`,
-                text: 'Кешіріңіз, қате орын алды. Қайта көріңіз.',
+                text: t('ai.errorMessage'),
                 sender: 'ai',
                 timestamp: new Date()
             };
@@ -256,11 +288,25 @@ export const AIChat = () => {
                 />
             </header>
 
+            {aiUsage && !aiUsage.is_subscriber && (
+                <div className={`${s.usageBanner} ${aiUsage.remaining <= 0 ? s.usageBannerExceeded : aiUsage.remaining <= 2 ? s.usageBannerWarning : ''}`}>
+                    <MessageCircle size={16} />
+                    {aiUsage.remaining > 0 ? (
+                        <span dangerouslySetInnerHTML={{ __html: t('ai.freeMessagesRemaining', { remaining: aiUsage.remaining, limit: aiUsage.limit }) }} />
+                    ) : (
+                        <span>{t('ai.limitExceeded')} <a href="https://wa.me/77073510431?text=Жазылым%20сатып%20алғым%20келеді" className={s.usageLink}>{t('ai.buySubscription')}</a></span>
+                    )}
+                </div>
+            )}
+
             <div className={s.messagesContainer}>
                 {messages.length === 0 ? (
                     <div className={s.emptyState}>
                         <Sparkles size={48} />
-                        <p>UstazOn AI-мен сұхбатты бастаңыз</p>
+                        <p>{t('ai.startChat')}</p>
+                        {aiUsage && !aiUsage.is_subscriber && (
+                            <p className={s.emptyStateLimit}>{t('ai.freeMessagesPerDay', { limit: aiUsage.limit })}</p>
+                        )}
                     </div>
                 ) : (
                     messages.map(m => (
@@ -272,7 +318,7 @@ export const AIChat = () => {
                                 <ReactMarkdown>{m.text}</ReactMarkdown>
                                 {m.id.startsWith('error-') && (
                                     <button className={s.retryBtn} onClick={handleRetry}>
-                                        <RefreshCw size={14} /> Қайта жіберу
+                                        <RefreshCw size={14} /> {t('ai.retry')}
                                     </button>
                                 )}
                             </div>
@@ -297,7 +343,7 @@ export const AIChat = () => {
 
                 {pendingResponses && (
                     <div className={s.multiResponseContainer}>
-                        <p className={s.multiResponseTitle}>Жауапты таңдаңыз:</p>
+                        <p className={s.multiResponseTitle}>{t('ai.selectResponse')}</p>
                         <div className={s.responseCards}>
                             {pendingResponses.responses.map((resp, idx) => (
                                 <div
@@ -313,12 +359,12 @@ export const AIChat = () => {
                                         {resp.text ? (
                                             <ReactMarkdown>{resp.text.slice(0, 300) + (resp.text.length > 300 ? '...' : '')}</ReactMarkdown>
                                         ) : (
-                                            <p className={s.errorText}>Қате: {resp.error?.slice(0, 100)}...</p>
+                                            <p className={s.errorText}>{t('ai.error')} {resp.error?.slice(0, 100)}...</p>
                                         )}
                                     </div>
                                     {resp.text && (
                                         <button className={s.selectBtn}>
-                                            <Check size={16} /> Таңдау
+                                            <Check size={16} /> {t('ai.select')}
                                         </button>
                                     )}
                                 </div>
@@ -326,7 +372,7 @@ export const AIChat = () => {
                         </div>
                         {pendingResponses.responses.every(r => !r.text) && (
                             <button className={s.retryAllBtn} onClick={handleRetry}>
-                                <RefreshCw size={18} /> Қайта жіберу
+                                <RefreshCw size={18} /> {t('ai.retry')}
                             </button>
                         )}
                     </div>
@@ -336,25 +382,38 @@ export const AIChat = () => {
             </div>
 
             <footer className={s.footer}>
-                <div className={s.inputWrapper}>
-                    <textarea
-                        ref={textareaRef}
-                        className={s.textarea}
-                        placeholder="AI-ға хабарлама жазыңыз..."
-                        value={inputValue}
-                        onChange={e => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        disabled={isLoading}
-                        rows={1}
-                    />
-                    <button
-                        className={s.sendBtn}
-                        onClick={handleSendMessage}
-                        disabled={!inputValue.trim() || isLoading}
-                    >
-                        {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
-                    </button>
-                </div>
+                {limitExceeded ? (
+                    <div className={s.limitExceededFooter}>
+                        <Lock size={20} />
+                        <div>
+                            <p className={s.limitTitle}>{t('ai.limitTitle')}</p>
+                            <p className={s.limitDescription}>{t('ai.limitDescription')}</p>
+                        </div>
+                        <a href="https://wa.me/77073510431?text=Жазылым%20сатып%20алғым%20келеді" className={s.subscribeBtn}>
+                            {t('ai.getSubscription')}
+                        </a>
+                    </div>
+                ) : (
+                    <div className={s.inputWrapper}>
+                        <textarea
+                            ref={textareaRef}
+                            className={s.textarea}
+                            placeholder={t('ai.inputPlaceholder')}
+                            value={inputValue}
+                            onChange={e => setInputValue(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            disabled={isLoading}
+                            rows={1}
+                        />
+                        <button
+                            className={s.sendBtn}
+                            onClick={handleSendMessage}
+                            disabled={!inputValue.trim() || isLoading}
+                        >
+                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
+                        </button>
+                    </div>
+                )}
             </footer>
         </div>
     );

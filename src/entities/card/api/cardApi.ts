@@ -24,6 +24,10 @@ export interface CardListItem {
     subject_card: string | null;
     url: string | null;
     img1_url: string | null;
+    img2_url: string | null;
+    img3_url: string | null;
+    img4_url: string | null;
+    img5_url: string | null;
     created_at: string;
     author: CardAuthor;
     topic: CardTopic | null;
@@ -120,6 +124,7 @@ export interface CardFilters {
     topic_id?: number;
     window_id?: number;
     author_id?: number;
+    search?: string;
 }
 
 export interface CardTopicCreate {

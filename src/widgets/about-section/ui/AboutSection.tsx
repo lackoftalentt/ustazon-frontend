@@ -1,21 +1,21 @@
 import { Container } from '@/shared/ui/container'
 import { VideoPlaceholder } from '@/shared/ui/video-placeholder'
+import { useTranslation } from 'react-i18next'
 import s from './AboutSection.module.scss'
 
 export const AboutSection = () => {
+	const { t } = useTranslation()
+
 	return (
 		<section className={s.aboutSection}>
 			<Container className={s.container}>
 				<div className={s.content}>
 					<div className={s.textBlock}>
 						<h2 className={s.title}>
-							UstazOn — мұғалімдердің жұмысына қажетті 2 миллионнан астам
-							материалды бір жерге біріктіретін ИИ орнатылған қуатты кәсіби
-							платформа
+							{t('about.title')}
 						</h2>
 						<p className={s.subTitle}>
-							Біздің мақсатымыз - мұғалімдер үшін басқа біреулер үшін пайдалы
-							болу
+							{t('about.subtitle')}
 						</p>
 					</div>
 				</div>

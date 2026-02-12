@@ -1,16 +1,18 @@
 import Logo from '@/shared/assets/images/logo.png'
 import { Instagram, MessageCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import s from './Footer.module.scss'
 
 export const Footer = () => {
 	const year = new Date().getFullYear()
+	const { t } = useTranslation()
 
 	const navLinks = [
-		{ to: '/subjects', label: 'Пәндер' },
-		{ to: '/tests', label: 'Тесттер' },
-		{ to: '/lesson-plans/bastau', label: 'Сабақ жоспарлары' },
-		{ to: '/profile', label: 'Профиль' }
+		{ to: '/subjects', label: t('nav.subjects') },
+		{ to: '/tests', label: t('nav.tests') },
+		{ to: '/lesson-plans/bastau', label: t('nav.lessonPlans') },
+		{ to: '/profile', label: t('nav.profile') }
 	]
 
 	return (
@@ -60,9 +62,9 @@ export const Footer = () => {
 
 				<div className={s.bottom}>
 					<span className={s.copyright}>
-						© {year} UstazOn. Барлық құқықтар сақталған.
+						{t('footer.copyright', { year })}
 					</span>
-					<span className={s.tagline}>Платформа мұғалімдер үшін жасалған</span>
+					<span className={s.tagline}>{t('footer.tagline')}</span>
 				</div>
 			</div>
 		</footer>

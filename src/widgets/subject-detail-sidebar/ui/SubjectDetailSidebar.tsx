@@ -71,7 +71,7 @@ export const SubjectDetailSidebar = ({ lesson }: SubjectDetailSidebarProps) => {
 				onClick={() => navigate(-1)}
 			>
 				<span className={s.backIcon} />
-				Курстарға оралу
+				Артқа қайту
 			</button>
 		</aside>
 	)

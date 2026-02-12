@@ -73,4 +73,11 @@ export const subscriptionApi = {
 		});
 		return response.data;
 	},
+
+	async checkMySubscription(subjectId: number): Promise<{ has_subscription: boolean }> {
+		const response = await apiClient.get<{ has_subscription: boolean }>('/subscriptions/me/check', {
+			params: { subject_id: subjectId },
+		});
+		return response.data;
+	},
 };

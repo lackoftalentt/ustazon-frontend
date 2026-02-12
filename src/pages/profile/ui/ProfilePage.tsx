@@ -1,5 +1,5 @@
 import {
-	useCards,
+	useMyFavorites,
 	useDeleteCard,
 	useToggleFavorite
 } from '@/entities/card/model/useCards'
@@ -19,42 +19,47 @@ import {
 	Eye,
 	Settings
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import s from './ProfilePage.module.scss'
 
 const ITEMS_PER_PAGE = 8
 
-const windowIdToBadge: Record<number, string> = {
-	1: 'Жасанды интеллект',
-	2: 'Онлайн тақта',
-	3: 'Квиз ойын',
-	4: 'Дидактикалық ойын',
-	6: 'Ойын платформа',
-	7: 'Презентация',
-	8: 'Презентация',
-	9: 'Презентация',
-	10: 'Презентация',
-	11: 'Жұмыс парағы',
-	12: 'Көрнекілік',
-	13: 'Олимпиада',
-	14: 'Мат. сауаттылық',
-	15: 'Электронды оқулық',
-	16: 'Desmos ойын',
-	17: 'Анимация',
-	18: 'Тест',
-	19: 'ҚМЖ',
-	20: 'Электронды журнал',
-	21: 'Progress Arena',
-	22: 'Python',
-	23: 'Тақырыптық тапсырма',
-	24: 'Олимпиада есеп',
-	25: 'AI chat',
-	26: 'AI animation'
-}
-
 export const ProfilePage = () => {
+	const { t } = useTranslation()
+
+	const getWindowBadge = (id: number): string => {
+		const map: Record<number, string> = {
+			1: t('windowBadge.ai'),
+			2: t('windowBadge.onlineBoard'),
+			3: t('windowBadge.quizGame'),
+			4: t('windowBadge.didacticGame'),
+			6: t('windowBadge.gamePlatform'),
+			7: t('windowBadge.presentation'),
+			8: t('windowBadge.presentation'),
+			9: t('windowBadge.presentation'),
+			10: t('windowBadge.presentation'),
+			11: t('windowBadge.worksheet'),
+			12: t('windowBadge.visual'),
+			13: t('windowBadge.olympiad'),
+			14: t('windowBadge.mathLiteracy'),
+			15: t('windowBadge.ebook'),
+			16: t('windowBadge.desmosGame'),
+			17: t('windowBadge.animation'),
+			18: t('windowBadge.test'),
+			19: t('windowBadge.kmzh'),
+			20: t('windowBadge.eJournal'),
+			21: t('windowBadge.progressArena'),
+			22: t('windowBadge.python'),
+			23: t('windowBadge.thematicTask'),
+			24: t('windowBadge.olympiadProblem'),
+			25: t('windowBadge.aiChat'),
+			26: t('windowBadge.aiAnimation')
+		}
+		return map[id] || t('profile.card')
+	}
 	const { user } = useAuthStore()
 	const [searchQuery, setSearchQuery] = useState('')
 	const [currentPage, setCurrentPage] = useState(1)
@@ -62,22 +67,29 @@ export const ProfilePage = () => {
 	const [cardToDelete, setCardToDelete] = useState<number | null>(null)
 
 	const {
-		favoriteIds,
 		isFavorite,
 		toggleFavorite: toggleFavoriteLocal
 	} = useFavoritesStore()
 	const { mutate: toggleFavoriteApi } = useToggleFavorite()
 	const { mutate: deleteCard, isPending: isDeleting } = useDeleteCard()
 
-	const favoriteIdsArray = useMemo(() => Array.from(favoriteIds), [favoriteIds])
+	// Fetch favorites from backend API instead of localStorage
+	const { data: favoriteCards = [], isLoading } = useMyFavorites({ limit: 100 })
 
-	const { data: allCards = [], isLoading } = useCards(
-		favoriteIdsArray.length > 0 ? { limit: 1000 } : undefined
-	)
-
-	const favoriteCards = useMemo(() => {
-		return allCards.filter(card => favoriteIds.has(card.id))
-	}, [allCards, favoriteIds])
+	// Sync localStorage with backend data on load
+	useEffect(() => {
+		if (favoriteCards.length > 0) {
+			const backendIds = new Set(favoriteCards.map(c => c.id))
+			const store = useFavoritesStore.getState()
+			// Sync: set localStorage to match backend
+			backendIds.forEach(id => {
+				if (!store.isFavorite(id)) store.toggleFavorite(id)
+			})
+			store.favoriteIds.forEach(id => {
+				if (!backendIds.has(id)) store.toggleFavorite(id)
+			})
+		}
+	}, [favoriteCards])
 
 	const filteredCards = useMemo(() => {
 		if (!searchQuery.trim()) return favoriteCards
@@ -108,12 +120,12 @@ export const ProfilePage = () => {
 		toggleFavoriteApi(id, {
 			onSuccess: () => {
 				toast.success(
-					isNowFavorite ? 'Таңдаулыға қосылды' : 'Таңдаулыдан алынды'
+					isNowFavorite ? t('profile.addedToFavorites') : t('profile.removedFromFavorites')
 				)
 			},
 			onError: () => {
 				toggleFavoriteLocal(id)
-				toast.error('Қате орын алды')
+				toast.error(t('profile.errorOccurred'))
 			}
 		})
 	}
@@ -128,7 +140,7 @@ export const ProfilePage = () => {
 
 		deleteCard(cardToDelete, {
 			onSuccess: () => {
-				toast.success('Карточка сәтті жойылды')
+				toast.success(t('profile.cardDeleted'))
 				setDeleteModalOpen(false)
 				setCardToDelete(null)
 				if (isFavorite(cardToDelete)) {
@@ -136,7 +148,7 @@ export const ProfilePage = () => {
 				}
 			},
 			onError: () => {
-				toast.error('Карточканы жою кезінде қате орын алды')
+				toast.error(t('profile.cardDeleteError'))
 			}
 		})
 	}
@@ -155,7 +167,7 @@ export const ProfilePage = () => {
 							{user?.name?.charAt(0).toUpperCase() || 'U'}
 						</div>
 						<div className={s.userDetails}>
-							<h1 className={s.userName}>{user?.name || 'Пайдаланушы'}</h1>
+							<h1 className={s.userName}>{user?.name || t('profile.user')}</h1>
 							<p className={s.userPhone}>{user?.phoneNumber || ''}</p>
 						</div>
 					</div>
@@ -165,7 +177,7 @@ export const ProfilePage = () => {
 							className={s.settingsButton}
 						>
 							<Settings size={18} />
-							Баптаулар
+							{t('profile.settings')}
 						</Button>
 					</Link>
 				</div>
@@ -176,8 +188,8 @@ export const ProfilePage = () => {
 							<BookMarked size={24} />
 						</div>
 						<div className={s.statInfo}>
-							<span className={s.statValue}>{favoriteIdsArray.length}</span>
-							<span className={s.statLabel}>Сақталған материалдар</span>
+							<span className={s.statValue}>{favoriteCards.length}</span>
+							<span className={s.statLabel}>{t('profile.savedMaterials')}</span>
 						</div>
 					</div>
 					<div className={s.statCard}>
@@ -186,7 +198,7 @@ export const ProfilePage = () => {
 						</div>
 						<div className={s.statInfo}>
 							<span className={s.statValue}>0</span>
-							<span className={s.statLabel}>Өтілген тесттер</span>
+							<span className={s.statLabel}>{t('profile.completedTests')}</span>
 						</div>
 					</div>
 					<div className={s.statCard}>
@@ -195,17 +207,17 @@ export const ProfilePage = () => {
 						</div>
 						<div className={s.statInfo}>
 							<span className={s.statValue}>0</span>
-							<span className={s.statLabel}>Қаралған карточкалар</span>
+							<span className={s.statLabel}>{t('profile.viewedCards')}</span>
 						</div>
 					</div>
 				</div>
 
 				<section className={s.materialsSection}>
-					<h2 className={s.sectionTitle}>Таңдаулы материалдар</h2>
+					<h2 className={s.sectionTitle}>{t('profile.favoriteMaterials')}</h2>
 
 					<div className={s.controls}>
 						<SearchInput
-							placeholder="Материалдарды іздеу..."
+							placeholder={t('profile.searchMaterials')}
 							value={searchQuery}
 							onChange={handleSearch}
 							className={s.searchInput}
@@ -224,16 +236,16 @@ export const ProfilePage = () => {
 										title={card.name}
 										description={
 											card.description ||
-											`${card.topic?.topic || 'Материал'}${card.grade ? ` • ${card.grade}-сынып` : ''}`
+											`${card.topic?.topic || t('profile.material')}${card.grade ? ` • ${card.grade}-сынып` : ''}`
 										}
 										thumbnail={card.img1_url}
 										path={`/subjects-materials/${card.subject_card || 'all'}/detail/${card.id}`}
 										templateName={
 											card.window_id
-												? windowIdToBadge[card.window_id] || 'Карточка'
-												: 'Карточка'
+												? getWindowBadge(card.window_id)
+												: t('profile.card')
 										}
-										isFavorite={isFavorite(card.id)}
+										isFavorite={true}
 										showDelete={user?.id === card.author?.id}
 										onFavoriteToggle={handleFavoriteToggle}
 										onDelete={handleDeleteClick}
@@ -285,11 +297,7 @@ export const ProfilePage = () => {
 								size={48}
 								strokeWidth={1.5}
 							/>
-							<p>
-								{favoriteIdsArray.length === 0
-									? 'Таңдаулы материалдар жоқ'
-									: 'Материалдар табылмады'}
-							</p>
+							<p>{t('profile.noFavorites')}</p>
 						</div>
 					)}
 				</section>
@@ -299,10 +307,10 @@ export const ProfilePage = () => {
 				open={deleteModalOpen}
 				onClose={handleDeleteCancel}
 				onConfirm={handleDeleteConfirm}
-				title="Карточканы жою"
-				message="Карточканы жоюға сенімдісіз бе? Бұл әрекетті қайтару мүмкін емес."
-				confirmText="Жою"
-				cancelText="Бас тарту"
+				title={t('profile.deleteCard')}
+				message={t('profile.deleteCardConfirm')}
+				confirmText={t('profile.delete')}
+				cancelText={t('profile.cancel')}
 				variant="danger"
 				loading={isDeleting}
 			/>

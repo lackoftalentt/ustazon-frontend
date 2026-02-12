@@ -7,11 +7,13 @@ import { Input } from '@/shared/ui/input'
 import { PasswordInput } from '@/shared/ui/password-input'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLoginForm } from '../../../model/useLoginForm'
 import s from './LoginForm.module.scss'
 
 export const LoginForm = () => {
+	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const { setTokens, setUser } = useAuthStore()
 
@@ -32,11 +34,12 @@ export const LoginForm = () => {
 				id: userData.id,
 				iin: userData.iin,
 				name: userData.name,
-				phoneNumber: userData.phone
+				phoneNumber: userData.phone,
+				is_superuser: userData.is_superuser
 			})
 
 			navigate('/')
-			toast.success('Кіру сәтті орындалды!')
+			toast.success(t('auth.loginSuccess'))
 		} catch (error) {
 			console.error('Login error:', error)
 
@@ -44,12 +47,12 @@ export const LoginForm = () => {
 				const message =
 					error.response?.data?.detail ||
 					error.response?.data?.message ||
-					'Қате ИИН немесе құпиясөз'
+					t('auth.wrongCredentials')
 				toast.error(message)
 			} else if (error instanceof Error) {
 				toast.error(error.message)
 			} else {
-				toast.error('Кіру кезінде қате орын алды')
+				toast.error(t('auth.loginError'))
 			}
 		}
 	})
@@ -60,20 +63,20 @@ export const LoginForm = () => {
 				className={s.form}
 				onSubmit={onSubmit}
 			>
-				<h3 className={s.title}>Қош келдіңіз</h3>
+				<h3 className={s.title}>{t('auth.welcome')}</h3>
 				<p className={s.subtitle}>
-					Жеке есепке кіру үшін деректерді толтырыңыз
+					{t('auth.loginSubtitle')}
 				</p>
 
 				<div className={s.inputsWrapper}>
 					<Input
 						{...register('iin')}
 						id="iin"
-						label="ЖСН"
+						label={t('auth.iin')}
 						error={errors.iin?.message}
 						inputMode="text"
 						maxLength={12}
-						placeholder="ЖСН енгізіңіз"
+						placeholder={t('auth.iinPlaceholder')}
 						autoFocus
 						onChange={handleIinChange}
 					/>
@@ -81,9 +84,9 @@ export const LoginForm = () => {
 					<PasswordInput
 						{...register('password')}
 						id="password"
-						label="Құпиясөз"
+						label={t('auth.password')}
 						error={errors.password?.message}
-						placeholder="Құпиясөз енгізіңіз"
+						placeholder={t('auth.passwordPlaceholder')}
 					/>
 				</div>
 
@@ -93,13 +96,13 @@ export const LoginForm = () => {
 							type="checkbox"
 							className={s.checkbox}
 						/>
-						<span className={s.rememberText}>Есте сақтау</span>
+						<span className={s.rememberText}>{t('auth.rememberMe')}</span>
 					</label>
 					<Link
 						to="/reset-password"
 						className={s.forgotPasswordLink}
 					>
-						Құпиясөзді ұмыттыңыз ба?
+						{t('auth.forgotPassword')}
 					</Link>
 				</div>
 
@@ -110,17 +113,17 @@ export const LoginForm = () => {
 					fullWidth
 					className={s.submitBtn}
 				>
-					Кіру
+					{t('auth.loginBtn')}
 				</Button>
 			</form>
 
 			<div className={s.register}>
-				<p> Тіркелмегенсіз бе? </p>
+				<p> {t('auth.noAccount')} </p>
 				<Link
 					className={s.registerLink}
 					to="/register"
 				>
-					Тіркелу.
+					{t('auth.registerLink')}
 				</Link>
 			</div>
 		</>

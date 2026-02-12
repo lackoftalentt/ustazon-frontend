@@ -4,25 +4,18 @@
 	background: white;
 	border-radius: $radius-sm;
 	padding: $spacing-2xl;
-	box-shadow: 0 $spacing-xs $spacing-2xl rgba($color-gray-dark, 0.08);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 	border: 1px solid $color-gray-border;
 	position: relative;
 	cursor: pointer;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-
-	transition:
-		transform 0.25s ease,
-		box-shadow 0.25s ease;
-
-	transform: translateY(0);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
 	&:hover {
-		transform: translateY(-10px);
-		box-shadow:
-			0 8px 20px rgba($color-gray-dark, 0.12),
-			0 30px 60px rgba($color-green-primary, 0.15);
+		border-color: $color-green-primary;
+		box-shadow: 0 4px 16px rgba($color-green-primary, 0.1);
 	}
 }
 
@@ -192,6 +185,12 @@
 		transition: transform $transition-normal;
 		color: inherit;
 	}
+}
+
+.lockedButton {
+	justify-content: center;
+	gap: $spacing-sm;
+	opacity: 0.8;
 }
 
 .testLink {

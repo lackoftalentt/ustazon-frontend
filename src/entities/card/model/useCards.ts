@@ -78,7 +78,7 @@ export const useCreateCard = () => {
     return useMutation({
         mutationFn: (data: CardCreate) => cardApi.createCard(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: cardKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: cardKeys.all });
         }
     });
 };
@@ -92,11 +92,8 @@ export const useUpdateCard = () => {
     return useMutation({
         mutationFn: ({ id, data }: { id: number; data: CardUpdate }) =>
             cardApi.updateCard(id, data),
-        onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({
-                queryKey: cardKeys.detail(variables.id)
-            });
-            queryClient.invalidateQueries({ queryKey: cardKeys.lists() });
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: cardKeys.all });
         }
     });
 };
@@ -107,7 +104,7 @@ export const useDeleteCard = () => {
     return useMutation({
         mutationFn: (id: number) => cardApi.deleteCard(id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: cardKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: cardKeys.all });
         }
     });
 };

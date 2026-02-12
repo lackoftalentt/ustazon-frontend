@@ -1,325 +1,38 @@
 @use '@/shared/styles/variables' as *;
 
-// Плавные easing функции
-$ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
-$ease-in-out-smooth: cubic-bezier(0.45, 0, 0.55, 1);
-$ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-@keyframes cardEnter {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -200% center;
-    }
-    100% {
-        background-position: 200% center;
-    }
-}
-
 .card {
-    position: relative;
-    width: 100%;
-    max-width: 340px;
-    padding: $spacing-2xl;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 24px;
+	background: white;
+	border-radius: 14px;
+	border: 1px solid #e2e8f0;
+	cursor: pointer;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-    background: white;
-    border-radius: $radius-xl;
-    border: 1px solid rgba($color-green-primary, 0.1);
+	&:hover {
+		border-color: $color-green-primary;
+		box-shadow: 0 4px 16px rgba($color-green-primary, 0.1);
 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
-
-    transition: transform 0.5s $ease-out-smooth,
-        box-shadow 0.5s $ease-out-smooth, border-color 0.4s $ease-in-out-smooth;
-    overflow: hidden;
-
-    @media (prefers-reduced-motion: no-preference) {
-        animation: cardEnter 700ms $ease-out-smooth both;
-    }
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(
-            90deg,
-            $color-green-primary,
-            $color-green-active,
-            $color-green-lightest
-        );
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.6s $ease-out-smooth;
-    }
-
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            135deg,
-            rgba($color-green-lightest, 0.03),
-            transparent 60%
-        );
-        opacity: 0;
-        transition: opacity 0.5s ease-out;
-    }
-
-    &:hover {
-        transform: translateY(-6px);
-        border-color: rgba($color-green-primary, 0.3);
-        box-shadow: 0 12px 40px rgba($color-green-primary, 0.15),
-            0 4px 12px rgba(0, 0, 0, 0.08);
-
-        &::before {
-            transform: scaleX(1);
-        }
-
-        &::after {
-            opacity: 1;
-        }
-
-        .button {
-            background: $color-green-active;
-            transform: translateY(-2px);
-
-            .buttonIcon {
-                transform: rotate(180deg) translateX(-4px);
-            }
-        }
-
-        .iconWrapper {
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 4px 12px rgba($color-green-active, 0.3);
-        }
-    }
-
-    &:active {
-        transform: translateY(-2px);
-        transition: transform 0.15s ease-out;
-    }
-}
-
-.header {
-    margin-bottom: $spacing-xl;
-    position: relative;
+		.arrow {
+			color: $color-green-primary;
+			transform: translateX(3px);
+		}
+	}
 }
 
 .title {
-    margin: 0;
-    color: $color-green-dark;
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
-    line-height: $line-height-tight;
-    letter-spacing: -0.02em;
-    position: relative;
-    z-index: 1;
+	margin: 0;
+	color: #0f172a;
+	font-size: 16px;
+	font-weight: 600;
 }
 
-.meta {
-    display: flex;
-    gap: $spacing-lg;
-    margin-bottom: $spacing-2xl;
-    padding: $spacing-lg 0;
-}
-
-.metaItem {
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    flex: 1;
-}
-
-.iconWrapper {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-
-    background: linear-gradient(
-        135deg,
-        rgba($color-green-primary, 0.1),
-        rgba($color-green-active, 0.05)
-    );
-    border-radius: $radius-md;
-
-    transition: transform 0.5s $ease-spring, box-shadow 0.4s $ease-out-smooth;
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.3),
-            transparent
-        );
-        transform: translateX(-100%);
-        transition: transform 0.8s $ease-out-smooth;
-    }
-
-    .card:hover &::before {
-        transform: translateX(100%);
-    }
-}
-
-.metaIcon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    filter: invert(36%) sepia(93%) saturate(500%) hue-rotate(115deg)
-        brightness(95%) contrast(90%);
-    transition: transform 0.4s $ease-out-smooth;
-}
-
-.metaContent {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.metaLabel {
-    font-size: $font-size-xs;
-    font-weight: $font-weight-medium;
-    color: rgba($color-green-dark, 0.6);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.metaValue {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
-    color: $color-green-dark;
-    line-height: 1;
-}
-
-.button {
-    width: 100%;
-    height: 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-sm;
-
-    border: none;
-    border-radius: $radius-md;
-
-    background: linear-gradient(
-        135deg,
-        $color-green-primary,
-        $color-green-active
-    );
-    color: white;
-
-    font-size: $font-size-base;
-    font-weight: $font-weight-semibold;
-
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-
-    transition: transform 0.4s $ease-out-smooth, background 0.4s ease-out;
-
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            135deg,
-            $color-green-active,
-            $color-green-lightest
-        );
-        opacity: 0;
-        transition: opacity 0.4s ease-out;
-        z-index: -1;
-    }
-
-    &:hover::before {
-        opacity: 1;
-    }
-
-    &:active {
-        transform: translateY(0) scale(0.98);
-        transition: transform 0.15s ease-out;
-    }
-
-    &:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba($color-green-primary, 0.3),
-            0 4px 12px rgba($color-green-primary, 0.25);
-        transition: box-shadow 0.2s ease-out;
-    }
-}
-
-.buttonIcon {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    transform: rotate(180deg);
-    filter: brightness(0) invert(1);
-    transition: transform 0.5s $ease-out-smooth;
-}
-
-@media (max-width: 768px) {
-    .card {
-        max-width: 100%;
-        padding: $spacing-xl;
-    }
-
-    .title {
-        font-size: $font-size-xl;
-    }
-
-    .meta {
-        gap: $spacing-md;
-    }
-
-    .iconWrapper {
-        width: 40px;
-        height: 40px;
-    }
-
-    .metaIcon {
-        width: 18px;
-        height: 18px;
-    }
-
-    .metaValue {
-        font-size: $font-size-lg;
-    }
-
-    .button {
-        height: 44px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .card,
-    .button,
-    .iconWrapper {
-        transition: none;
-        animation: none;
-    }
-
-    .card:hover {
-        transform: none;
-    }
+.arrow {
+	width: 20px;
+	height: 20px;
+	color: #94a3b8;
+	flex-shrink: 0;
+	transition: color 0.2s ease, transform 0.2s ease;
 }

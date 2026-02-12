@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './NotFoundPage.module.scss'
 
 export const NotFoundPage = () => {
+	const { t } = useTranslation()
 	const navigate = useNavigate()
 
 	const handleGoBack = () => {
@@ -51,11 +53,10 @@ export const NotFoundPage = () => {
 					</div>
 				</div>
 
-				<h1 className={styles.title}>Ой! Бұл бет табылмады</h1>
+				<h1 className={styles.title}>{t('notFound.title')}</h1>
 
 				<p className={styles.description}>
-					Бұл сабақ кестеде жоқ сияқты. Мүмкін сіз қате бөлмеге кірдіңіз?
-					Қайта бас бетке оралайық!
+					{t('notFound.description')}
 				</p>
 
 				<div className={styles.actions}>
@@ -63,19 +64,19 @@ export const NotFoundPage = () => {
 						to="/"
 						className={styles.primaryButton}
 					>
-						🏫 Бас бетке
+						🏫 {t('notFound.goHome')}
 					</Link>
 					<button
 						onClick={handleGoBack}
 						className={styles.secondaryButton}
 					>
-						← Артқа
+						← {t('notFound.goBack')}
 					</button>
 				</div>
 
 				<div className={styles.hint}>
 					<span className={styles.hintIcon}>📝</span>
-					<span>Кеңес: URL мекенжайын тексеріңіз</span>
+					<span>{t('notFound.hint')}</span>
 				</div>
 			</div>
 		</div>

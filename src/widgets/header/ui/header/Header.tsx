@@ -1,16 +1,21 @@
 import logo from '@/shared/assets/images/logo.png'
-// import Typography from '@/shared/assets/icons/typography.svg?react';
 import { useAuthStore } from '@/entities/user'
 import defaultAvatar from '@/shared/assets/images/profile-image.jpg'
 import { Button } from '@/shared/ui/button'
 import { Container } from '@/shared/ui/container'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import s from './Header.module.scss'
 
 export const Header = () => {
 	const navigate = useNavigate()
 	const { user, isAuthenticated } = useAuthStore()
 	const isAuth = isAuthenticated()
+	const { t, i18n } = useTranslation()
+	const toggleLanguage = () => {
+		const newLang = i18n.language === 'kk' ? 'ru' : 'kk'
+		i18n.changeLanguage(newLang)
+	}
 
 	return (
 		<header className={s.header}>
@@ -28,21 +33,20 @@ export const Header = () => {
 							to="/subjects"
 							className={s.navLink}
 						>
-							<span className={s.navLinkText}>Пәндер каталогы</span>
+							<span className={s.navLinkText}>{t('nav.subjectsCatalog')}</span>
 						</Link>
 						<Link
 							to="/ai-chat"
 							className={s.navLink}
 						>
-							<span className={s.navLinkText}>ИИ чат</span>
+							<span className={s.navLinkText}>{t('nav.aiChat')}</span>
 						</Link>
 					</nav>
 				</div>
 				<div className={s.rightSide}>
-					{/* <button className={s.langSwitcher}>
-                        <Typography className={s.langIcon} />
-                        <span>Русский</span>
-                    </button> */}
+					<button className={s.langSwitcher} onClick={toggleLanguage}>
+						<span>{i18n.language === 'kk' ? 'РУС' : 'ҚАЗ'}</span>
+					</button>
 
 					{isAuth ? (
 						<div className={s.userSection}>
@@ -64,7 +68,7 @@ export const Header = () => {
 							variant="outline"
 							className={s.loginBtn}
 						>
-							Кіру
+							{t('nav.login')}
 						</Button>
 					)}
 				</div>

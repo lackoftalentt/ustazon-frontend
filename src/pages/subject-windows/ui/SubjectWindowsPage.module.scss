@@ -2,18 +2,6 @@
 
 .subjectWindowsPage {
 	padding: $spacing-3xl 0 $spacing-3xl * 2;
-	animation: pageFadeIn $transition-slow ease-out;
-
-	@keyframes pageFadeIn {
-		from {
-			opacity: 0;
-			transform: translateY($spacing-lg);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
 }
 
 .container {
@@ -26,33 +14,6 @@
 	margin: 0 0 $spacing-2xl 0;
 	font-size: $font-size-2xl;
 	color: $color-gray-dark;
-	position: relative;
-	display: inline-block;
-
-	&::after {
-		content: '';
-		position: absolute;
-		bottom: -$spacing-md;
-		left: 0;
-		width: 100px;
-		height: 4px;
-		background: linear-gradient(
-			90deg,
-			$color-green-primary 0%,
-			$color-green-dark 100%
-		);
-		border-radius: 2px;
-		animation: lineExpand 1s ease-out 0.4s both;
-	}
-
-	@keyframes lineExpand {
-		from {
-			width: 0;
-		}
-		to {
-			width: 100px;
-		}
-	}
 }
 
 .searchContainer {
@@ -60,28 +21,23 @@
 	width: 100%;
 	max-width: 600px;
 	margin-bottom: $spacing-3xl;
-	animation: searchSlideIn $transition-slow ease-out 0.4s both;
-
-	@keyframes searchSlideIn {
-		from {
-			opacity: 0;
-			transform: translateX(-$spacing-xl);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0);
-		}
-	}
 }
 
 .searchInput {
 	width: 100%;
-	transition: all $transition-normal;
+}
 
-	&:focus-within {
-		transform: translateY(-1px);
-		box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.15);
-	}
+.searchResultsCount {
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
+	margin-bottom: $spacing-lg;
+}
+
+.widgetsSection {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: $spacing-xl;
+	margin-bottom: $spacing-2xl;
 }
 
 .windowsList {
@@ -90,38 +46,6 @@
 	gap: $spacing-2xl;
 	width: 100%;
 	margin-top: $spacing-2xl;
-	animation: cardsAppear $transition-slow ease-out 0.8s both;
-
-	@keyframes cardsAppear {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-}
-
-.windowsList > * {
-	animation: cardSlideUp 0.5s ease-out forwards;
-	opacity: 0;
-
-	@for $i from 1 through 12 {
-		&:nth-child(#{$i}) {
-			animation-delay: #{0.05s * $i};
-		}
-	}
-}
-
-@keyframes cardSlideUp {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
 }
 
 /* empty state */
@@ -129,7 +53,6 @@
 	text-align: center;
 	padding: $spacing-3xl * 2 $spacing-2xl;
 	grid-column: 1 / -1;
-	animation: fadeIn $transition-slow;
 }
 
 .emptyIcon {
@@ -141,22 +64,11 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0 auto $spacing-2xl;
-	animation: gentleFloat 3s ease-in-out infinite;
 
 	svg {
 		color: $color-green-primary;
 		width: 40px;
 		height: 40px;
-	}
-}
-
-@keyframes gentleFloat {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-	50% {
-		transform: translateY(-10px);
 	}
 }
 
@@ -185,12 +97,11 @@
 	border-radius: $radius-md;
 	font-weight: $font-weight-semibold;
 	cursor: pointer;
-	transition: all $transition-normal;
+	transition: background 0.15s ease, color 0.15s ease;
 
 	&:hover {
 		background: $color-green-primary;
 		color: white;
-		transform: translateY(-1px);
 	}
 }
 
@@ -199,75 +110,32 @@
 	justify-content: center;
 	width: 100%;
 	margin-top: $spacing-3xl;
-	animation: fadeIn $transition-slow ease-out 1s both;
 }
 
 .loadMoreButton {
 	padding: $spacing-xl $spacing-3xl;
-	background: linear-gradient(
-		135deg,
-		$color-green-primary 0%,
-		$color-green-dark 100%
-	);
+	background: $color-green-primary;
 	color: white;
 	border: none;
 	border-radius: $radius-md;
 	font-weight: $font-weight-semibold;
 	font-size: $font-size-base;
 	cursor: pointer;
-	transition: all $transition-normal;
-	position: relative;
-	overflow: hidden;
+	transition: background 0.15s ease;
 
 	&:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 $spacing-lg $spacing-3xl rgba($color-green-primary, 0.3);
-
-		&::before {
-			left: 100%;
-		}
+		background: $color-green-dark;
 	}
 
 	&:disabled {
 		opacity: 0.7;
 		cursor: not-allowed;
-		transform: none !important;
-	}
-
-	&::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -100%;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(
-			90deg,
-			transparent,
-			rgba(255, 255, 255, 0.2),
-			transparent
-		);
-		transition: left 0.7s;
 	}
 }
 
 .errorState {
 	text-align: center;
 	padding: $spacing-3xl * 2 $spacing-2xl;
-	animation: errorShake 0.5s ease-out;
-
-	@keyframes errorShake {
-		0%,
-		100% {
-			transform: translateX(0);
-		}
-		25% {
-			transform: translateX(-5px);
-		}
-		75% {
-			transform: translateX(5px);
-		}
-	}
 }
 
 .errorIcon {
@@ -279,24 +147,11 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0 auto $spacing-2xl;
-	animation: pulseError 2s infinite;
 
 	svg {
 		color: $color-red-error;
 		width: 40px;
 		height: 40px;
-	}
-}
-
-@keyframes pulseError {
-	0%,
-	100% {
-		transform: scale(1);
-		opacity: 1;
-	}
-	50% {
-		transform: scale(1.05);
-		opacity: 0.9;
 	}
 }
 
@@ -325,19 +180,128 @@
 	border-radius: $radius-md;
 	font-weight: $font-weight-semibold;
 	cursor: pointer;
-	transition: all $transition-normal;
+	transition: background 0.15s ease;
 
 	&:hover {
 		background: $color-green-dark;
-		transform: translateY(-1px);
-		box-shadow: 0 $spacing-md $spacing-2xl rgba($color-green-primary, 0.3);
+	}
+}
+
+@media (max-width: 1024px) {
+	.windowsList {
+		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
 /* responsive */
 @media (max-width: 768px) {
+	.subjectWindowsPage {
+		padding: $spacing-xl 0 $spacing-2xl;
+	}
+
+	.title {
+		font-size: $font-size-xl;
+		margin-bottom: $spacing-lg;
+	}
+
+	.searchContainer {
+		margin-bottom: $spacing-2xl;
+	}
+
+	.widgetsSection {
+		grid-template-columns: 1fr;
+		gap: $spacing-md;
+		margin-bottom: $spacing-lg;
+	}
+
 	.windowsList {
 		grid-template-columns: 1fr;
 		gap: $spacing-lg;
+		margin-top: $spacing-lg;
 	}
+}
+
+// Admin CRUD form styles
+.formGroup {
+	margin-bottom: 16px;
+
+	label {
+		display: block;
+		font-size: 13px;
+		font-weight: 500;
+		color: #6b7280;
+		margin-bottom: 6px;
+	}
+
+	input,
+	select {
+		width: 100%;
+		padding: 10px 12px;
+		border: 1px solid #e5e7eb;
+		border-radius: 8px;
+		font-size: 14px;
+		outline: none;
+		transition: border-color 0.15s;
+
+		&:focus {
+			border-color: $color-green-primary;
+		}
+	}
+}
+
+.checkboxGroup {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 16px;
+
+	input[type='checkbox'] {
+		width: 18px;
+		height: 18px;
+		accent-color: $color-green-primary;
+	}
+
+	label {
+		font-size: 14px;
+		cursor: pointer;
+	}
+}
+
+.multiSelect {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	padding: 8px;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	min-height: 42px;
+	max-height: 160px;
+	overflow-y: auto;
+}
+
+.chip {
+	padding: 4px 12px;
+	font-size: 13px;
+	border: 1px solid #e5e7eb;
+	border-radius: 16px;
+	background: white;
+	cursor: pointer;
+	transition: all 0.15s;
+
+	&:hover {
+		border-color: $color-green-primary;
+	}
+
+	&Selected {
+		background: $color-green-primary;
+		color: white;
+		border-color: $color-green-primary;
+	}
+}
+
+.formActions {
+	display: flex;
+	gap: 12px;
+	justify-content: flex-end;
+	margin-top: 24px;
 }

@@ -2,20 +2,37 @@ import type { KmzhItem } from '@/entities/kmzh'
 import { KmzhCard } from '@/entities/kmzh'
 import ArrowIcon from '@/shared/assets/icons/arrowLeft.svg?react'
 import { SectionTitle } from '@/shared/ui/section-title'
+import { SkeletonCard } from '@/shared/ui/skeleton-card'
 import { Link } from 'react-router-dom'
 import s from '../SubjectsMaterialsPage.module.scss'
 
 interface KmzhSectionProps {
 	kmzhData: KmzhItem[]
 	subjectCode: string
+	isLoading?: boolean
+	isLocked?: boolean
+	sectionId?: string
 }
 
-export const KmzhSection = ({ kmzhData, subjectCode }: KmzhSectionProps) => {
+export const KmzhSection = ({ kmzhData, subjectCode, isLoading, isLocked, sectionId }: KmzhSectionProps) => {
+	if (isLoading) {
+		return (
+			<div className={s.windowSection} id={sectionId}>
+				<SectionTitle className={s.rowTitle} title="ҚМЖ" />
+				<div className={s.container}>
+					{Array.from({ length: 4 }).map((_, i) => (
+						<SkeletonCard key={i} />
+					))}
+				</div>
+			</div>
+		)
+	}
+
 	const displayItems = kmzhData.slice(0, 4)
 	const hasMore = kmzhData.length > 3
 
 	return (
-		<div className={s.windowSection}>
+		<div className={s.windowSection} id={sectionId}>
 			<SectionTitle
 				className={s.rowTitle}
 				title="ҚМЖ"
@@ -32,6 +49,7 @@ export const KmzhSection = ({ kmzhData, subjectCode }: KmzhSectionProps) => {
 						code={kmzh.code}
 						filesCount={kmzh.files_count}
 						path={`/lesson-plans-list/${kmzh.grade}/q${kmzh.quarter}?code=${subjectCode}`}
+						isLocked={isLocked}
 					/>
 				))}
 			</div>

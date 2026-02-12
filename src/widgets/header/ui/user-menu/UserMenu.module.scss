@@ -79,6 +79,21 @@
     }
 }
 
+.menuLabel {
+    padding: 6px 16px 2px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.menuDivider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 4px 0;
+}
+
 // Tablet
 @media (max-width: 768px) {
     .avatar {

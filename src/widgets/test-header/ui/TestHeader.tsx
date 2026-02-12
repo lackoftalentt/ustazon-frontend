@@ -1,6 +1,7 @@
 import { formatTime, getTimeColor } from '@/shared/lib/formatTime'
 import { Progress } from '@/shared/ui/progress'
 import { Timer } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import s from './TestHeader.module.scss'
 
 interface TestHeaderProps {
@@ -25,6 +26,7 @@ export const TestHeader = ({
 	onGoToQuestion
 }: TestHeaderProps) => {
 	const timeColor = getTimeColor(remainingTime)
+	const { t } = useTranslation()
 
 	return (
 		<>
@@ -48,7 +50,7 @@ export const TestHeader = ({
 				<Progress value={progress} size="md" animated={true} />
 				<div className={s.progressInfo}>
 					<span className={s.progressText}>
-						Жауап берілген: <strong>{answeredCount}</strong> / {totalQuestions}
+						{t('tests.answered')} <strong>{answeredCount}</strong> / {totalQuestions}
 					</span>
 					<span className={s.progressPercentage}>{Math.round(progress)}%</span>
 				</div>

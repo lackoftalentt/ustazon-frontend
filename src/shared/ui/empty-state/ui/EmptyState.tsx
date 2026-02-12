@@ -1,4 +1,5 @@
 import { Search } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import s from './EmptyState.module.scss'
 
 interface EmptyStateProps {
@@ -7,20 +8,21 @@ interface EmptyStateProps {
 }
 
 export const EmptyState = ({ search, handleClearSearch }: EmptyStateProps) => {
+	const { t } = useTranslation()
+
 	return (
 		<div className={s.emptyState}>
 			<div className={s.emptyIcon}>
 				<Search />
 			</div>
-			<h3 className={s.emptyTitle}>Курстар табылмады</h3>
+			<h3 className={s.emptyTitle}>{t('emptyState.title')}</h3>
 			<p className={s.emptyDescription}>
 				{search ? (
 					<>
-						&quot;{search}&quot; сөзі бойынша сәйкес келетін курстар жоқ. Басқа
-						сөздермен іздеп көріңіз немесе барлық курстарды көріңіз.
+						{t('emptyState.searchDescription', { search })}
 					</>
 				) : (
-					'Әзірше ешбір курс қолжетімді емес'
+					t('emptyState.noCoursesYet')
 				)}
 			</p>
 			{search && (
@@ -28,7 +30,7 @@ export const EmptyState = ({ search, handleClearSearch }: EmptyStateProps) => {
 					className={s.clearSearchButton}
 					onClick={handleClearSearch}
 				>
-					Барлық курстарды көрсету
+					{t('emptyState.showAll')}
 				</button>
 			)}
 		</div>

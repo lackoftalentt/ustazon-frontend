@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import '@/shared/config/i18n';
 import { App } from './index';
 
 const root = document.getElementById('root');

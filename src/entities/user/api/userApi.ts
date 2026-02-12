@@ -6,6 +6,7 @@ interface UserResponse {
     name: string;
     phone: string;
     is_verified: boolean;
+    is_superuser: boolean;
     created_at: string;
 }
 

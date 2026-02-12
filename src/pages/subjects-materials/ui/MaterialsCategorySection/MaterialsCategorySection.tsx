@@ -9,9 +9,12 @@ import { MaterialCard } from '@/entities/material'
 import ArrowIcon from '@/shared/assets/icons/arrowLeft.svg?react'
 import { ConfirmModal } from '@/shared/ui/confirm-modal'
 import { SectionTitle } from '@/shared/ui/section-title'
+import { SkeletonCard } from '@/shared/ui/skeleton-card'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
+import { useDropUpload } from '../../model/useDropUpload'
+import { DropOverlay } from '../DropOverlay'
 import s from '../SubjectsMaterialsPage.module.scss'
 
 interface MaterialsCategorySectionProps {
@@ -19,6 +22,13 @@ interface MaterialsCategorySectionProps {
 	cards: CardListItem[]
 	subjectCode: string
 	windowId: number
+	isLoading?: boolean
+	isLocked?: boolean
+	sectionId?: string
+	showAdminEdit?: boolean
+	onAdminEdit?: (id: number) => void
+	subjectId?: number
+	isAdmin?: boolean
 }
 
 const windowIdToBadge: Record<number, string> = {
@@ -53,7 +63,14 @@ export const MaterialsCategorySection = ({
 	name,
 	cards,
 	subjectCode,
-	windowId
+	windowId,
+	isLoading,
+	isLocked,
+	sectionId,
+	showAdminEdit,
+	onAdminEdit,
+	subjectId,
+	isAdmin
 }: MaterialsCategorySectionProps) => {
 	const { mutate: toggleFavoriteApi } = useToggleFavorite()
 	const { mutate: deleteCard, isPending: isDeleting } = useDeleteCard()
@@ -65,6 +82,12 @@ export const MaterialsCategorySection = ({
 
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false)
 	const [cardToDelete, setCardToDelete] = useState<number | null>(null)
+
+	const { isDragOver, isUploading, dragProps } = useDropUpload({
+		windowId,
+		subjectId,
+		enabled: !!isAdmin
+	})
 
 	const badgeName = windowIdToBadge[windowId] || 'Карточка'
 
@@ -109,8 +132,25 @@ export const MaterialsCategorySection = ({
 		setCardToDelete(null)
 	}
 
+	if (isLoading) {
+		return (
+			<div className={s.windowSection} id={sectionId}>
+				<SectionTitle className={s.rowTitle} title={name} />
+				<div className={s.container}>
+					{Array.from({ length: 4 }).map((_, i) => (
+						<SkeletonCard key={i} />
+					))}
+				</div>
+			</div>
+		)
+	}
+
 	return (
-		<div className={s.windowSection}>
+		<div
+			className={`${s.windowSection}${isDragOver ? ` ${s.dropActive}` : ''}`}
+			id={sectionId}
+			{...dragProps}
+		>
 			<SectionTitle
 				className={s.rowTitle}
 				title={name}
@@ -125,13 +165,16 @@ export const MaterialsCategorySection = ({
 							card.description ||
 							`${card.topic?.topic || 'Материал'}${card.grade ? ` • ${card.grade}-сынып` : ''}`
 						}
-						thumbnail={card.img1_url}
+						thumbnails={[card.img1_url, card.img2_url, card.img3_url, card.img4_url, card.img5_url]}
 						path={`/subjects-materials/${subjectCode}/detail/${card.id}`}
 						templateName={badgeName}
 						isFavorite={isFavorite(card.id)}
-						showDelete={user?.id === card.author?.id}
+						isLocked={isLocked}
+						showDelete={!isLocked && (user?.id === card.author?.id || !!showAdminEdit)}
+						showEdit={!!showAdminEdit}
 						onFavoriteToggle={handleFavoriteToggle}
 						onDelete={handleDeleteClick}
+						onEdit={onAdminEdit}
 					/>
 				))}
 			</div>
@@ -146,6 +189,8 @@ export const MaterialsCategorySection = ({
 					</Link>
 				</div>
 			)}
+
+			<DropOverlay isDragOver={isDragOver} isUploading={isUploading} />
 
 			<ConfirmModal
 				open={deleteModalOpen}

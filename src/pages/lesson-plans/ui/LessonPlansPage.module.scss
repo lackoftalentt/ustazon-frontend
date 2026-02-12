@@ -18,39 +18,8 @@
 	margin-bottom: $spacing-md;
 }
 
-.filters {
-	display: flex;
-	gap: $spacing-lg;
-	flex-wrap: wrap;
-	align-items: center;
-}
-
-// .resetBtn {
-// 	padding: $spacing-sm $spacing-md;
-// 	background: transparent;
-// 	border: 1px solid $color-green-dark;
-// 	border-radius: $radius-sm;
-// 	color: $color-green-dark;
-// 	font-size: $font-size-sm;
-// 	cursor: pointer;
-// 	transition: all 0.2s ease;
-
-// 	&:hover {
-// 		background: $color-green-dark;
-// 		color: white;
-// 	}
-// }
-
-.stats {
-	margin-top: $spacing-2xl;
-
-	display: flex;
-	gap: $spacing-2xl;
-}
-
 .section {
 	margin-top: $spacing-3xl;
-
 	display: flex;
 	flex-direction: column;
 	gap: $spacing-xl;
@@ -59,7 +28,33 @@
 .cards {
 	display: grid;
 	gap: $spacing-2xl;
-
 	grid-template-columns: repeat(3, 1fr);
 	align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+	.cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.container {
+		padding-top: $spacing-lg;
+		padding-bottom: $spacing-2xl;
+	}
+
+	.subtitle {
+		font-size: $font-size-base;
+	}
+
+	.section {
+		margin-top: $spacing-2xl;
+		gap: $spacing-lg;
+	}
+
+	.cards {
+		grid-template-columns: 1fr;
+		gap: $spacing-md;
+	}
 }

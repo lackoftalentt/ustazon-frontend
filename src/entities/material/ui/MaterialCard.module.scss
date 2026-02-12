@@ -41,6 +41,61 @@
 	transition: transform $transition-normal;
 }
 
+.thumbNav {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 28px;
+	height: 28px;
+	border-radius: $radius-full;
+	background: rgba(0, 0, 0, 0.45);
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: opacity $transition-fast;
+	z-index: 2;
+
+	.thumbnail:hover & {
+		opacity: 1;
+	}
+}
+
+.thumbNavLeft {
+	left: $spacing-xs;
+}
+
+.thumbNavRight {
+	right: $spacing-xs;
+}
+
+.thumbDots {
+	position: absolute;
+	bottom: $spacing-xs;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 4px;
+	z-index: 2;
+}
+
+.thumbDot {
+	width: 6px;
+	height: 6px;
+	border-radius: $radius-full;
+	background: rgba(255, 255, 255, 0.5);
+	transition: background $transition-fast;
+}
+
+.thumbDotActive {
+	background: white;
+}
+
 .badge {
 	position: absolute;
 	top: $spacing-sm;

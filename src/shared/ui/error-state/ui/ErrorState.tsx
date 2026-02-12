@@ -1,4 +1,5 @@
 import { AlertTriangle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import s from './ErrorState.module.scss'
 
 interface ErrorStateProps {
@@ -6,21 +7,22 @@ interface ErrorStateProps {
 }
 
 export const ErrorState = ({ handleRetry }: ErrorStateProps) => {
+	const { t } = useTranslation()
+
 	return (
 		<div className={s.errorState}>
 			<div className={s.errorIcon}>
 				<AlertTriangle />
 			</div>
-			<h3 className={s.errorTitle}>Жүктеу сәтсіз аяқталды</h3>
+			<h3 className={s.errorTitle}>{t('errorState.title')}</h3>
 			<p className={s.errorDescription}>
-				Курстарды жүктеу кезінде қате пайда болды. Өтінеміз, қайта байқап
-				көріңіз.
+				{t('errorState.description')}
 			</p>
 			<button
 				className={s.retryButton}
 				onClick={handleRetry}
 			>
-				Қайта жүктеу
+				{t('errorState.retry')}
 			</button>
 		</div>
 	)

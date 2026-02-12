@@ -1,0 +1,177 @@
+@use '@/shared/styles/variables' as *;
+
+.page {
+	padding: $spacing-3xl 0 $spacing-3xl * 2;
+}
+
+.header {
+	margin-bottom: $spacing-2xl;
+}
+
+.toolbar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: $spacing-xl;
+	flex-wrap: wrap;
+}
+
+.filters {
+	display: flex;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.filterBtn {
+	padding: 6px 14px;
+	font-size: 13px;
+	border: 1px solid #e5e7eb;
+	border-radius: 6px;
+	background: white;
+	cursor: pointer;
+	transition: all 0.15s;
+
+	&:hover {
+		background: #f3f4f6;
+	}
+
+	&Active {
+		background: $color-green-primary;
+		color: white;
+		border-color: $color-green-primary;
+	}
+}
+
+.empty {
+	text-align: center;
+	padding: 48px 0;
+	color: #6b7280;
+	font-size: 14px;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: $spacing-xl;
+}
+
+.card {
+	background: white;
+	border-radius: 12px;
+	padding: $spacing-xl;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	transition: transform 0.2s, box-shadow 0.2s;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+	}
+}
+
+.cardBody {
+	margin-bottom: $spacing-lg;
+}
+
+.cardRow {
+	display: flex;
+	justify-content: space-between;
+	padding: 4px 0;
+	font-size: 14px;
+	border-bottom: 1px solid #f3f4f6;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.cardLabel {
+	color: #6b7280;
+	font-weight: 500;
+}
+
+.badgeGreen {
+	padding: 2px 8px;
+	font-size: 12px;
+	border-radius: 12px;
+	background: #dcfce7;
+	color: #166534;
+}
+
+.badgeRed {
+	padding: 2px 8px;
+	font-size: 12px;
+	border-radius: 12px;
+	background: #fef2f2;
+	color: #991b1b;
+}
+
+.cardActions {
+	display: flex;
+	gap: 8px;
+}
+
+.actionBtn {
+	flex: 1;
+	padding: 8px;
+	font-size: 13px;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	background: white;
+	cursor: pointer;
+	transition: background 0.15s;
+
+	&:hover {
+		background: #f3f4f6;
+	}
+
+	&Danger {
+		color: #ef4444;
+		border-color: #fecaca;
+
+		&:hover {
+			background: #fef2f2;
+		}
+	}
+}
+
+.formGroup {
+	margin-bottom: 16px;
+
+	label {
+		display: block;
+		font-size: 13px;
+		font-weight: 500;
+		color: #6b7280;
+		margin-bottom: 6px;
+	}
+
+	input, select {
+		width: 100%;
+		padding: 10px 12px;
+		border: 1px solid #e5e7eb;
+		border-radius: 8px;
+		font-size: 14px;
+		outline: none;
+		transition: border-color 0.15s;
+
+		&:focus {
+			border-color: $color-green-primary;
+		}
+	}
+}
+
+.formActions {
+	display: flex;
+	gap: 12px;
+	justify-content: flex-end;
+	margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+	.grid {
+		grid-template-columns: 1fr;
+	}
+}

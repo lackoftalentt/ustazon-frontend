@@ -163,7 +163,18 @@ export interface ChatMultiResponse {
     responses: MultiModelResponse[];
 }
 
+export interface AiUsageResponse {
+    is_subscriber: boolean;
+    remaining: number;
+    limit: number;
+}
+
 export const aiApi = {
+    // Get AI usage info (remaining messages for free users)
+    getUsage: async (): Promise<AiUsageResponse> => {
+        const response = await apiClient.get<AiUsageResponse>('/ai/usage');
+        return response.data;
+    },
     // Basic chat (no history saving)
     chat: async (request: ChatRequest): Promise<ChatResponse> => {
         const response = await apiClient.post<ChatResponse>(

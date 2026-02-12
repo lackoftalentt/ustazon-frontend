@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/entities/user';
+import { useTranslation } from 'react-i18next';
 import defaultAvatar from '@/shared/assets/images/profile-image.jpg';
 import s from './UserMenu.module.scss';
 
@@ -8,7 +9,8 @@ export const UserMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
-    const { user, logout } = useAuthStore();
+    const { user, logout, isAdmin } = useAuthStore();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -36,6 +38,11 @@ export const UserMenu = () => {
         navigate('/profile');
     };
 
+    const handleNavigate = (path: string) => {
+        setIsOpen(false);
+        navigate(path);
+    };
+
     return (
         <div
             className={s.userMenu}
@@ -43,7 +50,7 @@ export const UserMenu = () => {
             <button
                 className={s.avatarButton}
                 onClick={() => setIsOpen(!isOpen)}
-                aria-label="Меню пользователя">
+                aria-label={t('userMenu.userMenuLabel')}>
                 <img
                     src={defaultAvatar}
                     alt="avatar"
@@ -59,15 +66,36 @@ export const UserMenu = () => {
                     </div>
 
                     <div className={s.menuItems}>
+                        {isAdmin() && (
+                            <>
+                                <div className={s.menuLabel}>{t('userMenu.adminPanel')}</div>
+                                <button className={s.menuItem} onClick={() => handleNavigate('/subjects')}>
+                                    {t('admin.tabs.subjects')}
+                                </button>
+                                <button className={s.menuItem} onClick={() => handleNavigate('/templates')}>
+                                    {t('admin.tabs.templates')}
+                                </button>
+                                <button className={s.menuItem} onClick={() => handleNavigate('/institution-types')}>
+                                    {t('admin.tabs.institutionTypes')}
+                                </button>
+                                <button className={s.menuItem} onClick={() => handleNavigate('/subscriptions')}>
+                                    {t('admin.tabs.subscriptions')}
+                                </button>
+                                <button className={s.menuItem} onClick={() => handleNavigate('/materials')}>
+                                    {t('admin.tabs.materials')}
+                                </button>
+                                <div className={s.menuDivider} />
+                            </>
+                        )}
                         <button
                             className={s.menuItem}
                             onClick={handleProfileClick}>
-                            Мой профиль
+                            {t('userMenu.myProfile')}
                         </button>
                         <button
                             className={`${s.menuItem} ${s.danger}`}
                             onClick={handleLogout}>
-                            Выйти
+                            {t('userMenu.logout')}
                         </button>
                     </div>
                 </div>

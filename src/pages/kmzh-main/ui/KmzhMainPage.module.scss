@@ -1,0 +1,83 @@
+@use '@/shared/styles/variables' as *;
+
+.page {
+	padding: $spacing-3xl 0 $spacing-3xl * 2;
+}
+
+.container {
+	max-width: 800px;
+}
+
+.header {
+	margin-bottom: $spacing-2xl;
+}
+
+.subtitle {
+	font-size: $font-size-lg;
+	color: $color-gray-medium;
+	margin: $spacing-sm 0 0;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+}
+
+.card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 24px;
+	background: white;
+	border-radius: 14px;
+	border: 1px solid #e2e8f0;
+	cursor: pointer;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover {
+		border-color: $color-green-primary;
+		box-shadow: 0 4px 16px rgba($color-green-primary, 0.1);
+
+		.arrow {
+			color: $color-green-primary;
+			transform: translateX(3px);
+		}
+	}
+}
+
+.name {
+	font-size: 16px;
+	font-weight: 600;
+	color: #0f172a;
+}
+
+.arrow {
+	width: 20px;
+	height: 20px;
+	color: #94a3b8;
+	flex-shrink: 0;
+	transition: color 0.2s ease, transform 0.2s ease;
+}
+
+@media (max-width: 768px) {
+	.page {
+		padding: $spacing-xl 0 $spacing-2xl;
+	}
+
+	.header {
+		margin-bottom: $spacing-lg;
+	}
+
+	.subtitle {
+		font-size: $font-size-base;
+	}
+
+	.card {
+		padding: 14px 16px;
+	}
+
+	.name {
+		font-size: 14px;
+	}
+}

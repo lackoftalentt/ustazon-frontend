@@ -9,37 +9,37 @@ export const ADVANTAGES_DATA = [
 	{
 		id: 1,
 		icon: SearchIcon,
-		title: 'Жеңіл іздеу',
-		subtitle: 'барлық материалдар бойынша'
+		titleKey: 'advantages.easySearch',
+		subtitleKey: 'advantages.easySearchSub'
 	},
 	{
 		id: 2,
 		icon: ClockIcon,
-		title: 'Уақытты үнемдейді',
-		subtitle: '5–10 минут ішінде көмек'
+		titleKey: 'advantages.savesTime',
+		subtitleKey: 'advantages.savesTimeSub'
 	},
 	{
 		id: 3,
 		icon: CPUIcon,
-		title: 'Құрамында ЖИ',
-		subtitle: 'секундтарда дайындау'
+		titleKey: 'advantages.hasAi',
+		subtitleKey: 'advantages.hasAiSub'
 	},
 	{
 		id: 4,
 		icon: DocumentIcon,
-		title: 'Толық контент',
-		subtitle: '1–11 сыныпқа арналған барлық материалдар'
+		titleKey: 'advantages.fullContent',
+		subtitleKey: 'advantages.fullContentSub'
 	},
 	{
 		id: 5,
 		icon: Typography,
-		title: '100% қазақ тілінде',
-		subtitle: 'Оқу үшін көптеген тілдер'
+		titleKey: 'advantages.kazakh',
+		subtitleKey: 'advantages.kazakhSub'
 	},
 	{
 		id: 6,
 		icon: CloudIcon,
-		title: 'Актуалды база',
-		subtitle: 'Дерекқор тұрақты жаңартылып отырады'
+		titleKey: 'advantages.upToDate',
+		subtitleKey: 'advantages.upToDateSub'
 	}
 ]

@@ -1,0 +1,132 @@
+@use '@/shared/styles/variables' as *;
+
+.page {
+    padding: $spacing-3xl 0 $spacing-3xl * 2;
+    min-height: 60vh;
+}
+
+.header {
+    margin-bottom: $spacing-2xl;
+}
+
+.toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: $spacing-xl;
+    flex-wrap: wrap;
+}
+
+.typeFilter {
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+    min-width: 180px;
+
+    &:focus {
+        border-color: $color-green-primary;
+    }
+}
+
+.tableWrapper {
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+
+    th,
+    td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid #f3f4f6;
+        white-space: nowrap;
+    }
+
+    th {
+        background: #f9fafb;
+        font-weight: 600;
+        color: #6b7280;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        position: sticky;
+        top: 0;
+    }
+
+    tbody tr:hover {
+        background: #f9fafb;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+}
+
+.titleCell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topicCell {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.typeBadge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    background: #ecfdf5;
+    color: #059669;
+    white-space: nowrap;
+}
+
+.fileLink {
+    color: $color-green-primary;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.deleteBtn {
+    padding: 4px 10px;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    background: white;
+    color: #ef4444;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+        background: #fef2f2;
+    }
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: $spacing-xl;
+}
+
+.pageInfo {
+    font-size: 14px;
+    color: #6b7280;
+}

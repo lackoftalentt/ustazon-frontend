@@ -5,6 +5,7 @@ import {
     useState,
     type KeyboardEvent
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import s from './ChatInput.module.scss';
 import { AttachMenu } from '../AttachMenu/AttachMenu';
 import DocumentIcon from '@/shared/assets/icons/document2.svg?react';
@@ -28,9 +29,10 @@ const uid = () => crypto.randomUUID?.() ?? String(Date.now() + Math.random());
 
 export const ChatInput = ({
     onSend,
-    placeholder = 'Введите текст',
+    placeholder,
     disabled = false
 }: ChatInputProps) => {
+    const { t } = useTranslation();
     const [value, setValue] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [attachments, setAttachments] = useState<Attachment[]>([]);
@@ -158,7 +160,7 @@ export const ChatInput = ({
                                         type="button"
                                         className={s.previewRemove}
                                         onClick={() => removeAttachment(a.id)}
-                                        aria-label="Удалить вложение">
+                                        aria-label={t('ai.removeAttachment')}>
                                         ×
                                     </button>
                                 </div>
@@ -172,7 +174,7 @@ export const ChatInput = ({
                                         type="button"
                                         className={s.documentRemove}
                                         onClick={() => removeAttachment(a.id)}
-                                        aria-label="Удалить вложение">
+                                        aria-label={t('ai.removeAttachment')}>
                                         ×
                                     </button>
                                 </div>
@@ -188,7 +190,7 @@ export const ChatInput = ({
                         type="button"
                         className={s.attachButton}
                         onClick={() => setIsMenuOpen(v => !v)}
-                        aria-label="Добавить вложение"
+                        aria-label={t('ai.addAttachment')}
                         aria-expanded={isMenuOpen}>
                         <span
                             className={s.plus}
@@ -206,7 +208,7 @@ export const ChatInput = ({
                 <input
                     type="text"
                     className={s.input}
-                    placeholder={placeholder}
+                    placeholder={placeholder ?? t('ai.enterText')}
                     value={value}
                     onChange={e => setValue(e.target.value)}
                     onKeyDown={handleKeyDown}
@@ -217,7 +219,7 @@ export const ChatInput = ({
                     className={s.sendButton}
                     onClick={handleSend}
                     disabled={disabled || (!value.trim() && attachments.length === 0)}
-                    aria-label="Отправить сообщение"
+                    aria-label={t('ai.sendMessage')}
                     type="button">
                     <svg
                         width="20"

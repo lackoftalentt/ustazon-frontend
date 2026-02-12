@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, MessageSquare, Presentation, FileCheck, Video, BookOpen, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 import s from './AIToolLayout.module.scss';
@@ -14,41 +15,42 @@ const tools = [
         id: 'chat',
         path: '/ai-chat',
         icon: MessageSquare,
-        name: 'AI Чат'
+        nameKey: 'ai.chat'
     },
     {
         id: 'lesson',
         path: '/ai-lesson',
         icon: BookOpen,
-        name: 'Сабақ жоспары'
+        nameKey: 'ai.lessonPlan'
     },
     {
         id: 'qmj',
         path: '/ai-qmj',
         icon: FileText,
-        name: 'ҚМЖ'
+        nameKey: 'ai.kmzh'
     },
     {
         id: 'preza',
         path: '/ai-preza',
         icon: Presentation,
-        name: 'Презентация'
+        nameKey: 'ai.presentation'
     },
     {
         id: 'test',
         path: '/ai-test',
         icon: FileCheck,
-        name: 'Тест / СОР'
+        nameKey: 'ai.testSor'
     },
     {
         id: 'manim',
         path: '/ai-manim',
         icon: Video,
-        name: 'Manim видео'
+        nameKey: 'ai.manimVideo'
     }
 ];
 
 export const AIToolLayout = ({ children, actions }: AIToolLayoutProps) => {
+    const { t } = useTranslation();
     const location = useLocation();
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(true);
@@ -64,11 +66,11 @@ export const AIToolLayout = ({ children, actions }: AIToolLayoutProps) => {
             {/* Sidebar */}
             <aside className={`${s.sidebar} ${isMobileOpen ? s.mobileOpen : ''} ${isExpanded ? s.expanded : s.collapsed}`}>
                 <div className={s.sidebarHeader}>
-                    {isExpanded && <span className={s.sidebarTitle}>AI құралдар</span>}
+                    {isExpanded && <span className={s.sidebarTitle}>{t('ai.tools')}</span>}
                     <button
                         className={s.collapseBtn}
                         onClick={() => setIsExpanded(!isExpanded)}
-                        title={isExpanded ? "Свернуть" : "Развернуть"}
+                        title={isExpanded ? t('ai.collapse') : t('ai.expand')}
                     >
                         {isExpanded ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
                     </button>
@@ -84,10 +86,10 @@ export const AIToolLayout = ({ children, actions }: AIToolLayoutProps) => {
                                 to={tool.path}
                                 className={`${s.navItem} ${isActive ? s.active : ''}`}
                                 onClick={() => setIsMobileOpen(false)}
-                                title={!isExpanded ? tool.name : undefined}
+                                title={!isExpanded ? t(tool.nameKey) : undefined}
                             >
                                 <Icon size={20} strokeWidth={2} />
-                                {isExpanded && <span>{tool.name}</span>}
+                                {isExpanded && <span>{t(tool.nameKey)}</span>}
                             </Link>
                         );
                     })}

@@ -3,6 +3,7 @@ import { Container } from '@/shared/ui/container'
 import { OrientationItem } from '@/shared/ui/orientation-item'
 import { SectionTitle } from '@/shared/ui/section-title'
 import { VideoPlaceholder } from '@/shared/ui/video-placeholder'
+import { useTranslation } from 'react-i18next'
 import s from './OrientationSection.module.scss'
 
 // Демо видео для каждого направления
@@ -13,12 +14,14 @@ const VIDEO_URLS = [
 ]
 
 export const OrientationSection = () => {
+	const { t } = useTranslation()
+
 	return (
 		<section className={s.orientationSection}>
 			<Container>
 				<SectionTitle
 					className={s.title}
-					title="3 UstazOn платформасының негізгі бағыттары"
+					title={t('orientations.sectionTitle')}
 				/>
 				<div className={s.block}>
 					{ORIENTATIONS_DATA.map((or, index) => (
@@ -28,8 +31,8 @@ export const OrientationSection = () => {
 							style={{ animationDelay: `${index * 0.2}s` }}
 						>
 							<OrientationItem
-								title={or.title}
-								description={or.description}
+								title={t(or.titleKey)}
+								description={t(or.descriptionKey)}
 								icon={or.icon}
 							/>
 							<div className={s.videoWrapper}>

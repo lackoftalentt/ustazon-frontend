@@ -5,8 +5,10 @@ import {
 	useSubjectByCode,
 	useWindow
 } from '@/entities/subject/model/useSubjects'
+import { useSubscriptionCheck } from '@/entities/subscription'
+import { useAuthStore } from '@/entities/user/model/store/useAuthStore'
 import { useTests } from '@/entities/test'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 
 const PAGE_SIZE = 50
@@ -22,13 +24,6 @@ export const MATERIAL_WINDOWS = [
 	{ name: 'Анимациялар', id: 17 }
 ] as const
 
-interface TopicNode {
-	id: number
-	topic: string
-	parent_topic_id: number | null
-	children: TopicNode[]
-}
-
 interface CategoryData {
 	name: string
 	cards: CardListItem[]
@@ -39,11 +34,25 @@ export const useSubjectMaterialsPage = () => {
 	const { subjectCode } = useParams<{ subjectCode: string }>()
 	const [searchParams, setSearchParams] = useSearchParams()
 
-	// URL params
-	const urlTopicId = searchParams.get('topic')
+	// URL params: grade, quarter, window
+	const urlGrade = searchParams.get('grade')
+	const urlQuarter = searchParams.get('quarter')
 	const urlWindowId = searchParams.get('window')
-	const topicId = urlTopicId ? parseInt(urlTopicId) : undefined
+
+	const grade = urlGrade ? parseInt(urlGrade) : null
+	const quarter = urlQuarter ? parseInt(urlQuarter) : null
 	const windowId = urlWindowId ? parseInt(urlWindowId) : undefined
+
+	// Local search state with debounce
+	const [searchInput, setSearchInput] = useState('')
+	const [debouncedSearch, setDebouncedSearch] = useState('')
+
+	useEffect(() => {
+		const timer = setTimeout(() => setDebouncedSearch(searchInput), 300)
+		return () => clearTimeout(timer)
+	}, [searchInput])
+
+	const searchParam = debouncedSearch.length >= 2 ? debouncedSearch : undefined
 
 	// Subject query
 	const {
@@ -52,6 +61,16 @@ export const useSubjectMaterialsPage = () => {
 		error: subjectError,
 		refetch: refetchSubject
 	} = useSubjectByCode(subjectCode || '', { enabled: !!subjectCode })
+
+	// Subscription check (backend returns has_subscription=true for admins)
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated)()
+	const { data: subscriptionData } = useSubscriptionCheck(
+		isAuthenticated ? subject?.id : undefined
+	)
+	const isLocked = useMemo(() => {
+		if (!isAuthenticated) return true
+		return subscriptionData ? !subscriptionData.has_subscription : false
+	}, [isAuthenticated, subscriptionData])
 
 	// Window data for filtered view
 	const { data: windowData } = useWindow(windowId || 0, !!windowId)
@@ -67,7 +86,13 @@ export const useSubjectMaterialsPage = () => {
 		isFetchingNextPage
 	} = useInfiniteCards(
 		subject?.id && windowId
-			? { subject_id: subject.id, window_id: windowId, topic_id: topicId }
+			? {
+					subject_id: subject.id,
+					window_id: windowId,
+					...(grade !== null ? { grade } : {}),
+					...(quarter !== null ? { quarter } : {}),
+					...(searchParam ? { search: searchParam } : {})
+				}
 			: undefined,
 		PAGE_SIZE
 	)
@@ -77,116 +102,42 @@ export const useSubjectMaterialsPage = () => {
 		[filteredWindowCardsData]
 	)
 
+	// Build common filters for card queries
+	const baseCardFilters = useMemo(() => {
+		if (!subject?.id || windowId) return null
+		return {
+			subject_id: subject.id,
+			...(grade !== null ? { grade } : {}),
+			...(quarter !== null ? { quarter } : {}),
+			...(searchParam ? { search: searchParam } : {})
+		}
+	}, [subject?.id, windowId, grade, quarter, searchParam])
+
 	// Cards queries for each window (only when no specific window is selected)
 	const { data: presentationCards, isLoading: isLoadingPresentations } =
 		useCards(
-			subject?.id && !windowId
-				? { subject_id: subject.id, window_id: 7, topic_id: topicId, limit: 20 }
+			baseCardFilters
+				? { ...baseCardFilters, window_id: 7, limit: 20 }
 				: undefined
 		)
 
 	const { data: worksheetCards, isLoading: isLoadingWorksheets } = useCards(
-		subject?.id && !windowId
-			? { subject_id: subject.id, window_id: 11, topic_id: topicId, limit: 20 }
+		baseCardFilters
+			? { ...baseCardFilters, window_id: 11, limit: 20 }
 			: undefined
 	)
 
 	const { data: gamesCards, isLoading: isLoadingGames } = useCards(
-		subject?.id && !windowId
-			? { subject_id: subject.id, window_id: 3, topic_id: topicId, limit: 20 }
+		baseCardFilters
+			? { ...baseCardFilters, window_id: 3, limit: 20 }
 			: undefined
 	)
 
 	const { data: animationCards, isLoading: isLoadingAnimations } = useCards(
-		subject?.id && !windowId
-			? { subject_id: subject.id, window_id: 17, topic_id: topicId, limit: 20 }
+		baseCardFilters
+			? { ...baseCardFilters, window_id: 17, limit: 20 }
 			: undefined
 	)
-
-	// All cards for topic tree
-	const allCards = useMemo(() => {
-		return [
-			...(presentationCards || []),
-			...(worksheetCards || []),
-			...(gamesCards || []),
-			...(animationCards || [])
-		]
-	}, [presentationCards, worksheetCards, gamesCards, animationCards])
-
-	// Build topics from cards
-	const topics = useMemo((): TopicNode[] => {
-		if (!allCards.length) return []
-
-		const gradeQuarterTopics = new Map<string, TopicNode>()
-
-		allCards.forEach(card => {
-			const grade = card.grade
-			const quarter = card.quarter
-			const topic = card.topic
-
-			if (grade !== null && grade !== undefined) {
-				const gradeKey = `grade-${grade}`
-				if (!gradeQuarterTopics.has(gradeKey)) {
-					gradeQuarterTopics.set(gradeKey, {
-						id: -1000 - grade,
-						topic: `${grade}-сынып`,
-						parent_topic_id: null,
-						children: []
-					})
-				}
-
-				if (quarter !== null && quarter !== undefined) {
-					const quarterKey = `grade-${grade}-quarter-${quarter}`
-					if (!gradeQuarterTopics.has(quarterKey)) {
-						const quarterNode: TopicNode = {
-							id: -2000 - (grade * 10 + quarter),
-							topic: `${quarter}-тоқсан`,
-							parent_topic_id: -1000 - grade,
-							children: []
-						}
-						gradeQuarterTopics.set(quarterKey, quarterNode)
-						gradeQuarterTopics.get(gradeKey)!.children.push(quarterNode)
-					}
-
-					if (topic) {
-						const quarterNode = gradeQuarterTopics.get(quarterKey)!
-						if (!quarterNode.children.find(t => t.id === topic.id)) {
-							quarterNode.children.push({
-								id: topic.id,
-								topic: topic.topic,
-								parent_topic_id: quarterNode.id,
-								children: []
-							})
-						}
-					}
-				} else if (topic) {
-					const gradeNode = gradeQuarterTopics.get(gradeKey)!
-					if (!gradeNode.children.find(t => t.id === topic.id)) {
-						gradeNode.children.push({
-							id: topic.id,
-							topic: topic.topic,
-							parent_topic_id: gradeNode.id,
-							children: []
-						})
-					}
-				}
-			} else if (topic) {
-				const topicKey = `topic-${topic.id}`
-				if (!gradeQuarterTopics.has(topicKey)) {
-					gradeQuarterTopics.set(topicKey, {
-						id: topic.id,
-						topic: topic.topic,
-						parent_topic_id: null,
-						children: []
-					})
-				}
-			}
-		})
-
-		return Array.from(gradeQuarterTopics.values()).filter(
-			node => node.parent_topic_id === null
-		)
-	}, [allCards])
 
 	// Categories for display
 	const categories = useMemo((): CategoryData[] => {
@@ -217,13 +168,22 @@ export const useSubjectMaterialsPage = () => {
 		? (SUBJECT_MAP[subjectCode] ?? subjectCode)
 		: undefined
 
-	// KMZH data
+	// KMZH data — pass grade/quarter filters
 	const {
 		data: kmzhData,
 		isLoading: isLoadingKmzh,
 		error: kmzhError,
 		refetch: refetchKmzh
-	} = useKmzhList(!windowId ? { limit: PAGE_SIZE } : undefined, subjectCode)
+	} = useKmzhList(
+		!windowId
+			? {
+					limit: PAGE_SIZE,
+					...(grade !== null ? { grade } : {}),
+					...(quarter !== null ? { quarter } : {})
+				}
+			: undefined,
+		subjectCode
+	)
 
 	// Tests data
 	const {
@@ -236,33 +196,23 @@ export const useSubjectMaterialsPage = () => {
 		!windowId && !!subjectCode
 	)
 
-	// Find selected topic
-	const findTopicNode = (tree: TopicNode[], id: number): TopicNode | null => {
-		for (const node of tree) {
-			if (node.id === id) return node
-			const found = findTopicNode(node.children, id)
-			if (found) return found
-		}
-		return null
-	}
+	// Client-side filter for KMZH/Tests by search
+	const filteredKmzh = useMemo(() => {
+		if (!kmzhData) return undefined
+		if (!debouncedSearch) return kmzhData
+		const q = debouncedSearch.toLowerCase()
+		return kmzhData.filter(k => k.title.toLowerCase().includes(q))
+	}, [kmzhData, debouncedSearch])
 
-	const selectedTopicId = urlTopicId ? parseInt(urlTopicId) : null
-	const selectedTopic = useMemo(
-		() =>
-			selectedTopicId !== null ? findTopicNode(topics, selectedTopicId) : null,
-		[topics, selectedTopicId]
-	)
+	const filteredTests = useMemo(() => {
+		if (!testsData) return undefined
+		if (!debouncedSearch) return testsData
+		const q = debouncedSearch.toLowerCase()
+		return testsData.filter(t => t.title.toLowerCase().includes(q))
+	}, [testsData, debouncedSearch])
 
-	// Loading state
-	const isLoading = windowId
-		? isLoadingSubject || isLoadingFiltered
-		: isLoadingSubject ||
-			isLoadingPresentations ||
-			isLoadingWorksheets ||
-			isLoadingGames ||
-			isLoadingAnimations ||
-			isLoadingKmzh ||
-			isLoadingTests
+	// Loading states — per section, not global
+	const isLoadingCards = isLoadingPresentations || isLoadingWorksheets || isLoadingGames || isLoadingAnimations
 
 	// Error state
 	const hasError = windowId
@@ -291,17 +241,31 @@ export const useSubjectMaterialsPage = () => {
 	])
 
 	const handleClearFilters = useCallback(() => {
-		searchParams.delete('topic')
+		searchParams.delete('grade')
+		searchParams.delete('quarter')
 		searchParams.delete('window')
 		setSearchParams(searchParams)
+		setSearchInput('')
 	}, [searchParams, setSearchParams])
 
-	const handleTopicSelect = useCallback(
-		(topicIdValue: number | null) => {
-			if (topicIdValue === null) {
-				searchParams.delete('topic')
+	const handleGradeChange = useCallback(
+		(newGrade: number | null) => {
+			if (newGrade === null) {
+				searchParams.delete('grade')
 			} else {
-				searchParams.set('topic', topicIdValue.toString())
+				searchParams.set('grade', newGrade.toString())
+			}
+			setSearchParams(searchParams)
+		},
+		[searchParams, setSearchParams]
+	)
+
+	const handleQuarterChange = useCallback(
+		(newQuarter: number | null) => {
+			if (newQuarter === null) {
+				searchParams.delete('quarter')
+			} else {
+				searchParams.set('quarter', newQuarter.toString())
 			}
 			setSearchParams(searchParams)
 		},
@@ -323,8 +287,8 @@ export const useSubjectMaterialsPage = () => {
 	const totalCards = windowId
 		? filteredWindowCards.length
 		: categories.reduce((sum, cat) => sum + cat.cards.length, 0) +
-			(kmzhData?.length || 0) +
-			(testsData?.length || 0)
+			(filteredKmzh?.length || 0) +
+			(filteredTests?.length || 0)
 
 	return {
 		// Subject
@@ -332,20 +296,29 @@ export const useSubjectMaterialsPage = () => {
 		subject,
 
 		// Filters
+		grade,
+		quarter,
 		windowId,
 		windowData,
-		selectedTopicId,
-		selectedTopic,
+		searchInput,
 
 		// Data
-		topics,
 		categories,
 		filteredWindowCards,
-		kmzhData,
-		testsData,
+		kmzhData: filteredKmzh,
+		testsData: filteredTests,
+
+		// Subscription
+		isLocked,
+
+		// Loading states (per-section)
+		isLoadingSubject,
+		isLoadingCards,
+		isLoadingFiltered,
+		isLoadingKmzh,
+		isLoadingTests,
 
 		// State
-		isLoading,
 		hasError,
 		hasNextPage,
 		isFetchingNextPage,
@@ -354,8 +327,10 @@ export const useSubjectMaterialsPage = () => {
 		// Handlers
 		handleRetry,
 		handleClearFilters,
-		handleTopicSelect,
+		handleGradeChange,
+		handleQuarterChange,
 		handleClearWindow,
-		handleLoadMore
+		handleLoadMore,
+		setSearchInput
 	}
 }

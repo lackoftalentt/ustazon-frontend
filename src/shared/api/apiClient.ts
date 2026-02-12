@@ -44,6 +44,14 @@ apiClient.interceptors.response.use(
 	async error => {
 		const originalRequest = error.config
 
+		// Let subscription_required 403 pass through for component-level handling
+		if (
+			error.response?.status === 403 &&
+			error.response?.data?.detail === 'subscription_required'
+		) {
+			return Promise.reject(error)
+		}
+
 		if (error.response?.status === 401 && !originalRequest._retry) {
 			if (originalRequest.url?.includes('/auth/refresh')) {
 				useAuthStore.getState().logout()

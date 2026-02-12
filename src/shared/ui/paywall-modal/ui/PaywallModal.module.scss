@@ -1,0 +1,90 @@
+@use '@/shared/styles/variables' as *;
+
+@keyframes overlayIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes modalIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9) translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-lg;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(4px);
+	animation: overlayIn 0.2s ease;
+}
+
+.modal {
+	position: relative;
+	width: 100%;
+	max-width: 400px;
+	padding: $spacing-2xl;
+	background: white;
+	border-radius: $radius-xl;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+	text-align: center;
+	animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.iconWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	margin: 0 auto $spacing-lg;
+	border-radius: 50%;
+	background: linear-gradient(
+		135deg,
+		rgba(#f59e0b, 0.1) 0%,
+		rgba(#f59e0b, 0.2) 100%
+	);
+	color: #f59e0b;
+
+	svg {
+		width: 28px;
+		height: 28px;
+	}
+}
+
+.title {
+	margin: 0 0 $spacing-sm;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+	color: $color-gray-dark;
+}
+
+.message {
+	margin: 0 0 $spacing-xl;
+	font-size: $font-size-sm;
+	color: $color-gray-medium;
+	line-height: 1.5;
+}
+
+.actions {
+	display: flex;
+	justify-content: center;
+
+	button {
+		min-width: 140px;
+	}
+}

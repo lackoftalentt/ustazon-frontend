@@ -3,6 +3,7 @@ import {
 	Check,
 	Clock,
 	Copy,
+	Lock,
 	QrCode,
 	Share2
 } from 'lucide-react'
@@ -12,6 +13,7 @@ import s from './TestItem.module.scss'
 import { QRCodeSVG } from 'qrcode.react'
 
 import { useNavigate } from 'react-router-dom'
+import { PaywallModal } from '@/shared/ui/paywall-modal'
 import { QRCodeModal } from '../../ui/qrcode-modal'
 
 interface TestItemProps {
@@ -22,6 +24,7 @@ interface TestItemProps {
 	timeLimit: number
 	difficulty: 'easy' | 'medium' | 'hard'
 	category: string
+	isLocked?: boolean
 }
 
 export const TestItem = ({
@@ -31,12 +34,14 @@ export const TestItem = ({
 	questionsCount,
 	timeLimit,
 	difficulty,
-	category
+	category,
+	isLocked = false
 }: TestItemProps) => {
 	const [, /* isHovered */ setIsHovered] = useState(false)
 	const [showShareOptions, setShowShareOptions] = useState(false)
 	const [showQRCode, setShowQRCode] = useState(false)
 	const [copied, setCopied] = useState(false)
+	const [paywallOpen, setPaywallOpen] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -280,14 +285,25 @@ export const TestItem = ({
 			)}
 
 			<div className={s.footer}>
-				<button
-					onClick={() => handleStartTest()}
-					className={s.startButton}
-				>
-					<span>Тестті бастау</span>
-					<div className={s.arrow}>→</div>
-				</button>
+				{isLocked ? (
+					<button
+						onClick={() => setPaywallOpen(true)}
+						className={`${s.startButton} ${s.lockedButton}`}
+					>
+						<Lock size={18} />
+						<span>Жазылым қажет</span>
+					</button>
+				) : (
+					<button
+						onClick={() => handleStartTest()}
+						className={s.startButton}
+					>
+						<span>Тестті бастау</span>
+						<div className={s.arrow}>→</div>
+					</button>
+				)}
 			</div>
+			<PaywallModal open={paywallOpen} onClose={() => setPaywallOpen(false)} />
 		</div>
 	)
 }
