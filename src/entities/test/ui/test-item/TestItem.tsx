@@ -13,7 +13,6 @@ import s from './TestItem.module.scss'
 import { QRCodeSVG } from 'qrcode.react'
 
 import { useNavigate } from 'react-router-dom'
-import { PaywallModal } from '@/shared/ui/paywall-modal'
 import { QRCodeModal } from '../../ui/qrcode-modal'
 
 interface TestItemProps {
@@ -25,6 +24,7 @@ interface TestItemProps {
 	difficulty: 'easy' | 'medium' | 'hard'
 	category: string
 	isLocked?: boolean
+	onLockedClick?: () => void
 }
 
 export const TestItem = ({
@@ -35,13 +35,13 @@ export const TestItem = ({
 	timeLimit,
 	difficulty,
 	category,
-	isLocked = false
+	isLocked = false,
+	onLockedClick
 }: TestItemProps) => {
 	const [, /* isHovered */ setIsHovered] = useState(false)
 	const [showShareOptions, setShowShareOptions] = useState(false)
 	const [showQRCode, setShowQRCode] = useState(false)
 	const [copied, setCopied] = useState(false)
-	const [paywallOpen, setPaywallOpen] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -287,11 +287,11 @@ export const TestItem = ({
 			<div className={s.footer}>
 				{isLocked ? (
 					<button
-						onClick={() => setPaywallOpen(true)}
+						onClick={() => onLockedClick?.()}
 						className={`${s.startButton} ${s.lockedButton}`}
 					>
 						<Lock size={18} />
-						<span>Жазылым қажет</span>
+						<span>Доступ қажет</span>
 					</button>
 				) : (
 					<button
@@ -303,7 +303,6 @@ export const TestItem = ({
 					</button>
 				)}
 			</div>
-			<PaywallModal open={paywallOpen} onClose={() => setPaywallOpen(false)} />
 		</div>
 	)
 }

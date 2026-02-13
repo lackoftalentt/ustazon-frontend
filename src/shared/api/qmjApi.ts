@@ -93,6 +93,10 @@ export const qmjApi = {
 		return response.data
 	},
 
+	async deleteQMJ(qmjId: number): Promise<void> {
+		await apiClient.delete(`/qmj/${qmjId}`)
+	},
+
 	async deleteQMJFile(fileId: number): Promise<void> {
 		await apiClient.delete(`/qmj/files/${fileId}`)
 	}

@@ -1,0 +1,77 @@
+@use '@/shared/styles/variables' as *;
+
+.codeBlock {
+    position: relative;
+    border-radius: $radius-md;
+    overflow: hidden;
+    margin: $spacing-sm 0;
+    border: 1px solid $color-gray-border;
+    background: #1e1e1e;
+}
+
+.codeHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-xs $spacing-md;
+    background: #2d2d2d;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.codeLang {
+    font-size: $font-size-xs;
+    color: #a0a0a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.copyCodeBtn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px $spacing-sm;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: $radius-sm;
+    color: #a0a0a0;
+    font-size: $font-size-xs;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    &.copied {
+        color: $color-green-primary;
+        border-color: $color-green-primary;
+    }
+}
+
+.codeContent {
+    overflow-x: auto;
+    padding: $spacing-md;
+    margin: 0;
+
+    pre {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    code {
+        font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+}
+
+.inlineCode {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    font-size: 0.88em;
+    color: #c7254e;
+}

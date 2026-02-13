@@ -6,7 +6,6 @@ import {
 	ClipboardCheck,
 	Video,
 	X,
-	Lock,
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -26,9 +25,9 @@ const AI_ACTIONS = [
 
 export function SpeedDial() {
 	const [open, setOpen] = useState(false)
-	const [showModal, setShowModal] = useState(false)
 	const navigate = useNavigate()
-	const { isAdmin } = useAuthStore()
+	const { isAuthenticated } = useAuthStore()
+	const isAuth = isAuthenticated()
 	const ref = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
@@ -43,11 +42,11 @@ export function SpeedDial() {
 
 	const handleAction = (path: string) => {
 		setOpen(false)
-		if (isAdmin()) {
-			navigate(path)
-		} else {
-			setShowModal(true)
+		if (!isAuth) {
+			navigate('/login')
+			return
 		}
+		navigate(path)
 	}
 
 	return (
@@ -73,30 +72,6 @@ export function SpeedDial() {
 				</button>
 			</div>
 
-			{showModal && (
-				<div className={s.modalOverlay} onClick={() => setShowModal(false)}>
-					<div className={s.modal} onClick={e => e.stopPropagation()}>
-						<button className={s.modalClose} onClick={() => setShowModal(false)}>
-							<X size={20} />
-						</button>
-						<div className={s.modalIcon}>
-							<Lock size={32} />
-						</div>
-						<h3 className={s.modalTitle}>Жазылым қажет</h3>
-						<p className={s.modalText}>
-							AI құралдарын пайдалану үшін жазылым сатып алыңыз
-						</p>
-						<a
-							href={WHATSAPP_URL}
-							target="_blank"
-							rel="noopener noreferrer"
-							className={s.modalButton}
-						>
-							Жазылым сатып алу
-						</a>
-					</div>
-				</div>
-			)}
 		</>
 	)
 }

@@ -29,6 +29,7 @@ interface MaterialsCategorySectionProps {
 	onAdminEdit?: (id: number) => void
 	subjectId?: number
 	isAdmin?: boolean
+	onLockedClick?: () => void
 }
 
 const windowIdToBadge: Record<number, string> = {
@@ -70,7 +71,8 @@ export const MaterialsCategorySection = ({
 	showAdminEdit,
 	onAdminEdit,
 	subjectId,
-	isAdmin
+	isAdmin,
+	onLockedClick
 }: MaterialsCategorySectionProps) => {
 	const { mutate: toggleFavoriteApi } = useToggleFavorite()
 	const { mutate: deleteCard, isPending: isDeleting } = useDeleteCard()
@@ -175,6 +177,7 @@ export const MaterialsCategorySection = ({
 						onFavoriteToggle={handleFavoriteToggle}
 						onDelete={handleDeleteClick}
 						onEdit={onAdminEdit}
+						onLockedClick={onLockedClick}
 					/>
 				))}
 			</div>

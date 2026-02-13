@@ -1,4 +1,5 @@
 import { useKmzhByQuarter, kmzhApi, type KmzhItem } from '@/entities/kmzh'
+import { qmjApi } from '@/shared/api/qmjApi'
 import type { LessonPlanRow, QuarterId } from '@/entities/lesson-plan'
 import { AddFilesModal, useAddFilesStore } from '@/features/add-files-kmzh'
 import { CreateKMZHModal, useCreateKMZHStore } from '@/features/create-kmzh'
@@ -16,6 +17,7 @@ import {
 	type ColumnDef,
 	type RowSelectionState
 } from '@tanstack/react-table'
+import { useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
 import {
@@ -39,15 +41,18 @@ import { CSS } from '@dnd-kit/utilities'
 import { Button } from '@/shared/ui/button'
 import { EmptyState } from '@/shared/ui/empty-state'
 import { Loader } from '@/shared/ui/loader'
+import { PaywallModal } from '@/shared/ui/paywall-modal'
 import { SearchInput } from '@/shared/ui/search-input'
 import { Plus } from 'lucide-react'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import s from './LessonPlanTable.module.scss'
 
 type LessonPlanTableProps = {
 	grade: string
 	quarter: QuarterId
 	code?: string
+	isLocked?: boolean
 }
 
 const mapKmzhToLessonPlan = (kmzh: KmzhItem, index: number): LessonPlanRow => ({
@@ -132,8 +137,12 @@ const DraggableRow = ({ row }: { row: any }) => {
 export const LessonPlanTable = ({
 	grade,
 	quarter,
-	code
+	code,
+	isLocked = false
 }: LessonPlanTableProps) => {
+	const { t } = useTranslation()
+	const queryClient = useQueryClient()
+	const [paywallOpen, setPaywallOpen] = useState(false)
 	const gradeNum = parseInt(grade)
 	const quarterNum = quarterToNum(quarter)
 
@@ -193,6 +202,10 @@ export const LessonPlanTable = ({
 	>([])
 
 	const openFiles = useCallback(async (row: LessonPlanRow) => {
+		if (isLocked) {
+			setPaywallOpen(true)
+			return
+		}
 		setActiveRow(row)
 		try {
 			const detail = await kmzhApi.getKmzhById(parseInt(row.id))
@@ -206,7 +219,7 @@ export const LessonPlanTable = ({
 			setActiveFiles([])
 		}
 		setFilesOpen(true)
-	}, [])
+	}, [isLocked])
 
 	const closeFiles = useCallback(() => {
 		setFilesOpen(false)
@@ -216,13 +229,21 @@ export const LessonPlanTable = ({
 
 	const handleAddFiles = useCallback(
 		(rowId: string) => {
+			if (isLocked) {
+				setPaywallOpen(true)
+				return
+			}
 			openAddFilesModal(rowId)
 		},
-		[openAddFilesModal]
+		[openAddFilesModal, isLocked]
 	)
 
 	const handleEditKMJ = useCallback(
 		async (row: LessonPlanRow) => {
+			if (isLocked) {
+				setPaywallOpen(true)
+				return
+			}
 			try {
 				const detail = await kmzhApi.getKmzhById(parseInt(row.id))
 
@@ -252,30 +273,36 @@ export const LessonPlanTable = ({
 				}
 				openEditKMJModal(kmjData)
 			} catch {
-				toast.error('Деректерді жүктеу кезінде қате орын алды')
+				toast.error(t('lessonPlanTable.loadError'))
 			}
 		},
 		[openEditKMJModal]
 	)
 
 	const handleDeleteClick = useCallback((row: LessonPlanRow) => {
+		if (isLocked) {
+			setPaywallOpen(true)
+			return
+		}
 		setDeleteRow(row)
-	}, [])
+	}, [isLocked])
 
 	const handleDeleteConfirm = useCallback(async () => {
 		if (!deleteRow) return
 
 		setIsDeleting(true)
 		try {
-			console.log('Deleting row:', deleteRow.id)
-			toast.success('Сабақ жоспары сәтті жойылды!')
+			await qmjApi.deleteQMJ(parseInt(deleteRow.id))
+			queryClient.invalidateQueries({ queryKey: ['qmj'] })
+			queryClient.invalidateQueries({ queryKey: ['kmzh'] })
+			toast.success(t('lessonPlanTable.deleteSuccess'))
 			setDeleteRow(null)
 		} catch {
-			toast.error('Жою кезінде қате орын алды')
+			toast.error(t('lessonPlanTable.deleteError'))
 		} finally {
 			setIsDeleting(false)
 		}
-	}, [deleteRow])
+	}, [deleteRow, queryClient, t])
 
 	const handleDeleteCancel = useCallback(() => {
 		setDeleteRow(null)
@@ -315,12 +342,12 @@ export const LessonPlanTable = ({
 			{
 				id: 'topic',
 				accessorKey: 'topic',
-				header: 'Сабақ тақырыбы',
+				header: t('lessonPlanTable.topicHeader'),
 				cell: info => <div className={s.topic}>{info.getValue<string>()}</div>
 			},
 			{
 				id: 'objectives',
-				header: 'Оқыту мақсаттары',
+				header: t('lessonPlanTable.objectivesHeader'),
 				cell: ({ row }) => (
 					<div className={s.objectives}>
 						{row.original.objectives.map((o, i) => (
@@ -338,18 +365,18 @@ export const LessonPlanTable = ({
 			{
 				id: 'hours',
 				accessorKey: 'hours',
-				header: 'Сағат',
+				header: t('lessonPlanTable.hoursHeader'),
 				size: 80
 			},
 			{
 				id: 'author',
 				accessorKey: 'author',
-				header: 'Автор',
+				header: t('lessonPlanTable.authorHeader'),
 				size: 140
 			},
 			{
 				id: 'files',
-				header: 'Файлдар',
+				header: t('lessonPlanTable.filesHeader'),
 				cell: ({ row }) => (
 					<button
 						type="button"
@@ -357,14 +384,14 @@ export const LessonPlanTable = ({
 						onPointerDown={e => e.stopPropagation()}
 						onClick={() => openFiles(row.original)}
 					>
-						Көру ({row.original.filesCount})
+						{t('lessonPlanTable.view')} ({row.original.filesCount})
 					</button>
 				),
 				size: 180
 			},
 			{
 				id: 'actions',
-				header: 'Әрекеттер',
+				header: t('lessonPlanTable.actionsHeader'),
 				cell: ({ row }) => (
 					<div
 						className={s.actions}
@@ -373,7 +400,7 @@ export const LessonPlanTable = ({
 						<button
 							type="button"
 							className={s.iconBtn}
-							aria-label="Қосу"
+							aria-label={t('lessonPlanTable.addLabel')}
 							onClick={() => handleAddFiles(row.original.id)}
 						>
 							+
@@ -382,14 +409,14 @@ export const LessonPlanTable = ({
 							type="button"
 							className={s.iconBtn}
 							onClick={() => handleEditKMJ(row.original)}
-							aria-label="Өңдеу"
+							aria-label={t('lessonPlanTable.editLabel')}
 						>
 							✎
 						</button>
 						<button
 							type="button"
 							className={s.iconBtn}
-							aria-label="Жою"
+							aria-label={t('lessonPlanTable.deleteLabel')}
 							onClick={() => handleDeleteClick(row.original)}
 						>
 							🗑
@@ -399,7 +426,7 @@ export const LessonPlanTable = ({
 				size: 180
 			}
 		],
-		[openFiles, handleAddFiles, handleEditKMJ, handleDeleteClick]
+		[openFiles, handleAddFiles, handleEditKMJ, handleDeleteClick, t]
 	)
 
 	useEffect(() => {
@@ -454,7 +481,7 @@ export const LessonPlanTable = ({
 			<div className={s.toolbar}>
 				<SearchInput
 					className={s.searchInput}
-					placeholder="Сабақ тақырыбы бойынша іздеу..."
+					placeholder={t('lessonPlanTable.searchPlaceholder')}
 					value={searchQuery}
 					onChange={e => setSearchQuery(e.target.value)}
 				/>
@@ -464,7 +491,7 @@ export const LessonPlanTable = ({
 					className={s.createBtn}
 				>
 					<Plus size={18} />
-					ҚМЖ қосу
+					{t('lessonPlanTable.addKmzh')}
 				</Button>
 			</div>
 
@@ -528,13 +555,15 @@ export const LessonPlanTable = ({
 				open={!!deleteRow}
 				onClose={handleDeleteCancel}
 				onConfirm={handleDeleteConfirm}
-				title="Сабақ жоспарын жою"
-				message={`"${deleteRow?.topic}" сабақ жоспарын жойғыңыз келетініне сенімдісіз бе? Бұл әрекетті қайтару мүмкін емес.`}
-				confirmText="Жою"
-				cancelText="Бас тарту"
+				title={t('lessonPlanTable.deleteTitle')}
+				message={t('lessonPlanTable.deleteMessage', { topic: deleteRow?.topic })}
+				confirmText={t('lessonPlanTable.deleteConfirm')}
+				cancelText={t('lessonPlanTable.deleteCancel')}
 				variant="danger"
 				loading={isDeleting}
 			/>
+
+			<PaywallModal open={paywallOpen} onClose={() => setPaywallOpen(false)} />
 		</DndContext>
 	)
 }

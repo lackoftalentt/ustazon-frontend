@@ -44,46 +44,26 @@
 	margin-bottom: $spacing-md;
 }
 
-.rememberAndForgot {
+.forgotRow {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: $spacing-lg;
 }
 
-.rememberRow {
-	display: flex;
-	align-items: center;
-	gap: $spacing-sm;
-	cursor: pointer;
-	user-select: none;
-	transition: opacity 0.2s ease;
-
-	&:hover {
-		opacity: 0.8;
-	}
-}
-
-.checkbox {
-	width: 18px;
-	height: 18px;
-	accent-color: $color-green-active;
-	cursor: pointer;
-	transition: transform 0.2s ease;
-
-	&:hover {
-		transform: scale(1.1);
-	}
-
-	&:checked {
-		animation: checkboxPop 0.3s ease;
-	}
-}
-
-.rememberText {
+.changeIinLink {
 	font-size: $font-size-sm;
+	color: $color-green-primary;
+	background: none;
+	border: none;
+	cursor: pointer;
 	font-weight: $font-weight-medium;
-	color: $color-green-dark;
+	padding: 4px 0;
+	transition: color 0.2s ease;
+
+	&:hover {
+		color: $color-green-active;
+	}
 }
 
 .forgotPasswordLink {
@@ -129,7 +109,6 @@
 	font-weight: $font-weight-semibold;
 	box-shadow: 0 4px 16px rgba($color-green-active, 0.25);
 	transition: all 0.3s ease;
-	// margin-top: $spacing-md;
 
 	&:hover:not(:disabled) {
 		transform: translateY(-2px);
@@ -138,71 +117,6 @@
 
 	&:active:not(:disabled) {
 		transform: translateY(0);
-	}
-}
-
-.register {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: $spacing-xl;
-	gap: $spacing-sm;
-	font-size: $font-size-base;
-	padding-top: $spacing-lg;
-	border-top: 1px solid rgba($color-gray-border, 0.3);
-
-	p {
-		color: rgba($color-green-dark, 0.6);
-		margin: 0;
-		font-weight: $font-weight-normal;
-	}
-}
-
-.registerLink {
-	position: relative;
-	color: $color-green-active;
-	text-decoration: none;
-	font-weight: $font-weight-semibold;
-	transition: color 0.2s ease;
-	padding: 4px 0;
-
-	&::after {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: 2px;
-		width: 100%;
-		height: 2px;
-		background: linear-gradient(
-			90deg,
-			$color-green-active,
-			$color-green-primary
-		);
-		transform: scaleX(0);
-		transform-origin: right;
-		transition: transform 0.3s ease;
-		border-radius: 2px;
-	}
-
-	&:hover {
-		color: $color-green-active;
-
-		&::after {
-			transform: scaleX(1);
-			transform-origin: left;
-		}
-	}
-}
-
-@keyframes checkboxPop {
-	0% {
-		transform: scale(1);
-	}
-	50% {
-		transform: scale(1.2);
-	}
-	100% {
-		transform: scale(1);
 	}
 }
 
@@ -222,19 +136,8 @@
 		margin-bottom: $spacing-2xl;
 	}
 
-	.rememberAndForgot {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: $spacing-md;
-	}
-
 	.submitBtn {
 		padding: 12px;
 		font-size: $font-size-base;
-	}
-
-	.register {
-		flex-direction: column;
-		gap: $spacing-xs;
 	}
 }

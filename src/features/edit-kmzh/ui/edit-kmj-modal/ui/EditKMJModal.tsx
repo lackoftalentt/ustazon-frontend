@@ -2,6 +2,7 @@ import { useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { Modal } from '@/shared/ui/modal';
 import { Input } from '@/shared/ui/input';
 import { Button } from '@/shared/ui/button';
@@ -37,6 +38,7 @@ const parseQuarter = (quarter: string): number => {
 };
 
 export const EditKMJModal = () => {
+    const { t } = useTranslation();
     const { isOpen, kmjData, closeModal } = useEditKMJStore();
     const mainFileRef = useRef<HTMLInputElement>(null);
     const additionalFilesRef = useRef<HTMLInputElement>(null);
@@ -106,10 +108,10 @@ export const EditKMJModal = () => {
 
             queryClient.invalidateQueries({ queryKey: ['qmj'] });
             queryClient.invalidateQueries({ queryKey: ['kmzh'] });
-            toast.success('ҚМЖ сәтті сақталды!');
+            toast.success(t('editKmzh.success'));
             handleClose();
         } catch {
-            toast.error('ҚМЖ сақтау кезінде қате орын алды');
+            toast.error(t('editKmzh.error'));
         }
     });
 
@@ -130,13 +132,14 @@ export const EditKMJModal = () => {
 
         setIsDeleting(true);
         try {
-            // TODO: API call to delete KMJ
-            console.log('Deleting KMJ:', kmjData.id);
-            toast.success('ҚМЖ сәтті жойылды!');
+            await qmjApi.deleteQMJ(parseInt(kmjData.id));
+            queryClient.invalidateQueries({ queryKey: ['qmj'] });
+            queryClient.invalidateQueries({ queryKey: ['kmzh'] });
+            toast.success(t('editKmzh.deleteSuccess'));
             setIsDeleteConfirmOpen(false);
             handleClose();
         } catch {
-            toast.error('ҚМЖ жою кезінде қате орын алды');
+            toast.error(t('editKmzh.deleteError'));
         } finally {
             setIsDeleting(false);
         }
@@ -152,7 +155,7 @@ export const EditKMJModal = () => {
         if (file) {
             const ext = file.name.split('.').pop()?.toLowerCase();
             if (!['doc', 'docx', 'pdf'].includes(ext || '')) {
-                toast.error('Тек DOC, DOCX немесе PDF форматы қолдау көрсетіледі');
+                toast.error(t('editKmzh.formatError'));
                 return;
             }
             handleMainFileChange(file);
@@ -196,7 +199,7 @@ export const EditKMJModal = () => {
     if (!kmjData) return null;
 
     return (
-        <Modal open={isOpen} onClose={handleClose} title="ҚМЖ өзгерту">
+        <Modal open={isOpen} onClose={handleClose} title={t('editKmzh.modalTitle')}>
             <div className={s.header}>
                 <h2 className={s.title}>{kmjData.title}</h2>
                 <div className={s.badges}>
@@ -207,17 +210,16 @@ export const EditKMJModal = () => {
             </div>
 
             <form onSubmit={onSubmit} className={s.form}>
-                {/* Негізгі ақпарат */}
                 <section className={s.section}>
-                    <h3 className={s.sectionTitle}>Негізгі ақпарат</h3>
+                    <h3 className={s.sectionTitle}>{t('editKmzh.basicInfo')}</h3>
 
                     <div className={s.row}>
                         <div className={s.field}>
-                            <label className={s.label}>Сынып *</label>
+                            <label className={s.label}>{t('editKmzh.grade')} *</label>
                             <Dropdown
                                 items={[...CLASS_LEVELS]}
                                 value={watch('classLevel')}
-                                placeholder="Сыныпты таңдаңыз"
+                                placeholder={t('editKmzh.selectGrade')}
                                 onChange={(v) => setValue('classLevel', v as ClassLevel)}
                             />
                             {errors.classLevel && (
@@ -226,11 +228,11 @@ export const EditKMJModal = () => {
                         </div>
 
                         <div className={s.field}>
-                            <label className={s.label}>Тоқсан *</label>
+                            <label className={s.label}>{t('editKmzh.quarter')} *</label>
                             <Dropdown
                                 items={[...QUARTERS]}
                                 value={watch('quarter')}
-                                placeholder="Тоқсанды таңдаңыз"
+                                placeholder={t('editKmzh.selectQuarter')}
                                 onChange={(v) => setValue('quarter', v as Quarter)}
                             />
                             {errors.quarter && (
@@ -241,11 +243,11 @@ export const EditKMJModal = () => {
 
                     <div className={s.row}>
                         <div className={s.field}>
-                            <label className={s.label}>Пән коды *</label>
+                            <label className={s.label}>{t('editKmzh.subjectCode')} *</label>
                             <Dropdown
                                 items={[...SUBJECT_CODES]}
                                 value={watch('subjectCode')}
-                                placeholder="Пән кодын таңдаңыз"
+                                placeholder={t('editKmzh.selectSubjectCode')}
                                 onChange={(v) => setValue('subjectCode', v as SubjectCode)}
                             />
                             {errors.subjectCode && (
@@ -254,7 +256,7 @@ export const EditKMJModal = () => {
                         </div>
 
                         <div className={s.field}>
-                            <label className={s.label}>Сағат саны *</label>
+                            <label className={s.label}>{t('editKmzh.hours')} *</label>
                             <div className={s.hoursInput}>
                                 <button
                                     type="button"
@@ -277,7 +279,7 @@ export const EditKMJModal = () => {
                                     +
                                 </button>
                             </div>
-                            <span className={s.hint}>Сабаққа бөлінген сағат саны (1-10)</span>
+                            <span className={s.hint}>{t('editKmzh.hoursHint')}</span>
                             {errors.hours && (
                                 <span className={s.error}>{errors.hours.message}</span>
                             )}
@@ -285,25 +287,24 @@ export const EditKMJModal = () => {
                     </div>
                 </section>
 
-                {/* Сабақ мазмұны */}
                 <section className={s.section}>
-                    <h3 className={s.sectionTitle}>Сабақ мазмұны</h3>
+                    <h3 className={s.sectionTitle}>{t('editKmzh.lessonContent')}</h3>
 
                     <div className={s.field}>
-                        <label className={s.label}>Сабақ тақырыбы *</label>
+                        <label className={s.label}>{t('editKmzh.topic')} *</label>
                         <Input
                             {...register('lessonTopic')}
-                            placeholder="Сабақтың толық тақырыбын жазыңыз"
+                            placeholder={t('editKmzh.topicPlaceholder')}
                             error={errors.lessonTopic?.message}
                         />
                     </div>
 
                     <div className={s.field}>
-                        <label className={s.label}>Оқу мақсаттары *</label>
+                        <label className={s.label}>{t('editKmzh.objectives')} *</label>
                         <textarea
                             {...register('learningObjectives')}
                             className={clsx(s.textarea, errors.learningObjectives && s.textareaError)}
-                            placeholder="Оқу бағдарламасындағы мақсаттарды көрсетіңіз"
+                            placeholder={t('editKmzh.objectivesPlaceholder')}
                             rows={4}
                         />
                         {errors.learningObjectives && (
@@ -312,12 +313,11 @@ export const EditKMJModal = () => {
                     </div>
                 </section>
 
-                {/* Файл жүктеу */}
                 <section className={s.section}>
-                    <h3 className={s.sectionTitle}>Файл жүктеу</h3>
+                    <h3 className={s.sectionTitle}>{t('editKmzh.fileUpload')}</h3>
 
                     <div className={s.field}>
-                        <label className={s.label}>Файл *</label>
+                        <label className={s.label}>{t('editKmzh.file')} *</label>
                         <input
                             ref={mainFileRef}
                             type="file"
@@ -329,15 +329,15 @@ export const EditKMJModal = () => {
                             className={s.fileButton}
                             onClick={() => mainFileRef.current?.click()}>
                             <span className={s.fileButtonText}>
-                                {mainFile ? mainFile.name : 'No file chosen'}
+                                {mainFile ? mainFile.name : t('editKmzh.noFileChosen')}
                             </span>
-                            <span className={s.fileButtonAction}>Таңдау</span>
+                            <span className={s.fileButtonAction}>{t('editKmzh.chooseFile')}</span>
                         </div>
-                        <span className={s.hint}>DOC, DOCX немесе PDF форматындағы файл</span>
+                        <span className={s.hint}>{t('editKmzh.fileHint')}</span>
                     </div>
 
                     <div className={s.field}>
-                        <label className={s.label}>Қосымша файлдар</label>
+                        <label className={s.label}>{t('editKmzh.additionalFiles')}</label>
                         <input
                             ref={additionalFilesRef}
                             type="file"
@@ -356,16 +356,16 @@ export const EditKMJModal = () => {
                                 <polyline points="17 8 12 3 7 8" />
                                 <line x1="12" y1="3" x2="12" y2="15" />
                             </svg>
-                            <span>Файлдарды таңдаңыз немесе осы жерге апарыңыз</span>
+                            <span>{t('editKmzh.dragFiles')}</span>
                         </div>
                         <span className={s.hint}>
-                            Бірнеше файлды таңдау үшін Ctrl немесе Cmd пернесін басып ұстаңыз
+                            {t('editKmzh.multiFileHint')}
                         </span>
 
                         {/* New additional files */}
                         {additionalFiles.length > 0 && (
                             <div className={s.fileList}>
-                                <span className={s.fileListTitle}>Жаңа файлдар</span>
+                                <span className={s.fileListTitle}>{t('editKmzh.newFiles')}</span>
                                 {additionalFiles.map((file, index) => (
                                     <div key={`new-${index}`} className={s.fileItem}>
                                         <span className={s.fileIcon}>📄</span>
@@ -384,7 +384,7 @@ export const EditKMJModal = () => {
                         {/* Existing additional files */}
                         {existingFiles.length > 0 && (
                             <div className={s.fileList}>
-                                <span className={s.fileListTitle}>Ағымдағы қосымша файлдар</span>
+                                <span className={s.fileListTitle}>{t('editKmzh.existingFiles')}</span>
                                 {existingFiles.map((file) => (
                                     <div key={file.id} className={s.fileItem}>
                                         <span className={s.fileIcon}>📄</span>
@@ -405,13 +405,12 @@ export const EditKMJModal = () => {
                     </div>
                 </section>
 
-                {/* Санаттар */}
                 <section className={s.section}>
-                    <h3 className={s.sectionTitle}>Санаттар</h3>
+                    <h3 className={s.sectionTitle}>{t('editKmzh.categories')}</h3>
 
                     <div className={s.field}>
-                        <label className={s.label}>Пәндер *</label>
-                        <span className={s.hint}>Бір немесе бірнеше пән таңдаңыз</span>
+                        <label className={s.label}>{t('editKmzh.subjects')} *</label>
+                        <span className={s.hint}>{t('editKmzh.subjectsHint')}</span>
                         <div className={s.subjectsGrid}>
                             {SUBJECTS.map((subject) => (
                                 <div
@@ -437,8 +436,8 @@ export const EditKMJModal = () => {
                     </div>
 
                     <div className={s.field}>
-                        <label className={s.label}>Оқу орны түрі *</label>
-                        <span className={s.hint}>Оқу орнының түрін таңдаңыз</span>
+                        <label className={s.label}>{t('editKmzh.institutionType')} *</label>
+                        <span className={s.hint}>{t('editKmzh.institutionTypeHint')}</span>
                         <div className={s.institutionGrid}>
                             {INSTITUTION_TYPES.map((type) => (
                                 <div
@@ -470,20 +469,20 @@ export const EditKMJModal = () => {
                         type="button"
                         variant="outline"
                         onClick={handleClose}>
-                        Бас тарту
+                        {t('editKmzh.cancel')}
                     </Button>
                     <Button
                         type="button"
                         variant="outline"
                         className={s.deleteBtn}
                         onClick={handleDeleteClick}>
-                        Жою
+                        {t('editKmzh.delete')}
                     </Button>
                     <Button
                         type="submit"
                         variant="primary"
                         loading={isSubmitting}>
-                        Өзгерістерді сақтау
+                        {t('editKmzh.save')}
                     </Button>
                 </div>
             </form>
@@ -492,10 +491,10 @@ export const EditKMJModal = () => {
                 open={isDeleteConfirmOpen}
                 onClose={handleDeleteCancel}
                 onConfirm={handleDeleteConfirm}
-                title="ҚМЖ-ды жою"
-                message="Бұл ҚМЖ-ды жойғыңыз келетініне сенімдісіз бе? Бұл әрекетті қайтару мүмкін емес."
-                confirmText="Жою"
-                cancelText="Бас тарту"
+                title={t('editKmzh.deleteTitle')}
+                message={t('editKmzh.deleteMessage')}
+                confirmText={t('editKmzh.deleteConfirm')}
+                cancelText={t('editKmzh.deleteCancel')}
                 variant="danger"
                 loading={isDeleting}
             />

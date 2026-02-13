@@ -6,6 +6,13 @@ const passwordRegex = {
     number: /[0-9]/
 };
 
+export const iinSchema = z.object({
+    iin: z
+        .string()
+        .length(12, 'ИИН должен содержать 12 цифр')
+        .regex(/^\d{12}$/, 'ИИН содержит только цифры'),
+});
+
 export const loginSchema = z
     .object({
         iin: z

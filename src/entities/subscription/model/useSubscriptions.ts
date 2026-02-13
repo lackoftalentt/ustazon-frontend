@@ -123,10 +123,11 @@ export const useMySubscriptions = (params?: {
 	active_only?: boolean;
 	skip?: number;
 	limit?: number;
-}) => {
+}, enabled = true) => {
 	return useQuery({
 		queryKey: [...subscriptionKeys.me(), params] as const,
 		queryFn: () => subscriptionApi.getMySubscriptions(params),
 		staleTime: 5 * 60 * 1000,
+		enabled,
 	});
 };

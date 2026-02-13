@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/entities/user/model/store/useAuthStore'
 import axios from 'axios'
+import toast from 'react-hot-toast'
 
 export const apiClient = axios.create({
 	baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1',
@@ -9,22 +10,7 @@ export const apiClient = axios.create({
 	timeout: 10000
 })
 
-let isRefreshing = false
-let failedQueue: Array<{
-	resolve: (value?: any) => void
-	reject: (reason?: any) => void
-}> = []
-
-const processQueue = (error: any, token: string | null = null) => {
-	failedQueue.forEach(prom => {
-		if (error) {
-			prom.reject(error)
-		} else {
-			prom.resolve(token)
-		}
-	})
-	failedQueue = []
-}
+let refreshPromise: Promise<string> | null = null
 
 apiClient.interceptors.request.use(
 	config => {
@@ -53,63 +39,61 @@ apiClient.interceptors.response.use(
 		}
 
 		if (error.response?.status === 401 && !originalRequest._retry) {
-			if (originalRequest.url?.includes('/auth/refresh')) {
-				useAuthStore.getState().logout()
-				window.location.href = '/login'
+			// Auth endpoints (login, register, check-iin, etc.) handle their own errors
+			if (originalRequest.url?.includes('/auth/')) {
 				return Promise.reject(error)
-			}
-
-			if (isRefreshing) {
-				return new Promise((resolve, reject) => {
-					failedQueue.push({ resolve, reject })
-				})
-					.then(token => {
-						originalRequest.headers.Authorization = `Bearer ${token}`
-						return apiClient(originalRequest)
-					})
-					.catch(err => {
-						return Promise.reject(err)
-					})
 			}
 
 			originalRequest._retry = true
-			isRefreshing = true
 
-			const refreshToken = useAuthStore.getState().refreshToken
-
-			if (!refreshToken) {
-				useAuthStore.getState().logout()
-				window.location.href = '/login'
-				return Promise.reject(error)
+			// Use shared promise to prevent concurrent refresh requests
+			if (!refreshPromise) {
+				refreshPromise = performTokenRefresh()
 			}
 
 			try {
-				const response = await axios.post(
-					`${apiClient.defaults.baseURL}/auth/refresh`,
-					{ refresh_token: refreshToken },
-					{
-						headers: { 'Content-Type': 'application/json' }
-					}
-				)
-
-				const { access_token, refresh_token } = response.data
-
-				useAuthStore.getState().setTokens(access_token, refresh_token)
-
-				originalRequest.headers.Authorization = `Bearer ${access_token}`
-				processQueue(null, access_token)
-
+				const newToken = await refreshPromise
+				originalRequest.headers.Authorization = `Bearer ${newToken}`
 				return apiClient(originalRequest)
 			} catch (refreshError) {
-				processQueue(refreshError, null)
-				useAuthStore.getState().logout()
-				window.location.href = '/login'
 				return Promise.reject(refreshError)
-			} finally {
-				isRefreshing = false
 			}
 		}
 
 		return Promise.reject(error)
 	}
 )
+
+async function performTokenRefresh(): Promise<string> {
+	const refreshToken = useAuthStore.getState().refreshToken
+
+	if (!refreshToken) {
+		useAuthStore.getState().logout()
+		toast.error('Сессия истекла. Войдіте заново.')
+		window.location.href = '/login'
+		return Promise.reject(new Error('No refresh token'))
+	}
+
+	try {
+		const response = await axios.post(
+			`${apiClient.defaults.baseURL}/auth/refresh`,
+			{ refresh_token: refreshToken },
+			{
+				headers: { 'Content-Type': 'application/json' },
+				timeout: 10000
+			}
+		)
+
+		const { access_token, refresh_token } = response.data
+		useAuthStore.getState().setTokens(access_token, refresh_token)
+
+		return access_token
+	} catch (refreshError) {
+		useAuthStore.getState().logout()
+		toast.error('Сессия истекла. Войдите заново.')
+		window.location.href = '/login'
+		throw refreshError
+	} finally {
+		refreshPromise = null
+	}
+}

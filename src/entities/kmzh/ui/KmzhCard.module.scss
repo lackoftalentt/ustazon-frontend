@@ -111,3 +111,26 @@
 	filter: brightness(0) invert(1);
 	transition: transform 0.3s ease;
 }
+
+@media (max-width: 768px) {
+	.card {
+		max-width: 100%;
+	}
+
+	.container {
+		padding: $spacing-md;
+	}
+
+	.title {
+		font-size: 16px;
+	}
+
+	.header {
+		padding: $spacing-sm $spacing-md;
+	}
+
+	.grade,
+	.quarter {
+		font-size: $font-size-xs;
+	}
+}

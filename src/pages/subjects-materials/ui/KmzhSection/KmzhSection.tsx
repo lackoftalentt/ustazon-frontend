@@ -3,6 +3,7 @@ import { KmzhCard } from '@/entities/kmzh'
 import ArrowIcon from '@/shared/assets/icons/arrowLeft.svg?react'
 import { SectionTitle } from '@/shared/ui/section-title'
 import { SkeletonCard } from '@/shared/ui/skeleton-card'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import s from '../SubjectsMaterialsPage.module.scss'
 
@@ -12,13 +13,16 @@ interface KmzhSectionProps {
 	isLoading?: boolean
 	isLocked?: boolean
 	sectionId?: string
+	onLockedClick?: () => void
 }
 
-export const KmzhSection = ({ kmzhData, subjectCode, isLoading, isLocked, sectionId }: KmzhSectionProps) => {
+export const KmzhSection = ({ kmzhData, subjectCode, isLoading, isLocked, sectionId, onLockedClick }: KmzhSectionProps) => {
+	const { t } = useTranslation()
+
 	if (isLoading) {
 		return (
 			<div className={s.windowSection} id={sectionId}>
-				<SectionTitle className={s.rowTitle} title="ҚМЖ" />
+				<SectionTitle className={s.rowTitle} title={t('kmzhSection.title')} />
 				<div className={s.container}>
 					{Array.from({ length: 4 }).map((_, i) => (
 						<SkeletonCard key={i} />
@@ -35,7 +39,7 @@ export const KmzhSection = ({ kmzhData, subjectCode, isLoading, isLocked, sectio
 		<div className={s.windowSection} id={sectionId}>
 			<SectionTitle
 				className={s.rowTitle}
-				title="ҚМЖ"
+				title={t('kmzhSection.title')}
 			/>
 			<div className={s.container}>
 				{displayItems.map(kmzh => (
@@ -50,6 +54,7 @@ export const KmzhSection = ({ kmzhData, subjectCode, isLoading, isLocked, sectio
 						filesCount={kmzh.files_count}
 						path={`/lesson-plans-list/${kmzh.grade}/q${kmzh.quarter}?code=${subjectCode}`}
 						isLocked={isLocked}
+						onLockedClick={onLockedClick}
 					/>
 				))}
 			</div>
@@ -59,7 +64,7 @@ export const KmzhSection = ({ kmzhData, subjectCode, isLoading, isLocked, sectio
 						to={`/lesson-plans/${subjectCode}`}
 						className={s.showMoreLink}
 					>
-						Көбірек көру
+						{t('kmzhSection.showMore')}
 						<ArrowIcon className={s.arrowIcon} />
 					</Link>
 				</div>

@@ -9,6 +9,7 @@ interface AIGeneratorLayoutProps {
     form: ReactNode;
     preview?: ReactNode;
     isGenerating?: boolean;
+    usageBanner?: ReactNode;
 }
 
 export const AIGeneratorLayout = ({
@@ -17,7 +18,8 @@ export const AIGeneratorLayout = ({
     icon,
     form,
     preview,
-    isGenerating
+    isGenerating,
+    usageBanner
 }: AIGeneratorLayoutProps) => {
     return (
         <div className={s.container}>
@@ -30,6 +32,7 @@ export const AIGeneratorLayout = ({
                         </h1>
                         <p className={s.description}>{description}</p>
                     </header>
+                    {usageBanner}
                     {form}
                 </div>
 

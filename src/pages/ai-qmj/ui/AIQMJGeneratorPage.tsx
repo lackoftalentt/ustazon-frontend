@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FileText, AlertCircle, Loader2 } from 'lucide-react';
 import { FullScreenLoader } from '@/features/ai-tools/ui/components/FullScreenLoader/FullScreenLoader';
 import { AIToolLayout } from '@/features/ai-tools/ui/AIToolLayout/AIToolLayout';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
+import { AiUsageBanner } from '@/features/ai-tools/ui/components/AiUsageBanner/AiUsageBanner';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
 import { SUBJECTS } from '@/shared/constants/subjects';
+import { aiApi } from '@/shared/api/ai';
+import type { AiUsageResponse } from '@/shared/api/ai';
 import { qmjAiApi } from '@/shared/api/qmjAiApi';
 import type { UserQMJ } from '@/shared/api/qmjAiApi';
 import styles from './AIQMJGeneratorPage.module.scss';
@@ -20,9 +23,19 @@ export const AIQMJGeneratorPage = () => {
     const [language, setLanguage] = useState('kk');
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [usage, setUsage] = useState<AiUsageResponse | null>(null);
 
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+
+    const fetchUsage = useCallback(async () => {
+        try {
+            const data = await aiApi.getGeneratorUsage();
+            setUsage(data);
+        } catch { /* ignore */ }
+    }, []);
+
+    useEffect(() => { fetchUsage(); }, [fetchUsage]);
 
     const {
         data: qmjList = [],
@@ -52,13 +65,21 @@ export const AIQMJGeneratorPage = () => {
             );
 
             queryClient.invalidateQueries({ queryKey: ['user-qmjs'] });
+            fetchUsage();
             navigate(`/ai-qmj/${result.id}`);
         } catch (err: any) {
             console.error('Error generating QMJ:', err);
-            setError(
-                err.response?.data?.detail ||
-                'ҚМЖ жасау мүмкін болмады. Қайта көріңіз',
-            );
+            const detail = err.response?.data?.detail;
+            if (err.response?.status === 403 && detail?.code === 'ai_free_limit_exceeded') {
+                setError(detail.message || 'Тегін лимит аяқталды. Жазылым алыңыз.');
+            } else if (err.response?.status === 429) {
+                const minutes = detail?.retry_after ? Math.ceil(detail.retry_after / 60) : 15;
+                setError(`Сұраныс лимиті асып кетті. ${minutes} минуттан кейін қайталап көріңіз.`);
+            } else {
+                setError(
+                    typeof detail === 'string' ? detail : 'ҚМЖ жасау мүмкін болмады. Қайта көріңіз',
+                );
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -188,6 +209,7 @@ export const AIQMJGeneratorPage = () => {
                 form={form}
                 preview={preview}
                 isGenerating={isGenerating}
+                usageBanner={<AiUsageBanner usage={usage} />}
             />
         </AIToolLayout>
     );

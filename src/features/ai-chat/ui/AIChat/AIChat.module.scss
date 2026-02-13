@@ -89,6 +89,8 @@
 .avatar {
     width: 36px;
     height: 36px;
+    min-width: 36px;
+    min-height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -172,8 +174,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: $radius-sm;
     border: none;
     cursor: pointer;
@@ -529,6 +531,59 @@
     }
 }
 
+// Copy button on AI messages
+.copyBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+    margin-top: $spacing-sm;
+    padding: $spacing-xs $spacing-md;
+    background: transparent;
+    color: $color-gray-medium;
+    border: 1px solid $color-gray-border;
+    border-radius: $radius-md;
+    font-size: $font-size-xs;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        color: $color-green-primary;
+        border-color: $color-green-primary;
+    }
+
+    &.copyBtnCopied {
+        color: $color-green-primary;
+        border-color: $color-green-primary;
+    }
+}
+
+// Limit banner above input
+.limitBanner {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    background: #fef2f2;
+    border-radius: $radius-md;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    font-size: $font-size-sm;
+
+    a {
+        color: $color-green-primary;
+        font-weight: $font-weight-semibold;
+        text-decoration: underline;
+
+        &:hover {
+            color: $color-green-dark;
+        }
+    }
+}
+
+.limitBannerText {
+    flex: 1;
+}
+
 // Mobile responsive
 @media (max-width: 768px) {
     .container {
@@ -571,8 +626,8 @@
     }
 
     .sendBtn {
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
     }
 
     .responseCards {

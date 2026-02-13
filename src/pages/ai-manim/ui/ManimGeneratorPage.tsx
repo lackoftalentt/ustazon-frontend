@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AIToolLayout } from '@/features/ai-tools/ui/AIToolLayout/AIToolLayout';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
+import { AiUsageBanner } from '@/features/ai-tools/ui/components/AiUsageBanner/AiUsageBanner';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
 import { aiApi } from '@/shared/api/ai';
+import type { AiUsageResponse } from '@/shared/api/ai';
 import { getFileUrl } from '@/shared/lib/fileUrl';
 import { SUBJECTS } from '@/shared/constants/subjects';
 import { Video, AlertCircle, Download } from 'lucide-react';
@@ -17,6 +19,16 @@ export const ManimGeneratorPage = () => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
+    const [usage, setUsage] = useState<AiUsageResponse | null>(null);
+
+    const fetchUsage = useCallback(async () => {
+        try {
+            const data = await aiApi.getGeneratorUsage();
+            setUsage(data);
+        } catch { /* ignore */ }
+    }, []);
+
+    useEffect(() => { fetchUsage(); }, [fetchUsage]);
 
     const handleGenerate = async () => {
         if (!subject || !topic) {
@@ -35,12 +47,20 @@ export const ManimGeneratorPage = () => {
             // Use getFileUrl (same as other features) + cache-buster to prevent stale video
             const fullUrl = `${getFileUrl(result.video_url)}?t=${Date.now()}`;
             setVideoUrl(fullUrl);
+            fetchUsage();
         } catch (err: any) {
             console.error('Manim generation error:', err);
-            setError(
-                err.response?.data?.detail ||
-                'Видео жасау мүмкін болмады. Сұранысты жеңілдетіп көріңіз.'
-            );
+            const detail = err.response?.data?.detail;
+            if (err.response?.status === 403 && detail?.code === 'ai_free_limit_exceeded') {
+                setError(detail.message || 'Тегін лимит аяқталды. Жазылым алыңыз.');
+            } else if (err.response?.status === 429) {
+                const minutes = detail?.retry_after ? Math.ceil(detail.retry_after / 60) : 15;
+                setError(`Сұраныс лимиті асып кетті. ${minutes} минуттан кейін қайталап көріңіз.`);
+            } else {
+                setError(
+                    typeof detail === 'string' ? detail : 'Видео жасау мүмкін болмады. Сұранысты жеңілдетіп көріңіз.'
+                );
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -167,6 +187,7 @@ export const ManimGeneratorPage = () => {
                 form={form}
                 preview={preview}
                 isGenerating={isGenerating}
+                usageBanner={<AiUsageBanner usage={usage} />}
             />
         </AIToolLayout>
     );

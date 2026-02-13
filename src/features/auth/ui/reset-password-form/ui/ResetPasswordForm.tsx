@@ -1,5 +1,5 @@
 import type { ResetPasswordFormData } from '@/entities/user'
-import { resetPassword } from '@/features/auth/api/resetPasswordApi'
+import { resetPassword, sendResetCode, verifyResetCode } from '@/features/auth/api/resetPasswordApi'
 import ArrowLeft from '@/shared/assets/icons/arrowLeft.svg?react'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
@@ -29,7 +29,7 @@ export const ResetPasswordForm = () => {
 	} = useResetPasswordForm(async (data: ResetPasswordFormData) => {
 		try {
 			if (step === 'phone') {
-				console.log('Phone from form:', data.phoneNumber)
+				await sendResetCode({ phone: data.phoneNumber })
 				toast.success(t('auth.codeSent'))
 				setStep('code')
 			} else if (step === 'code') {
@@ -37,6 +37,10 @@ export const ResetPasswordForm = () => {
 					toast.error(t('auth.enterCode'))
 					return
 				}
+				await verifyResetCode({
+					phone: data.phoneNumber,
+					code: data.code
+				})
 				toast.success(t('auth.codeConfirmed'))
 				setStep('newPassword')
 			} else if (step === 'newPassword') {
@@ -52,31 +56,24 @@ export const ResetPasswordForm = () => {
 					return
 				}
 
-				const resetData = {
+				await resetPassword({
 					phone: data.phoneNumber,
 					code: data.code || '',
 					new_password: data.newPassword,
 					confirm_password: data.confirmPassword
-				}
-
-				console.log('=== FINAL RESET DATA ===')
-				console.log('Phone:', resetData.phone)
-				console.log('Code:', resetData.code)
-				console.log('Password:', resetData.new_password)
-				console.log('Confirm:', resetData.confirm_password)
-
-				await resetPassword(resetData)
-				navigate('/login')
+				})
 				toast.success(t('auth.passwordChanged'))
+				navigate('/login')
 			}
 		} catch (error) {
-			console.error('Reset newPassword error:', error)
 			if (axios.isAxiosError(error)) {
-				console.log(
-					'Error response:',
-					JSON.stringify(error.response?.data, null, 2)
-				)
-				console.log('Error status:', error.response?.status)
+				const message =
+					error.response?.data?.detail ||
+					error.response?.data?.message
+				if (message) {
+					toast.error(message)
+					return
+				}
 			}
 
 			const errorMessages = {

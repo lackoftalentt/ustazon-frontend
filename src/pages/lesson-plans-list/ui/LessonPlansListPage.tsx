@@ -1,4 +1,6 @@
 import { useSubjectByCode } from '@/entities/subject/model/useSubjects'
+import { useSubscriptionCheck } from '@/entities/subscription'
+import { useAuthStore } from '@/entities/user/model/store/useAuthStore'
 import { useTranslation } from 'react-i18next'
 import s from './LessonPlansListPage.module.scss'
 
@@ -7,7 +9,7 @@ import { Dropdown } from '@/shared/ui/dropdown'
 import { SectionTitle } from '@/shared/ui/section-title'
 import { LessonPlanTable } from '@/widgets/lesson-plan-table'
 import { QuarterTabs } from '@/widgets/quarter-tabs'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import {
 	Navigate,
 	useNavigate,
@@ -37,6 +39,15 @@ export const LessonPlansListPage = () => {
 	const { data: subject } = useSubjectByCode(code!, {
 		enabled: !!code
 	})
+
+	const isAuthenticated = useAuthStore(state => state.isAuthenticated)()
+	const { data: subscriptionData } = useSubscriptionCheck(
+		isAuthenticated ? subject?.id : undefined
+	)
+	const isLocked = useMemo(() => {
+		if (!isAuthenticated) return true
+		return subscriptionData ? !subscriptionData.has_subscription : false
+	}, [isAuthenticated, subscriptionData])
 
 	const selectedGrade = t('lessonPlans.gradeN', { n: grade })
 
@@ -76,6 +87,7 @@ export const LessonPlansListPage = () => {
 					grade={grade}
 					quarter={quarter as QuarterId}
 					code={code}
+					isLocked={isLocked}
 				/>
 			</Container>
 		</div>

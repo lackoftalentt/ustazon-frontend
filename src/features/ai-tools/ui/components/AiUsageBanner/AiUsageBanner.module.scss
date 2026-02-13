@@ -1,0 +1,87 @@
+@use '@/shared/styles/variables' as *;
+
+.banner {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-md $spacing-lg;
+    border-radius: $radius-sm;
+    font-size: $font-size-sm;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+.text {
+    margin: 0;
+
+    :global(strong) {
+        font-weight: $font-weight-bold;
+    }
+}
+
+.subtext {
+    margin: 2px 0 0;
+    font-size: $font-size-xs;
+    opacity: 0.8;
+}
+
+.link {
+    flex-shrink: 0;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $radius-sm;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.85;
+    }
+}
+
+// Green state (remaining > 1)
+.green {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+
+    .link {
+        background: #065f46;
+        color: white;
+    }
+}
+
+// Orange state (remaining = 1)
+.orange {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    color: #92400e;
+
+    .link {
+        background: #92400e;
+        color: white;
+    }
+}
+
+// Red state (remaining = 0)
+.red {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+
+    .link {
+        background: #991b1b;
+        color: white;
+    }
+}

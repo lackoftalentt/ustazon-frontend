@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { aiApi } from '@/shared/api/ai';
-import type { UserTest } from '@/shared/api/ai';
+import type { UserTest, AiUsageResponse } from '@/shared/api/ai';
 import { FileCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { FullScreenLoader } from '@/features/ai-tools/ui/components/FullScreenLoader/FullScreenLoader';
 import { AIGeneratorLayout } from '@/features/ai-tools/ui/components/AIGeneratorLayout/AIGeneratorLayout';
+import { AiUsageBanner } from '@/features/ai-tools/ui/components/AiUsageBanner/AiUsageBanner';
 import { AIInput } from '@/features/ai-tools/ui/components/AIInput/AIInput';
 import { AISelect } from '@/features/ai-tools/ui/components/AISelect/AISelect';
 import { AIButton } from '@/features/ai-tools/ui/components/AIButton/AIButton';
@@ -20,9 +21,19 @@ export const TestGenerator = () => {
     const [difficulty, setDifficulty] = useState('medium');
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [usage, setUsage] = useState<AiUsageResponse | null>(null);
 
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+
+    const fetchUsage = useCallback(async () => {
+        try {
+            const data = await aiApi.getGeneratorUsage();
+            setUsage(data);
+        } catch { /* ignore */ }
+    }, []);
+
+    useEffect(() => { fetchUsage(); }, [fetchUsage]);
 
     const {
         data: tests = [],
@@ -63,12 +74,20 @@ export const TestGenerator = () => {
             setQuestionCount(15);
 
             queryClient.invalidateQueries({ queryKey: ['user-tests'] });
+            fetchUsage();
         } catch (err: any) {
             console.error('Error generating test:', err);
-            setError(
-                err.response?.data?.detail ||
-                'Тест жасау мүмкін болмады. Қайта көріңіз'
-            );
+            const detail = err.response?.data?.detail;
+            if (err.response?.status === 403 && detail?.code === 'ai_free_limit_exceeded') {
+                setError(detail.message || 'Тегін лимит аяқталды. Жазылым алыңыз.');
+            } else if (err.response?.status === 429) {
+                const minutes = detail?.retry_after ? Math.ceil(detail.retry_after / 60) : 15;
+                setError(`Сұраныс лимиті асып кетті. ${minutes} минуттан кейін қайталап көріңіз.`);
+            } else {
+                setError(
+                    typeof detail === 'string' ? detail : 'Тест жасау мүмкін болмады. Қайта көріңіз'
+                );
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -219,6 +238,7 @@ export const TestGenerator = () => {
                 form={form}
                 preview={preview}
                 isGenerating={isGenerating}
+                usageBanner={<AiUsageBanner usage={usage} />}
             />
         </>
     );

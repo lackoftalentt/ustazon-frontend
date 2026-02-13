@@ -175,6 +175,12 @@ export const aiApi = {
         const response = await apiClient.get<AiUsageResponse>('/ai/usage');
         return response.data;
     },
+
+    // Get AI generator usage info (remaining generations for free users)
+    getGeneratorUsage: async (): Promise<AiUsageResponse> => {
+        const response = await apiClient.get<AiUsageResponse>('/ai/usage/generators');
+        return response.data;
+    },
     // Basic chat (no history saving)
     chat: async (request: ChatRequest): Promise<ChatResponse> => {
         const response = await apiClient.post<ChatResponse>(

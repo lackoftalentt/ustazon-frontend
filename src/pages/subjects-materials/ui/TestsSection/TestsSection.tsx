@@ -11,9 +11,10 @@ interface TestsSectionProps {
 	isLoading?: boolean
 	isLocked?: boolean
 	sectionId?: string
+	onLockedClick?: () => void
 }
 
-export const TestsSection = ({ testsData, isLoading, isLocked, sectionId }: TestsSectionProps) => {
+export const TestsSection = ({ testsData, isLoading, isLocked, sectionId, onLockedClick }: TestsSectionProps) => {
 	if (isLoading) {
 		return (
 			<div className={s.windowSection} id={sectionId}>
@@ -48,6 +49,7 @@ export const TestsSection = ({ testsData, isLoading, isLocked, sectionId }: Test
 						difficulty={test.difficulty}
 						category={test.subject}
 						isLocked={isLocked}
+						onLockedClick={onLockedClick}
 					/>
 				))}
 			</div>

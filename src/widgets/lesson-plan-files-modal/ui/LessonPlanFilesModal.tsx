@@ -1,5 +1,6 @@
 import { LessonPlanFile } from '@/shared/ui/lesson-plan-file'
 import { Modal } from '@/shared/ui/modal'
+import { useTranslation } from 'react-i18next'
 import s from './LessonPlanFilesModal.module.scss'
 
 type FileItem = { id: string; name: string; url?: string }
@@ -17,14 +18,16 @@ export const LessonPlanFilesModal = ({
 	lessonTitle,
 	files
 }: Props) => {
+	const { t } = useTranslation()
+
 	return (
 		<Modal
 			open={open}
 			onClose={onClose}
-			title={lessonTitle ? `Файлдар: ${lessonTitle}` : 'Файл'}
+			title={lessonTitle ? t('lessonPlanFiles.title', { title: lessonTitle }) : t('lessonPlanFiles.titleDefault')}
 		>
 			{files.length === 0 ? (
-				<div className={s.empty}>Файлдар жоқ</div>
+				<div className={s.empty}>{t('lessonPlanFiles.noFiles')}</div>
 			) : (
 				<ul className={s.list}>
 					{files.map(f => (

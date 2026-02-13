@@ -65,11 +65,39 @@
 	}
 
 	p {
-		margin: 0 0 $spacing-2xl;
+		margin: 0 0 $spacing-xl;
 		font-size: $font-size-base;
 		color: $color-gray-medium;
 		max-width: 400px;
 		line-height: $line-height-normal;
+	}
+
+	button {
+		width: 100%;
+		max-width: 280px;
+	}
+}
+
+.buyButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-width: 280px;
+	padding: 14px 24px;
+	margin-bottom: $spacing-sm;
+	background: #25d366;
+	color: white;
+	font-size: 15px;
+	font-weight: 600;
+	border: none;
+	border-radius: 12px;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background 0.15s;
+
+	&:hover {
+		background: #1fb855;
 	}
 }
 

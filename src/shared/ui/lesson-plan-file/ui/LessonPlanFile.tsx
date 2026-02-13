@@ -1,6 +1,7 @@
 import s from './LessonPlanFile.module.scss'
 import FileIcon from '@/shared/assets/icons/document2.svg?react'
 import DownloadIcon from '@/shared/assets/icons/download.svg?react'
+import { useTranslation } from 'react-i18next'
 
 export type LessonPlanFileItem = {
 	id: string
@@ -14,6 +15,8 @@ type Props = {
 }
 
 export const LessonPlanFile = ({ file, onDownloadClick }: Props) => {
+	const { t } = useTranslation()
+
 	return (
 		<div className={s.root}>
 			<div className={s.left}>
@@ -29,7 +32,7 @@ export const LessonPlanFile = ({ file, onDownloadClick }: Props) => {
 					className={s.downloadBtn}
 					href={file.url}
 					download
-					aria-label={`Скачать файл ${file.name}`}
+					aria-label={t('lessonPlanFiles.downloadFile', { name: file.name })}
 					onPointerDown={e => e.stopPropagation()}
 					onClick={() => onDownloadClick?.(file)}
 				>
@@ -40,7 +43,7 @@ export const LessonPlanFile = ({ file, onDownloadClick }: Props) => {
 					className={s.downloadBtnDisabled}
 					type="button"
 					disabled
-					aria-label="Скачать файл (недоступно)"
+					aria-label={t('lessonPlanFiles.downloadUnavailable')}
 					onPointerDown={e => e.stopPropagation()}
 				>
 					<DownloadIcon className={s.downloadIcon} />

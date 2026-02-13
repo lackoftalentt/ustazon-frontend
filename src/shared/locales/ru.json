@@ -26,6 +26,11 @@
 		"windows": "Окна",
 		"fullInfo": "Подробная информация",
 		"aiChat": "AI чат",
+		"aiLesson": "AI урок",
+		"aiQMJ": "AI КСП",
+		"aiPresentation": "AI презентация",
+		"aiTest": "AI тест",
+		"aiManim": "AI видео",
 		"kmzh": "КСП",
 		"presentation": "Презентация",
 		"profile": "Профиль",
@@ -33,6 +38,12 @@
 		"tests": "Тесты",
 		"takeTest": "Пройти тест",
 		"lessonPlan": "План урока",
+		"lessonPlanList": "Планы уроков",
+		"admin": "Админ панель",
+		"templates": "Шаблоны",
+		"institutionTypes": "Типы учреждений",
+		"subscriptions": "Подписки",
+		"materialsAdmin": "Материалы",
 		"back": "Назад"
 	},
 	"hero": {
@@ -90,6 +101,8 @@
 		"noAccount": "Ещё не зарегистрированы?",
 		"registerLink": "Регистрация.",
 		"loginSuccess": "Вход выполнен успешно!",
+		"changeIin": "Изменить ИИН",
+		"iinNotFound": "Этот ИИН не зарегистрирован. Перенаправляем на регистрацию",
 		"wrongCredentials": "Неверный ИИН или пароль",
 		"loginError": "Ошибка при входе",
 		"registerTitle": "Регистрация",
@@ -218,7 +231,117 @@
 	"lessonPlans": {
 		"shortTermPlans": "Краткосрочные планы (КСП)",
 		"grade": "Класс",
-		"gradeN": "{{n}} класс"
+		"gradeN": "{{n}} класс",
+		"byGrades": "КСП по классам"
+	},
+	"kmzhMain": {
+		"title": "КСП",
+		"subtitle": "Краткосрочные планы — по предметам",
+		"noSubjects": "Предметы не найдены"
+	},
+	"kmzhCard": {
+		"grade": "{{n}}-класс",
+		"quarter": "{{n}}-четверть",
+		"code": "Код: {{code}}",
+		"hours": "{{n}} час",
+		"files": "{{n}} файл",
+		"accessRequired": "Требуется доступ",
+		"view": "Просмотр"
+	},
+	"kmzhBanner": {
+		"title": "КСП",
+		"subtitle": "Составление планов"
+	},
+	"kmzhSection": {
+		"title": "КСП",
+		"showMore": "Показать ещё"
+	},
+	"editKmzh": {
+		"modalTitle": "Редактировать КСП",
+		"basicInfo": "Основная информация",
+		"grade": "Класс",
+		"selectGrade": "Выберите класс",
+		"quarter": "Четверть",
+		"selectQuarter": "Выберите четверть",
+		"subjectCode": "Код предмета",
+		"selectSubjectCode": "Выберите код предмета",
+		"hours": "Количество часов",
+		"hoursHint": "Количество часов, выделенных на урок (1-10)",
+		"lessonContent": "Содержание урока",
+		"topic": "Тема урока",
+		"topicPlaceholder": "Напишите полное название урока",
+		"objectives": "Учебные цели",
+		"objectivesPlaceholder": "Укажите цели из учебной программы",
+		"fileUpload": "Загрузка файла",
+		"file": "Файл",
+		"noFileChosen": "Файл не выбран",
+		"chooseFile": "Выбрать",
+		"fileHint": "Файл в формате DOC, DOCX или PDF",
+		"additionalFiles": "Дополнительные файлы",
+		"dragFiles": "Выберите файлы или перетащите сюда",
+		"multiFileHint": "Для выбора нескольких файлов удерживайте Ctrl или Cmd",
+		"newFiles": "Новые файлы",
+		"existingFiles": "Текущие дополнительные файлы",
+		"categories": "Категории",
+		"subjects": "Предметы",
+		"subjectsHint": "Выберите один или несколько предметов",
+		"institutionType": "Тип учебного заведения",
+		"institutionTypeHint": "Выберите тип учебного заведения",
+		"cancel": "Отмена",
+		"delete": "Удалить",
+		"save": "Сохранить изменения",
+		"deleteTitle": "Удалить КСП",
+		"deleteMessage": "Вы уверены, что хотите удалить этот КСП? Это действие нельзя отменить.",
+		"deleteConfirm": "Удалить",
+		"deleteCancel": "Отмена",
+		"success": "КСП успешно сохранён!",
+		"error": "Ошибка при сохранении КСП",
+		"deleteSuccess": "КСП успешно удалён!",
+		"deleteError": "Ошибка при удалении КСП",
+		"formatError": "Поддерживаются только форматы DOC, DOCX или PDF"
+	},
+	"addFiles": {
+		"title": "Добавить новые файлы",
+		"dragFiles": "Выберите файлы или перетащите сюда",
+		"supportedFormats": "Поддерживаемые форматы: PDF, DOC, DOCX, TXT, RTF, PPT, PPTX (макс. 10MB)",
+		"selectedFiles": "Выбранные файлы ({{count}})",
+		"clearAll": "Удалить все",
+		"cancel": "Отмена",
+		"upload": "Загрузить",
+		"selectFiles": "Выберите файлы",
+		"qmjNotFound": "QMJ ID не найден",
+		"uploadSuccess": "{{count}} файл(ов) успешно загружено!",
+		"uploadError": "Ошибка при загрузке файлов",
+		"unsupportedFormat": "{{name}}: неподдерживаемый формат",
+		"fileTooLarge": "{{name}}: размер файла превышает 10MB"
+	},
+	"lessonPlanTable": {
+		"searchPlaceholder": "Поиск по теме урока...",
+		"addKmzh": "Добавить КСП",
+		"topicHeader": "Тема урока",
+		"objectivesHeader": "Учебные цели",
+		"hoursHeader": "Часы",
+		"authorHeader": "Автор",
+		"filesHeader": "Файлы",
+		"actionsHeader": "Действия",
+		"view": "Просмотр",
+		"addLabel": "Добавить",
+		"editLabel": "Редактировать",
+		"deleteLabel": "Удалить",
+		"deleteTitle": "Удалить план урока",
+		"deleteMessage": "Вы уверены, что хотите удалить план урока \"{{topic}}\"? Это действие нельзя отменить.",
+		"deleteConfirm": "Удалить",
+		"deleteCancel": "Отмена",
+		"deleteSuccess": "План урока успешно удалён!",
+		"deleteError": "Ошибка при удалении",
+		"loadError": "Ошибка при загрузке данных"
+	},
+	"lessonPlanFiles": {
+		"title": "Файлы: {{title}}",
+		"titleDefault": "Файл",
+		"noFiles": "Файлов нет",
+		"downloadFile": "Скачать файл {{name}}",
+		"downloadUnavailable": "Скачать файл (недоступно)"
 	},
 	"notFound": {
 		"title": "Ой! Страница не найдена",
@@ -276,7 +399,10 @@
 		"allCategory": "Все",
 		"createPresentation": "Создать презентацию",
 		"createPresentationDesc": "Сгенерировать презентацию по вашему предмету и теме",
-		"noTemplates": "Нет доступных шаблонов в этой категории"
+		"noTemplates": "Нет доступных шаблонов в этой категории",
+		"freeGenerationsRemaining": "Бесплатные генерации: <strong>{{remaining}}/{{limit}}</strong> осталось",
+		"freeGenerationsPerMonth": "{{limit}} бесплатных генераций в месяц",
+		"generatorLimitExceeded": "Лимит бесплатных генераций исчерпан"
 	},
 	"windowBadge": {
 		"ai": "Искусственный интеллект",
@@ -366,6 +492,12 @@
 		"gradeN": "{{n}}-класс",
 		"quarterN": "{{n}} четверть"
 	},
+	"paywall": {
+		"title": "Требуется доступ",
+		"message": "Для использования этих материалов приобретите подписку",
+		"buyButton": "Приобрести доступ",
+		"close": "Закрыть"
+	},
 	"common": {
 		"loading": "Загрузка...",
 		"error": "Ошибка",
@@ -415,6 +547,14 @@
 		"addInstitutionType": "Добавить тип учреждения",
 		"editInstitutionType": "Редактировать тип учреждения",
 		"addSubscription": "Добавить подписку",
+		"sub": {
+			"totalUsers": "Всего пользователей",
+			"activeSubs": "Активные подписки",
+			"subjectsCount": "Предметов",
+			"usersList": "Пользователи",
+			"searchUsers": "Поиск по ИИН, имени, телефону...",
+			"grantAccess": "Доступ беру"
+		},
 		"subFilters": {
 			"all": "Все",
 			"active": "Активные",

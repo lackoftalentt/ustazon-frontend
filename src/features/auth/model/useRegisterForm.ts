@@ -3,11 +3,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterFormData } from '@/entities/user';
 import { formatNumericInput, formatPhoneNumber } from '../lib/formatters';
 
-export const useRegisterForm = (onSubmit: (data: RegisterFormData) => void) => {
+export const useRegisterForm = (onSubmit: (data: RegisterFormData) => void, defaultIin = '') => {
     const form = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
         mode: 'onSubmit',
-        reValidateMode: 'onSubmit'
+        reValidateMode: 'onChange',
+        defaultValues: {
+            iin: defaultIin
+        }
     });
 
     const handleIinChange = (e: React.ChangeEvent<HTMLInputElement>) => {

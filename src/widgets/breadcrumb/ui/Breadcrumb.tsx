@@ -14,76 +14,68 @@ interface RouteConfig {
 }
 
 const routeConfig: Record<string, RouteConfig> = {
+	// Subjects & Materials
 	subjects: { labelKey: 'breadcrumb.subjectsCatalog', navigable: true },
 	'subjects-materials': { labelKey: 'breadcrumb.materials', navigable: true },
 	'subject-windows': { labelKey: 'breadcrumb.windows', navigable: true },
 	detail: { labelKey: 'breadcrumb.fullInfo', navigable: false },
+
+	// AI Tools
 	'ai-chat': { labelKey: 'breadcrumb.aiChat', navigable: true },
+	'ai-lesson': { labelKey: 'breadcrumb.aiLesson', navigable: true },
+	'ai-qmj': { labelKey: 'breadcrumb.aiQMJ', navigable: true },
+	'ai-preza': { labelKey: 'breadcrumb.aiPresentation', navigable: true },
+	'ai-test': { labelKey: 'breadcrumb.aiTest', navigable: true },
+	'ai-manim': { labelKey: 'breadcrumb.aiManim', navigable: true },
+
+	// Lesson Plans
+	'lesson-plans': { labelKey: 'breadcrumb.lessonPlan', navigable: true },
+	'lesson-plans-list': { labelKey: 'breadcrumb.lessonPlanList', navigable: true },
+
+	// KMZH
 	kmzh: { labelKey: 'breadcrumb.kmzh', navigable: true },
-	'subject-presentation-detail': { labelKey: 'breadcrumb.presentation', navigable: true },
+
+	// Profile
 	profile: { labelKey: 'breadcrumb.profile', navigable: true },
 	'profile-settings': { labelKey: 'breadcrumb.profileSettings', navigable: true },
+
+	// Tests
 	tests: { labelKey: 'breadcrumb.tests', navigable: true },
 	'take-test': { labelKey: 'breadcrumb.takeTest', navigable: true },
-	'lesson-plan': { labelKey: 'breadcrumb.lessonPlan', navigable: true }
+
+	// Admin
+	admin: { labelKey: 'breadcrumb.admin', navigable: true },
+	templates: { labelKey: 'breadcrumb.templates', navigable: true },
+	'institution-types': { labelKey: 'breadcrumb.institutionTypes', navigable: true },
+	subscriptions: { labelKey: 'breadcrumb.subscriptions', navigable: true },
+	materials: { labelKey: 'breadcrumb.materialsAdmin', navigable: true },
+
+	// Legacy
+	'subject-presentation-detail': { labelKey: 'breadcrumb.presentation', navigable: true },
 }
 
-const isNavigableRoute = (path: string, segments: string[]): boolean => {
-	const lastSegment = segments[segments.length - 1]
+// Segments that are dynamic params (IDs, codes) — should be hidden
+const isDynamicSegment = (_segment: string, index: number, allSegments: string[]): boolean => {
+	if (index === 0) return false
 
-	if (path === '/') return true
+	const prevSegment = allSegments[index - 1]
 
-	if (routeConfig[lastSegment]) {
-		return routeConfig[lastSegment].navigable
-	}
-
-	const pathParts = path.split('/').filter(Boolean)
-
-	if (pathParts[0] === 'subjects-materials' && pathParts.length === 2) {
-		return true
-	}
-	if (pathParts[0] === 'subject-windows' && pathParts.length === 2) {
-		return true
-	}
-	if (pathParts[0] === 'lesson-plan' && pathParts.length === 3) {
-		return true
-	}
+	// /subjects-materials/:subjectCode
+	if (prevSegment === 'subjects-materials') return true
+	// /subject-windows/:subjectCode
+	if (prevSegment === 'subject-windows') return true
+	// /subjects-materials/:code/detail/:cardId
+	if (prevSegment === 'detail') return true
+	// /take-test/:testId
+	if (prevSegment === 'take-test') return true
+	// /ai-lesson/:id, /ai-qmj/:id
+	if (prevSegment === 'ai-lesson' || prevSegment === 'ai-qmj') return true
+	// /lesson-plans/:code/:quarter/:grade — all params after lesson-plans
+	if (allSegments[0] === 'lesson-plans' && index >= 1) return true
+	// /lesson-plans-list/:grade/:quarter
+	if (allSegments[0] === 'lesson-plans-list' && index >= 1) return true
 
 	return false
-}
-
-const getRouteLabel = (
-	segment: string,
-	_fullPath: string,
-	allSegments: string[],
-	t: (key: string) => string
-): string | null => {
-	if (routeConfig[segment]) {
-		return t(routeConfig[segment].labelKey)
-	}
-
-	const segmentIndex = allSegments.indexOf(segment)
-	if (segmentIndex > 0) {
-		const prevSegment = allSegments[segmentIndex - 1]
-
-		if (
-			prevSegment === 'subjects-materials' ||
-			prevSegment === 'subject-windows'
-		) {
-			return null
-		}
-		if (prevSegment === 'detail') {
-			return null
-		}
-		if (prevSegment === 'lesson-plan') {
-			return null
-		}
-		if (allSegments[0] === 'lesson-plan' && segmentIndex === 2) {
-			return null
-		}
-	}
-
-	return null
 }
 
 export const Breadcrumb = () => {
@@ -103,20 +95,16 @@ export const Breadcrumb = () => {
 	pathSegments.forEach((segment, index) => {
 		currentPath += `/${segment}`
 
-		const segmentsUpToHere = pathSegments.slice(0, index + 1)
-
-		if (!isNavigableRoute(currentPath, segmentsUpToHere)) {
+		// Skip dynamic segments (IDs, codes)
+		if (isDynamicSegment(segment, index, pathSegments)) {
 			return
 		}
 
-		const label = getRouteLabel(segment, currentPath, pathSegments, t)
-
-		if (label === null) {
-			return
-		}
+		const config = routeConfig[segment]
+		if (!config) return
 
 		breadcrumbs.push({
-			label,
+			label: t(config.labelKey),
 			path: currentPath
 		})
 	})

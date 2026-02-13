@@ -299,9 +299,143 @@
 		background: var(--bg-hover, #f3f4f6);
 	}
 
+	&:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
 	&Active {
 		background: var(--primary, #6c5ce7);
 		color: white;
 		border-color: var(--primary, #6c5ce7);
 	}
+}
+
+// Stats row
+.statsRow {
+	display: flex;
+	gap: 16px;
+	margin-bottom: 24px;
+	flex-wrap: wrap;
+}
+
+.statCard {
+	flex: 1;
+	min-width: 140px;
+	padding: 16px 20px;
+	background: var(--bg-secondary, #f9fafb);
+	border: 1px solid var(--border-color, #e5e7eb);
+	border-radius: 10px;
+	text-align: center;
+}
+
+.statValue {
+	font-size: 28px;
+	font-weight: 700;
+	color: var(--primary, #6c5ce7);
+}
+
+.statLabel {
+	font-size: 12px;
+	color: var(--text-secondary, #6b7280);
+	margin-top: 4px;
+}
+
+// Two-column layout
+.twoCol {
+	display: grid;
+	grid-template-columns: 360px 1fr;
+	gap: 24px;
+
+	@media (max-width: 900px) {
+		grid-template-columns: 1fr;
+	}
+}
+
+.colLeft,
+.colRight {
+	min-width: 0;
+}
+
+.colTitle {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--text-primary, #1a1a2e);
+	margin-bottom: 12px;
+}
+
+.searchInput {
+	width: 100%;
+	padding: 10px 12px;
+	border: 1px solid var(--border-color, #e5e7eb);
+	border-radius: 8px;
+	font-size: 14px;
+	outline: none;
+	margin-bottom: 12px;
+	transition: border-color 0.15s;
+
+	&:focus {
+		border-color: var(--primary, #6c5ce7);
+	}
+}
+
+.usersList {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-height: 520px;
+	overflow-y: auto;
+}
+
+.userCard {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 10px 12px;
+	border: 1px solid var(--border-color, #e5e7eb);
+	border-radius: 8px;
+	background: white;
+	transition: border-color 0.15s;
+
+	&:hover {
+		border-color: var(--primary, #6c5ce7);
+	}
+}
+
+.userInfo {
+	min-width: 0;
+	flex: 1;
+}
+
+.userName {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-primary, #1a1a2e);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.userMeta {
+	font-size: 12px;
+	color: var(--text-secondary, #6b7280);
+	margin-top: 2px;
+}
+
+.pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	margin-top: 12px;
+}
+
+.pageInfo {
+	font-size: 13px;
+	color: var(--text-secondary, #6b7280);
+}
+
+.subsTableWrap {
+	overflow-x: auto;
 }

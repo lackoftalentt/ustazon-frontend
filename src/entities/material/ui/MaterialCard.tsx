@@ -1,6 +1,5 @@
 import CardPlaceholder from '@/shared/assets/images/card-placeholder.png'
 import { getFileUrl } from '@/shared/lib/fileUrl'
-import { PaywallModal } from '@/shared/ui/paywall-modal'
 import { Button } from '@/shared/ui/button'
 import clsx from 'clsx'
 import { Eye, Lock, Pencil, Star, Trash2 } from 'lucide-react'
@@ -24,6 +23,7 @@ interface MaterialCardProps {
 	onFavoriteToggle?: (id: number) => void
 	onDelete?: (id: number) => void
 	onEdit?: (id: number) => void
+	onLockedClick?: () => void
 }
 
 const badgeClassMap: Record<string, string> = {
@@ -54,9 +54,9 @@ export const MaterialCard = ({
 	showEdit = false,
 	onFavoriteToggle,
 	onDelete,
-	onEdit
+	onEdit,
+	onLockedClick
 }: MaterialCardProps) => {
-	const [paywallOpen, setPaywallOpen] = useState(false)
 	const [currentImg, setCurrentImg] = useState(0)
 
 	const images = (thumbnails ?? [thumbnail]).filter(isValidImage)
@@ -89,7 +89,7 @@ export const MaterialCard = ({
 	const handleLockedClick = (e: React.MouseEvent) => {
 		e.preventDefault()
 		e.stopPropagation()
-		setPaywallOpen(true)
+		onLockedClick?.()
 	}
 
 	return (
@@ -140,7 +140,7 @@ export const MaterialCard = ({
 					{isLocked ? (
 						<Button className={s.button} onClick={handleLockedClick}>
 							<Lock size={18} />
-							Жазылым қажет
+							Доступ қажет
 						</Button>
 					) : (
 						<Link
@@ -186,7 +186,6 @@ export const MaterialCard = ({
 					)}
 				</div>
 			</div>
-			<PaywallModal open={paywallOpen} onClose={() => setPaywallOpen(false)} />
 		</article>
 	)
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/entities/user';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import defaultAvatar from '@/shared/assets/images/profile-image.jpg';
 import s from './UserMenu.module.scss';
@@ -10,6 +11,7 @@ export const UserMenu = () => {
     const menuRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const { user, logout, isAdmin } = useAuthStore();
+    const queryClient = useQueryClient();
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -29,6 +31,7 @@ export const UserMenu = () => {
 
     const handleLogout = () => {
         logout();
+        queryClient.clear();
         setIsOpen(false);
         navigate('/login');
     };

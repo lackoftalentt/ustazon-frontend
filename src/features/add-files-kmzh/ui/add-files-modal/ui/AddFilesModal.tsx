@@ -2,6 +2,7 @@ import { useRef, useState, useCallback } from 'react';
 import { clsx } from 'clsx';
 import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { Modal } from '@/shared/ui/modal';
 import { Button } from '@/shared/ui/button';
 import { qmjApi } from '@/shared/api/qmjApi';
@@ -15,6 +16,7 @@ import {
 import s from './AddFilesModal.module.scss';
 
 export const AddFilesModal = () => {
+    const { t } = useTranslation();
     const { isOpen, rowId, files, closeModal, addFiles, removeFile, clearFiles } =
         useAddFilesStore();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,11 +36,11 @@ export const AddFilesModal = () => {
 
             Array.from(fileList).forEach((file) => {
                 if (!isValidFileType(file)) {
-                    errors.push(`${file.name}: қолдау көрсетілмейтін формат`);
+                    errors.push(t('addFiles.unsupportedFormat', { name: file.name }));
                     return;
                 }
                 if (!isValidFileSize(file)) {
-                    errors.push(`${file.name}: файл өлшемі 10MB-дан асады`);
+                    errors.push(t('addFiles.fileTooLarge', { name: file.name }));
                     return;
                 }
 
@@ -60,7 +62,7 @@ export const AddFilesModal = () => {
                 addFiles(validFiles);
             }
         },
-        [addFiles]
+        [addFiles, t]
     );
 
     const handleDragOver = (e: React.DragEvent) => {
@@ -94,12 +96,12 @@ export const AddFilesModal = () => {
 
     const handleUpload = async () => {
         if (files.length === 0) {
-            toast.error('Файлдарды таңдаңыз');
+            toast.error(t('addFiles.selectFiles'));
             return;
         }
 
         if (!rowId) {
-            toast.error('QMJ ID табылмады');
+            toast.error(t('addFiles.qmjNotFound'));
             return;
         }
 
@@ -116,10 +118,10 @@ export const AddFilesModal = () => {
 
             queryClient.invalidateQueries({ queryKey: ['qmj'] });
             queryClient.invalidateQueries({ queryKey: ['kmzh'] });
-            toast.success(`${files.length} файл сәтті жүктелді!`);
+            toast.success(t('addFiles.uploadSuccess', { count: files.length }));
             handleClose();
         } catch {
-            toast.error('Файлдарды жүктеу кезінде қате орын алды');
+            toast.error(t('addFiles.uploadError'));
         } finally {
             setIsUploading(false);
         }
@@ -146,7 +148,7 @@ export const AddFilesModal = () => {
     };
 
     return (
-        <Modal open={isOpen} onClose={handleClose} title="Жаңа файлдар қосу">
+        <Modal open={isOpen} onClose={handleClose} title={t('addFiles.title')}>
             <div className={s.content}>
                 <input
                     ref={fileInputRef}
@@ -178,11 +180,10 @@ export const AddFilesModal = () => {
                     </div>
                     <div className={s.dropzoneText}>
                         <span className={s.dropzoneTitle}>
-                            Файлдарды таңдаңыз немесе осы жерге апарыңыз
+                            {t('addFiles.dragFiles')}
                         </span>
                         <span className={s.dropzoneHint}>
-                            PDF, DOC, DOCX, TXT, RTF, PPT, PPTX форматтары қолдау
-                            көрсетіледі (макс. 10MB)
+                            {t('addFiles.supportedFormats')}
                         </span>
                     </div>
                 </div>
@@ -191,13 +192,13 @@ export const AddFilesModal = () => {
                     <div className={s.fileList}>
                         <div className={s.fileListHeader}>
                             <span className={s.fileListTitle}>
-                                Таңдалған файлдар ({files.length})
+                                {t('addFiles.selectedFiles', { count: files.length })}
                             </span>
                             <button
                                 type="button"
                                 className={s.clearAllBtn}
                                 onClick={clearFiles}>
-                                Барлығын өшіру
+                                {t('addFiles.clearAll')}
                             </button>
                         </div>
 
@@ -253,14 +254,14 @@ export const AddFilesModal = () => {
 
                 <div className={s.actions}>
                     <Button variant="outline" onClick={handleClose}>
-                        Болдырмау
+                        {t('addFiles.cancel')}
                     </Button>
                     <Button
                         variant="primary"
                         onClick={handleUpload}
                         loading={isUploading}
                         disabled={files.length === 0}>
-                        Жүктеу
+                        {t('addFiles.upload')}
                     </Button>
                 </div>
             </div>

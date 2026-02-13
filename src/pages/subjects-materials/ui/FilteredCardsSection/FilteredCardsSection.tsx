@@ -23,6 +23,7 @@ interface FilteredCardsSectionProps {
 	windowId?: number
 	subjectId?: number
 	isAdmin?: boolean
+	onLockedClick?: () => void
 }
 
 export const FilteredCardsSection = ({
@@ -36,7 +37,8 @@ export const FilteredCardsSection = ({
 	onAdminEdit,
 	windowId,
 	subjectId,
-	isAdmin
+	isAdmin,
+	onLockedClick
 }: FilteredCardsSectionProps) => {
 	const { mutate: toggleFavoriteApi } = useToggleFavorite()
 	const { mutate: deleteCard, isPending: isDeleting } = useDeleteCard()
@@ -119,6 +121,7 @@ export const FilteredCardsSection = ({
 						onFavoriteToggle={handleFavoriteToggle}
 						onDelete={handleDeleteClick}
 						onEdit={onAdminEdit}
+						onLockedClick={onLockedClick}
 					/>
 				))}
 			</div>

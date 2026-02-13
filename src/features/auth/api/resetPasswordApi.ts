@@ -12,7 +12,6 @@ interface ForgotPasswordResponse {
 export const sendResetCode = async (
     data: ForgotPasswordData
 ): Promise<ForgotPasswordResponse> => {
-    console.log('Sending data:', data);
     const response = await apiClient.post<ForgotPasswordResponse>(
         '/auth/forgot-password',
         data
@@ -58,7 +57,6 @@ interface ResetPasswordResponse {
 export const resetPassword = async (
     data: ResetPasswordData
 ): Promise<ResetPasswordResponse> => {
-    console.log('Reset password data:', data);
     const response = await apiClient.post<ResetPasswordResponse>(
         '/auth/reset-password',
         data

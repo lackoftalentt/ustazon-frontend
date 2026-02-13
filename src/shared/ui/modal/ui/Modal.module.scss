@@ -174,12 +174,35 @@
         padding: $spacing-lg;
     }
 
+    .dialog {
+        max-height: 90vh;
+    }
+
     .header {
         padding: $spacing-md $spacing-lg;
     }
 
     .body {
         padding: $spacing-lg;
+    }
+}
+
+@media (max-width: 375px) {
+    .overlay {
+        padding: $spacing-sm;
+    }
+
+    .dialog {
+        max-height: 92vh;
+        border-radius: $radius-lg;
+    }
+
+    .header {
+        padding: $spacing-sm $spacing-md;
+    }
+
+    .body {
+        padding: $spacing-md;
     }
 }
 

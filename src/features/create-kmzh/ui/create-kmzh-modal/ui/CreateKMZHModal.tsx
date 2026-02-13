@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import {
 	CLASS_LEVELS,
 	MAX_FILE_SIZE,
@@ -41,6 +42,7 @@ const formatFileSize = (bytes: number): string => {
 }
 
 export const CreateKMZHModal = () => {
+	const { t } = useTranslation()
 	const { isOpen, closeModal } = useCreateKMZHStore()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const [isDragOver, setIsDragOver] = useState(false)
@@ -94,7 +96,7 @@ export const CreateKMZHModal = () => {
 	} = useCreateKMZHForm(
 		async () => {
 			queryClient.invalidateQueries({ queryKey: ['qmj'] })
-			toast.success('ҚМЖ сәтті қосылды!')
+			toast.success(t('createKmzh.success'))
 			handleClose()
 		},
 		{ getSubjectIdByCode }
@@ -122,7 +124,7 @@ export const CreateKMZHModal = () => {
 			const droppedFiles = Array.from(e.dataTransfer.files)
 			const validFiles = droppedFiles.filter(file => {
 				if (file.size > MAX_FILE_SIZE) {
-					toast.error(`"${file.name}" файлы тым үлкен (макс. 20MB)`)
+					toast.error(t('createKmzh.fileTooLarge', { name: file.name }))
 					return false
 				}
 				return true
@@ -136,7 +138,7 @@ export const CreateKMZHModal = () => {
 			const selectedFiles = Array.from(e.target.files)
 			const validFiles = selectedFiles.filter(file => {
 				if (file.size > MAX_FILE_SIZE) {
-					toast.error(`"${file.name}" файлы тым үлкен (макс. 20MB)`)
+					toast.error(t('createKmzh.fileTooLarge', { name: file.name }))
 					return false
 				}
 				return true
@@ -156,8 +158,8 @@ export const CreateKMZHModal = () => {
 					<FileText size={28} />
 				</div>
 				<div className={s.headerContent}>
-					<h3 className={s.headerTitle}>Жаңа ҚМЖ қосу</h3>
-					<p className={s.headerSubtitle}>Сабақ жоспарын толтырыңыз</p>
+					<h3 className={s.headerTitle}>{t('createKmzh.title')}</h3>
+					<p className={s.headerSubtitle}>{t('createKmzh.subtitle')}</p>
 				</div>
 				<img
 					src={logo}
@@ -174,10 +176,10 @@ export const CreateKMZHModal = () => {
 						if (error instanceof AxiosError) {
 							toast.error(
 								error.response?.data?.detail ||
-									'ҚМЖ қосу кезінде қате орын алды'
+									t('createKmzh.error')
 							)
 						} else {
-							toast.error('ҚМЖ қосу кезінде қате орын алды')
+							toast.error(t('createKmzh.error'))
 						}
 					}
 				}}
@@ -186,12 +188,12 @@ export const CreateKMZHModal = () => {
 				<div className={s.field}>
 					<label className={s.label}>
 						<BookMarked size={16} />
-						Пән
+						{t('createKmzh.subject')}
 					</label>
 					<Dropdown
 						items={subjectItems}
 						value={getSubjectNameByCode(watch('subjectCode'))}
-						placeholder="Пәнді таңдаңыз"
+						placeholder={t('createKmzh.selectSubject')}
 						onChange={name => {
 							const code = getSubjectCodeByName(name)
 							setValue('subjectCode', code, { shouldValidate: true })
@@ -206,12 +208,12 @@ export const CreateKMZHModal = () => {
 					<div className={s.field}>
 						<label className={s.label}>
 							<GraduationCap size={16} />
-							Сынып
+							{t('createKmzh.grade')}
 						</label>
 						<Dropdown
 							items={[...CLASS_LEVELS]}
 							value={watch('classLevel')}
-							placeholder="Сыныпты таңдаңыз"
+							placeholder={t('createKmzh.selectGrade')}
 							onChange={v =>
 								setValue('classLevel', v as ClassLevel, {
 									shouldValidate: true
@@ -226,12 +228,12 @@ export const CreateKMZHModal = () => {
 					<div className={s.field}>
 						<label className={s.label}>
 							<Calendar size={16} />
-							Тоқсан
+							{t('createKmzh.quarter')}
 						</label>
 						<Dropdown
 							items={[...QUARTERS]}
 							value={watch('quarter')}
-							placeholder="Тоқсанды таңдаңыз"
+							placeholder={t('createKmzh.selectQuarter')}
 							onChange={v =>
 								setValue('quarter', v as Quarter, { shouldValidate: true })
 							}
@@ -245,7 +247,7 @@ export const CreateKMZHModal = () => {
 				<div className={s.field}>
 					<label className={s.label}>
 						<Clock size={16} />
-						Сағат саны
+						{t('createKmzh.hours')}
 					</label>
 					<div className={s.hoursInput}>
 						<button
@@ -271,7 +273,7 @@ export const CreateKMZHModal = () => {
 							+
 						</button>
 					</div>
-					<span className={s.hint}>Сабаққа бөлінген сағат саны (1-10)</span>
+					<span className={s.hint}>{t('createKmzh.hoursHint')}</span>
 					{errors.hours && (
 						<span className={s.error}>{errors.hours.message}</span>
 					)}
@@ -280,20 +282,20 @@ export const CreateKMZHModal = () => {
 				<div className={s.field}>
 					<label className={s.label}>
 						<BookOpen size={16} />
-						Сабақ тақырыбы
+						{t('createKmzh.topic')}
 					</label>
 					<Input
 						{...register('lessonTopic')}
-						placeholder="Сабақ тақырыбын енгізіңіз"
+						placeholder={t('createKmzh.topicPlaceholder')}
 						error={errors.lessonTopic?.message}
 					/>
-					<span className={s.hint}>Сабақтың толық тақырыбын жазыңыз</span>
+					<span className={s.hint}>{t('createKmzh.topicHint')}</span>
 				</div>
 
 				<div className={s.field}>
 					<label className={s.label}>
 						<Target size={16} />
-						Оқу мақсаттары
+						{t('createKmzh.objectives')}
 					</label>
 					<textarea
 						{...register('learningObjectives')}
@@ -301,11 +303,11 @@ export const CreateKMZHModal = () => {
 							s.textarea,
 							errors.learningObjectives && s.textareaError
 						)}
-						placeholder="Оқу мақсаттарын енгізіңіз"
+						placeholder={t('createKmzh.objectivesPlaceholder')}
 						rows={4}
 					/>
 					<span className={s.hint}>
-						Оқу бағдарламасындағы мақсаттарды көрсетіңіз
+						{t('createKmzh.objectivesHint')}
 					</span>
 					{errors.learningObjectives && (
 						<span className={s.error}>{errors.learningObjectives.message}</span>
@@ -313,7 +315,7 @@ export const CreateKMZHModal = () => {
 				</div>
 
 				<div className={s.field}>
-					<label className={s.label}>Файлдар</label>
+					<label className={s.label}>{t('createKmzh.files')}</label>
 					<input
 						ref={fileInputRef}
 						type="file"
@@ -335,9 +337,9 @@ export const CreateKMZHModal = () => {
 						<Upload size={32} />
 						<div className={s.dropzoneText}>
 							<span className={s.dropzoneTitle}>
-								Файлдарды осында сүйреңіз немесе таңдаңыз
+								{t('createKmzh.dragFiles')}
 							</span>
-							<span className={s.dropzoneHint}>Максималды өлшемі: 20MB</span>
+							<span className={s.dropzoneHint}>{t('createKmzh.maxFileSize')}</span>
 						</div>
 					</div>
 					{errors.files && (
@@ -376,8 +378,8 @@ export const CreateKMZHModal = () => {
 
 				<div className={s.subjectsSection}>
 					<div className={s.subjectsHeader}>
-						<span className={s.sectionTitle}>Оқу орнының түрі</span>
-						<span className={s.sectionHint}>Бірнеше түрді таңдауға болады</span>
+						<span className={s.sectionTitle}>{t('createKmzh.institutionType')}</span>
+						<span className={s.sectionHint}>{t('createKmzh.multipleTypes')}</span>
 					</div>
 
 					<div className={s.subjectsGrid}>
@@ -408,14 +410,14 @@ export const CreateKMZHModal = () => {
 						variant="outline"
 						onClick={handleClose}
 					>
-						Бас тарту
+						{t('createKmzh.cancel')}
 					</Button>
 					<Button
 						type="submit"
 						variant="primary"
 						loading={isSubmitting}
 					>
-						ҚМЖ қосу
+						{t('createKmzh.addKmzh')}
 					</Button>
 				</div>
 			</form>

@@ -92,6 +92,7 @@ export const ProfileSettingsPage = () => {
 
 	const handleLogout = () => {
 		logout()
+		queryClient.clear()
 		toast.success(t('profile.loggedOut'))
 		navigate('/login')
 	}

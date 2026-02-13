@@ -6,12 +6,14 @@ import { Loader } from '@/shared/ui/loader'
 import { PlanCard } from '@/shared/ui/plan-card/ui/PlanCard'
 import { SectionTitle } from '@/shared/ui/section-title'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import s from './LessonPlansPage.module.scss'
 
 const allGrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 export const LessonPlansPage = () => {
+	const { t } = useTranslation()
 	const { code } = useParams<{ code?: string }>()
 	const navigate = useNavigate()
 
@@ -49,7 +51,7 @@ export const LessonPlansPage = () => {
 			<Container className={s.container}>
 				<header className={s.header}>
 					<SectionTitle title={`${subject?.name}`} />
-					<p className={s.subtitle}>Қысқа мерзімді жоспарлар (ҚМЖ)</p>
+					<p className={s.subtitle}>{t('lessonPlans.shortTermPlans')}</p>
 				</header>
 
 				{isLoading ? (
@@ -61,7 +63,7 @@ export const LessonPlansPage = () => {
 					/>
 				) : (
 					<section className={s.section}>
-						<SectionTitle title="ҚМЖ сыныптар бойынша" />
+						<SectionTitle title={t('lessonPlans.byGrades')} />
 
 						<div className={s.cards}>
 							{plansByGrade
@@ -69,7 +71,7 @@ export const LessonPlansPage = () => {
 								.map(p => (
 									<PlanCard
 										key={p.grade}
-										title={`${p.grade} сынып`}
+										title={t('lessonPlans.gradeN', { n: p.grade })}
 										onDetails={() =>
 											navigate(
 												`/lesson-plans-list/${p.grade}/q1?code=${code}`

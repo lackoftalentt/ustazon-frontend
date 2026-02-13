@@ -27,6 +27,7 @@ import s from './SubjectsMaterialsPage.module.scss'
 import { TestsSection } from './TestsSection'
 import { WindowFilterBadge } from './WindowFilterBadge'
 import { CardFormModal } from './CardFormModal'
+import { PaywallModal } from '@/shared/ui/paywall-modal'
 
 export const SubjectsMaterialsPage = () => {
 	const { t } = useTranslation()
@@ -62,6 +63,10 @@ export const SubjectsMaterialsPage = () => {
 		handleLoadMore,
 		setSearchInput
 	} = useSubjectMaterialsPage()
+
+	// Paywall modal state
+	const [paywallOpen, setPaywallOpen] = useState(false)
+	const handleLockedClick = () => setPaywallOpen(true)
 
 	// Admin card form modal state
 	const [cardModalOpen, setCardModalOpen] = useState(false)
@@ -195,6 +200,7 @@ export const SubjectsMaterialsPage = () => {
 						windowId={windowId}
 						subjectId={subject?.id}
 						isAdmin={admin}
+					onLockedClick={handleLockedClick}
 					/>
 				)}
 
@@ -205,6 +211,7 @@ export const SubjectsMaterialsPage = () => {
 						isLoading={isLoadingKmzh}
 						isLocked={isLocked}
 						sectionId="section-kmzh"
+						onLockedClick={handleLockedClick}
 					/>
 				)}
 
@@ -222,6 +229,7 @@ export const SubjectsMaterialsPage = () => {
 							onAdminEdit={handleAdminEdit}
 							subjectId={subject?.id}
 							isAdmin={admin}
+							onLockedClick={handleLockedClick}
 						/>
 					))}
 
@@ -252,6 +260,7 @@ export const SubjectsMaterialsPage = () => {
 						isLoading={isLoadingTests}
 						isLocked={isLocked}
 						sectionId="section-tests"
+						onLockedClick={handleLockedClick}
 					/>
 				)}
 
@@ -287,6 +296,7 @@ export const SubjectsMaterialsPage = () => {
 					/>
 				)}
 			</Container>
+			<PaywallModal open={paywallOpen} onClose={() => setPaywallOpen(false)} />
 		</main>
 	)
 }

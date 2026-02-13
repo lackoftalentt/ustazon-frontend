@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
-import { Send, Loader2, Bot, User, Sparkles, Check, RefreshCw, Lock, MessageCircle } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Send, Loader2, Bot, User, Sparkles, Check, RefreshCw, Lock, MessageCircle, Copy } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { isAxiosError } from 'axios';
@@ -8,6 +9,7 @@ import s from './AIChat.module.scss';
 import { aiApi } from '@/shared/api/ai';
 import type { AiUsageResponse, ConversationListItem, MultiModelResponse } from '@/shared/api/ai';
 import { ChatHistory } from '../ChatHistory/ChatHistory';
+import { CodeBlock, InlineCode } from '../CodeBlock/CodeBlock';
 
 const PAGE_SIZE = 20;
 
@@ -41,6 +43,7 @@ export const AIChat = () => {
     const [pendingResponses, setPendingResponses] = useState<PendingResponses | null>(null);
     const [aiUsage, setAiUsage] = useState<AiUsageResponse | null>(null);
     const [limitExceeded, setLimitExceeded] = useState(false);
+    const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -50,6 +53,11 @@ export const AIChat = () => {
         loadConversations();
         loadAiUsage();
     }, []);
+
+    // Auto-scroll to bottom when messages change
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, isLoading, pendingResponses]);
 
     const loadAiUsage = async () => {
         try {
@@ -130,6 +138,16 @@ export const AIChat = () => {
         }
     };
 
+    const handleCopyMessage = useCallback(async (id: string, text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopiedMessageId(id);
+            setTimeout(() => setCopiedMessageId(null), 2000);
+        } catch {
+            toast.error(t('ai.copyError'));
+        }
+    }, [t]);
+
     const handleSendMessage = async () => {
         if (!inputValue.trim() || isLoading) return;
 
@@ -166,7 +184,7 @@ export const AIChat = () => {
         } catch (error) {
             console.error('Error sending message:', error);
 
-            if (isAxiosError(error) && error.response?.data?.code === 'ai_free_limit_exceeded') {
+            if (isAxiosError(error) && error.response?.data?.detail?.code === 'ai_free_limit_exceeded') {
                 setLimitExceeded(true);
                 setAiUsage(prev => prev ? { ...prev, remaining: 0 } : prev);
                 const limitMessage: Message = {
@@ -176,6 +194,16 @@ export const AIChat = () => {
                     timestamp: new Date()
                 };
                 setMessages(prev => [...prev, limitMessage]);
+            } else if (isAxiosError(error) && error.response?.status === 429) {
+                const retryAfter = error.response?.data?.detail?.retry_after;
+                const minutes = retryAfter ? Math.ceil(retryAfter / 60) : 15;
+                const errorMessage: Message = {
+                    id: `error-${Date.now()}`,
+                    text: `Сұраныс лимиті асып кетті. ${minutes} минуттан кейін қайталап көріңіз.`,
+                    sender: 'ai',
+                    timestamp: new Date()
+                };
+                setMessages(prev => [...prev, errorMessage]);
             } else {
                 const errorMessage: Message = {
                     id: `error-${Date.now()}`,
@@ -273,6 +301,19 @@ export const AIChat = () => {
         }
     };
 
+    const markdownComponents = {
+        code({ className, children, ...props }: React.ComponentPropsWithoutRef<'code'> & { className?: string }) {
+            const match = /language-(\w+)/.exec(className || '');
+            const codeString = String(children).replace(/\n$/, '');
+
+            if (match) {
+                return <CodeBlock language={match[1]}>{codeString}</CodeBlock>;
+            }
+
+            return <InlineCode {...props}>{children}</InlineCode>;
+        }
+    };
+
     return (
         <div className={s.container}>
             <header className={s.chatHeader}>
@@ -315,10 +356,24 @@ export const AIChat = () => {
                                 {m.sender === 'user' ? <User size={20} /> : <Bot size={20} />}
                             </div>
                             <div className={s.bubble}>
-                                <ReactMarkdown>{m.text}</ReactMarkdown>
+                                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                                    {m.text}
+                                </ReactMarkdown>
                                 {m.id.startsWith('error-') && (
                                     <button className={s.retryBtn} onClick={handleRetry}>
                                         <RefreshCw size={14} /> {t('ai.retry')}
+                                    </button>
+                                )}
+                                {m.sender === 'ai' && !m.id.startsWith('error-') && !m.id.startsWith('limit-') && (
+                                    <button
+                                        className={`${s.copyBtn} ${copiedMessageId === m.id ? s.copyBtnCopied : ''}`}
+                                        onClick={() => handleCopyMessage(m.id, m.text)}
+                                    >
+                                        {copiedMessageId === m.id ? (
+                                            <><Check size={14} /> {t('ai.copied')}</>
+                                        ) : (
+                                            <><Copy size={14} /> {t('ai.copy')}</>
+                                        )}
                                     </button>
                                 )}
                             </div>
@@ -382,6 +437,7 @@ export const AIChat = () => {
             </div>
 
             <footer className={s.footer}>
+<<<<<<< HEAD
                 {limitExceeded ? (
                     <div className={s.limitExceededFooter}>
                         <Lock size={20} />
@@ -412,8 +468,35 @@ export const AIChat = () => {
                         >
                             {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
                         </button>
+=======
+                {limitExceeded && (
+                    <div className={s.limitBanner}>
+                        <Lock size={18} />
+                        <span className={s.limitBannerText}>
+                            {t('ai.limitTitle')} — <a href="https://wa.me/77073510431?text=Доступ%20сатып%20алғым%20келеді">{t('ai.getSubscription')}</a>
+                        </span>
+>>>>>>> b5530d9 (subs)
                     </div>
                 )}
+                <div className={s.inputWrapper}>
+                    <textarea
+                        ref={textareaRef}
+                        className={s.textarea}
+                        placeholder={t('ai.inputPlaceholder')}
+                        value={inputValue}
+                        onChange={e => setInputValue(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        disabled={isLoading || limitExceeded}
+                        rows={1}
+                    />
+                    <button
+                        className={s.sendBtn}
+                        onClick={handleSendMessage}
+                        disabled={!inputValue.trim() || isLoading || limitExceeded}
+                    >
+                        {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
+                    </button>
+                </div>
             </footer>
         </div>
     );

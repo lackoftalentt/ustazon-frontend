@@ -2,15 +2,19 @@ import { registerUser } from '@/features/auth/api/registerApi'
 import { Button } from '@/shared/ui/button'
 import { Input } from '@/shared/ui/input'
 import { PasswordInput } from '@/shared/ui/password-input'
+import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useRegisterForm } from '../../../model/useRegisterForm'
 import s from './RegisterForm.module.scss'
 
 export const RegisterForm = () => {
 	const { t } = useTranslation()
 	const navigate = useNavigate()
+	const location = useLocation()
+
+	const prefillIin = (location.state as { iin?: string })?.iin || ''
 
 	const {
 		register,
@@ -21,30 +25,22 @@ export const RegisterForm = () => {
 	} = useRegisterForm(async data => {
 		try {
 			await registerUser(data)
-			console.log('Valid data:', data)
 			toast.success(t('auth.registerSuccess'))
 			navigate('/login')
 		} catch (error) {
-			console.error('Registration error:', error)
-
-			if (error instanceof Error) {
+			if (axios.isAxiosError(error)) {
+				const message =
+					error.response?.data?.detail ||
+					error.response?.data?.message ||
+					t('auth.registerError')
+				toast.error(message)
+			} else if (error instanceof Error) {
 				toast.error(error.message)
-			} else if (
-				typeof error === 'object' &&
-				error !== null &&
-				'response' in error
-			) {
-				const apiError = error as {
-					response?: { data?: { message?: string } }
-				}
-				toast.error(
-					apiError.response?.data?.message || t('auth.registerError')
-				)
 			} else {
 				toast.error(t('auth.unknownError'))
 			}
 		}
-	})
+	}, prefillIin)
 
 	return (
 		<>
@@ -67,6 +63,7 @@ export const RegisterForm = () => {
 						maxLength={12}
 						placeholder={t('auth.iinPlaceholder')}
 						onChange={handleIinChange}
+						disabled={!!prefillIin}
 					/>
 
 					<Input
@@ -76,6 +73,7 @@ export const RegisterForm = () => {
 						error={errors.name?.message}
 						type="text"
 						placeholder={t('auth.namePlaceholder')}
+						autoFocus={!!prefillIin}
 					/>
 
 					<PasswordInput

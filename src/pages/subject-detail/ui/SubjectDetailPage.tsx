@@ -42,12 +42,19 @@ export const SubjectDetailPage = () => {
 						<div className={s.paywallIcon}>
 							<Lock size={48} />
 						</div>
-						<h2>Жазылым қажет</h2>
+						<h2>Доступ қажет</h2>
 						<p>
-							Бұл материалға қол жеткізу үшін жазылым қажет. Жазылым алу
-							үшін әкімшіге хабарласыңыз.
+							Бұл материалға қол жеткізу үшін доступ сатып алыңыз.
 						</p>
-						<Button variant="primary" onClick={() => navigate(-1)}>
+						<a
+							href="https://api.whatsapp.com/send/?phone=77066652841&text&type=phone_number&app_absent=0"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={s.buyButton}
+						>
+							Доступ сатып алу
+						</a>
+						<Button variant="outline" onClick={() => navigate(-1)}>
 							Артқа қайту
 						</Button>
 					</div>
