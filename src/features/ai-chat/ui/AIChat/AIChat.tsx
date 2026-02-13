@@ -294,7 +294,7 @@ export const AIChat = () => {
                     {aiUsage.remaining > 0 ? (
                         <span dangerouslySetInnerHTML={{ __html: t('ai.freeMessagesRemaining', { remaining: aiUsage.remaining, limit: aiUsage.limit }) }} />
                     ) : (
-                        <span>{t('ai.limitExceeded')} <a href="https://wa.me/77073510431?text=Жазылым%20сатып%20алғым%20келеді" className={s.usageLink}>{t('ai.buySubscription')}</a></span>
+                        <span>{t('ai.limitExceeded')} <a href="#" onClick={e => e.preventDefault()} className={s.usageLink}>{t('ai.buySubscription')}</a></span>
                     )}
                 </div>
             )}
@@ -389,7 +389,7 @@ export const AIChat = () => {
                             <p className={s.limitTitle}>{t('ai.limitTitle')}</p>
                             <p className={s.limitDescription}>{t('ai.limitDescription')}</p>
                         </div>
-                        <a href="https://wa.me/77073510431?text=Жазылым%20сатып%20алғым%20келеді" className={s.subscribeBtn}>
+                        <a href="#" onClick={e => e.preventDefault()} className={s.subscribeBtn}>
                             {t('ai.getSubscription')}
                         </a>
                     </div>
