@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/entities/user'
 import s from './SpeedDial.module.scss'
 
-const WHATSAPP_URL = '#'
 
 const AI_ACTIONS = [
 	{ icon: <MessageCircle size={20} />, label: 'AI Чат', path: '/ai-chat' },

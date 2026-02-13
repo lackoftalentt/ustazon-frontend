@@ -426,6 +426,34 @@
 	}
 }
 
+.lockedState {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: $spacing-md;
+	padding: $spacing-3xl $spacing-xl;
+	text-align: center;
+	color: $color-gray-medium;
+
+	svg {
+		color: $color-green-primary;
+		opacity: 0.7;
+	}
+
+	h3 {
+		font-size: $font-size-lg;
+		font-weight: $font-weight-semibold;
+		color: $color-gray-dark;
+		margin: 0;
+	}
+
+	p {
+		font-size: $font-size-base;
+		max-width: 400px;
+		margin: 0;
+	}
+}
+
 .resultsFooter {
 	text-align: center;
 	padding: $spacing-xl 0;

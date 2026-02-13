@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { Lock, X } from 'lucide-react'
 import s from './PaywallModal.module.scss'
 
-const WHATSAPP_URL =
-	'https://api.whatsapp.com/send/?phone=77066652841&text&type=phone_number&app_absent=0'
+// const WHATSAPP_URL =
+// 	'https://api.whatsapp.com/send/?phone=77066652841&text&type=phone_number&app_absent=0'
 
 interface PaywallModalProps {
 	open: boolean
@@ -53,14 +53,14 @@ export const PaywallModal = ({ open, onClose }: PaywallModalProps) => {
 				</div>
 				<h3 className={s.title}>{t('paywall.title')}</h3>
 				<p className={s.message}>{t('paywall.message')}</p>
-				<a
+				{/* <a
 					href={WHATSAPP_URL}
 					target="_blank"
 					rel="noopener noreferrer"
 					className={s.buyButton}
 				>
 					{t('paywall.buyButton')}
-				</a>
+				</a> */}
 			</div>
 		</div>
 	)

@@ -436,68 +436,48 @@ export const AIChat = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            <footer className={s.footer}>
-<<<<<<< HEAD
-                {limitExceeded ? (
-                    <div className={s.limitExceededFooter}>
-                        <Lock size={20} />
-                        <div>
-                            <p className={s.limitTitle}>{t('ai.limitTitle')}</p>
-                            <p className={s.limitDescription}>{t('ai.limitDescription')}</p>
-                        </div>
-                        <a href="#" onClick={e => e.preventDefault()} className={s.subscribeBtn}>
-                            {t('ai.getSubscription')}
-                        </a>
-                    </div>
-                ) : (
-                    <div className={s.inputWrapper}>
-                        <textarea
-                            ref={textareaRef}
-                            className={s.textarea}
-                            placeholder={t('ai.inputPlaceholder')}
-                            value={inputValue}
-                            onChange={e => setInputValue(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            disabled={isLoading}
-                            rows={1}
-                        />
-                        <button
-                            className={s.sendBtn}
-                            onClick={handleSendMessage}
-                            disabled={!inputValue.trim() || isLoading}
-                        >
-                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
-                        </button>
-=======
-                {limitExceeded && (
-                    <div className={s.limitBanner}>
-                        <Lock size={18} />
-                        <span className={s.limitBannerText}>
-                            {t('ai.limitTitle')} — <a href="https://wa.me/77073510431?text=Доступ%20сатып%20алғым%20келеді">{t('ai.getSubscription')}</a>
-                        </span>
->>>>>>> b5530d9 (subs)
-                    </div>
-                )}
-                <div className={s.inputWrapper}>
-                    <textarea
-                        ref={textareaRef}
-                        className={s.textarea}
-                        placeholder={t('ai.inputPlaceholder')}
-                        value={inputValue}
-                        onChange={e => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        disabled={isLoading || limitExceeded}
-                        rows={1}
-                    />
-                    <button
-                        className={s.sendBtn}
-                        onClick={handleSendMessage}
-                        disabled={!inputValue.trim() || isLoading || limitExceeded}
-                    >
-                        {isLoading ? <Loader2 size={20} className="animate-spin" /> : <Send size={20} />}
-                    </button>
-                </div>
-            </footer>
+	<footer className={s.footer}>
+    {limitExceeded ? (
+        <div className={s.limitExceededFooter}>
+            <Lock size={20} />
+            <div>
+                <p className={s.limitTitle}>{t('ai.limitTitle')}</p>
+                <p className={s.limitDescription}>{t('ai.limitDescription')}</p>
+            </div>
+            <a
+                href="#"
+                onClick={e => e.preventDefault()}
+                className={s.subscribeBtn}
+            >
+                {t('ai.getSubscription')}
+            </a>
         </div>
+    ) : (
+        <div className={s.inputWrapper}>
+            <textarea
+                ref={textareaRef}
+                className={s.textarea}
+                placeholder={t('ai.inputPlaceholder')}
+                value={inputValue}
+                onChange={e => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={isLoading}
+                rows={1}
+            />
+            <button
+                className={s.sendBtn}
+                onClick={handleSendMessage}
+                disabled={!inputValue.trim() || isLoading || limitExceeded}
+            >
+                {isLoading ? (
+                    <Loader2 size={20} className="animate-spin" />
+                ) : (
+                    <Send size={20} />
+                )}
+            </button>
+                </div>
+    )}
+</footer>
+    </div>
     );
 };

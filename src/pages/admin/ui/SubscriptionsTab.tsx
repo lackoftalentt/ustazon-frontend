@@ -96,6 +96,16 @@ export const SubscriptionsTab = () => {
         queryClient.invalidateQueries({ queryKey: ['admin-subscriptions-expiring'] });
     }, [queryClient]);
 
+    const getErrorMsg = (error: unknown, fallback: string) => {
+        if (error && typeof error === 'object' && 'response' in error) {
+            const resp = (error as { response?: { data?: { detail?: string }; status?: number } }).response;
+            if (resp?.data?.detail) return resp.data.detail;
+            if (resp?.status === 403) return 'Доступ запрещён (нужны права админа)';
+            if (resp?.status === 422) return 'Ошибка валидации данных';
+        }
+        return fallback;
+    };
+
     const createMutation = useMutation({
         mutationFn: (data: SubscriptionCreate) => subscriptionApi.createSubscription(data),
         onSuccess: () => {
@@ -103,7 +113,7 @@ export const SubscriptionsTab = () => {
             toast.success(t('admin.created'));
             setGrantModal(null);
         },
-        onError: () => toast.error(t('admin.createError')),
+        onError: (error) => toast.error(getErrorMsg(error, t('admin.createError'))),
     });
 
     const updateMutation = useMutation({
@@ -114,7 +124,7 @@ export const SubscriptionsTab = () => {
             toast.success(t('admin.updated'));
             setEditModal(null);
         },
-        onError: () => toast.error(t('admin.updateError')),
+        onError: (error) => toast.error(getErrorMsg(error, t('admin.updateError'))),
     });
 
     const deleteMutation = useMutation({
@@ -124,7 +134,7 @@ export const SubscriptionsTab = () => {
             toast.success(t('admin.deleted'));
             setDeleteItem(null);
         },
-        onError: () => toast.error(t('admin.deleteError')),
+        onError: (error) => toast.error(getErrorMsg(error, t('admin.deleteError'))),
     });
 
     // --- Displayed subscriptions ---
@@ -294,7 +304,7 @@ export const SubscriptionsTab = () => {
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>{t('admin.fields.userId')}</th>
+                                        <th>{t('admin.fields.userName')}</th>
                                         <th>{t('admin.fields.subject')}</th>
                                         <th>{t('admin.fields.institutionType')}</th>
                                         <th>{t('admin.fields.endDate')}</th>
@@ -306,7 +316,7 @@ export const SubscriptionsTab = () => {
                                     {displayed.map(item => (
                                         <tr key={item.id}>
                                             <td>{item.id}</td>
-                                            <td>{item.user_id}</td>
+                                            <td>{item.user?.name || `#${item.user_id}`}</td>
                                             <td>{item.subject?.name || `#${item.subject_id}`}</td>
                                             <td>
                                                 {item.institution_type?.name ||

@@ -10,6 +10,7 @@ import { TemplatesTab } from './TemplatesTab';
 import { WindowsTab } from './WindowsTab';
 import { InstitutionTypesTab } from './InstitutionTypesTab';
 import { SubscriptionsTab } from './SubscriptionsTab';
+import { UsersTab } from './UsersTab';
 import s from './AdminPage.module.scss';
 
 const TABS = [
@@ -18,6 +19,7 @@ const TABS = [
     'windows',
     'institutionTypes',
     'subscriptions',
+    'users',
 ] as const;
 
 type TabKey = (typeof TABS)[number];
@@ -37,6 +39,7 @@ export const AdminPage = () => {
         windows: <WindowsTab />,
         institutionTypes: <InstitutionTypesTab />,
         subscriptions: <SubscriptionsTab />,
+        users: <UsersTab />,
     };
 
     return (

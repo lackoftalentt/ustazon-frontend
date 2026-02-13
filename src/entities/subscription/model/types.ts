@@ -17,6 +17,13 @@ export interface Subject {
 	institution_types: InstitutionType[]
 }
 
+export interface SubscriptionUser {
+	id: number
+	name: string
+	iin: string
+	phone: string
+}
+
 export interface Subscription {
 	id: number
 	user_id: number
@@ -26,6 +33,7 @@ export interface Subscription {
 	is_active: boolean
 	created_at: string
 	updated_at: string
+	user?: SubscriptionUser
 	subject?: Subject
 	institution_type?: InstitutionType
 }

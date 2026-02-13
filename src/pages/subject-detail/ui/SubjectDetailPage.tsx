@@ -46,14 +46,14 @@ export const SubjectDetailPage = () => {
 						<p>
 							Бұл материалға қол жеткізу үшін доступ сатып алыңыз.
 						</p>
-						<a
+						{/* <a
 							href="https://api.whatsapp.com/send/?phone=77066652841&text&type=phone_number&app_absent=0"
 							target="_blank"
 							rel="noopener noreferrer"
 							className={s.buyButton}
 						>
 							Доступ сатып алу
-						</a>
+						</a> */}
 						<Button variant="outline" onClick={() => navigate(-1)}>
 							Артқа қайту
 						</Button>

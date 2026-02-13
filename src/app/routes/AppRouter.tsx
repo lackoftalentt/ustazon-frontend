@@ -42,6 +42,7 @@ const AdminPage = lazy(() => import('@/pages/admin'))
 const TemplatesPage = lazy(() => import('@/pages/templates'))
 const InstitutionTypesPage = lazy(() => import('@/pages/institution-types'))
 const SubscriptionsPage = lazy(() => import('@/pages/subscriptions'))
+const SubscribeAdminPage = lazy(() => import('@/pages/subscribe-admin'))
 const MaterialsPage = lazy(() => import('@/pages/materials'))
 const NotFoundPage = lazy(() => import('@/pages/not-found'))
 
@@ -199,6 +200,14 @@ export const AppRouter = () => {
 							element={
 								<PrivateRoute>
 									<SubscriptionsPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="subscribe-admin"
+							element={
+								<PrivateRoute>
+									<SubscribeAdminPage />
 								</PrivateRoute>
 							}
 						/>

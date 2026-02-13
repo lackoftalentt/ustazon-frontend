@@ -69,6 +69,7 @@ export const ProfileSettingsPage = () => {
 				iin: data.iin,
 				name: data.name,
 				phoneNumber: data.phone,
+				is_admin: data.is_admin,
 				is_superuser: data.is_superuser
 			})
 			setIsEditing(false)

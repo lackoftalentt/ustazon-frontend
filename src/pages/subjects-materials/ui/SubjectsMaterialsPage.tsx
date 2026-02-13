@@ -12,6 +12,7 @@ import { ErrorState } from '@/shared/ui/error-state'
 import { Loader } from '@/shared/ui/loader'
 import { SearchInput } from '@/shared/ui/search-input'
 import { SectionTitle } from '@/shared/ui/section-title'
+import { Lock } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -274,10 +275,21 @@ export const SubjectsMaterialsPage = () => {
 				)}
 
 				{!isLoadingCards && !isLoadingKmzh && !isLoadingTests && totalCards === 0 && (
-					<EmptyState
-						search={searchInput || ''}
-						handleClearSearch={handleClearFilters}
-					/>
+					isLocked ? (
+						<div className={s.lockedState}>
+							<Lock size={48} />
+							<h3>{t('paywall.title')}</h3>
+							<p>{t('paywall.message')}</p>
+							<Button variant="outline" onClick={handleLockedClick}>
+								{t('paywall.buyButton')}
+							</Button>
+						</div>
+					) : (
+						<EmptyState
+							search={searchInput || ''}
+							handleClearSearch={handleClearFilters}
+						/>
+					)
 				)}
 
 				{totalCards > 0 && (

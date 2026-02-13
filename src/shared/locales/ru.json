@@ -514,6 +514,7 @@
 			"windows": "Окна",
 			"institutionTypes": "Типы учреждений",
 			"subscriptions": "Подписки",
+			"users": "Пользователи",
 			"materials": "Материалы"
 		},
 		"add": "Добавить",
@@ -548,12 +549,15 @@
 		"editInstitutionType": "Редактировать тип учреждения",
 		"addSubscription": "Добавить подписку",
 		"sub": {
+			"pageTitle": "Управление подписками",
+			"pageSubtitle": "Поиск пользователей и управление доступом к предметам",
 			"totalUsers": "Всего пользователей",
 			"activeSubs": "Активные подписки",
 			"subjectsCount": "Предметов",
 			"usersList": "Пользователи",
 			"searchUsers": "Поиск по ИИН, имени, телефону...",
-			"grantAccess": "Доступ беру"
+			"grantAccess": "Доступ беру",
+			"records": "записей"
 		},
 		"subFilters": {
 			"all": "Все",
@@ -579,6 +583,7 @@
 			"subjects": "Предметы",
 			"subject": "Предмет",
 			"userId": "ID пользователя",
+			"userName": "Пользователь",
 			"endDate": "Дата окончания",
 			"status": "Статус",
 			"createdAt": "Дата создания",

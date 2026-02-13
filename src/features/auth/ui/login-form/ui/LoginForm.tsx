@@ -85,6 +85,7 @@ export const LoginForm = () => {
 				iin: userData.iin,
 				name: userData.name,
 				phoneNumber: userData.phone,
+				is_admin: userData.is_admin,
 				is_superuser: userData.is_superuser
 			})
 

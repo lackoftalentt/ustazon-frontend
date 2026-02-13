@@ -19,6 +19,13 @@ import s from './SubscribeAdminPage.module.scss'
 
 type FilterMode = 'all' | 'active' | 'expired' | 'expiring'
 
+const getInitials = (name: string) => {
+	const parts = name.trim().split(/\s+/)
+	return parts.length > 1
+		? (parts[0][0] + parts[1][0]).toUpperCase()
+		: name.slice(0, 2).toUpperCase()
+}
+
 export const SubscribeAdminPage = () => {
 	const { t } = useTranslation()
 	const { isAdmin } = useAuthStore()
@@ -45,7 +52,6 @@ export const SubscribeAdminPage = () => {
 
 	if (!isAdmin()) return <Navigate to="/" replace />
 
-	// Debounce user search
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setUserSearchDebounced(userSearch)
@@ -99,6 +105,20 @@ export const SubscribeAdminPage = () => {
 		queryClient.invalidateQueries({ queryKey: ['admin-subscriptions-expiring'] })
 	}, [queryClient])
 
+	const getErrorMsg = (error: unknown, fallback: string) => {
+		console.error('API error:', error)
+		if (error && typeof error === 'object' && 'response' in error) {
+			const resp = (error as { response?: { data?: { detail?: unknown }; status?: number } }).response
+			const detail = resp?.data?.detail
+			if (typeof detail === 'string') return detail
+			if (Array.isArray(detail)) return detail.map((d: { msg?: string }) => d.msg).join('; ')
+			if (resp?.status === 403) return 'Доступ запрещён'
+			if (resp?.status === 422) return 'Ошибка валидации'
+			if (resp?.status) return `Ошибка: ${resp.status}`
+		}
+		return fallback
+	}
+
 	const createMutation = useMutation({
 		mutationFn: (data: SubscriptionCreate) => subscriptionApi.createSubscription(data),
 		onSuccess: () => {
@@ -106,7 +126,7 @@ export const SubscribeAdminPage = () => {
 			toast.success(t('admin.created'))
 			setGrantModal(null)
 		},
-		onError: () => toast.error(t('admin.createError')),
+		onError: (error) => toast.error(getErrorMsg(error, t('admin.createError'))),
 	})
 
 	const updateMutation = useMutation({
@@ -117,7 +137,7 @@ export const SubscribeAdminPage = () => {
 			toast.success(t('admin.updated'))
 			setEditModal(null)
 		},
-		onError: () => toast.error(t('admin.updateError')),
+		onError: (error) => toast.error(getErrorMsg(error, t('admin.updateError'))),
 	})
 
 	const deleteMutation = useMutation({
@@ -127,7 +147,7 @@ export const SubscribeAdminPage = () => {
 			toast.success(t('admin.deleted'))
 			setDeleteItem(null)
 		},
-		onError: () => toast.error(t('admin.deleteError')),
+		onError: (error) => toast.error(getErrorMsg(error, t('admin.deleteError'))),
 	})
 
 	// --- Computed ---
@@ -145,11 +165,11 @@ export const SubscribeAdminPage = () => {
 	}, [filter, allSubs, expiredSubs, expiringSubs])
 
 	const stats = useMemo(() => {
-		const activeSubs = allSubs.filter(sub => sub.is_active)
+		const active = allSubs.filter(sub => sub.is_active).length
 		const uniqueSubjects = new Set(allSubs.map(sub => sub.subject_id)).size
 		return {
 			totalUsers: usersData?.total ?? 0,
-			activeSubs: activeSubs.length,
+			activeSubs: active,
 			uniqueSubjects,
 		}
 	}, [allSubs, usersData])
@@ -166,7 +186,7 @@ export const SubscribeAdminPage = () => {
 	}
 
 	const handleGrant = () => {
-		if (!grantForm.subject_id || !grantForm.institution_type_id || !grantForm.end_date) {
+		if (!grantForm.user_id || !grantForm.subject_id || !grantForm.institution_type_id || !grantForm.end_date) {
 			toast.error(t('admin.fillRequired'))
 			return
 		}
@@ -202,77 +222,90 @@ export const SubscribeAdminPage = () => {
 				{/* Stats */}
 				<div className={s.statsRow}>
 					<div className={s.statCard}>
-						<div className={s.statValue}>{stats.totalUsers}</div>
-						<div className={s.statLabel}>{t('admin.sub.totalUsers')}</div>
+						<div className={`${s.statIcon} ${s.statIconGreen}`}>👥</div>
+						<div className={s.statContent}>
+							<div className={s.statValue}>{stats.totalUsers}</div>
+							<div className={s.statLabel}>{t('admin.sub.totalUsers')}</div>
+						</div>
 					</div>
 					<div className={s.statCard}>
-						<div className={s.statValue}>{stats.activeSubs}</div>
-						<div className={s.statLabel}>{t('admin.sub.activeSubs')}</div>
+						<div className={`${s.statIcon} ${s.statIconBlue}`}>✓</div>
+						<div className={s.statContent}>
+							<div className={s.statValue}>{stats.activeSubs}</div>
+							<div className={s.statLabel}>{t('admin.sub.activeSubs')}</div>
+						</div>
 					</div>
 					<div className={s.statCard}>
-						<div className={s.statValue}>{stats.uniqueSubjects}</div>
-						<div className={s.statLabel}>{t('admin.sub.subjectsCount')}</div>
+						<div className={`${s.statIcon} ${s.statIconPurple}`}>📚</div>
+						<div className={s.statContent}>
+							<div className={s.statValue}>{stats.uniqueSubjects}</div>
+							<div className={s.statLabel}>{t('admin.sub.subjectsCount')}</div>
+						</div>
 					</div>
 				</div>
 
 				{/* Two-column layout */}
 				<div className={s.twoCol}>
-					{/* Left: Users */}
-					<div className={s.colLeft}>
-						<h3 className={s.colTitle}>{t('admin.sub.usersList')}</h3>
-						<input
-							className={s.searchInput}
-							type="text"
-							placeholder={t('admin.sub.searchUsers')}
-							value={userSearch}
-							onChange={e => setUserSearch(e.target.value)}
-						/>
-						{loadingUsers ? (
-							<Loader />
-						) : users.length === 0 ? (
-							<div className={s.empty}>{t('admin.noData')}</div>
-						) : (
-							<>
+					{/* Left: Users panel */}
+					<div className={s.panel}>
+						<div className={s.panelHeader}>
+							<span className={s.panelTitle}>{t('admin.sub.usersList')}</span>
+							<span className={s.panelCount}>{totalUsers}</span>
+						</div>
+						<div className={s.panelBody}>
+							<input
+								className={s.searchInput}
+								type="text"
+								placeholder={t('admin.sub.searchUsers')}
+								value={userSearch}
+								onChange={e => setUserSearch(e.target.value)}
+							/>
+							{loadingUsers ? (
+								<Loader />
+							) : users.length === 0 ? (
+								<div className={s.empty}>{t('admin.noData')}</div>
+							) : (
 								<div className={s.usersList}>
 									{users.map(user => (
 										<div key={user.id} className={s.userCard}>
+											<div className={s.userAvatar}>{getInitials(user.name)}</div>
 											<div className={s.userInfo}>
 												<div className={s.userName}>{user.name}</div>
 												<div className={s.userMeta}>
-													ЖСН: {user.iin} &middot; {user.phone}
+													{user.iin} · {user.phone}
 												</div>
 											</div>
-											<Button size="sm" onClick={() => openGrant(user)}>
+											<button className={s.grantBtn} onClick={() => openGrant(user)}>
 												{t('admin.sub.grantAccess')}
-											</Button>
+											</button>
 										</div>
 									))}
 								</div>
-								{totalPages > 1 && (
-									<div className={s.pagination}>
-										<button
-											className={s.pageBtn}
-											disabled={usersPage === 0}
-											onClick={() => setUsersPage(p => p - 1)}>
-											&laquo;
-										</button>
-										<span className={s.pageInfo}>
-											{usersPage + 1} / {totalPages}
-										</span>
-										<button
-											className={s.pageBtn}
-											disabled={usersPage >= totalPages - 1}
-											onClick={() => setUsersPage(p => p + 1)}>
-											&raquo;
-										</button>
-									</div>
-								)}
-							</>
+							)}
+						</div>
+						{totalPages > 1 && (
+							<div className={s.pagination}>
+								<button
+									className={s.pageBtn}
+									disabled={usersPage === 0}
+									onClick={() => setUsersPage(p => p - 1)}>
+									‹
+								</button>
+								<span className={s.pageInfo}>
+									{usersPage + 1} / {totalPages}
+								</span>
+								<button
+									className={s.pageBtn}
+									disabled={usersPage >= totalPages - 1}
+									onClick={() => setUsersPage(p => p + 1)}>
+									›
+								</button>
+							</div>
 						)}
 					</div>
 
-					{/* Right: Subscriptions */}
-					<div className={s.colRight}>
+					{/* Right: Subscriptions panel */}
+					<div className={s.panel}>
 						<div className={s.toolbar}>
 							<div className={s.filters}>
 								{(['all', 'active', 'expired', 'expiring'] as FilterMode[]).map(mode => (
@@ -284,10 +317,11 @@ export const SubscribeAdminPage = () => {
 									</button>
 								))}
 							</div>
+							<span className={s.subsCount}>{displayed.length} {t('admin.sub.records')}</span>
 						</div>
 
 						{loadingAll ? (
-							<Loader />
+							<div className={s.panelBody}><Loader /></div>
 						) : displayed.length === 0 ? (
 							<div className={s.empty}>{t('admin.noData')}</div>
 						) : (
@@ -296,19 +330,19 @@ export const SubscribeAdminPage = () => {
 									<thead>
 										<tr>
 											<th>ID</th>
-											<th>{t('admin.fields.userId')}</th>
+											<th>{t('admin.fields.userName')}</th>
 											<th>{t('admin.fields.subject')}</th>
 											<th>{t('admin.fields.institutionType')}</th>
 											<th>{t('admin.fields.endDate')}</th>
 											<th>{t('admin.fields.status')}</th>
-											<th>{t('admin.fields.actions')}</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
 										{displayed.map(item => (
 											<tr key={item.id}>
 												<td>{item.id}</td>
-												<td>{item.user_id}</td>
+												<td>{item.user?.name || `#${item.user_id}`}</td>
 												<td>{item.subject?.name || `#${item.subject_id}`}</td>
 												<td>{item.institution_type?.name || `#${item.institution_type_id}`}</td>
 												<td>{new Date(item.end_date).toLocaleDateString()}</td>
@@ -344,7 +378,7 @@ export const SubscribeAdminPage = () => {
 					onClose={() => setGrantModal(null)}
 					title={`${t('admin.sub.grantAccess')} — ${grantModal?.name || ''}`}>
 					<div className={s.formGroup}>
-						<label>{t('admin.fields.subject')} *</label>
+						<label>{t('admin.fields.subject')}</label>
 						<select
 							value={grantForm.subject_id}
 							onChange={e => setGrantForm({ ...grantForm, subject_id: Number(e.target.value) })}>
@@ -354,7 +388,7 @@ export const SubscribeAdminPage = () => {
 						</select>
 					</div>
 					<div className={s.formGroup}>
-						<label>{t('admin.fields.institutionType')} *</label>
+						<label>{t('admin.fields.institutionType')}</label>
 						<select
 							value={grantForm.institution_type_id}
 							onChange={e => setGrantForm({ ...grantForm, institution_type_id: Number(e.target.value) })}>
@@ -364,7 +398,7 @@ export const SubscribeAdminPage = () => {
 						</select>
 					</div>
 					<div className={s.formGroup}>
-						<label>{t('admin.fields.endDate')} *</label>
+						<label>{t('admin.fields.endDate')}</label>
 						<input
 							type="date"
 							value={grantForm.end_date}

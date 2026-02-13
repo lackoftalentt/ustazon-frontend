@@ -7,6 +7,7 @@ export interface UserResponse {
     phone: string;
     is_active: boolean;
     is_verified: boolean;
+    is_admin: boolean;
     is_superuser: boolean;
     created_at: string;
 }

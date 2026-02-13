@@ -517,6 +517,7 @@
 			"windows": "Терезелер",
 			"institutionTypes": "Мекеме түрлері",
 			"subscriptions": "Доступтар",
+			"users": "Пайдаланушылар",
 			"materials": "Материалдар"
 		},
 		"add": "Қосу",
@@ -551,12 +552,15 @@
 		"editInstitutionType": "Мекеме түрін өңдеу",
 		"addSubscription": "Доступ қосу",
 		"sub": {
+			"pageTitle": "Жазылымдарды басқару",
+			"pageSubtitle": "Пайдаланушыларды іздеу және пәндерге қол жеткізуді басқару",
 			"totalUsers": "Барлық пайдаланушылар",
 			"activeSubs": "Белсенді доступтар",
 			"subjectsCount": "Пәндер",
 			"usersList": "Пайдаланушылар",
 			"searchUsers": "ЖСН, аты, телефон бойынша іздеу...",
-			"grantAccess": "Доступ беру"
+			"grantAccess": "Доступ беру",
+			"records": "жазба"
 		},
 		"subFilters": {
 			"all": "Барлығы",
@@ -582,6 +586,7 @@
 			"subjects": "Пәндер",
 			"subject": "Пән",
 			"userId": "Пайдаланушы ID",
+			"userName": "Пайдаланушы",
 			"endDate": "Аяқталу күні",
 			"status": "Статус",
 			"createdAt": "Құрылған күні",
