@@ -50,7 +50,7 @@ export const Footer = () => {
 							<Instagram size={20} />
 						</a>
 						<a
-							href="https://wa.me/7700XXXXXXX"
+							href="#"
 							target="_blank"
 							rel="noreferrer"
 							className={s.socialButton}
