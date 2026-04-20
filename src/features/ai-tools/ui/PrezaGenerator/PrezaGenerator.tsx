@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { aiApi } from '@/shared/api/ai';
 import type { UserPresentation, AiUsageResponse } from '@/shared/api/ai';
@@ -23,6 +24,7 @@ export const PrezaGenerator = () => {
   const [usage, setUsage] = useState<AiUsageResponse | null>(null);
 
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const fetchUsage = useCallback(async () => {
     try {
@@ -166,8 +168,8 @@ export const PrezaGenerator = () => {
      ПРЕЗЕНТАЦИЯНЫ АШУ
      =========================== */
   const handlePresentationClick = (p: UserPresentation) => {
-    if (p.status === 'completed' && p.gamma_url) {
-      window.open(p.gamma_url, '_blank', 'noopener,noreferrer');
+    if (p.status === 'completed') {
+      navigate(`/ai-preza/${p.id}`);
     }
   };
 

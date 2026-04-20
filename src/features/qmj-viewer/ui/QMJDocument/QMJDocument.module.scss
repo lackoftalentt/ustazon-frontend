@@ -34,39 +34,88 @@
     }
 }
 
-.metaBar {
+.headerRow {
     display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
     gap: 1rem;
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 0.5rem;
+}
 
-    span {
-        &::after {
-            content: '\00B7';
-            margin-left: 1rem;
-        }
-
-        &:last-child::after {
-            content: '';
-        }
-    }
+.headerLeft {
+    flex: 1;
 }
 
 .title {
-    text-align: center;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    margin: 1rem 0 0.25rem;
+    margin: 0 0 0.25rem;
     color: #111;
 }
 
-.topic {
-    text-align: center;
-    font-size: 1.1rem;
+.headerMeta {
+    font-size: 14px;
+    color: #555;
     font-weight: 500;
-    margin: 0 0 1.5rem;
+}
+
+.headerRight {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.approvalBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.approvalLabel {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.approvalLine {
+    font-size: 13px;
+    color: #999;
+}
+
+.metaTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-bottom: 1.5rem;
+
+    td {
+        border: 1px solid #d0d0d0;
+        padding: 6px 12px;
+        vertical-align: top;
+    }
+}
+
+.metaLabel {
+    font-weight: 600;
+    white-space: nowrap;
+    width: 220px;
+    background: #f5f5f5;
     color: #444;
+    font-size: 13px;
+
+    @media (max-width: 640px) {
+        width: 140px;
+        white-space: normal;
+    }
+}
+
+.metaBlank {
+    color: #bbb;
+}
+
+.topicCell {
+    font-weight: 600;
+    color: #222;
 }
 
 @media print {

@@ -11,6 +11,12 @@ export const QMJHomeworkBlock = ({ homework }: Props) => (
 
         <p className={s.paragraph}>{homework.description}</p>
 
+        {homework.exercise_number && (
+            <p className={s.exerciseNumber}>
+                Үйге тапсырма: {homework.exercise_number}
+            </p>
+        )}
+
         <ul className={s.list}>
             {homework.tasks.map((task, i) => (
                 <li key={i}>{task}</li>

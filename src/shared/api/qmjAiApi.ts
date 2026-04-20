@@ -1,27 +1,48 @@
 import { apiClient } from './apiClient';
 
+export interface QMJValuesEducation {
+    value_name: string;
+    value_description: string;
+    value_sentences: string[];
+}
+
 export interface QMJLessonInfo {
     subject: string;
     topic: string;
     grade: string;
+    section?: string;
     duration: number;
     learning_objectives: string[];
     lesson_objectives: string[];
     assessment_criteria: string[];
-    values: string;
+    values_education?: QMJValuesEducation;
+    /** @deprecated Use values_education instead */
+    values?: string;
     cross_curricular_links: string;
     prior_knowledge: string;
     resources: string[];
+}
+
+export interface QMJExercise {
+    number: string;
+    text: string;
+    work_type?: string;
+    descriptors: string[];
+    assessment_method: string;
+    resources?: string;
 }
 
 export interface QMJStage {
     name: string;
     name_ru: string;
     duration: number;
-    teacher_activities: string;
-    student_activities: string;
-    assessment: string;
-    resources: string;
+    work_type?: string;
+    method?: string;
+    teacher_activities?: string;
+    student_activities?: string;
+    assessment?: string;
+    resources?: string;
+    exercises?: QMJExercise[];
 }
 
 export interface QMJDifferentiation {
@@ -36,7 +57,8 @@ export interface QMJReflection {
 
 export interface QMJHomework {
     description: string;
-    differentiated: boolean;
+    exercise_number?: string;
+    differentiated?: boolean;
     tasks: string[];
 }
 

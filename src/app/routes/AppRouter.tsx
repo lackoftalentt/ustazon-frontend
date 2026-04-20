@@ -26,6 +26,7 @@ const SubjectDetailPage = lazy(() => import('@/pages/subject-detail'))
 const SubjectWindowsPage = lazy(() => import('@/pages/subject-windows'))
 const AIChatPage = lazy(() => import('@/pages/ai-chat'))
 const AIPrezaPage = lazy(() => import('@/pages/ai-preza'))
+const AIPrezaViewerPage = lazy(() => import('@/pages/ai-preza-viewer'))
 const AITestPage = lazy(() => import('@/pages/ai-test'))
 const AIManimPage = lazy(() => import('@/pages/ai-manim'))
 const AILessonGeneratorPage = lazy(() => import('@/pages/ai-lesson-generator'))
@@ -152,6 +153,14 @@ export const AppRouter = () => {
 							element={
 								<PrivateRoute>
 									<AIPrezaPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="ai-preza/:id"
+							element={
+								<PrivateRoute>
+									<AIPrezaViewerPage />
 								</PrivateRoute>
 							}
 						/>
